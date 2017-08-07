@@ -18,7 +18,7 @@
     "portrait": false,
     "upsideDown": false
   },
-  "packageName": "org.cocos2d.beimi",
+  "packageName": "com.beimi",
   "privateKey": "",
   "renderMode": "0",
   "startScene": "9ffef9bb-4c0f-40bb-b096-cd5b6c6281d8",
