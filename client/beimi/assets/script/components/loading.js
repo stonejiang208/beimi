@@ -26,20 +26,29 @@ cc.Class({
         }
         this.initMgr();
         this._splash = cc.find("Canvas/splash");
-        this._splash.active = true;
+        this._back = cc.find("Canvas/global/back");
+        this._back.active = false ;
+        this._game = cc.find("Canvas/game");
+        this._game.active = false ;
+        
         
         cc.tools.audio.playBGM("bgMain.mp3");
         var xhr = cc.tools.http.httpPost("/tokens",{username:'admin',password:'123456'},function(ret){
             cc.tools.http.authorization = ret ;
             cc.tools.http.httpGet("/tokens",function(ret){
-                //console.log(ret);
+                console.log("Test BeiMi Infomation:"+ret);
                 /**
                  *  后台交互需要token 
                  **/ 
                 if(cc.tools.http.authorization !== "" && cc.tools.http.authorization !== "-1"){
-                    io("http://127.0.0.1:9081/bm/system?token="+cc.tools.http.authorization);
+                   
                 }
             });
+        });
+        var socket = window.io.connect('http://192.168.1.155:9081/bm/system?token=123');
+        
+        socket.on("connect" , function(){
+             cc.log("ttt");
         });
     },
     start:function(){        
@@ -59,6 +68,9 @@ cc.Class({
         var Audio = require("Audio");
         cc.tools.audio = new Audio();
         cc.tools.audio.init();
+        
+        var backBtn = new require("BackBtn");
+        cc.tools.back = new backBtn();
         
         if(cc.sys.isNative){
             window.io = SocketIO;

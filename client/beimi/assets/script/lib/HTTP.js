@@ -1,4 +1,3 @@
-var URL = "http://127.0.0.1";
 cc.VERSION = 2017061001;
 var HTTP = cc.Class({
     extends: cc.Component,
@@ -17,7 +16,8 @@ var HTTP = cc.Class({
     },
 
     statics: {
-        baseURL:URL,
+        baseURL:"http://192.168.1.155",
+        wsURL : "http://192.168.1.155:9081" ,
         authorization: null,
         httpGet: function (url, callback) {
             var xhr = cc.loader.getXMLHttpRequest();
