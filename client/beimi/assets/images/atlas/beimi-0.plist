@@ -4,33 +4,123 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>#血流/glass_a2.png</key>
+            <key>#血流/X1.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{314,35}</string>
+                <string>{33,37}</string>
                 <key>spriteSourceSize</key>
-                <string>{314,35}</string>
+                <string>{33,37}</string>
                 <key>textureRect</key>
-                <string>{{2005,681},{314,35}}</string>
+                <string>{{1396,1374},{33,37}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
-            <key>倒计时/中心点切图/time1.png</key>
+            <key>#血流/X2.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{-4,-4}</string>
+                <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{132,131}</string>
+                <string>{33,37}</string>
                 <key>spriteSourceSize</key>
-                <string>{468,467}</string>
+                <string>{33,37}</string>
                 <key>textureRect</key>
-                <string>{{1753,1916},{132,131}}</string>
+                <string>{{1396,1409},{33,37}}</string>
+                <key>textureRotated</key>
+                <true/>
+            </dict>
+            <key>#血流/effect_a5.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{-1,0}</string>
+                <key>spriteSize</key>
+                <string>{199,218}</string>
+                <key>spriteSourceSize</key>
+                <string>{201,218}</string>
+                <key>textureRect</key>
+                <string>{{1829,820},{199,218}}</string>
+                <key>textureRotated</key>
+                <true/>
+            </dict>
+            <key>#血流/effect_b16.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{9,-72}</string>
+                <key>spriteSize</key>
+                <string>{217,93}</string>
+                <key>spriteSourceSize</key>
+                <string>{287,259}</string>
+                <key>textureRect</key>
+                <string>{{1185,1953},{217,93}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>#血流/glass_c1.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{310,59}</string>
+                <key>spriteSourceSize</key>
+                <string>{310,59}</string>
+                <key>textureRect</key>
+                <string>{{575,1988},{310,59}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>base4.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{923,487}</string>
+                <key>spriteSourceSize</key>
+                <string>{923,487}</string>
+                <key>textureRect</key>
+                <string>{{1,1445},{923,487}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>倒计时/5.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{24,32}</string>
+                <key>spriteSourceSize</key>
+                <string>{24,32}</string>
+                <key>textureRect</key>
+                <string>{{1404,1953},{24,32}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>分享/subtitle.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{150,37}</string>
+                <key>spriteSourceSize</key>
+                <string>{150,37}</string>
+                <key>textureRect</key>
+                <string>{{1896,1906},{150,37}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -45,174 +135,189 @@
                 <key>spriteSourceSize</key>
                 <string>{408,51}</string>
                 <key>textureRect</key>
-                <string>{{1343,1916},{408,51}}</string>
+                <string>{{1435,1935},{408,51}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>反馈/系统回复框.png</key>
+            <key>吃碰杠/提示牌.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{742,181}</string>
+                <string>{134,142}</string>
                 <key>spriteSourceSize</key>
-                <string>{742,181}</string>
+                <string>{134,142}</string>
                 <key>textureRect</key>
-                <string>{{1283,1283},{742,181}}</string>
-                <key>textureRotated</key>
-                <false/>
-            </dict>
-            <key>房间入口-创建.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{0,-1}</string>
-                <key>spriteSize</key>
-                <string>{411,155}</string>
-                <key>spriteSourceSize</key>
-                <string>{411,185}</string>
-                <key>textureRect</key>
-                <string>{{1887,1466},{411,155}}</string>
+                <string>{{1901,1231},{134,142}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
-            <key>房间字体颜色示意图.jpg</key>
+            <key>吃碰杠/杠特效1.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{-9,5}</string>
+                <key>spriteSize</key>
+                <string>{193,125}</string>
+                <key>spriteSourceSize</key>
+                <string>{241,135}</string>
+                <key>textureRect</key>
+                <string>{{1829,1021},{193,125}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>吃碰杠/碰特效1.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{1,0}</string>
+                <key>spriteSize</key>
+                <string>{146,81}</string>
+                <key>spriteSourceSize</key>
+                <string>{336,249}</string>
+                <key>textureRect</key>
+                <string>{{1901,1148},{146,81}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>吃碰杠/自摸特效2.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{-60,-28}</string>
+                <key>spriteSize</key>
+                <string>{138,102}</string>
+                <key>spriteSourceSize</key>
+                <string>{306,192}</string>
+                <key>textureRect</key>
+                <string>{{1869,1945},{138,102}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>商城/shop_special_title.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{1280,720}</string>
+                <string>{616,211}</string>
                 <key>spriteSourceSize</key>
-                <string>{1280,720}</string>
+                <string>{616,211}</string>
                 <key>textureRect</key>
-                <string>{{1,762},{1280,720}}</string>
+                <string>{{1283,1161},{616,211}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>牌局结束/base_loser.png</key>
+            <key>房间入口-推倒胡.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{270,448}</string>
+                <string>{334,149}</string>
                 <key>spriteSourceSize</key>
-                <string>{270,448}</string>
+                <string>{334,149}</string>
                 <key>textureRect</key>
-                <string>{{1343,1466},{270,448}}</string>
-                <key>textureRotated</key>
-                <false/>
-            </dict>
-            <key>牌局结束/base_winner.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{270,448}</string>
-                <key>spriteSourceSize</key>
-                <string>{270,448}</string>
-                <key>textureRect</key>
-                <string>{{1615,1466},{270,448}}</string>
-                <key>textureRotated</key>
-                <false/>
-            </dict>
-            <key>牌局结束/button_next.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{3,-4}</string>
-                <key>spriteSize</key>
-                <string>{186,78}</string>
-                <key>spriteSourceSize</key>
-                <string>{192,86}</string>
-                <key>textureRect</key>
-                <string>{{1488,1969},{186,78}}</string>
-                <key>textureRotated</key>
-                <false/>
-            </dict>
-            <key>牌局结束/字体颜色示意图.jpg</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{1280,720}</string>
-                <key>spriteSourceSize</key>
-                <string>{1280,720}</string>
-                <key>textureRect</key>
-                <string>{{1283,1},{1280,720}}</string>
+                <string>{{1896,1570},{334,149}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
-            <key>玩家信息/coin.png</key>
+            <key>排行榜-创建好友房标题.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{40,39}</string>
+                <string>{148,31}</string>
                 <key>spriteSourceSize</key>
-                <string>{40,39}</string>
+                <string>{148,31}</string>
                 <key>textureRect</key>
-                <string>{{2005,1242},{40,39}}</string>
+                <string>{{355,2016},{148,31}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>玩家信息/line.png</key>
+            <key>排行榜-底.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{710,4}</string>
+                <string>{363,459}</string>
                 <key>spriteSourceSize</key>
-                <string>{710,4}</string>
+                <string>{363,459}</string>
                 <key>textureRect</key>
-                <string>{{1,2030},{710,4}}</string>
-                <key>textureRotated</key>
-                <false/>
-            </dict>
-            <key>玩家信息/title.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{147,43}</string>
-                <key>spriteSourceSize</key>
-                <string>{147,43}</string>
-                <key>textureRect</key>
-                <string>{{1887,1989},{147,43}}</string>
-                <key>textureRotated</key>
-                <false/>
-            </dict>
-            <key>用户栏-文字/0.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{-1,0}</string>
-                <key>spriteSize</key>
-                <string>{15,18}</string>
-                <key>spriteSourceSize</key>
-                <string>{17,22}</string>
-                <key>textureRect</key>
-                <string>{{2029,475},{15,18}}</string>
+                <string>{{1435,1570},{363,459}}</string>
                 <key>textureRotated</key>
                 <true/>
+            </dict>
+            <key>游戏更新/提示.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{111,48}</string>
+                <key>spriteSourceSize</key>
+                <string>{111,48}</string>
+                <key>textureRect</key>
+                <string>{{774,1934},{111,48}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>牌局结束/a4.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{59,30}</string>
+                <key>spriteSourceSize</key>
+                <string>{59,30}</string>
+                <key>textureRect</key>
+                <string>{{505,2016},{59,30}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>玩家信息/base_coin.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{296,51}</string>
+                <key>spriteSourceSize</key>
+                <string>{296,51}</string>
+                <key>textureRect</key>
+                <string>{{1404,1988},{296,51}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>玩家信息/base_name.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{296,83}</string>
+                <key>spriteSourceSize</key>
+                <string>{296,83}</string>
+                <key>textureRect</key>
+                <string>{{887,1953},{296,83}}</string>
+                <key>textureRotated</key>
+                <false/>
             </dict>
             <key>用户栏-文字/1.png</key>
             <dict>
@@ -225,204 +330,84 @@
                 <key>spriteSourceSize</key>
                 <string>{17,22}</string>
                 <key>textureRect</key>
-                <string>{{2029,611},{9,18}}</string>
+                <string>{{887,2038},{9,18}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
-            <key>用户栏-文字/2.png</key>
+            <key>用户栏-文字/房卡：.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{13,18}</string>
+                <string>{51,22}</string>
                 <key>spriteSourceSize</key>
-                <string>{17,22}</string>
+                <string>{51,22}</string>
                 <key>textureRect</key>
-                <string>{{1887,2034},{13,18}}</string>
+                <string>{{1845,1935},{51,22}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
-            <key>用户栏-文字/3.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{-1,0}</string>
-                <key>spriteSize</key>
-                <string>{15,18}</string>
-                <key>spriteSourceSize</key>
-                <string>{17,22}</string>
-                <key>textureRect</key>
-                <string>{{2029,492},{15,18}}</string>
-                <key>textureRotated</key>
-                <true/>
-            </dict>
-            <key>用户栏-文字/4.png</key>
+            <key>电量时间wifi/wifi-拷贝.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{15,18}</string>
+                <string>{17,19}</string>
                 <key>spriteSourceSize</key>
-                <string>{17,22}</string>
+                <string>{17,19}</string>
                 <key>textureRect</key>
-                <string>{{2029,509},{15,18}}</string>
+                <string>{{887,1934},{17,19}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
-            <key>用户栏-文字/5.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{-1,0}</string>
-                <key>spriteSize</key>
-                <string>{15,18}</string>
-                <key>spriteSourceSize</key>
-                <string>{17,22}</string>
-                <key>textureRect</key>
-                <string>{{2029,526},{15,18}}</string>
-                <key>textureRotated</key>
-                <true/>
-            </dict>
-            <key>用户栏-文字/6.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{-1,0}</string>
-                <key>spriteSize</key>
-                <string>{15,18}</string>
-                <key>spriteSourceSize</key>
-                <string>{17,22}</string>
-                <key>textureRect</key>
-                <string>{{2029,543},{15,18}}</string>
-                <key>textureRotated</key>
-                <true/>
-            </dict>
-            <key>用户栏-文字/7.png</key>
+            <key>电量时间wifi/wifi.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{15,18}</string>
+                <string>{27,23}</string>
                 <key>spriteSourceSize</key>
-                <string>{17,22}</string>
+                <string>{27,23}</string>
                 <key>textureRect</key>
-                <string>{{2029,560},{15,18}}</string>
+                <string>{{2024,1021},{27,23}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
-            <key>用户栏-文字/8.png</key>
+            <key>系统公告/free_event.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{-1,0}</string>
+                <string>{8,0}</string>
                 <key>spriteSize</key>
-                <string>{15,18}</string>
+                <string>{612,194}</string>
                 <key>spriteSourceSize</key>
-                <string>{17,22}</string>
+                <string>{628,194}</string>
                 <key>textureRect</key>
-                <string>{{2029,577},{15,18}}</string>
-                <key>textureRotated</key>
-                <true/>
-            </dict>
-            <key>用户栏-文字/9.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{-1,0}</string>
-                <key>spriteSize</key>
-                <string>{15,18}</string>
-                <key>spriteSourceSize</key>
-                <string>{17,22}</string>
-                <key>textureRect</key>
-                <string>{{2029,594},{15,18}}</string>
-                <key>textureRotated</key>
-                <true/>
-            </dict>
-            <key>电量时间wifi/半电.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{38,18}</string>
-                <key>spriteSourceSize</key>
-                <string>{38,18}</string>
-                <key>textureRect</key>
-                <string>{{2029,355},{38,18}}</string>
-                <key>textureRotated</key>
-                <true/>
-            </dict>
-            <key>电量时间wifi/没电.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{38,18}</string>
-                <key>spriteSourceSize</key>
-                <string>{38,18}</string>
-                <key>textureRect</key>
-                <string>{{2029,395},{38,18}}</string>
-                <key>textureRotated</key>
-                <true/>
-            </dict>
-            <key>电量时间wifi/满电.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{38,18}</string>
-                <key>spriteSourceSize</key>
-                <string>{38,18}</string>
-                <key>textureRect</key>
-                <string>{{2029,435},{38,18}}</string>
-                <key>textureRotated</key>
-                <true/>
-            </dict>
-            <key>示意图/字体颜色示意图.jpg</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{1280,759}</string>
-                <key>spriteSourceSize</key>
-                <string>{1280,759}</string>
-                <key>textureRect</key>
-                <string>{{1,1},{1280,759}}</string>
+                <string>{{1435,1374},{612,194}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>系统公告/button_big.png</key>
+            <key>结算/a1.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{135,32}</string>
+                <string>{92,38}</string>
                 <key>spriteSourceSize</key>
-                <string>{135,32}</string>
+                <string>{92,38}</string>
                 <key>textureRect</key>
-                <string>{{1343,1969},{135,32}}</string>
+                <string>{{2009,1945},{92,38}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>结算/base.png</key>
             <dict>
@@ -435,22 +420,7 @@
                 <key>spriteSourceSize</key>
                 <string>{1158,544}</string>
                 <key>textureRect</key>
-                <string>{{1,1484},{1158,544}}</string>
-                <key>textureRotated</key>
-                <false/>
-            </dict>
-            <key>结算/result_win.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{2,0}</string>
-                <key>spriteSize</key>
-                <string>{535,180}</string>
-                <key>spriteSourceSize</key>
-                <string>{539,180}</string>
-                <key>textureRect</key>
-                <string>{{1161,1484},{535,180}}</string>
+                <string>{{1283,1},{1158,544}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -465,7 +435,22 @@
                 <key>spriteSourceSize</key>
                 <string>{352,27}</string>
                 <key>textureRect</key>
-                <string>{{2005,1},{352,27}}</string>
+                <string>{{1,2016},{352,27}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>聊天/dialog11.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{244,26}</string>
+                <key>spriteSourceSize</key>
+                <string>{244,26}</string>
+                <key>textureRect</key>
+                <string>{{2021,328},{244,26}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -480,97 +465,142 @@
                 <key>spriteSourceSize</key>
                 <string>{325,26}</string>
                 <key>textureRect</key>
-                <string>{{1161,2021},{325,26}}</string>
+                <string>{{2021,1},{325,26}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
-            <key>背景/table_corner4.png</key>
+            <key>聊天/dialog9.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{164,15}</string>
+                <string>{244,26}</string>
                 <key>spriteSourceSize</key>
-                <string>{164,15}</string>
+                <string>{244,26}</string>
                 <key>textureRect</key>
-                <string>{{713,2030},{164,15}}</string>
+                <string>{{2021,574},{244,26}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
-            <key>菜单-分享.png</key>
+            <key>背景/背景可随意拉伸铺满.jpg</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{66,78}</string>
+                <string>{1280,720}</string>
                 <key>spriteSourceSize</key>
-                <string>{66,78}</string>
+                <string>{1280,720}</string>
                 <key>textureRect</key>
-                <string>{{1676,1969},{66,78}}</string>
+                <string>{{1,1},{1280,720}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>设置/dark.png</key>
+            <key>背景/龙纹居中.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{324,22}</string>
+                <string>{507,506}</string>
                 <key>spriteSourceSize</key>
-                <string>{324,22}</string>
+                <string>{507,506}</string>
                 <key>textureRect</key>
-                <string>{{2005,355},{324,22}}</string>
+                <string>{{926,1445},{507,506}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
-            <key>邮件/消息.png</key>
+            <key>背景1.jpg</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{1,-2}</string>
+                <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{96,42}</string>
+                <string>{1280,720}</string>
                 <key>spriteSourceSize</key>
-                <string>{98,46}</string>
+                <string>{1280,720}</string>
                 <key>textureRect</key>
-                <string>{{2005,1144},{96,42}}</string>
+                <string>{{1,723},{1280,720}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
-            <key>邮件/联系我们.png</key>
+            <key>设置/off.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{1,-2}</string>
+                <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{145,42}</string>
+                <string>{165,57}</string>
                 <key>spriteSourceSize</key>
-                <string>{147,46}</string>
+                <string>{165,57}</string>
                 <key>textureRect</key>
-                <string>{{2005,997},{145,42}}</string>
+                <string>{{1702,1988},{165,57}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
-            <key>麻将牌/a玩家出牌_.png</key>
+            <key>跑马灯-底.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{0,7}</string>
+                <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{108,160}</string>
+                <string>{771,41}</string>
                 <key>spriteSourceSize</key>
-                <string>{108,174}</string>
+                <string>{771,41}</string>
                 <key>textureRect</key>
-                <string>{{1887,1879},{108,160}}</string>
+                <string>{{1,1934},{771,41}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>邮件/content2.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{572,37}</string>
+                <key>spriteSourceSize</key>
+                <string>{572,37}</string>
+                <key>textureRect</key>
+                <string>{{1,1977},{572,37}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>邮件/mail_base.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{803,190}</string>
+                <key>spriteSourceSize</key>
+                <string>{803,190}</string>
+                <key>textureRect</key>
+                <string>{{1829,1},{803,190}}</string>
+                <key>textureRotated</key>
+                <true/>
+            </dict>
+            <key>麻将牌/牌面/suo2.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{5,0}</string>
+                <key>spriteSize</key>
+                <string>{69,111}</string>
+                <key>spriteSourceSize</key>
+                <string>{79,111}</string>
+                <key>textureRect</key>
+                <string>{{1283,1374},{69,111}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -588,7 +618,7 @@
             <key>size</key>
             <string>{2048,2048}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:1f12ffc2b346349f9c4b15bb912ab2a9:f6bad427ecde9e0e347299f685b80c24:ba0f7a9905cf0ac1d9727bcdccb9ab15$</string>
+            <string>$TexturePacker:SmartUpdate:b3a6238b04bb54fe875fb6c9eac12c5f:0ecb26095508b702f83414cef40a9500:1a15d61e035d4e01a609d5f3855511b3$</string>
             <key>textureFileName</key>
             <string>beimi-0.png</string>
         </dict>

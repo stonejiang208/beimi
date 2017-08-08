@@ -33,13 +33,11 @@ cc.Class({
         
         
         cc.tools.audio.playBGM("bgMain.mp3");
+        /**
         var xhr = cc.tools.http.httpPost("/tokens",{username:'admin',password:'123456'},function(ret){
             cc.tools.http.authorization = ret ;
             cc.tools.http.httpGet("/tokens",function(ret){
                 console.log("Test BeiMi Infomation:"+ret);
-                /**
-                 *  后台交互需要token 
-                 **/ 
                 if(cc.tools.http.authorization !== "" && cc.tools.http.authorization !== "-1"){
                    
                 }
@@ -50,6 +48,7 @@ cc.Class({
         socket.on("connect" , function(){
              cc.log("ttt");
         });
+        **/
     },
     start:function(){        
         var self = this;
