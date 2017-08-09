@@ -19,15 +19,7 @@ cc.Class({
 
     },
     onClick:function(){
-        this._splash = cc.find("Canvas/splash");
-        this._splash.active =  false;
-        
-        
-        
-        cc.tools.back.showBackBtn("room_back");
-        
-        this._game = cc.find("Canvas/game");
-        this._game.active = true ;
+        cc.tools.control.enterCardControl();
     }
 
     // called every frame, uncomment this function to activate update callback

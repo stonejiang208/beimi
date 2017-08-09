@@ -19,13 +19,7 @@ cc.Class({
 
     },
     onClick:function(){
-        cc.tools.back.hiddenBackBtn();
-        
-        this._game = cc.find("Canvas/game");
-        this._game.active =  false;
-        
-        this._splash = cc.find("Canvas/splash");
-        this._splash.active =  true;
+        cc.tools.control.leaveCardControl();
     }
     // called every frame, uncomment this function to activate update callback
     // update: function (dt) {

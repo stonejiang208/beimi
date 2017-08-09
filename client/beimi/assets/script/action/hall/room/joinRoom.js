@@ -14,13 +14,11 @@ cc.Class({
         // ...
     },
 
-    onLoad: function () {
-        var self = this;
-    },
+    // use this for initialization
     onClick:function(){
         let root = cc.find("Canvas");
-        if (cc.tools.dialogpool.defaultDialog.size() > 0) {
-            cc.tools.dialog = cc.tools.dialogpool.defaultDialog.get();
+        if (cc.tools.dialogpool.joinRoom.size() > 0) {
+            cc.tools.dialog = cc.tools.dialogpool.joinRoom.get();
         
             if(cc.tools.dialog !== null){
                 cc.tools.dialog.parent = root ;
@@ -41,10 +39,24 @@ cc.Class({
             cc.tools.dialog.off(cc.Node.EventType.TOUCH_START, function(e){
                 e.stopPropagation();
             });
-            cc.tools.dialogpool.defaultDialog.put(cc.tools.dialog);
+            cc.tools.dialogpool.joinRoom.put(cc.tools.dialog);
             cc.tools.dialog = null ;
         }
+    },
+    onJoinRoom:function(e){
+        //Get Input Room Number , After : if Room Number exist , init room secene , else : tip message !
+        this.onCloseClick(e);
+        var rooNumber = "074653" ;
+        /*****
+         * 记录了进入的位置，从房卡进入房间 , 其他记录参数包括，进入的游戏类型等 ,  通过接口获取房间类型和玩法
+         */
+        cc.tools.control.joinRoom(rooNumber , "card" , "majiang" , "river");
+    },
+    onLeaveRoom:function(e){
+        //Get Input Room Number , After : if Room Number exist , init room secene , else : tip message !
+        cc.tools.control.leaveRoom();
     }
+
 
     // called every frame, uncomment this function to activate update callback
     // update: function (dt) {

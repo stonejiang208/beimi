@@ -19,14 +19,7 @@ cc.Class({
 
     },
     onClick:function(){
-        cc.tools.back.hiddenBackBtn();
-        
-        this._girl = cc.find("Canvas/global/main/girl");
-        this._animCtrl = this._girl.getComponent(cc.Animation);
-        this._animCtrl.play("girl_to_right");
-        
-        this._splash = cc.find("Canvas/splash");
-        this._splash.active =  true;
+        cc.tools.control.leaveRiverControl();
     }
 
     // called every frame, uncomment this function to activate update callback

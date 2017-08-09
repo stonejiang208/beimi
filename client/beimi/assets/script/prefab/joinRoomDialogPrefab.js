@@ -18,9 +18,9 @@ cc.Class({
 
     // use this for initialization
     onLoad: function () {
-        cc.tools.dialogpool.defaultDialog = new cc.NodePool();
+        cc.tools.dialogpool.joinRoom = new cc.NodePool();
         let dialog = cc.instantiate(this.prefab);
-        cc.tools.dialogpool.defaultDialog.put(dialog);
+        cc.tools.dialogpool.joinRoom.put(dialog);
     },
 
     // called every frame, uncomment this function to activate update callback

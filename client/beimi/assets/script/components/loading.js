@@ -25,12 +25,6 @@ cc.Class({
             canvas.fitWidth = true;
         }
         this.initMgr();
-        this._splash = cc.find("Canvas/splash");
-        this._back = cc.find("Canvas/global/back");
-        this._back.active = false ;
-        this._game = cc.find("Canvas/game");
-        this._game.active = false ;
-        
         
         cc.tools.audio.playBGM("bgMain.mp3");
         /**
@@ -54,22 +48,26 @@ cc.Class({
         var self = this;
         var SHOW_TIME = 3000;
         var FADE_TIME = 500;
-        if(cc.sys.os != cc.sys.OS_IOS || !cc.sys.isNative){
-            self._splash.active =  true;
-        }else{
-            self._splash.active = false;
-        }
+        /***
+         * 
+         * 控制登录界面或者广告首屏界面显示时间
+         * 
+         */
     },
     initMgr:function(){
         cc.tools = {};   
+        cc.tools.dialogpool = {} ;
+        
         cc.tools.http = require("HTTP");
         
         var Audio = require("Audio");
         cc.tools.audio = new Audio();
         cc.tools.audio.init();
         
-        var backBtn = new require("BackBtn");
-        cc.tools.back = new backBtn();
+        var gameControl = new require("GameControl");
+        cc.tools.control = new gameControl();
+        
+        cc.tools.control.initGameSystem();
         
         if(cc.sys.isNative){
             window.io = SocketIO;
