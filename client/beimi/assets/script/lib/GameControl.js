@@ -152,6 +152,8 @@ cc.Class({
         if(gametype && gametype === "majiang"){
             //River OR end , 血流成河 / 血战到底
             this.showPlayway(playway);
+            //Play Animation
+            this.showPlaySetLackAni();
         }else if(gametype && gametype === "dizhu"){
             
         }else if(gametype && gametype === "dezhou"){
@@ -218,6 +220,17 @@ cc.Class({
             this._playway[i].active = false ;
             if(this._playway[i].name == name){
                 this._playway[i].active = true ;
+            }
+        }
+    },
+    showPlaySetLackAni:function(){
+        let players  = cc.find("Canvas/game/room/majiang/player").children;
+        for(i = 0 ;i < players.length ; i++){
+            let player = players[i].getChildByName("ani");
+            if(player!== null){
+                let anim = player.getComponent(cc.Animation);
+                var animState = anim.play("set_lack");
+                animState.wrapMode = cc.WrapMode.Loop;
             }
         }
     },
