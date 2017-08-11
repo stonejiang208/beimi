@@ -11,7 +11,7 @@
 1. 客户端语言：Cocos Creater/JavaScript
 
 依赖包的安装：
-本项目有两个依赖包，IP2REGION 和 UCKeFu-Core，通过以下指令加入到本地Mavenue仓库： 
+本项目有两个依赖包，IP2REGION 和 JAVE，通过以下指令加入到本地Mavenue仓库： 
 
 1、mvn install:install-file -Dfile=src/main/resources/WEB-INF/lib/ip2region-1.2.4.jar -DgroupId=org.lionsoul.ip2region -DartifactId=ip2region -Dversion=1.2.4 -Dpackaging=jar
 
