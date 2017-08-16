@@ -5,7 +5,7 @@
 	<groupId>com.beimi</groupId>
 	<artifactId>beimi</artifactId>
 	<version>0.3.0</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>chess</name>
 	<description>贝密游戏</description>
