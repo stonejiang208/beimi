@@ -12,7 +12,6 @@
 	<title>UCKeFu-全渠道客服系统</title>
 	<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?t=1487250759056"/>
 	<link rel="stylesheet" href="/js/select/css/select2.min.css"/>	
-	<link rel="stylesheet" type="text/css" href="/js/kindeditor/themes/default/default.css">
 	<link rel="stylesheet" href="/css/flexboxgrid.min.css">
 	<link rel="stylesheet" href="/css/layui.css">
 	<link rel="stylesheet" href="/css/beimi.css">
@@ -27,8 +26,6 @@
 	
 	<script src="/layui.js"></script>
 	<script src="/js/ukefu.js"></script>
-	<script type="text/javascript" src="/js/kindeditor/kindeditor-min.js"></script>
-	<script type="text/javascript" src="/js/kindeditor/lang/zh-CN.js"></script>
 	<script src="/js/template.js"></script>
 	
 	<script src="/js/echarts.common.min.js"></script>
@@ -41,7 +38,7 @@
 	</div>
 	<script>
 		layui.use('element', function() {
-			var element = layui.element(); //导航的hover效果、二级菜单等功能，需要依赖element模块
+			var element = layui.element;
 			//监听导航点击
 			element.on('nav(layui)', function(elem) {
 				

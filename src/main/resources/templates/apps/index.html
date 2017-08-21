@@ -12,12 +12,10 @@
 <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?t=1487250759056"/>
 <link rel="stylesheet" href="/css/flexboxgrid.min.css">
 <link rel="stylesheet" type="text/css" href="/css/darktooltip.css" />
-<link rel="stylesheet" href="css/layui.css">
+<link rel="stylesheet" href="/css/layui.css">
 <link rel="stylesheet" href="/js/ztree/zTreeStyle/zTreeStyle.css">
 <link rel="stylesheet" href="/js/select/css/select2.min.css"/>	
 <link rel="stylesheet" href="/css/beimi.css">
-
-<link rel="stylesheet" type="text/css" href="/js/kindeditor/themes/default/default.css">
 
 <script src="/js/jquery-1.10.2.min.js"></script>
 
@@ -33,9 +31,6 @@
 <script src="/js/weixinAudio.js"></script>
 
 <script src="/js/ztree/jquery.ztree.all.min.js"></script>
-<script type="text/javascript" src="/js/kindeditor/kindeditor-min.js"></script>
-<script type="text/javascript" src="/js/kindeditor/lang/zh-CN.js"></script>
-
 <script type="text/javascript" src="/js/jquery.darktooltip.js"></script>
 <script language="javascript">
 	var layinx , layerhelper ;
@@ -146,7 +141,7 @@
 	</div>
 	<script>
 			layui.use('element', function(){
-			  var $ = layui.jquery,element = layui.element(); //Tab的切换功能，切换事件监听等，需要依赖element模块
+  			  var element = layui.element;
 			  //触发事件
 			  $('.iframe_btn').on('click', function(){
 				var type = $(this).data('type');
@@ -155,9 +150,11 @@
 				}else if(type == "tabChange"){
 					active.tabChange($(this).data('href') , $(this).data('title'), $(this).data('id'));
 				}
+				$(this).parent().addClass("layui-this");
 			  });
 			});
-		</script>
+			
+	</script>
 </body>
 
 </html>

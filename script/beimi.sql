@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-08-06 23:26:46
+Date: 2017-08-21 09:28:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -215,7 +215,6 @@ CREATE TABLE `bm_playuser` (
 -- ----------------------------
 -- Records of bm_playuser
 -- ----------------------------
-INSERT INTO `bm_playuser` VALUES ('1', 'zh', 'admin', '14e1b600b1fd579f47433b88e8d85291', '1', 'admin@beixi.me', null, null, null, null, null, null, null, null, null, null, null, null, null, '2017-08-03 21:31:23', null, '2017-08-03 21:31:26', null, '2017-08-03 21:31:30', null, '0', '1', '0', '0', '0', null, '0', null, null, null, null, '0', '0', '0', '2017-08-06 23:22:28', null, null, null, '0');
 
 -- ----------------------------
 -- Table structure for `bm_role`
@@ -4163,7 +4162,7 @@ CREATE TABLE `bm_user` (
 -- ----------------------------
 -- Records of bm_user
 -- ----------------------------
-INSERT INTO `bm_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@beixi.me', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-08-06 18:25:12', null, '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-08-06 20:41:00', null, null, null, '0', '0', '1');
+INSERT INTO `bm_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@beixi.me', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-08-06 18:25:12', null, '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-08-13 23:17:44', null, null, null, '0', '0', '1');
 INSERT INTO `bm_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'test', '14e1b600b1fd579f47433b88e8d85291', '5', 'test@beixi.me', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-05-19 08:19:01', null, '2017-08-06 18:25:25', null, '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '0', null, null, null, '0', '0', '0', '2017-07-26 17:02:18', null, null, null, '0', '0', '0');
 
 -- ----------------------------

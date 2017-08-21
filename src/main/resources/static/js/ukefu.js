@@ -331,7 +331,7 @@ var Proxy = {
 var active = {
 	tabAdd : function(href, title, id , reload) {
 		//新增一个Tab项
-		var layelement = layui.element();
+		var layelement = layui.element;
 		if ($('#' + id).length == 0) {
 			layelement.tabAdd('ukefutab', {
 				title : title //用于演示
@@ -353,7 +353,7 @@ var active = {
 		}
 	},
 	tabChange : function(href, title, id) {
-		var layelement = layui.element();
+		var layelement = layui.element;
 		var inx = $('#' + id).parent().index();
 		if ($('#' + id).length > 0) {
 			$('#' + id).attr('src', href);

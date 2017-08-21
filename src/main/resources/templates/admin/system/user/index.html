@@ -81,14 +81,13 @@
 	</div>	
 </div>
 <script>
-	layui.use(['laypage', 'layer'], function(){
-		  var laypage = layui.laypage
-		  ,layer = layui.layer;
+	layui.use('laypage', function(){
+		  var laypage = layui.laypage;
 		  
-		  laypage({
-				cont: 'page'
-				,pages: <#if userList??>${userList.totalPages}<#else>0</#if> //总页数
-				,curr:<#if userList??>${userList.number+1}<#else>0</#if>
+		  laypage.render({
+				elem: 'page'
+				,pages: 50 //总页数
+				,curr:2
 				,groups: 5 //连续显示分页数
 				,jump:function(data , first){
 					if(!first){
