@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.elasticsearch.annotations.Document;
 
+import com.beimi.util.UKTools;
 import com.beimi.util.event.UserEvent;
 
 
@@ -32,7 +33,7 @@ public class PlayUser implements UserEvent , java.io.Serializable{
 	 * 
 	 */
     @Id
-	private String id ;
+	private String id = UKTools.getUUID().toLowerCase();
 	
 	private String username ;
 	private String password ;

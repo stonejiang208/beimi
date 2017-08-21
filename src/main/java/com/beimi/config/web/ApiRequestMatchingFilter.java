@@ -19,8 +19,10 @@ import com.beimi.util.cache.CacheHelper;
 
 public class ApiRequestMatchingFilter implements Filter {
     private RequestMatcher[] ignoredRequests;
+    private RequestMatcher[] exRequests;
 
-    public ApiRequestMatchingFilter(RequestMatcher... matcher) {
+    public ApiRequestMatchingFilter(RequestMatcher[] exRequests , RequestMatcher... matcher) {
+    	this.exRequests = exRequests ;
         this.ignoredRequests = matcher;
     }
 
@@ -31,6 +33,13 @@ public class ApiRequestMatchingFilter implements Filter {
         	 if(anyRequest.matches(request)){
         		 matchAnyRoles = true ;
         	 }
+         }
+         if(exRequests!=null){
+	         for(RequestMatcher anyRequest : exRequests ){
+	        	 if(anyRequest.matches(request)){
+	        		 matchAnyRoles = false ;
+	        	 }
+	         }
          }
          String authorization = request.getHeader("authorization") ;
          if(matchAnyRoles){
