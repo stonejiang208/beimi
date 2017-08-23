@@ -19,17 +19,24 @@ var HTTP = cc.Class({
         baseURL:"http://192.168.1.155",
         wsURL : "http://192.168.1.155:9081" ,
         authorization: null,
-        httpGet: function (url, callback) {
+        httpGet: function (url , success , error , object) {
             var xhr = cc.loader.getXMLHttpRequest();
             
             xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && (xhr.status >= 200 && xhr.status < 300)) {
-                    var respone = xhr.responseText;
-                    if(callback){
-                        callback(respone);
+                if (xhr.readyState === 4) {
+                    if(xhr.status >= 200 && xhr.status < 300){
+                        var respone = xhr.responseText;
+                        if(success){
+                            success(respone , object);
+                        }
+                    }else{
+                        if(error){
+                            error(object);
+                        }
                     }
                 }
             };
+
             xhr.open("GET", HTTP.baseURL+url, true);
             if(HTTP.authorization != null){
                 xhr.setRequestHeader("authorization", HTTP.authorization) ;
@@ -40,8 +47,8 @@ var HTTP = cc.Class({
     
             // note: In Internet Explorer, the timeout property may be set only after calling the open()
             // method and before calling the send() method.
-            xhr.timeout = 5000;// 5 seconds for timeout
-    
+            xhr.timeout = 3000;// 5 seconds for timeout
+
             xhr.send();
         },
         encodeFormData : function(data)  
@@ -57,18 +64,20 @@ var HTTP = cc.Class({
             }  
             return pairs.join("&");  
         },
-        httpPost: function (url, params, callback) {
+        httpPost: function (url, params, success , error , object) {
             var xhr = cc.loader.getXMLHttpRequest();
-            
+
             xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && (xhr.status >= 200 && xhr.status < 300)) {
-                    var respone = xhr.responseText;
-                    if(callback){
-                        callback(respone);
-                    }
-                }else{
-                    if(callback){
-                      callback(-1);
+                if (xhr.readyState === 4) {
+                    if(xhr.status >= 200 && xhr.status < 300){
+                        var respone = xhr.responseText;
+                        if(success){
+                            success(respone , object);
+                        }
+                    }else{
+                        if(error){
+                            error(object);
+                        }
                     }
                 }
             };
