@@ -1,0 +1,39 @@
+<ul class="layui-nav layui-nav-tree" lay-filter="demo">
+	<li class="layui-nav-item <#if subtype?? && subtype == 'content'>layui-this</#if>">
+		<a class="layui-nav-default" href="/admin/content.html">业务概况</a>
+	</li>
+	<li class="layui-nav-item layui-nav-itemed">
+	<a class="layui-nav-title" 
+		href="javascript:;">游戏设置</a>
+		<dl class="layui-nav-child">
+			<dd  <#if subtype?? && subtype == 'account'>class="layui-this"</#if>>
+				<a href="/apps/platform/config/account.html">用户账号</a>
+			</dd>
+			<#if gameTypeList??>
+			<#list gameTypeList as gameType>
+			<dd  <#if subtype?? && subtype == 'user'>class="layui-this"</#if>>
+				<a href="/admin/user/index.html">${gameType.name!''}</a>
+			</dd>
+			</#list>
+			</#if>
+		</dl>
+	</li>
+	
+	<li class="layui-nav-item layui-nav-itemed">
+		<a class="layui-nav-title" href="javascript:;">系统设置</a>
+		<dl class="layui-nav-child">
+			<dd <#if subtype?? && subtype == 'config'>class="layui-this"</#if>>
+				<a href="/admin/config/index.html">系统设置</a>
+			</dd>
+			<dd <#if subtype?? && subtype == 'sysdic'>class="layui-this"</#if>>
+				<a href="/admin/sysdic/index.html">字典管理</a>
+			</dd>
+			<dd <#if subtype?? && subtype == 'metadata'>class="layui-this"</#if>>
+				<a href="/admin/metadata/index.html">元数据</a>
+			</dd>
+			<dd <#if subtype?? && subtype == 'template'>class="layui-this"</#if>>
+				<a href="/admin/template/index.html">系统模板</a>
+			</dd>
+		</dl>
+	</li>
+</ul>

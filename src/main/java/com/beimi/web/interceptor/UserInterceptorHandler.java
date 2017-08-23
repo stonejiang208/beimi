@@ -13,7 +13,7 @@ import com.beimi.util.Menu;
 import com.beimi.util.UKTools;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.web.model.SystemConfig;
-import com.beimi.web.model.UKeFuDic;
+import com.beimi.web.model.BeiMiDic;
 import com.beimi.web.model.User;
 
 public class UserInterceptorHandler extends HandlerInterceptorAdapter {
@@ -72,13 +72,14 @@ public class UserInterceptorHandler extends HandlerInterceptorAdapter {
 			if(arg0.getParameter("msg") != null){
 				view.addObject("msg", arg0.getParameter("msg")) ;
 			}
-			view.addObject("uKeFuDic", UKeFuDic.getInstance()) ;	//处理系统 字典数据 ， 通过 字典code 获取
+			view.addObject("uKeFuDic", BeiMiDic.getInstance()) ;	//处理系统 字典数据 ， 通过 字典code 获取
 			SystemConfig systemConfig = (SystemConfig) CacheHelper.getSystemCacheBean().getCacheObject("systemConfig", BMDataContext.SYSTEM_ORGI) ; 
 			if(systemConfig != null){
 				view.addObject("systemConfig", systemConfig)  ;
 			}else{
 				view.addObject("systemConfig", new SystemConfig())  ;
 			}
+			view.addObject("gameTypeList", BeiMiDic.getInstance().getDic(BMDataContext.BEIMI_SYSTEM_GAME_TYPE_DIC)) ;
     	}
     }
 

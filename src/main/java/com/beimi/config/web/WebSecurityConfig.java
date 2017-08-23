@@ -50,11 +50,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         
         return new DelegateRequestMatchingFilter(autconfig , configprops , beans , dump , env , health , info , mappings , metrics , trace, druid);
     }
-    
+    /**
+     * 手机注册 和 游客注册 保留两个 免验证 访问
+     * @return
+     * @throws Exception
+     */
     @Bean
     public Filter apiTokenFilterSecurityInterceptor() throws Exception
     {
-        return new ApiRequestMatchingFilter(new AntPathRequestMatcher[]{new AntPathRequestMatcher("/api/register")} , new AntPathRequestMatcher("/api/**"));
+        return new ApiRequestMatchingFilter(new AntPathRequestMatcher[]{new AntPathRequestMatcher("/api/register"),new AntPathRequestMatcher("/api/guest")} , new AntPathRequestMatcher("/api/**"));
     }
     
     private Filter csrfHeaderFilter() {

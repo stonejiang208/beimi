@@ -3,10 +3,8 @@ package com.beimi.web.model;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -20,10 +18,7 @@ import com.beimi.util.event.UserEvent;
  * 
  */
 @Document(indexName = "beimi", type = "uk_playuser")
-@Entity
-@Table(name = "bm_playuser")
-@org.hibernate.annotations.Proxy(lazy = false)
-public class PlayUser implements UserEvent , java.io.Serializable{
+public class PlayUserClient implements UserEvent , java.io.Serializable{
 	/**
 	 * 
 	 */
@@ -36,29 +31,12 @@ public class PlayUser implements UserEvent , java.io.Serializable{
 	private String id = UKTools.getUUID().toLowerCase();
 	
 	private String username ;
-	private String password ;
-	private String email ;
-	private String uname ;
-	private String firstname ;
-	private String midname ;
-	private String lastname ;
-	private String language ;
-	private String jobtitle ;
-	private String gender;
-	private String mobile ;
-	private String birthday ;
-	private String nickname ;
-	private String secureconf = "5";
-	private String usertype ; //
 	
 	private String orgi ;
 	private String creater;
 	private Date createtime = new Date();
 	private Date updatetime = new Date();
 	private Date passupdatetime = new Date();
-	
-	private String openid ;	//微信
-	private String qqid ;
 	
 	private String memo;
 	private String city ;	//城市
@@ -69,10 +47,14 @@ public class PlayUser implements UserEvent , java.io.Serializable{
 	private boolean datastatus ;//数据状态，是否已删除	
 	private boolean headimg ; 	//是否上传头像
 	
+	private String token ;
+	
 	private String playerlevel ;//玩家级别 ， 等级
 	private int experience  ;	//玩家经验
-	private boolean secquestion ;//是否设置密保问题
 	
+	
+	private String openid ;	//微信
+	private String qqid ;
 	
 	
 	private Date lastlogintime = new Date();	//最后登录时间
@@ -83,13 +65,13 @@ public class PlayUser implements UserEvent , java.io.Serializable{
 	
 	private int cards;			//房卡数量
 	private int goldcoins;		//金币数量
-	private int diamonds;		//钻石数量
+	private int diamonds ;		//钻石数量
 	
 	/**
 	 *对金币+房卡+id进行RSA签名 ， 任何对ID,cards ， goldcoins 进行修改之前，都需要做签名验证，
 	 *签名验证通过后才能进行修改，修改之后，重新签名 
 	 */
-	private String sign ;		 
+	private String sign ;	
 
 	
 	/**
@@ -111,146 +93,6 @@ public class PlayUser implements UserEvent , java.io.Serializable{
 
 	public void setUsername(String username) {
 		this.username = username;
-	}
-
-
-	public String getPassword() {
-		return password;
-	}
-
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-
-	public String getEmail() {
-		return email;
-	}
-
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-
-	public String getUname() {
-		return uname;
-	}
-
-
-	public void setUname(String uname) {
-		this.uname = uname;
-	}
-
-
-	public String getFirstname() {
-		return firstname;
-	}
-
-
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
-
-
-	public String getMidname() {
-		return midname;
-	}
-
-
-	public void setMidname(String midname) {
-		this.midname = midname;
-	}
-
-
-	public String getLastname() {
-		return lastname;
-	}
-
-
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
-
-
-	public String getLanguage() {
-		return language;
-	}
-
-
-	public void setLanguage(String language) {
-		this.language = language;
-	}
-
-
-	public String getJobtitle() {
-		return jobtitle;
-	}
-
-
-	public void setJobtitle(String jobtitle) {
-		this.jobtitle = jobtitle;
-	}
-
-
-	public String getGender() {
-		return gender;
-	}
-
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
-
-	public String getMobile() {
-		return mobile;
-	}
-
-
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
-
-
-	public String getBirthday() {
-		return birthday;
-	}
-
-
-	public void setBirthday(String birthday) {
-		this.birthday = birthday;
-	}
-
-
-	public String getNickname() {
-		return nickname;
-	}
-
-
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
-
-
-	public String getSecureconf() {
-		return secureconf;
-	}
-
-
-	public void setSecureconf(String secureconf) {
-		this.secureconf = secureconf;
-	}
-
-
-	public String getUsertype() {
-		return usertype;
-	}
-
-
-	public void setUsertype(String usertype) {
-		this.usertype = usertype;
 	}
 
 
@@ -284,16 +126,6 @@ public class PlayUser implements UserEvent , java.io.Serializable{
 	}
 
 
-	public Date getPassupdatetime() {
-		return passupdatetime;
-	}
-
-
-	public void setPassupdatetime(Date passupdatetime) {
-		this.passupdatetime = passupdatetime;
-	}
-
-
 	public Date getUpdatetime() {
 		return updatetime;
 	}
@@ -301,6 +133,16 @@ public class PlayUser implements UserEvent , java.io.Serializable{
 
 	public void setUpdatetime(Date updatetime) {
 		this.updatetime = updatetime;
+	}
+
+
+	public Date getPassupdatetime() {
+		return passupdatetime;
+	}
+
+
+	public void setPassupdatetime(Date passupdatetime) {
+		this.passupdatetime = passupdatetime;
 	}
 
 
@@ -404,16 +246,6 @@ public class PlayUser implements UserEvent , java.io.Serializable{
 	}
 
 
-	public boolean isSecquestion() {
-		return secquestion;
-	}
-
-
-	public void setSecquestion(boolean secquestion) {
-		this.secquestion = secquestion;
-	}
-
-
 	public Date getLastlogintime() {
 		return lastlogintime;
 	}
@@ -456,6 +288,16 @@ public class PlayUser implements UserEvent , java.io.Serializable{
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+
+	public String getToken() {
+		return token;
+	}
+
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 

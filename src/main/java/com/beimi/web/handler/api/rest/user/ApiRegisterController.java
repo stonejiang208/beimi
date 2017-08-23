@@ -1,4 +1,4 @@
-package com.beimi.web.handler.api.rest;
+package com.beimi.web.handler.api.rest.user;
 
 import java.util.Date;
 

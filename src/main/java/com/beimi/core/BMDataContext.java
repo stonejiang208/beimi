@@ -10,6 +10,10 @@ public class BMDataContext {
 	public static final String SERVICE_QUENE_NULL_STR = "service_quene_null" ;
 	public static final String DEFAULT_TYPE = "default"	;		//默认分类代码
 	public static final String BEIMI_SYSTEM_DIC = "com.dic.system.template";
+	public static final String BEIMI_SYSTEM_GAME_TYPE_DIC = "com.dic.game.type";
+	
+	public static final String BEIMI_SYSTEM_GAME_ACCOUNT_CONFIG = "game_account_config";
+	
 	public static final String BEIMI_SYSTEM_AUTH_DIC = "com.dic.auth.resource";
 	
 	public static String SYSTEM_ORGI = "beimi" ;
@@ -30,6 +34,14 @@ public class BMDataContext {
 	
 	public static void setApplicationContext(ApplicationContext context){
 		applicationContext = context ;
+	}
+	/**
+	 * 根据ORGI找到对应 游戏配置
+	 * @param orgi
+	 * @return
+	 */
+	public static String getGameAccountConfig(String orgi){
+		return BEIMI_SYSTEM_GAME_ACCOUNT_CONFIG+"_"+orgi ;
 	}
 	
 	public static ApplicationContext getContext(){

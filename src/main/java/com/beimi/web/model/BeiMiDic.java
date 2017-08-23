@@ -7,15 +7,15 @@ import java.util.List;
 import com.beimi.core.BMDataContext;
 import com.beimi.util.cache.CacheHelper;
 
-public class UKeFuDic<K,V> extends HashMap<K,V>{
+public class BeiMiDic<K,V> extends HashMap<K,V>{
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2110217015030751243L;
-	private static UKeFuDic<Object, Object> uKeFuDic = new UKeFuDic<Object, Object>();
+	private static BeiMiDic<Object, Object> uKeFuDic = new BeiMiDic<Object, Object>();
 	
-	public static UKeFuDic<?, ?> getInstance(){
+	public static BeiMiDic<?, ?> getInstance(){
 		return uKeFuDic ;
 	}
 	

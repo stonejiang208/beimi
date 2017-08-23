@@ -20,7 +20,7 @@ import com.beimi.core.BMDataContext;
 import com.beimi.util.UKTools;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.web.handler.Handler;
-import com.beimi.web.handler.api.rest.ApiRegisterController;
+import com.beimi.web.handler.api.rest.user.ApiRegisterController;
 import com.beimi.web.model.PlayUser;
 import com.beimi.web.service.repository.es.PlayUserESRepository;
 import com.beimi.web.service.repository.jpa.PlayUserRepository;

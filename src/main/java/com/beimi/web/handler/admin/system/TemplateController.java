@@ -21,7 +21,7 @@ import com.beimi.util.Menu;
 import com.beimi.util.UKTools;
 import com.beimi.web.handler.Handler;
 import com.beimi.web.model.Template;
-import com.beimi.web.model.UKeFuDic;
+import com.beimi.web.model.BeiMiDic;
 import com.beimi.web.service.repository.jpa.TemplateRepository;
 
 @Controller
@@ -35,7 +35,7 @@ public class TemplateController extends Handler{
     @RequestMapping("/index")
     @Menu(type = "admin" , subtype = "template" , access = false , admin = true)
     public ModelAndView index(ModelMap map , HttpServletRequest request) {
-    	map.addAttribute("sysDicList", UKeFuDic.getInstance().getDic(BMDataContext.BEIMI_SYSTEM_DIC));
+    	map.addAttribute("sysDicList", BeiMiDic.getInstance().getDic(BMDataContext.BEIMI_SYSTEM_DIC));
         return request(super.createAdminTempletResponse("/admin/system/template/index"));
     }
     
@@ -73,7 +73,7 @@ public class TemplateController extends Handler{
     @RequestMapping("/list")
     @Menu(type = "admin" , subtype = "template" , access = false , admin = true)
     public ModelAndView list(ModelMap map , HttpServletRequest request ,@Valid String type) {
-    	map.addAttribute("sysDic", UKeFuDic.getInstance().getDicItem(type));
+    	map.addAttribute("sysDic", BeiMiDic.getInstance().getDicItem(type));
     	map.addAttribute("templateList", templateRes.findByTemplettypeAndOrgi(type, super.getOrgi(request)));
         return request(super.createAdminTempletResponse("/admin/system/template/list"));
     }
@@ -81,7 +81,7 @@ public class TemplateController extends Handler{
     @RequestMapping("/add")
     @Menu(type = "admin" , subtype = "template" , access = false , admin = true)
     public ModelAndView add(ModelMap map , HttpServletRequest request ,@Valid String type) {
-    	map.addAttribute("sysDic", UKeFuDic.getInstance().getDicItem(type));
+    	map.addAttribute("sysDic", BeiMiDic.getInstance().getDicItem(type));
         return request(super.createRequestPageTempletResponse("/admin/system/template/add"));
     }
     
@@ -97,7 +97,7 @@ public class TemplateController extends Handler{
     @RequestMapping("/edit")
     @Menu(type = "admin" , subtype = "template" , access = false , admin = true)
     public ModelAndView edit(ModelMap map , HttpServletRequest request , @Valid String id, @Valid String type) {
-    	map.addAttribute("sysDic", UKeFuDic.getInstance().getDicItem(type));
+    	map.addAttribute("sysDic", BeiMiDic.getInstance().getDicItem(type));
     	map.addAttribute("template", templateRes.findByIdAndOrgi(id, super.getOrgi(request))) ;
         return request(super.createRequestPageTempletResponse("/admin/system/template/edit"));
     }
@@ -116,7 +116,7 @@ public class TemplateController extends Handler{
     @RequestMapping("/code")
     @Menu(type = "admin" , subtype = "template" , access = false , admin = true)
     public ModelAndView code(ModelMap map , HttpServletRequest request , @Valid String id, @Valid String type) {
-    	map.addAttribute("sysDic", UKeFuDic.getInstance().getDicItem(type));
+    	map.addAttribute("sysDic", BeiMiDic.getInstance().getDicItem(type));
     	map.addAttribute("template", templateRes.findByIdAndOrgi(id, super.getOrgi(request))) ;
         return request(super.createRequestPageTempletResponse("/admin/system/template/code"));
     }

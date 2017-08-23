@@ -13,11 +13,19 @@ public class ResultData implements java.io.Serializable{
 	private boolean status ;
 	private String msg ;
 	private Object data ;
+	private Token token ;
 	
 	public ResultData(boolean status , String msg , Object data){
 		this.status = status ;
 		this.msg = msg ;
 		this.data = data ;
+	}
+	
+	public ResultData(boolean status , String msg , Object data , Token token ){
+		this.status = status ;
+		this.msg = msg ;
+		this.data = data ;
+		this.token = token ;
 	}
 	
 	public boolean isStatus() {
@@ -37,5 +45,13 @@ public class ResultData implements java.io.Serializable{
 	}
 	public void setData(Object data) {
 		this.data = data;
+	}
+
+	public Token getToken() {
+		return token;
+	}
+
+	public void setToken(Token token) {
+		this.token = token;
 	}
 }

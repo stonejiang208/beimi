@@ -25,28 +25,28 @@ public class GameConfig implements java.io.Serializable{
 	private String username ;
 	private String name ;
 	
-	private int maxuser = 10 ;	//每个坐席 接入最多访客数量
+	private int maxuser = 10 ;	
 	
-	private int initmaxuser = 10 ;	//坐席进入就绪状态的时候，会首次分配用户，initmaxuser控制 分配的用户数量，如果不设置，则会 直接 分配到最大用户数或将当前 等待队列分配完成
+	private int initmaxuser = 10 ;	
 	
-	private String sessionmsg ;	//欢迎消息
-	private String distribution ;	//坐席分配策略
-	private boolean lastagent;			//启用历史服务坐席优先分配
-	private boolean sessiontimeout;	//启用超时提醒功能
-	private int timeout = 120;				//超时时长 , 默认2分钟
-	private String timeoutmsg ;			//超时提醒消息
-	private boolean resessiontimeout;	//启用再次超时断开
-	private int retimeout = 120;				//再次超时时长 ， 默认2分钟
-	private String retimeoutmsg ;		//再次超时断开
-	private boolean satisfaction ;	//启用满意度调查
+	private String sessionmsg ;	
+	private String distribution ;
+	private boolean lastagent;	
+	private boolean sessiontimeout;	
+	private int timeout = 120;		
+	private String timeoutmsg ;		
+	private boolean resessiontimeout;
+	private int retimeout = 120;	
+	private String retimeoutmsg ;	
+	private boolean satisfaction ;	
 	
-	private boolean agentreplaytimeout ;	//启用坐席回复超时
+	private boolean agentreplaytimeout ;	
 	private int agenttimeout;
 	private String agenttimeoutmsg ;
 	
-	private boolean hourcheck ;		//启用工作时间段检查
-	private String workinghours ;	//工作时间段，格式   9:00-12:00,13:30-15:30
-	private String notinwhmsg ;		//非工作时间段 访客咨询的提示消息
+	private boolean hourcheck ;		
+	private String workinghours ;	
+	private String notinwhmsg ;		
 	
 	@Id
 	@Column(length = 32)

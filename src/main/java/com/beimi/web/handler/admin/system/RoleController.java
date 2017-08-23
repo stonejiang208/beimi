@@ -20,7 +20,7 @@ import com.beimi.web.handler.Handler;
 import com.beimi.web.model.Role;
 import com.beimi.web.model.RoleAuth;
 import com.beimi.web.model.SysDic;
-import com.beimi.web.model.UKeFuDic;
+import com.beimi.web.model.BeiMiDic;
 import com.beimi.web.model.User;
 import com.beimi.web.model.UserRole;
 import com.beimi.web.service.repository.jpa.RoleAuthRepository;
@@ -205,7 +205,7 @@ public class RoleController extends Handler{
     			roleAuth.setCreater(super.getUser(request).getId());
     			roleAuth.setOrgi(super.getOrgi(request));
     			roleAuth.setCreatetime(new Date());
-    			SysDic sysDic = UKeFuDic.getInstance().getDicItem(menu) ;
+    			SysDic sysDic = BeiMiDic.getInstance().getDicItem(menu) ;
     			roleAuth.setName(sysDic.getName());
     			roleAuth.setDicvalue(sysDic.getCode());
     			roleAuthRes.save(roleAuth) ;
