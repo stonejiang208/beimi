@@ -12,7 +12,7 @@
 
  **
 
-特别注意：修改客户端服务的IP地址，位置在/assets/resources/script/lib/HTTP.js中，修改服务端IP地址和服务端的WebSocket服务地址，注意保持服务端防火墙开启9081端口
+ **特别注意：修改客户端服务的IP地址，位置在/assets/resources/script/lib/HTTP.js中，修改服务端IP地址和服务端的WebSocket服务地址，注意保持服务端防火墙开启9081端口** 
 
 ** 
 
