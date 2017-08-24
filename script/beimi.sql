@@ -10,10 +10,50 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-08-21 09:28:19
+Date: 2017-08-24 22:58:58
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for `bm_account_config`
+-- ----------------------------
+DROP TABLE IF EXISTS `bm_account_config`;
+CREATE TABLE `bm_account_config` (
+  `id` varchar(32) NOT NULL COMMENT '主键ID',
+  `orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
+  `creater` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `username` varchar(32) DEFAULT NULL COMMENT '创建人用户名',
+  `name` varchar(32) DEFAULT NULL COMMENT '名称',
+  `createtime` datetime DEFAULT NULL COMMENT '创建时间',
+  `enableask` tinyint(4) DEFAULT NULL COMMENT '允许AI主动发起问答',
+  `askfirst` tinyint(4) DEFAULT NULL COMMENT 'AI优先',
+  `enablescene` tinyint(4) DEFAULT NULL COMMENT '启用场景识别',
+  `scenefirst` tinyint(4) DEFAULT NULL COMMENT '优先命中场景',
+  `enablekeyword` tinyint(4) DEFAULT NULL COMMENT '启用关键词命中',
+  `keywordnum` int(11) DEFAULT NULL COMMENT '关键词数量',
+  `noresultmsg` text COMMENT '未命中回复消息',
+  `askqs` tinyint(4) DEFAULT NULL COMMENT '询问访客是否解决问题',
+  `asktipmsg` varchar(255) DEFAULT NULL COMMENT '询问访客的文本',
+  `resolved` varchar(100) DEFAULT NULL COMMENT '已解决的提示文本',
+  `unresolved` varchar(100) DEFAULT NULL COMMENT '未解决的提示文本',
+  `redirectagent` tinyint(4) DEFAULT NULL COMMENT '跳转到人工坐席',
+  `redirecturl` varchar(255) DEFAULT NULL COMMENT '跳转到其他URL',
+  `asktimes` int(11) DEFAULT NULL COMMENT '最长多久开始询问',
+  `selectskill` int(11) DEFAULT NULL,
+  `selectskillmsg` varchar(255) DEFAULT NULL,
+  `expdays` int(11) DEFAULT NULL,
+  `initaccount` tinyint(4) DEFAULT NULL,
+  `initcoins` int(11) DEFAULT NULL,
+  `initcards` int(11) DEFAULT NULL,
+  `initdiamonds` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of bm_account_config
+-- ----------------------------
+INSERT INTO `bm_account_config` VALUES ('402888815e058149015e0581dbe40000', 'beimi', '297e8c7b455798280145579c73e501c1', null, null, '2017-08-21 23:55:50', '0', '0', '0', '0', '0', '5', '', '0', '您好，小E是否已经解决了您的问题？', '已解决（关闭对话）', '未解决（转人工坐席）', '0', null, '120', '0', '请选择您要咨询的问题分类？', '0', '1', '5000', '10', '10');
 
 -- ----------------------------
 -- Table structure for `bm_attachment_file`
@@ -102,6 +142,109 @@ CREATE TABLE `bm_gameconfig` (
 INSERT INTO `bm_gameconfig` VALUES ('402888815caf3885015cb122509b0008', 'ukewo', '297e8c7b455798280145579c73e501c1', null, null, '欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', '0', '您好，您已经很长时间没有发送消息了，您是否还在线？', '您好，欢迎下次咨询，再见？', '0', '2017-08-02 10:31:53', '0', '1', '1', '120', '120', '120', '1', '欢迎咨询，我正在为您查询资料？', '10', '10', '00:00~23:59', '您好，当前非工作时间段。', '0');
 
 -- ----------------------------
+-- Table structure for `bm_game_model`
+-- ----------------------------
+DROP TABLE IF EXISTS `bm_game_model`;
+CREATE TABLE `bm_game_model` (
+  `ID` varchar(32) NOT NULL COMMENT '主键ID',
+  `NAME` varchar(50) DEFAULT NULL COMMENT '名称',
+  `CODE` varchar(50) DEFAULT NULL COMMENT '代码',
+  `CREATETIME` datetime DEFAULT NULL COMMENT '创建时间',
+  `CREATER` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `UPDATETIME` datetime DEFAULT NULL COMMENT '更新时间',
+  `ORGI` varchar(32) DEFAULT NULL COMMENT '租户ID',
+  `USERNAME` varchar(50) DEFAULT NULL COMMENT '用户名',
+  `PARENTID` varchar(32) DEFAULT NULL COMMENT '上级分类ID',
+  `GAME` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of bm_game_model
+-- ----------------------------
+INSERT INTO `bm_game_model` VALUES ('402888815d6ad3d3015d6ad628870004', '投诉工单', null, '2017-07-22 23:06:46', '297e8c7b455798280145579c73e501c1', null, 'ukewo', null, null, null);
+INSERT INTO `bm_game_model` VALUES ('402888815de9dbf3015de9dc9ffb0002', 'ABC', null, '2017-08-16 15:05:36', '297e8c7b455798280145579c73e501c1', null, 'ukewo', null, null, null);
+
+-- ----------------------------
+-- Table structure for `bm_game_playway`
+-- ----------------------------
+DROP TABLE IF EXISTS `bm_game_playway`;
+CREATE TABLE `bm_game_playway` (
+  `ID` varchar(32) NOT NULL COMMENT '主键ID',
+  `NAME` varchar(50) DEFAULT NULL COMMENT '名称',
+  `CODE` varchar(50) DEFAULT NULL COMMENT '代码',
+  `CREATETIME` datetime DEFAULT NULL COMMENT '创建时间',
+  `CREATER` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `UPDATETIME` datetime DEFAULT NULL COMMENT '更新时间',
+  `ORGI` varchar(32) DEFAULT NULL COMMENT '租户ID',
+  `USERNAME` varchar(50) DEFAULT NULL COMMENT '用户名',
+  `area` text,
+  `parentid` varchar(32) DEFAULT '0',
+  `typeid` varchar(32) DEFAULT NULL,
+  `status` varchar(32) DEFAULT NULL,
+  `game` varchar(32) DEFAULT NULL,
+  `players` int(11) DEFAULT NULL,
+  `cards` int(11) DEFAULT NULL,
+  `roomtype` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of bm_game_playway
+-- ----------------------------
+INSERT INTO `bm_game_playway` VALUES ('118e62fee766477dadb59986534128e6', '股票', null, '2017-08-22 19:46:31', '297e8c7b455798280145579c73e501c1', '2017-08-22 19:46:31', 'ukewo', null, null, '0', '118e62fee766477dadb59986534128e6', null, null, null, null, null);
+INSERT INTO `bm_game_playway` VALUES ('402888815c2dfb3e015c2e11da1c0001', '闲聊', null, '2017-05-22 10:52:20', '297e8c7b455798280145579c73e501c1', '2017-05-22 10:52:20', 'ukewo', null, null, '0', '402888815c2dfb3e015c2e11da1c0001', null, null, null, null, null);
+INSERT INTO `bm_game_playway` VALUES ('402888815c337e74015c33802b8d0001', 'test', null, '2017-05-23 12:10:56', '297e8c7b455798280145579c73e501c1', '2017-05-23 12:10:56', 'ukewo', null, null, '0', '402888815c337e74015c33802b8d0001', null, null, null, null, null);
+INSERT INTO `bm_game_playway` VALUES ('402888815dee6950015dee70df140002', 'asdfasdf', null, '2017-08-17 12:26:00', '297e8c7b455798280145579c73e501c1', '2017-08-17 12:26:00', 'ukewo', null, null, '0', '402888815dee6950015dee70df140002', null, null, null, null, null);
+INSERT INTO `bm_game_playway` VALUES ('402888815deec15f015def04b8460005', '啊啊啊啊啊发', null, '2017-08-17 15:07:30', '297e8c7b455798280145579c73e501c1', '2017-08-17 15:07:30', 'ukewo', null, '402888815dedc5f4015dedda27310005', '0', '402888815deec15f015def04b8460005', null, null, null, null, null);
+INSERT INTO `bm_game_playway` VALUES ('402888815e087dc4015e088726700002', '测试地区分类', null, '2017-08-22 14:00:28', '297e8c7b455798280145579c73e501c1', '2017-08-22 14:00:28', 'ukewo', null, '402888815dedc5f4015dedda27310005', '0', '402888815e087dc4015e088726700002', null, null, null, null, null);
+INSERT INTO `bm_game_playway` VALUES ('402888815e087dc4015e088b843b0003', '温热而', null, '2017-08-22 14:05:14', '297e8c7b455798280145579c73e501c1', '2017-08-22 14:05:14', 'ukewo', null, '402888815dedc5f4015dedecc79b0006', '0', '402888815e087dc4015e088b843b0003', null, null, null, null, null);
+INSERT INTO `bm_game_playway` VALUES ('402888815e089186015e08a0b2530002', '产品咨询', null, '2017-08-22 14:28:22', '297e8c7b455798280145579c73e501c1', '2017-08-22 14:28:22', 'ukewo', null, null, '0', '402888815e089186015e08a0b2530002', null, null, null, null, null);
+INSERT INTO `bm_game_playway` VALUES ('fdca6851d38d4ed498ce36b40a76bb4f', '基础法规', null, '2017-08-22 19:46:40', '297e8c7b455798280145579c73e501c1', '2017-08-22 19:46:40', 'ukewo', null, null, '118e62fee766477dadb59986534128e6', '118e62fee766477dadb59986534128e6', null, null, null, null, null);
+
+-- ----------------------------
+-- Table structure for `bm_game_room`
+-- ----------------------------
+DROP TABLE IF EXISTS `bm_game_room`;
+CREATE TABLE `bm_game_room` (
+  `ID` varchar(32) NOT NULL COMMENT '主键ID',
+  `NAME` varchar(50) DEFAULT NULL COMMENT '名称',
+  `CODE` varchar(50) DEFAULT NULL COMMENT '代码',
+  `CREATETIME` datetime DEFAULT NULL COMMENT '创建时间',
+  `CREATER` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `UPDATETIME` datetime DEFAULT NULL COMMENT '更新时间',
+  `ORGI` varchar(32) DEFAULT NULL COMMENT '租户ID',
+  `USERNAME` varchar(50) DEFAULT NULL COMMENT '用户名',
+  `area` text,
+  `parentid` varchar(32) DEFAULT '0',
+  `typeid` varchar(32) DEFAULT NULL,
+  `roomid` varchar(32) DEFAULT NULL,
+  `status` varchar(32) DEFAULT NULL,
+  `game` varchar(32) DEFAULT NULL,
+  `players` int(11) DEFAULT NULL,
+  `master` varchar(32) DEFAULT NULL,
+  `roomtype` varchar(32) DEFAULT NULL,
+  `playway` varchar(32) DEFAULT NULL,
+  `numofgames` int(11) DEFAULT NULL,
+  `currentnum` int(11) DEFAULT NULL,
+  `curpalyers` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of bm_game_room
+-- ----------------------------
+INSERT INTO `bm_game_room` VALUES ('118e62fee766477dadb59986534128e6', '股票', null, '2017-08-22 19:46:31', '297e8c7b455798280145579c73e501c1', '2017-08-22 19:46:31', 'ukewo', null, null, '0', '118e62fee766477dadb59986534128e6', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `bm_game_room` VALUES ('402888815c2dfb3e015c2e11da1c0001', '闲聊', null, '2017-05-22 10:52:20', '297e8c7b455798280145579c73e501c1', '2017-05-22 10:52:20', 'ukewo', null, null, '0', '402888815c2dfb3e015c2e11da1c0001', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `bm_game_room` VALUES ('402888815c337e74015c33802b8d0001', 'test', null, '2017-05-23 12:10:56', '297e8c7b455798280145579c73e501c1', '2017-05-23 12:10:56', 'ukewo', null, null, '0', '402888815c337e74015c33802b8d0001', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `bm_game_room` VALUES ('402888815dee6950015dee70df140002', 'asdfasdf', null, '2017-08-17 12:26:00', '297e8c7b455798280145579c73e501c1', '2017-08-17 12:26:00', 'ukewo', null, null, '0', '402888815dee6950015dee70df140002', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `bm_game_room` VALUES ('402888815deec15f015def04b8460005', '啊啊啊啊啊发', null, '2017-08-17 15:07:30', '297e8c7b455798280145579c73e501c1', '2017-08-17 15:07:30', 'ukewo', null, '402888815dedc5f4015dedda27310005', '0', '402888815deec15f015def04b8460005', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `bm_game_room` VALUES ('402888815e087dc4015e088726700002', '测试地区分类', null, '2017-08-22 14:00:28', '297e8c7b455798280145579c73e501c1', '2017-08-22 14:00:28', 'ukewo', null, '402888815dedc5f4015dedda27310005', '0', '402888815e087dc4015e088726700002', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `bm_game_room` VALUES ('402888815e087dc4015e088b843b0003', '温热而', null, '2017-08-22 14:05:14', '297e8c7b455798280145579c73e501c1', '2017-08-22 14:05:14', 'ukewo', null, '402888815dedc5f4015dedecc79b0006', '0', '402888815e087dc4015e088b843b0003', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `bm_game_room` VALUES ('402888815e089186015e08a0b2530002', '产品咨询', null, '2017-08-22 14:28:22', '297e8c7b455798280145579c73e501c1', '2017-08-22 14:28:22', 'ukewo', null, null, '0', '402888815e089186015e08a0b2530002', null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `bm_game_room` VALUES ('fdca6851d38d4ed498ce36b40a76bb4f', '基础法规', null, '2017-08-22 19:46:40', '297e8c7b455798280145579c73e501c1', '2017-08-22 19:46:40', 'ukewo', null, null, '118e62fee766477dadb59986534128e6', '118e62fee766477dadb59986534128e6', null, null, null, null, null, null, null, null, null, null);
+
+-- ----------------------------
 -- Table structure for `bm_generation`
 -- ----------------------------
 DROP TABLE IF EXISTS `bm_generation`;
@@ -141,6 +284,7 @@ CREATE TABLE `bm_organ` (
 -- ----------------------------
 -- Records of bm_organ
 -- ----------------------------
+INSERT INTO `bm_organ` VALUES ('402888815e026a43015e02ac0bd80004', 'asdf', null, null, null, '2017-08-21 10:43:06', 'ukewo', null, null, '1');
 
 -- ----------------------------
 -- Table structure for `bm_organrole`
@@ -189,7 +333,7 @@ CREATE TABLE `bm_playuser` (
   `UPDATETIME` datetime DEFAULT NULL COMMENT '更新时间',
   `MOBILE` varchar(32) DEFAULT NULL COMMENT '手机号',
   `passupdatetime` datetime DEFAULT NULL COMMENT '最后 一次密码修改时间',
-  `sign` text,
+  `sign` varchar(100) DEFAULT NULL,
   `del` tinyint(4) DEFAULT '0',
   `login` tinyint(4) DEFAULT '0',
   `online` tinyint(4) DEFAULT '0',
@@ -209,12 +353,30 @@ CREATE TABLE `bm_playuser` (
   `deactivetime` datetime DEFAULT NULL COMMENT '离线时间',
   `title` varchar(50) DEFAULT NULL COMMENT '标题',
   `DATASTATUS` tinyint(4) DEFAULT '0' COMMENT '数据状态',
+  `token` varchar(50) DEFAULT NULL,
+  `cards` int(11) DEFAULT NULL,
+  `goldcoins` int(11) DEFAULT NULL,
+  `diamonds` int(11) DEFAULT NULL,
+  `openid` varchar(100) DEFAULT NULL,
+  `qqid` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of bm_playuser
 -- ----------------------------
+INSERT INTO `bm_playuser` VALUES ('3eeeed86f73f48748462515686a3580a', null, 'Guest_1JBYtd', '47b9bfa7d4513c34777b6f8e46c46821', '5', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '2017-08-23 20:49:29', null, '2017-08-23 20:49:29', null, '2017-08-23 20:49:29', null, '0', '0', '0', '0', '0', null, '0', null, null, null, null, '0', '0', '0', '2017-08-23 20:49:29', null, null, null, '0', null, '10', '5000', '10', null, null);
+INSERT INTO `bm_playuser` VALUES ('46ee7f8d9bd844509fa842e41168b513', null, 'Guest_149gBA', '805ec97af6dd2ec2271195adf45c57b3', '5', null, null, null, null, null, null, null, null, null, null, null, null, 'beimi', null, '2017-08-23 21:08:40', null, '2017-08-23 21:08:40', null, '2017-08-23 21:08:40', null, '0', '0', '0', '0', '0', null, '0', null, null, null, null, '0', '0', '0', '2017-08-23 21:08:40', null, null, null, '0', null, '10', '5000', '10', null, null);
+INSERT INTO `bm_playuser` VALUES ('52dcea4f88e845cc93717ec3605cd533', null, 'Guest_1sRRlF', '2a774769268b51a58bdb626f8af80451', '5', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '2017-08-23 08:10:50', null, '2017-08-23 08:10:50', null, '2017-08-23 08:10:50', null, '0', '0', '0', '0', '0', null, '0', null, null, null, null, '0', '0', '0', '2017-08-23 08:10:50', null, null, null, '0', null, '10', '5000', '10', null, null);
+INSERT INTO `bm_playuser` VALUES ('62134057688340ef8c13a5da290040ee', null, 'Guest_1ctAYl', '8f6d40d4a0298a3d93e0e48e0a36556c', '5', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '2017-08-23 08:12:31', null, '2017-08-23 08:12:31', null, '2017-08-23 08:12:31', null, '0', '0', '0', '0', '0', null, '0', null, null, null, null, '0', '0', '0', '2017-08-23 08:12:31', null, null, null, '0', null, '10', '5000', '10', null, null);
+INSERT INTO `bm_playuser` VALUES ('8dc12438dd4049f8ad5bfb11733ff061', null, 'Guest_1I5FRM', 'abeb4abe66c47cbfa9c75c41f590d699', '5', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '2017-08-23 08:34:05', null, '2017-08-23 08:34:05', null, '2017-08-23 08:34:05', null, '0', '0', '0', '0', '0', null, '0', null, null, null, null, '0', '0', '0', '2017-08-23 08:34:05', null, null, null, '0', null, '10', '5000', '10', null, null);
+INSERT INTO `bm_playuser` VALUES ('90421f3203614628a8922680215ee972', null, 'Guest_0d88xN', 'ed393cc1476e7a27b25eef480207df76', '5', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '2017-08-23 08:13:11', null, '2017-08-23 08:13:11', null, '2017-08-23 08:13:11', null, '0', '0', '0', '0', '0', null, '0', null, null, null, null, '0', '0', '0', '2017-08-23 08:13:11', null, null, null, '0', null, '10', '5000', '10', null, null);
+INSERT INTO `bm_playuser` VALUES ('9d85a78305c14b23a1ac9271d17bd96a', null, 'Guest_1Ro5cF', 'af740d1632dc27084b2833836a2b2e46', '5', null, null, null, null, null, null, null, null, null, null, null, null, 'beimi', null, '2017-08-23 22:03:16', null, '2017-08-23 22:03:16', null, '2017-08-23 22:03:16', null, '0', '0', '0', '0', '0', null, '0', null, null, null, null, '0', '0', '0', '2017-08-23 22:03:16', null, null, null, '0', null, '10', '5000', '10', null, null);
+INSERT INTO `bm_playuser` VALUES ('aeba1a17c39a4076b208bbe60984a483', null, 'Guest_0oVdRI', '2ecc9031999a9154925f2da087e2dedb', '5', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '2017-08-22 21:58:01', null, '2017-08-22 21:58:01', null, '2017-08-22 21:58:01', null, '0', '0', '0', '0', '0', null, '0', null, null, null, null, '0', '0', '0', '2017-08-22 21:58:01', null, null, null, '0', null, '10', '5000', '10', null, null);
+INSERT INTO `bm_playuser` VALUES ('c13ae3d6497742b1975caa6cfd6cf485', null, 'Guest_0IcJgc', 'a3e97e4b87c56ce50ad505d888f19506', '5', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '2017-08-23 20:50:44', null, '2017-08-23 20:50:44', null, '2017-08-23 20:50:44', null, '0', '0', '0', '0', '0', null, '0', null, null, null, null, '0', '0', '0', '2017-08-23 20:50:44', null, null, null, '0', null, '10', '5000', '10', null, null);
+INSERT INTO `bm_playuser` VALUES ('c693250873654fa990492b486ad08fca', null, 'Guest_1A400R', '63eb920ca180412c0d9acc74c6630da8', '5', null, null, null, null, null, null, null, null, null, null, null, null, 'beimi', null, '2017-08-23 22:06:29', null, '2017-08-23 22:06:29', null, '2017-08-23 22:06:29', null, '0', '0', '0', '0', '0', null, '0', null, null, null, null, '0', '0', '0', '2017-08-23 22:06:29', null, null, null, '0', null, '10', '5000', '10', null, null);
+INSERT INTO `bm_playuser` VALUES ('e7c05096bd9d48be84de4ca70b968cf4', null, 'Guest_1E8po0', 'f70c30f8c0799a4264a381f766235065', '5', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '2017-08-23 08:48:06', null, '2017-08-23 08:48:06', null, '2017-08-23 08:48:06', null, '0', '0', '0', '0', '0', null, '0', null, null, null, null, '0', '0', '0', '2017-08-23 08:48:06', null, null, null, '0', null, '10', '5000', '10', null, null);
+INSERT INTO `bm_playuser` VALUES ('ffff35eac6124e86b4d26eb12c7b20bd', null, 'Guest_1Mo1sA', '6ba03d18701965743cb3d0d6c2b09be3', '5', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '2017-08-23 08:12:00', null, '2017-08-23 08:12:00', null, '2017-08-23 08:12:00', null, '0', '0', '0', '0', '0', null, '0', null, null, null, null, '0', '0', '0', '2017-08-23 08:12:00', null, null, null, '0', null, '10', '5000', '10', null, null);
 
 -- ----------------------------
 -- Table structure for `bm_role`
@@ -235,6 +397,7 @@ CREATE TABLE `bm_role` (
 -- ----------------------------
 -- Records of bm_role
 -- ----------------------------
+INSERT INTO `bm_role` VALUES ('402888815e026a43015e02aba80f0000', 'ces', null, '2017-08-21 10:42:38', '297e8c7b455798280145579c73e501c1', '2017-08-21 10:42:42', 'ukewo', null);
 
 -- ----------------------------
 -- Table structure for `bm_role_auth`
@@ -3871,6 +4034,14 @@ INSERT INTO `bm_sysdic` VALUES ('402888815d55aa7d015d55b88b9b0003', '全部客�
 INSERT INTO `bm_sysdic` VALUES ('402888815d55aa7d015d55b8bb110004', '客服设置', 'pub', 'C', null, 'auth', '402888815d2fe37f015d2fe75cc80002', null, null, '<i class=\"layui-icon\" style=\"position: relative;\">&#xe614;</i>', null, null, '297e8c7b455798280145579c73e501c1', '2017-07-18 20:42:36', null, '0', '0', '402888815d2fe37f015d2fe75cc80002', '0', '0', '/setting/agent/index.html', 'webim', '1', 'on', 'left');
 INSERT INTO `bm_sysdic` VALUES ('402888815d55aa7d015d55b8e82e0005', '会话历史', 'pub', 'D', null, 'auth', '402888815d2fe37f015d2fe75cc80002', null, null, '<i class=\"kfont\" style=\"position: relative;\">&#xe7eb;</i>', null, null, '297e8c7b455798280145579c73e501c1', '2017-07-18 20:42:47', null, '0', '0', '402888815d2fe37f015d2fe75cc80002', '0', '0', '/service/history/index.html', 'webim', '1', null, 'left');
 INSERT INTO `bm_sysdic` VALUES ('402888815d89b1aa015d89b318ab0002', '知识库知识', 'pub', 'kbs', 'ukewo', 'layui-icon', '4028838b5b565caf015b566d11d80010', '', null, '', '', null, '297e8c7b455798280145579c73e501c1', '2017-07-28 22:56:42', '2017-07-28 22:56:42', '0', '1', '4028838b5b565caf015b566d11d80010', '0', '0', null, null, null, null, null);
+INSERT INTO `bm_sysdic` VALUES ('402888815e0521d8015e0522f03b0000', '游戏类型', 'pub', 'com.dic.game.type', null, 'data', '0', '', null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-08-21 22:12:09', null, '1', '0', null, '0', '0', null, null, null, null, null);
+INSERT INTO `bm_sysdic` VALUES ('402888815e0521d8015e052341f70001', '麻将', 'pub', 'majiang', 'ukewo', null, '402888815e0521d8015e0522f03b0000', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-08-21 22:12:30', '2017-08-21 22:12:30', '0', '1', '402888815e0521d8015e0522f03b0000', '0', '0', null, null, null, null, null);
+INSERT INTO `bm_sysdic` VALUES ('402888815e0521d8015e052342080002', '斗地主', 'pub', 'dizhu', 'ukewo', null, '402888815e0521d8015e0522f03b0000', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-08-21 22:12:30', '2017-08-21 22:12:30', '0', '2', '402888815e0521d8015e0522f03b0000', '0', '0', null, null, null, null, null);
+INSERT INTO `bm_sysdic` VALUES ('402888815e0521d8015e052342180003', '德州扑克', 'pub', 'dezhou', 'ukewo', null, '402888815e0521d8015e0522f03b0000', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-08-21 22:12:30', '2017-08-21 22:12:30', '0', '3', '402888815e0521d8015e0522f03b0000', '0', '0', null, null, null, null, null);
+INSERT INTO `bm_sysdic` VALUES ('402888815e14abfb015e14b5f6570000', '血战到底', 'pub', 'end', 'beimi', null, '402888815e0521d8015e052341f70001', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-08-24 22:47:03', '2017-08-24 22:47:03', '0', '1', '402888815e0521d8015e0522f03b0000', '0', '0', null, null, null, null, null);
+INSERT INTO `bm_sysdic` VALUES ('402888815e14abfb015e14b5f6840001', '血流成河', 'pub', 'river', 'beimi', null, '402888815e0521d8015e052341f70001', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-08-24 22:47:03', '2017-08-24 22:47:03', '0', '2', '402888815e0521d8015e0522f03b0000', '0', '0', null, null, null, null, null);
+INSERT INTO `bm_sysdic` VALUES ('402888815e14abfb015e14b6e2080002', '经典玩法', 'pub', 'basic', 'beimi', null, '402888815e0521d8015e052342080002', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-08-24 22:48:03', '2017-08-24 22:48:03', '0', '1', '402888815e0521d8015e0522f03b0000', '0', '0', null, null, null, null, null);
+INSERT INTO `bm_sysdic` VALUES ('402888815e14abfb015e14b6e21d0003', '二人斗地主', 'pub', 'speed', 'beimi', null, '402888815e0521d8015e052342080002', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-08-24 22:48:03', '2017-08-24 22:48:03', '0', '2', '402888815e0521d8015e0522f03b0000', '0', '0', null, null, null, null, null);
 INSERT INTO `bm_sysdic` VALUES ('4028e3815bafaa94015bafb14edf0002', '服务类型', 'pub', 'summary', 'ukewo', 'layui-icon', '4028838b5b565caf015b566d11d80010', '', null, '', '', null, '297e8c7b455798280145579c73e501c1', '2017-04-27 21:54:44', null, '1', '0', '4028838b5b565caf015b566d11d80010', '0', '0', null, null, null, null, null);
 
 -- ----------------------------
@@ -4162,8 +4333,8 @@ CREATE TABLE `bm_user` (
 -- ----------------------------
 -- Records of bm_user
 -- ----------------------------
-INSERT INTO `bm_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@beixi.me', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-08-06 18:25:12', null, '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-08-13 23:17:44', null, null, null, '0', '0', '1');
-INSERT INTO `bm_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'test', '14e1b600b1fd579f47433b88e8d85291', '5', 'test@beixi.me', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-05-19 08:19:01', null, '2017-08-06 18:25:25', null, '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '0', null, null, null, '0', '0', '0', '2017-07-26 17:02:18', null, null, null, '0', '0', '0');
+INSERT INTO `bm_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@beixi.me', null, null, null, null, null, '0', null, null, '0', null, null, 'beimi', null, '2017-03-16 13:56:34', '北京', '2017-08-06 18:25:12', null, '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-08-24 22:55:49', null, null, null, '0', '0', '1');
+INSERT INTO `bm_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'test', '14e1b600b1fd579f47433b88e8d85291', '5', 'test@beixi.me', null, null, null, null, null, null, null, null, null, null, null, 'beimi', null, '2017-05-19 08:19:01', null, '2017-08-06 18:25:25', null, '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '0', null, null, null, '0', '0', '0', '2017-07-26 17:02:18', null, null, null, '0', '0', '0');
 
 -- ----------------------------
 -- Table structure for `bm_userrole`
@@ -4182,3 +4353,5 @@ CREATE TABLE `bm_userrole` (
 -- ----------------------------
 -- Records of bm_userrole
 -- ----------------------------
+INSERT INTO `bm_userrole` VALUES ('402888815e026a43015e02abde690002', '297e8c7b455798280145579c73e501c1', '402888815e026a43015e02aba80f0000', '297e8c7b455798280145579c73e501c1', '2017-08-21 10:42:52', 'ukewo');
+INSERT INTO `bm_userrole` VALUES ('402888815e026a43015e02abde760003', '402883965c1dfe92015c1e12651d0002', '402888815e026a43015e02aba80f0000', '297e8c7b455798280145579c73e501c1', '2017-08-21 10:42:52', 'ukewo');
