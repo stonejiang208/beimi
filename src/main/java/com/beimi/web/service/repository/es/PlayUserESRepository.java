@@ -19,7 +19,6 @@ public abstract interface PlayUserESRepository
   
   public abstract PlayUser findByMobileAndPassword(String username, String password);
   
-  public abstract Page<PlayUser> findByDatastatus(boolean datastatus , String orgi, Pageable paramPageable);
+  public abstract Page<PlayUser> findByOrgi(String orgi, Pageable page);
   
-  public abstract Page<PlayUser> findByDatastatusAndUsername(boolean datastatus , String orgi ,String username ,Pageable paramPageable);
 }

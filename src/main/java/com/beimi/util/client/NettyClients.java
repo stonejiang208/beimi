@@ -32,19 +32,19 @@ public class NettyClients {
 		}
 	}
 	
-	public void setAgentClients(NettySystemClient agentClients) {
-		this.systemClients = agentClients;
+	public void setGameClients(NettySystemClient gameClients) {
+		this.systemClients = gameClients;
 	}
-	public void putAgentEventClient(String id , SocketIOClient agentClient){
-		systemClients.putClient(id, agentClient);
+	public void putGameEventClient(String id , SocketIOClient gameClient){
+		systemClients.putClient(id, gameClient);
 	}
-	public void removeAgentEventClient(String id , String sessionid){
+	public void removeGameEventClient(String id , String sessionid){
 		systemClients.removeClient(id, sessionid);
 	}
-	public void sendAgentEventMessage(String id , String event , Object data){
-		List<SocketIOClient> agents = systemClients.getClients(id) ;
-		for(SocketIOClient agentClient : agents){
-			agentClient.sendEvent(event, data);
+	public void sendGameEventMessage(String id , String event , Object data){
+		List<SocketIOClient> gameClients = systemClients.getClients(id) ;
+		for(SocketIOClient gameClient : gameClients){
+			gameClient.sendEvent(event, data);
 		}
 	}
 }

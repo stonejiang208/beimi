@@ -20,19 +20,29 @@
 	</li>
 	
 	<li class="layui-nav-item layui-nav-itemed">
-		<a class="layui-nav-title" href="javascript:;">系统设置</a>
+		<a class="layui-nav-title" href="javascript:;">玩法设置</a>
 		<dl class="layui-nav-child">
-			<dd <#if subtype?? && subtype == 'config'>class="layui-this"</#if>>
-				<a href="/admin/config/index.html">系统设置</a>
+			<#if gameTypeList??>
+			<#list gameTypeList as gameType>
+			<dd  <#if subtype?? && subtype == 'playway' && game?? && game.id == gameType.id>class="layui-this"</#if>>
+				<a href="/apps/platform/playway.html?id=${gameType.id!''}">${gameType.name!''}</a>
 			</dd>
-			<dd <#if subtype?? && subtype == 'sysdic'>class="layui-this"</#if>>
-				<a href="/admin/sysdic/index.html">字典管理</a>
+			</#list>
+			</#if>
+		</dl>
+	</li>
+	
+	<li class="layui-nav-item layui-nav-itemed">
+		<a class="layui-nav-title" href="javascript:;">游戏信息</a>
+		<dl class="layui-nav-child">
+			<dd  <#if subtype?? && subtype == 'gameusers'>class="layui-this"</#if>>
+				<a href="/apps/platform/gameusers.html">注册玩家</a>
 			</dd>
-			<dd <#if subtype?? && subtype == 'metadata'>class="layui-this"</#if>>
-				<a href="/admin/metadata/index.html">元数据</a>
+			<dd  <#if subtype?? && subtype == 'palyers'>class="layui-this"</#if>>
+				<a href="/apps/platform/players.html">在线玩家</a>
 			</dd>
-			<dd <#if subtype?? && subtype == 'template'>class="layui-this"</#if>>
-				<a href="/admin/template/index.html">系统模板</a>
+			<dd  <#if subtype?? && subtype == 'gameroom'>class="layui-this"</#if>>
+				<a href="/apps/platform/gameroom.html">游戏房间</a>
 			</dd>
 		</dl>
 	</li>

@@ -8,6 +8,7 @@ public class UserDataEvent{
 	private long id ;
 
 	private UserEvent event ;
+	private String command ;
 	
 	private ElasticsearchCrudRepository esRes ;
 	private JpaRepository dbRes ;
@@ -39,5 +40,11 @@ public class UserDataEvent{
 
 	public void setEvent(UserEvent event) {
 		this.event = event;
+	}
+	public String getCommand() {
+		return command;
+	}
+	public void setCommand(String command) {
+		this.command = command;
 	}
 }

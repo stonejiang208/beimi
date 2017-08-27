@@ -1,0 +1,101 @@
+<div class="layui-layout layui-layout-content">
+	<div class="layui-side layui-beimi-left">
+		<div class="layui-side-scroll">
+		<#include "/apps/business/platform/include/left.html"/></div>
+	</div>
+	<div class="layui-body">
+		<div class="layui-side-scroll">
+			<div class="row">
+				<div class="col-lg-12">
+					<h1 class="site-h1" style="background-color:#FFFFFF;">
+						“${game.name!''}” 玩法列表<#if playwayList??>（${playwayList?size}）</#if>
+						<span style="float:right;">
+							<button class="layui-btn layui-btn-small green" href="/apps/platform/playway/add.html?id=${game.id!''}" data-toggle="ajax" data-width="750" data-height="450" data-title="创建新玩法">
+								创建新玩法
+							</button>
+						</span>
+					</h1>
+					<div class="row" style="padding:5px;">
+						<div class="col-lg-12">
+							<#if playwayList?? && playwayList?size gt 0>
+							<div class="layui-collapse">
+								<#if gameModelList??>
+								<#list gameModelList as gameModel>
+								<div class="layui-colla-item">
+									<h2 class="layui-colla-title">${gameModel.name!''}</h2>
+									<div class="layui-colla-content layui-show" style="padding:0px;">
+										<table class="layui-table" lay-skin="nob">
+											<thead>
+												<tr>
+													<th>玩法名称</th>
+													<th>玩家数量</th>
+													<th>底分</th>
+													<th>金币要求</th>
+													<th>是否换牌</th>
+													<th>是否洗牌</th>
+													<th>最大局数</th>
+													<th>发牌数量</th>
+													<th>创建时间</th>
+													
+													<th style="white-space:nowrap;width:1%;" nowrap="nowrap">操作</th>
+												</tr>
+											</thead>
+											<tbody>
+												<#list playwayList as playway>
+												<#if playway.typeid?? && playway.typeid == gameModel.id>
+												<tr>
+													<td>
+														${playway.name!''}
+													</td>
+													<td>${playway.players!''}</td>
+													<td>${playway.score!''}</td>
+													<td>${playway.mincoins}~${playway.maxcoins}</td>
+													<td>
+														<#if playway.change?? && playway.change> 
+														<i class="layui-icon" style="color:#19a55d;">&#xe618;</i>
+														</#if>
+													</td>
+													<td>
+														<#if playway.shuffle?? && playway.shuffle> 
+														<i class="layui-icon" style="color:#19a55d;">&#xe618;</i>
+														</#if>
+													</td>
+													<td>${playway.numofgames!''}</td>
+													<td>${playway.cards!''}</td>
+													<td>${playway.createtime?string("yyyy-MM-dd HH:mm:ss")}</td>
+													<td style="white-space:nowrap;width:1%;" nowrap="nowrap"><a
+														href="/apps/platform/playway/edit.html?id=${playway.id!''}&game=${game.id!''}"
+														data-toggle="ajax" data-width="750" data-height="450"
+														data-title="编辑游戏玩法配置"> <i class="layui-icon">&#xe642;</i>
+															编辑
+													</a> <#if !(playway.playwaytype?? && playway.playwaytype == "0") &&
+														playway.datastatus != true > <a
+														href="/apps/platform/playway/delete.html?id=${playway.id!''}&game=${game.id!''}"
+														style="margin-left:10px;" data-toggle="tip"
+														data-title="请确认是否删除玩法？"> <i class="layui-icon"
+															style="color:red;">&#x1006;</i> 删除
+													</a> </#if></td>
+												</tr>
+												</#if>
+												</#list>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								</#list>
+								</#if>
+							</div>
+							</#if>
+						</div> 	   
+					</div>
+				</div>	
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	layui.use('element', function() {
+		var element = layui.element;
+	});
+</script>

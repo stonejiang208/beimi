@@ -195,14 +195,20 @@ public class UKTools {
 		return strb.toString() ;
 	}
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static void published(UserEvent event , ElasticsearchCrudRepository esRes , JpaRepository dbRes){
+	public static void published(UserEvent event , ElasticsearchCrudRepository esRes , JpaRepository dbRes , String command){
 		Disruptor<UserDataEvent> disruptor = (Disruptor<UserDataEvent>) BMDataContext.getContext().getBean("disruptor") ;
 		long seq = disruptor.getRingBuffer().next();
 		UserDataEvent userDataEvent = disruptor.getRingBuffer().get(seq) ;
 		userDataEvent.setEvent(event);
 		userDataEvent.setDbRes(dbRes);
 		userDataEvent.setEsRes(esRes);
+		userDataEvent.setCommand(command);
 		disruptor.getRingBuffer().publish(seq);
+	}
+	
+	@SuppressWarnings({ "rawtypes"})
+	public static void published(UserEvent event , ElasticsearchCrudRepository esRes , JpaRepository dbRes){
+		published(event, esRes, dbRes , BMDataContext.UserDataEventType.SAVE.toString());
 	}
 	/**
 	 * 
@@ -314,88 +320,90 @@ public class UKTools {
 	
 	public static BrowserClient parseClient(HttpServletRequest request){
 		BrowserClient client = new BrowserClient() ;
-		String  browserDetails  =   request.getHeader("User-Agent");
-	    String  userAgent       =   browserDetails;
-	    String  user   =   userAgent.toLowerCase();
-		String os = "";
-        String browser = "" , version = "";
-        
-
-        //=================OS=======================
-         if (userAgent.toLowerCase().indexOf("windows") >= 0 )
-         {
-             os = "windows";
-         } else if(userAgent.toLowerCase().indexOf("mac") >= 0)
-         {
-             os = "mac";
-         } else if(userAgent.toLowerCase().indexOf("x11") >= 0)
-         {
-             os = "unix";
-         } else if(userAgent.toLowerCase().indexOf("android") >= 0)
-         {
-             os = "android";
-         } else if(userAgent.toLowerCase().indexOf("iphone") >= 0)
-         {
-             os = "iphone";
-         }else{
-             os = "UnKnown";
-         }
-         //===============Browser===========================
-        if (user.contains("msie") || user.indexOf("rv:11") > -1)
-        {
-        	if(user.indexOf("rv:11") >= 0){
-        		browser = "IE11" ;
-        	}else{
-	            String substring=userAgent.substring(userAgent.indexOf("MSIE")).split(";")[0];
-	            browser=substring.split(" ")[0].replace("MSIE", "IE")+substring.split(" ")[1];
-        	}
-        }else if (user.contains("trident"))
-        {
-            browser= "IE 11" ;
-        }else if (user.contains("edge"))
-        {
-            browser= "Edge" ;
-        }  else if (user.contains("safari") && user.contains("version"))
-        {
-            browser = (userAgent.substring(userAgent.indexOf("Safari")).split(" ")[0]).split("/")[0];
-            version = (userAgent.substring(userAgent.indexOf("Version")).split(" ")[0]).split("/")[1] ;
-        } else if ( user.contains("opr") || user.contains("opera"))
-        {
-            if(user.contains("opera"))
-                browser=(userAgent.substring(userAgent.indexOf("Opera")).split(" ")[0]).split("/")[0]+"-"+(userAgent.substring(userAgent.indexOf("Version")).split(" ")[0]).split("/")[1];
-            else if(user.contains("opr"))
-                browser=((userAgent.substring(userAgent.indexOf("OPR")).split(" ")[0]).replace("/", "-")).replace("OPR", "Opera");
-        } else if (user.contains("chrome"))
-        {
-            browser = "Chrome";
-        } else if ((user.indexOf("mozilla/7.0") > -1) || (user.indexOf("netscape6") != -1)  || (user.indexOf("mozilla/4.7") != -1) || (user.indexOf("mozilla/4.78") != -1) || (user.indexOf("mozilla/4.08") != -1) || (user.indexOf("mozilla/3") != -1) )
-        {
-            //browser=(userAgent.substring(userAgent.indexOf("MSIE")).split(" ")[0]).replace("/", "-");
-            browser = "Netscape-?";
-
-        }else if ((user.indexOf("mozilla") > -1))
-        {
-            //browser=(userAgent.substring(userAgent.indexOf("MSIE")).split(" ")[0]).replace("/", "-");
-        	if(browserDetails.indexOf(" ") > 0){
-        		browser = browserDetails.substring(0 , browserDetails.indexOf(" "));
-        	}else{
-        		browser = "Mozilla" ;
-        	}
-
-        } else if (user.contains("firefox"))
-        {
-            browser=(userAgent.substring(userAgent.indexOf("Firefox")).split(" ")[0]).replace("/", "-");
-        } else if(user.contains("rv"))
-        {
-            browser="ie";
-        } else
-        {
-            browser = "UnKnown";
-        }
-        client.setUseragent(browserDetails);
-        client.setOs(os);
-        client.setBrowser(browser);
-        client.setVersion(version);
+		if(request!=null && request.getHeader("User-Agent") != null){
+			String  browserDetails  =   request.getHeader("User-Agent");
+		    String  userAgent       =   browserDetails;
+		    String  user   =   userAgent.toLowerCase();
+		    String os = "";
+		    String browser = "" , version = "";
+	
+	
+		    //=================OS=======================
+		    if (userAgent.toLowerCase().indexOf("windows") >= 0 )
+		    {
+		    	os = "windows";
+		    } else if(userAgent.toLowerCase().indexOf("mac") >= 0)
+		    {
+		    	os = "mac";
+		    } else if(userAgent.toLowerCase().indexOf("x11") >= 0)
+		    {
+		    	os = "unix";
+		    } else if(userAgent.toLowerCase().indexOf("android") >= 0)
+		    {
+		    	os = "android";
+		    } else if(userAgent.toLowerCase().indexOf("iphone") >= 0)
+		    {
+		    	os = "iphone";
+		    }else{
+		    	os = "UnKnown";
+		    }
+		    //===============Browser===========================
+		    if (user.contains("msie") || user.indexOf("rv:11") > -1)
+		    {
+		    	if(user.indexOf("rv:11") >= 0){
+		    		browser = "IE11" ;
+		    	}else{
+		    		String substring=userAgent.substring(userAgent.indexOf("MSIE")).split(";")[0];
+		    		browser=substring.split(" ")[0].replace("MSIE", "IE")+substring.split(" ")[1];
+		    	}
+		    }else if (user.contains("trident"))
+		    {
+		    	browser= "IE 11" ;
+		    }else if (user.contains("edge"))
+		    {
+		    	browser= "Edge" ;
+		    }  else if (user.contains("safari") && user.contains("version"))
+		    {
+		    	browser = (userAgent.substring(userAgent.indexOf("Safari")).split(" ")[0]).split("/")[0];
+		    	version = (userAgent.substring(userAgent.indexOf("Version")).split(" ")[0]).split("/")[1] ;
+		    } else if ( user.contains("opr") || user.contains("opera"))
+		    {
+		    	if(user.contains("opera"))
+		    		browser=(userAgent.substring(userAgent.indexOf("Opera")).split(" ")[0]).split("/")[0]+"-"+(userAgent.substring(userAgent.indexOf("Version")).split(" ")[0]).split("/")[1];
+		    	else if(user.contains("opr"))
+		    		browser=((userAgent.substring(userAgent.indexOf("OPR")).split(" ")[0]).replace("/", "-")).replace("OPR", "Opera");
+		    } else if (user.contains("chrome"))
+		    {
+		    	browser = "Chrome";
+		    } else if ((user.indexOf("mozilla/7.0") > -1) || (user.indexOf("netscape6") != -1)  || (user.indexOf("mozilla/4.7") != -1) || (user.indexOf("mozilla/4.78") != -1) || (user.indexOf("mozilla/4.08") != -1) || (user.indexOf("mozilla/3") != -1) )
+		    {
+		    	//browser=(userAgent.substring(userAgent.indexOf("MSIE")).split(" ")[0]).replace("/", "-");
+		    	browser = "Netscape-?";
+	
+		    }else if ((user.indexOf("mozilla") > -1))
+		    {
+		    	//browser=(userAgent.substring(userAgent.indexOf("MSIE")).split(" ")[0]).replace("/", "-");
+		    	if(browserDetails.indexOf(" ") > 0){
+		    		browser = browserDetails.substring(0 , browserDetails.indexOf(" "));
+		    	}else{
+		    		browser = "Mozilla" ;
+		    	}
+	
+		    } else if (user.contains("firefox"))
+		    {
+		    	browser=(userAgent.substring(userAgent.indexOf("Firefox")).split(" ")[0]).replace("/", "-");
+		    } else if(user.contains("rv"))
+		    {
+		    	browser="ie";
+		    } else
+		    {
+		    	browser = "UnKnown";
+		    }
+		    client.setUseragent(browserDetails);
+		    client.setOs(os);
+		    client.setBrowser(browser);
+		    client.setVersion(version);
+	    }
         
         return client ;
 	}

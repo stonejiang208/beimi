@@ -1,6 +1,11 @@
 package com.beimi.core;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.statemachine.StateMachine;
+
+import com.beimi.core.engine.game.BeiMiGameEnum;
+import com.beimi.core.engine.game.BeiMiGameEvent;
+import com.beimi.core.engine.game.GameEngine;
 
 public class BMDataContext {
 	public static final String USER_SESSION_NAME = "user";
@@ -13,8 +18,10 @@ public class BMDataContext {
 	public static final String BEIMI_SYSTEM_GAME_TYPE_DIC = "com.dic.game.type";
 	
 	public static final String BEIMI_SYSTEM_GAME_ACCOUNT_CONFIG = "game_account_config";
+	public static final String BEIMI_GAME_PLAYWAY = "game_playway";
 	
 	public static final String BEIMI_SYSTEM_AUTH_DIC = "com.dic.auth.resource";
+	
 	
 	public static String SYSTEM_ORGI = "beimi" ;
 	
@@ -23,6 +30,11 @@ public class BMDataContext {
 	private static boolean imServerRunning = false ;			//IM服务状态
 	
 	private static ApplicationContext applicationContext ;
+	
+	
+	private static GameEngine gameEngine ;
+	
+	private static StateMachine<BeiMiGameEnum, BeiMiGameEvent> stateMachine;
 	
 	public static int getWebIMPort() {
 		return WebIMPort;
@@ -34,6 +46,12 @@ public class BMDataContext {
 	
 	public static void setApplicationContext(ApplicationContext context){
 		applicationContext = context ;
+	}
+	public static void setStateMachine(StateMachine<BeiMiGameEnum, BeiMiGameEvent> tempStateMachine){
+		stateMachine = tempStateMachine ;
+	}
+	public static void setGameEngine(GameEngine engine){
+		gameEngine = engine ;
 	}
 	/**
 	 * 根据ORGI找到对应 游戏配置
@@ -47,6 +65,13 @@ public class BMDataContext {
 	public static ApplicationContext getContext(){
 		return applicationContext ;
 	}
+	
+	public static StateMachine<BeiMiGameEnum, BeiMiGameEvent> getStateMachine(){
+		return stateMachine ;
+	}
+	public static GameEngine getGameEngine(){
+		return gameEngine; 
+	}
 	/**
 	 * 系统级的加密密码 ， 从CA获取
 	 * @return
@@ -55,7 +80,7 @@ public class BMDataContext {
 		return "BEIMI" ;
 	}
 	
-public enum NameSpaceEnum{
+	public enum NameSpaceEnum{
 		
 		SYSTEM("/bm/system") ,
 		GAME("/bm/game");
@@ -73,6 +98,50 @@ public enum NameSpaceEnum{
 		NameSpaceEnum(String namespace){
 			this.namespace = namespace ;
 		}
+		
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+	public enum ModelType{
+		ROOM;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+	public enum UserDataEventType{
+		SAVE,UPDATE,DELETE;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+	
+	public enum GameTypeEnum{
+		MAJIANG,
+		DIZHU,
+		DEZHOU;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+	public enum PlayerTypeEnum{
+		AI,			//AI
+		NORMAL,		//普通玩家
+		OFFLINE;	//离线 托管玩家
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+	public enum MessageTypeEnum{
+		JOINROOM,
+		MESSAGE, 
+		END,
+		TRANS, STATUS , AGENTSTATUS , SERVICE, WRITING;
 		
 		public String toString(){
 			return super.toString().toLowerCase() ;

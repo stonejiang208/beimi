@@ -1,5 +1,8 @@
 package com.beimi.util.cache;
 
+import com.beimi.util.cache.hazelcast.impl.MultiCache;
+import com.beimi.util.cache.hazelcast.impl.QueneCache;
+
 
 public interface CacheInstance {
 	
@@ -17,15 +20,35 @@ public interface CacheInstance {
 	
 	
 	/**
-	 * IMR指令
+	 * 游戏房间
 	 * @return
 	 */
-	public CacheBean getIMRCacheBean();
+	public CacheBean getGameRoomCacheBean();
+	
+	/**
+	 * 游戏数据
+	 * @return
+	 */
+	public CacheBean getGameCacheBean();
+	
+	
+	/**
+	 * 房间用户
+	 * @return
+	 */
+	public MultiCache getGamePlayerCacheBean();
 	
 	/**
 	 * IMR指令
 	 * @return
 	 */
 	public CacheBean getApiUserCacheBean();
+	
+	/**
+	 * 分布式队列
+	 * @return
+	 */
+	
+	public QueneCache getQueneCache();
 	
 }

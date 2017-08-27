@@ -54,7 +54,7 @@ public class ApiLoginController extends Handler{
         	/**
         	 * 消息队列，同时存ES和数据库，或其他持久化数据系统
         	 */
-        	UKTools.published(playuser , playUserESRes , playUserRes);
+        	UKTools.published(playuser , playUserESRes , playUserRes ,BMDataContext.UserDataEventType.SAVE.toString());
         	/**
         	 * 发送到消息队列，用户登录
         	 */

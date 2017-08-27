@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -38,6 +39,8 @@ public class PlayUserClient implements UserEvent , java.io.Serializable{
 	private Date updatetime = new Date();
 	private Date passupdatetime = new Date();
 	
+	private int playerindex ;
+	
 	private String memo;
 	private String city ;	//城市
 	private String province ;//省份
@@ -46,6 +49,8 @@ public class PlayUserClient implements UserEvent , java.io.Serializable{
 	private String status ;		//
 	private boolean datastatus ;//数据状态，是否已删除	
 	private boolean headimg ; 	//是否上传头像
+	
+	private String playertype ;	//玩家类型 ： 玩家：托管玩家，AI
 	
 	private String token ;
 	
@@ -359,5 +364,26 @@ public class PlayUserClient implements UserEvent , java.io.Serializable{
 	public void setQqid(String qqid) {
 		this.qqid = qqid;
 	}
+
+
+	public String getPlayertype() {
+		return playertype;
+	}
+
+
+	public void setPlayertype(String playertype) {
+		this.playertype = playertype;
+	}
+
+	@Transient
+	public int getPlayerindex() {
+		return playerindex;
+	}
+
+
+	public void setPlayerindex(int playerindex) {
+		this.playerindex = playerindex;
+	}
+	
 	
 }

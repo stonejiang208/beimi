@@ -51,6 +51,13 @@ public class PlayUser implements UserEvent , java.io.Serializable{
 	private String secureconf = "5";
 	private String usertype ; //
 	
+	private String country;
+	private String region;
+	private String useragent ;
+	private String isp;
+	
+	private String playertype ;
+	
 	private String orgi ;
 	private String creater;
 	private Date createtime = new Date();
@@ -60,12 +67,18 @@ public class PlayUser implements UserEvent , java.io.Serializable{
 	private String openid ;	//微信
 	private String qqid ;
 	
+	private String ostype ;	//客户端类型 IOS/ANDROID
+	private String browser ;//客户端浏览器
+	
 	private String memo;
 	private String city ;	//城市
 	private String province ;//省份
 	private boolean login ;		//是否登录
 	private boolean online ; 	//是否在线
 	private String status ;		//
+	
+	private boolean disabled ;	//是否禁用
+	
 	private boolean datastatus ;//数据状态，是否已删除	
 	private boolean headimg ; 	//是否上传头像
 	
@@ -517,5 +530,84 @@ public class PlayUser implements UserEvent , java.io.Serializable{
 	public void setQqid(String qqid) {
 		this.qqid = qqid;
 	}
-	
+
+
+	public String getCountry() {
+		return country;
+	}
+
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+
+	public String getRegion() {
+		return region;
+	}
+
+
+	public void setRegion(String region) {
+		this.region = region;
+	}
+
+
+	public String getIsp() {
+		return isp;
+	}
+
+
+	public void setIsp(String isp) {
+		this.isp = isp;
+	}
+
+
+	public String getOstype() {
+		return ostype;
+	}
+
+
+	public void setOstype(String ostype) {
+		this.ostype = ostype;
+	}
+
+
+	public boolean isDisabled() {
+		return disabled;
+	}
+
+
+	public void setDisabled(boolean disabled) {
+		this.disabled = disabled;
+	}
+
+
+	public String getUseragent() {
+		return useragent;
+	}
+
+
+	public void setUseragent(String useragent) {
+		this.useragent = useragent;
+	}
+
+
+	public String getBrowser() {
+		return browser;
+	}
+
+
+	public void setBrowser(String browser) {
+		this.browser = browser;
+	}
+
+
+	public String getPlayertype() {
+		return playertype;
+	}
+
+
+	public void setPlayertype(String playertype) {
+		this.playertype = playertype;
+	}
 }

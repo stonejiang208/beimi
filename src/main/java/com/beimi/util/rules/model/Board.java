@@ -22,9 +22,13 @@ public class Board implements java.io.Serializable{
 	
 	private byte[] cards;	//4个Bit描述一张牌，麻将：136+2/2 = 69 byte ; 扑克 54/2 = 27 byte 
 	private Player[] players;//3~10人(4 byte)
-	private int room ;		//房间ID（4 byte）
-	private byte info ;		//复合信息 ，当前牌（4 Bit）， 当前玩家 （4 Bit）(1 byte)
-	private byte order ;	//序号
+	private String room ;		//房间ID（4 byte）
+	
+	private byte position ;		//地主牌
+	
+	private String banker ;		//庄家
+	private String currplayer ;	//当前出牌人
+	private byte currcard ;		//当前出牌
 	
 	public byte[] getCards() {
 		return cards;
@@ -38,22 +42,34 @@ public class Board implements java.io.Serializable{
 	public void setPlayers(Player[] players) {
 		this.players = players;
 	}
-	public int getRoom() {
+	public String getRoom() {
 		return room;
 	}
-	public void setRoom(int room) {
+	public void setRoom(String room) {
 		this.room = room;
 	}
-	public byte getInfo() {
-		return info;
+	public String getBanker() {
+		return banker;
 	}
-	public void setInfo(byte info) {
-		this.info = info;
+	public void setBanker(String banker) {
+		this.banker = banker;
 	}
-	public byte getOrder() {
-		return order;
+	public String getCurrplayer() {
+		return currplayer;
 	}
-	public void setOrder(byte order) {
-		this.order = order;
+	public void setCurrplayer(String currplayer) {
+		this.currplayer = currplayer;
+	}
+	public byte getCurrcard() {
+		return currcard;
+	}
+	public void setCurrcard(byte currcard) {
+		this.currcard = currcard;
+	}
+	public byte getPosition() {
+		return position;
+	}
+	public void setPosition(byte position) {
+		this.position = position;
 	}
 }

@@ -3,25 +3,39 @@ package com.beimi.config.web;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import com.beimi.core.BMDataContext;
+import com.beimi.core.engine.game.GameEngine;
 import com.beimi.util.cache.CacheHelper;
+import com.beimi.web.model.GamePlayway;
+import com.beimi.web.model.GameRoom;
+import com.beimi.web.model.Generation;
 import com.beimi.web.model.SysDic;
 import com.beimi.web.model.SystemConfig;
+import com.beimi.web.service.repository.jpa.GamePlaywayRepository;
+import com.beimi.web.service.repository.jpa.GameRoomRepository;
+import com.beimi.web.service.repository.jpa.GenerationRepository;
 import com.beimi.web.service.repository.jpa.SysDicRepository;
 import com.beimi.web.service.repository.jpa.SystemConfigRepository;
 
 @Component
 public class StartedEventListener implements ApplicationListener<ContextRefreshedEvent> {
+	
+	@Autowired
+	private GameEngine gameEngine ;
+	
 	private SysDicRepository sysDicRes;
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
     	if(BMDataContext.getContext() == null){
     		BMDataContext.setApplicationContext(event.getApplicationContext());
     	}
+    	BMDataContext.setGameEngine(gameEngine);
+    	
     	sysDicRes = event.getApplicationContext().getBean(SysDicRepository.class) ;
     	List<SysDic> sysDicList = sysDicRes.findAll() ;
     	
@@ -45,10 +59,33 @@ public class StartedEventListener implements ApplicationListener<ContextRefreshe
     	if(config != null){
     		CacheHelper.getSystemCacheBean().put("systemConfig", config, BMDataContext.SYSTEM_ORGI);
     	}
-//    	GenerationRepository generationRes = event.getApplicationContext().getBean(GenerationRepository.class) ;
-//    	List<Generation> generationList = generationRes.findAll() ;
-//    	for(Generation generation : generationList){
-//    		CacheHelper.getSystemCacheBean().setAtomicLong(BMDataContext.ModelType.WORKORDERS.toString(), generation.getStartinx());
-//    	}
+    	
+    	
+    	GamePlaywayRepository playwayRes = event.getApplicationContext().getBean(GamePlaywayRepository.class) ;
+    	List<GamePlayway> gamePlaywayList = playwayRes.findAll() ;
+    	if(gamePlaywayList.size() > 0){
+    		for(GamePlayway playway : gamePlaywayList){
+    			CacheHelper.getSystemCacheBean().put(playway.getId(), playway, playway.getOrgi());
+    		}
+    	}
+    	
+    	GameRoomRepository gameRoomRes = event.getApplicationContext().getBean(GameRoomRepository.class) ;
+    	List<GameRoom> gameRoomList = gameRoomRes.findAll() ;
+    	if(gameRoomList.size() > 0){
+    		for(GameRoom gameRoom : gameRoomList){
+    			if(gameRoom.isCardroom()){
+    				gameRoomRes.delete(gameRoom);//回收房卡房间资源
+    			}else{
+    				CacheHelper.getQueneCache().offer(gameRoom, gameRoom.getOrgi());
+    				CacheHelper.getGameRoomCacheBean().put(gameRoom.getId(), gameRoom, gameRoom.getOrgi());
+    			}
+    		}
+    	}
+    	
+    	GenerationRepository generationRes = event.getApplicationContext().getBean(GenerationRepository.class) ;
+    	List<Generation> generationList = generationRes.findAll() ;
+    	for(Generation generation : generationList){
+    		CacheHelper.getSystemCacheBean().setAtomicLong(BMDataContext.ModelType.ROOM.toString(), generation.getStartinx());
+    	}
     }
 }
