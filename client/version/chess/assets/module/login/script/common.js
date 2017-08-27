@@ -10,31 +10,27 @@ cc.Class({
          */
         // this.loginFormPool = new cc.NodePool();
         // this.loginFormPool.put(cc.instantiate(this.prefab)); // 创建节点
-        this.encrypt = require('encryptjs');
+
     },
     login:function(){
         this.io = require("IOUtils");
         this.loadding();
-        if(this.io.get("user") == null){
+        if(this.io.get("userinfo") == null){
             //发送游客注册请求
             var xhr = cc.beimi.http.httpGet("/api/guest", this.sucess , this.error , this);
         }else{
             //通过ID获取 玩家信息
-            var decrypted = this.encrypt.decrypt(this.io.get("user"),cc.beimi.seckey,256) ;
-            var data = JSON.parse(decrypted) ;
+            var data = JSON.parse(this.io.get("userinfo")) ;
             if(data.token != null){     //获取用户登录信息
                 var xhr = cc.beimi.http.httpGet("/api/guest?token="+data.token.id, this.sucess , this.error , this);
             }
         }
-		// this.dialog = this.loginFormPool.get();
-		// this.dialog.parent = this.root ;
 	},
     reset:function(data , result){
         //放在全局变量
         cc.beimi.authorization = data.token.id ;
         cc.beimi.user = data.data ;
-        var encrypted = this.encrypt.encrypt(result,cc.beimi.seckey,256);
-        this.io.put("user" ,encrypted );
+        this.io.put("userinfo" ,result );
     },
     sucess:function(result , object){
         var data = JSON.parse(result) ;
@@ -44,7 +40,7 @@ cc.Class({
             //预加载场景
             setTimeout(function(){
                 object.scene("defaulthall" , object) ;
-            } , 1000);
+            } , 200);
         }
     },
     error:function(object){

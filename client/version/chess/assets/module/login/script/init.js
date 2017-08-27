@@ -36,12 +36,6 @@ cc.Class({
 
         cc.beimi.audio.playBGM("bgMain.mp3");
 
-        // var socket = window.io.connect('http://192.168.1.155:9081/bm/system?token=123');
-        //
-        // socket.on("connect" , function(){
-        //      cc.log("ttt");
-        // });
-
     },
     start:function(){        
         var self = this;

@@ -1,6 +1,5 @@
-var beiMiCommon = require("BeiMiCommon");
 cc.Class({
-    extends: beiMiCommon,
+    extends: cc.Component,
 
     properties: {
         // foo: {
@@ -13,18 +12,30 @@ cc.Class({
         //    readonly: false,    // optional, default is false
         // },
         // ...
+        posy:cc.Integer,
+        card:{
+            default:null ,
+            type : cc.Node
+        }
     },
 
     // use this for initialization
     onLoad: function () {
-
+        this.posy = this.card.y ;
+        this.mouse_down  = false ;
+        this.card.on(cc.Node.EventType.MOUSE_DOWN, function (event) {
+            console.log('Mouse down');
+        }, this);
+        this.card.on(cc.Node.EventType.MOUSE_ENTER, function (event) {
+            console.log('Mouse down');
+        }, this);
     },
-    onClickDizhu:function(){
-        this.loadding();
-        let object = this ;
-        setTimeout(function(){
-            object.scene("dizhu" , object) ;
-        } , 200);
+    takecard:function(){
+        if(this.card.y == this.posy){
+            this.card.y = this.card.y + 30 ;
+        }else{
+            this.card.y = this.card.y - 30 ;
+        }
     }
 
     // called every frame, uncomment this function to activate update callback

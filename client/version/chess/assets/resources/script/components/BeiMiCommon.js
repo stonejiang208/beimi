@@ -66,6 +66,19 @@ cc.Class({
             cc.director.loadScene(name);
         });
     },
+    root:function(){
+        return cc.find("Canvas");
+    },
+    decode:function(str){
+        var strArray = cc.Codec.Base64.decode(str) ;
+        var cards = new Array();
+        if(strArray && strArray.length > 0){
+            for(var i= 0 ; i<strArray.length ; i++){
+                cards[i] = strArray[i].charCodeAt();
+            }
+        }
+        return cards ;
+    }
 
     // called every frame, uncomment this function to activate update callback
     // update: function (dt) {

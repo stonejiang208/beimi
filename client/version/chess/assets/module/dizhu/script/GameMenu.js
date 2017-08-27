@@ -1,6 +1,5 @@
-var beiMiCommon = require("BeiMiCommon");
 cc.Class({
-    extends: beiMiCommon,
+    extends: cc.Component,
 
     properties: {
         // foo: {
@@ -19,12 +18,8 @@ cc.Class({
     onLoad: function () {
 
     },
-    onClickDizhu:function(){
-        this.loadding();
-        let object = this ;
-        setTimeout(function(){
-            object.scene("dizhu" , object) ;
-        } , 200);
+    back:function(){
+
     }
 
     // called every frame, uncomment this function to activate update callback

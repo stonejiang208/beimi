@@ -13,18 +13,31 @@ cc.Class({
         //    readonly: false,    // optional, default is false
         // },
         // ...
+        text: {
+            default: null,
+            type: cc.Label
+        }
     },
 
     // use this for initialization
     onLoad: function () {
 
     },
-    onClickDizhu:function(){
-        this.loadding();
-        let object = this ;
-        setTimeout(function(){
-            object.scene("dizhu" , object) ;
-        } , 200);
+    init:function(text , time , target){
+        let self = this ;
+        this.remaining = time ;
+        this.text.string = text +"（"+ this.remaining +"）" ;
+        this.schedule(function() {
+            this.remaining = this.remaining - 1 ;
+            self.text.string = text +"（"+ this.remaining +"）" ;
+            if(this.remaining <= 0){
+                self.unschedule(this);
+            }
+        }, 1 , time);
+    },
+    stop:function(target){
+        this.remaining = 0 ;
+        target.destroy();
     }
 
     // called every frame, uncomment this function to activate update callback

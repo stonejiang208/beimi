@@ -21,8 +21,8 @@
   },
   "packageName": "com.beimi",
   "privateKey": "",
-  "renderMode": "0",
+  "renderMode": "1",
   "startScene": "1db3d56a-e495-44b9-a343-d13e8a09ce72",
   "title": "beimi",
-  "webOrientation": "auto"
+  "webOrientation": "landscape"
 }

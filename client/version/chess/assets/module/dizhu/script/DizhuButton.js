@@ -19,12 +19,13 @@ cc.Class({
     onLoad: function () {
 
     },
-    onClickDizhu:function(){
+    back:function(){
         this.loadding();
-        let object = this ;
+        let self = this ;
         setTimeout(function(){
-            object.scene("dizhu" , object) ;
-        } , 200);
+            self.scene("defaulthall" , self);
+        } , 500)
+
     }
 
     // called every frame, uncomment this function to activate update callback
