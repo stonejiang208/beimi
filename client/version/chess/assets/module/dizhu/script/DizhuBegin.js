@@ -55,7 +55,7 @@ cc.Class({
          * 连接服务器，进入ROOM，开始等待其他玩家或AI加入 , 发送 创建ROOM的 HTTP请求，创建 ROOM ，ROOM创建成功后开始建立 SocketIO链接
          */
         if(cc.beimi && cc.beimi.authorization && cc.beimi.user){
-            var socket = window.io.connect('http://192.168.1.155:9081/bm/game?token='+cc.beimi.authorization+"&playway=402888815e21d735015e21d995680000&orgi="+cc.beimi.user.orgi);
+            var socket = window.io.connect(cc.beimi.http.wsURL + '/bm/game?token='+cc.beimi.authorization+"&playway=402888815e21d735015e21d995680000&orgi="+cc.beimi.user.orgi);
             socket.on("connect" , function(){
                //显示 匹配中，并计时间，超过设定的倒计时时间即AI加入，根据当前的 玩家数量 匹配机器人
                 //console.log("testabc");
