@@ -5,6 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
+import com.beimi.config.web.model.Game;
 import com.beimi.core.BMDataContext;
 import com.beimi.util.server.handler.GameEventHandler;
 import com.beimi.util.server.handler.SystemEventHandler;
@@ -17,6 +18,9 @@ public class ServerRunner implements CommandLineRunner {
     private final SocketIONamespace gameSocketNameSpace ;
     private final SocketIONamespace systemSocketNameSpace ;
     
+    @Autowired
+    private Game game ;
+    
     @Autowired  
     public ServerRunner(SocketIOServer server) {  
         this.server = server;  
@@ -26,7 +30,7 @@ public class ServerRunner implements CommandLineRunner {
     
     @Bean(name="gameNamespace")
     public SocketIONamespace getGameSocketIONameSpace(SocketIOServer server ){
-    	gameSocketNameSpace.addListeners(new GameEventHandler(server));
+    	gameSocketNameSpace.addListeners(new GameEventHandler(server , game));
     	return gameSocketNameSpace  ;
     }
     

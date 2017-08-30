@@ -16,6 +16,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.beimi.core.BMDataContext;
+import com.beimi.core.engine.game.state.GameEvent;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.util.rules.model.Board;
 import com.beimi.util.rules.model.Player;
@@ -42,10 +43,10 @@ public class GameUtils {
 	 * @param gameRoom
 	 * @param orgi
 	 */
-	public static void removeGameRoom(GameRoom gameRoom,String orgi){
+	public static void removeGameRoom(String roomid,String orgi){
 		GameRoom tempGameRoom ;
 		while((tempGameRoom = (GameRoom) CacheHelper.getQueneCache().poll(orgi)) != null){
-			if(tempGameRoom.getId().equals(gameRoom.getId())){
+			if(tempGameRoom.getId().equals(roomid)){
 				break ;		//拿走，不排队了，开始增加AI
 			}else{
 				CacheHelper.getQueneCache().offer(tempGameRoom , orgi) ;	//还回去

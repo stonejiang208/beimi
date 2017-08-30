@@ -1,58 +1,70 @@
 package com.beimi.config.web;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.statemachine.config.EnableStateMachine;
-import org.springframework.statemachine.config.StateMachineConfigurerAdapter;
-import org.springframework.statemachine.config.builders.StateMachineStateConfigurer;
-import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
 
 import com.beimi.core.engine.game.BeiMiGameEnum;
 import com.beimi.core.engine.game.BeiMiGameEvent;
+import com.beimi.core.engine.game.action.EnterAction;
+import com.beimi.core.engine.game.action.EventAction;
+import com.beimi.core.statemachine.BeiMiStateMachine;
+import com.beimi.core.statemachine.config.StateConfigurer;
+import com.beimi.core.statemachine.config.StateMachineTransitionConfigurer;
 
 @Configuration
-@EnableStateMachine
-public class BeiMiStateMachineConfig extends StateMachineConfigurerAdapter<String, String> {
+public class BeiMiStateMachineConfig<T, S>  {
 	
-		
-	@Override
-    public void configure(StateMachineStateConfigurer<String,String> states)
+	@Bean
+	public BeiMiStateMachine<String,String> create() throws Exception{
+		BeiMiStateMachine<String,String> beiMiStateMachine = new BeiMiStateMachine<String,String>();
+		this.configure(beiMiStateMachine.getConfig());
+		this.configure(beiMiStateMachine.getTransitions());
+		return beiMiStateMachine;
+	}
+	
+    public void configure(StateConfigurer<String,String> states)
             throws Exception {
         states
             .withStates()
-                .initial(BeiMiGameEnum.ENTER.toString())
-                    .state(BeiMiGameEnum.BEGIN.toString())
-                    .state(BeiMiGameEnum.READY.toString())
-                    .state(BeiMiGameEnum.PLAY.toString())
+                .initial(BeiMiGameEnum.NONE.toString())
+                    .state(BeiMiGameEnum.CRERATED.toString())
                     .state(BeiMiGameEnum.WAITTING.toString())
+                    .state(BeiMiGameEnum.READY.toString())
+                    .state(BeiMiGameEnum.BEGIN.toString())
+                    .state(BeiMiGameEnum.PLAY.toString())
                     .state(BeiMiGameEnum.END.toString());
 	}
 
-	@Override
     public void configure(StateMachineTransitionConfigurer<String, String> transitions)
             throws Exception {
+		EventAction action = new EventAction();
 		/**
 		 * 状态切换：BEGIN->WAITTING->READY->PLAY->END
 		 */
         transitions
 	        .withExternal()	
-	        	.source(BeiMiGameEnum.ENTER.toString()).target(BeiMiGameEnum.BEGIN.toString())
-	        	.event(BeiMiGameEvent.ENTER.toString()).action(null)
+		    	.source(BeiMiGameEnum.NONE.toString()).target(BeiMiGameEnum.CRERATED.toString())
+		    	.event(BeiMiGameEvent.ENTER.toString()).action(new EnterAction<String,String>())
+		    	.and()
+		    .withExternal()	
+	        	.source(BeiMiGameEnum.CRERATED.toString()).target(BeiMiGameEnum.WAITTING.toString())
+	        	.event(BeiMiGameEvent.JOIN.toString()).action(action)
 	        	.and()
             .withExternal()	
-                .source(BeiMiGameEnum.BEGIN.toString()).target(BeiMiGameEnum.WAITTING.toString())
-                .event(BeiMiGameEvent.BEGIN.toString()).action(null)
-                .and()
-            .withExternal()
                 .source(BeiMiGameEnum.WAITTING.toString()).target(BeiMiGameEnum.READY.toString())
-                .event(BeiMiGameEvent.ENOUGH.toString()).action(null)
+                .event(BeiMiGameEvent.ENOUGH.toString()).action(action)
                 .and()
             .withExternal()
-                .source(BeiMiGameEnum.READY.toString()).target(BeiMiGameEnum.PLAY.toString())
-                .event(BeiMiGameEvent.RAISEHANDS.toString()).action(null)
+                .source(BeiMiGameEnum.READY.toString()).target(BeiMiGameEnum.BEGIN.toString())
+                .event(BeiMiGameEvent.AUTO.toString()).action(action)
+                .and()
+            .withExternal()
+                .source(BeiMiGameEnum.BEGIN.toString()).target(BeiMiGameEnum.PLAY.toString())
+                .event(BeiMiGameEvent.RAISEHANDS.toString()).action(action)
                 .and()
             .withExternal()
                 .source(BeiMiGameEnum.PLAY.toString()).target(BeiMiGameEnum.END.toString())
-                .event(BeiMiGameEvent.ALLCARDS.toString()).action(null)
+                .event(BeiMiGameEvent.ALLCARDS.toString()).action(action)
             ;
     }
 }

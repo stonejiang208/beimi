@@ -23,13 +23,11 @@ public class CreateAITask implements ValueWithExpiryTime  , BeiMiGameTask{
 
 	private long timer  ;
 	private GameRoom gameRoom = null ;
-	private SocketIOServer server ;
 	private String orgi ;
 	
-	public CreateAITask(long timer , GameRoom gameRoom , SocketIOServer server , String orgi){
+	public CreateAITask(long timer , GameRoom gameRoom, String orgi){
 		this.timer = timer ;
 		this.gameRoom = gameRoom ;
-		this.server = server ;
 		this.orgi = orgi ;
 	}
 	@Override
@@ -39,7 +37,7 @@ public class CreateAITask implements ValueWithExpiryTime  , BeiMiGameTask{
 	
 	public void execute(){
 		//执行生成AI
-		GameUtils.removeGameRoom(this.gameRoom, orgi);
+		GameUtils.removeGameRoom(gameRoom.getId(), orgi);
 		Collection<Object> playerList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
 		List<Object> playUserClientList = new ArrayList<Object>();
 		playUserClientList.addAll(playerList) ;
@@ -49,7 +47,7 @@ public class CreateAITask implements ValueWithExpiryTime  , BeiMiGameTask{
 				PlayUserClient playerUser = GameUtils.create(new PlayUser() , BMDataContext.PlayerTypeEnum.AI.toString()) ;
 				playerUser.setPlayerindex(playerList.size()+i);
 				CacheHelper.getGamePlayerCacheBean().put(gameRoom.getId(), playerUser, orgi); //将用户加入到 room ， MultiCache
-				server.getRoomOperations(gameRoom.getId()).sendEvent("joinroom",JSON.toJSONString(playerUser));
+				BMDataContext.getContext().getBean(SocketIOServer.class).getRoomOperations(gameRoom.getId()).sendEvent("joinroom",JSON.toJSONString(playerUser));
 				playUserClientList.add(playerUser) ;
 			}
 		}

@@ -24,6 +24,7 @@ public class MultiCache{
 	}
 	
 	public void put(String key, Object value, String orgi) {
+		
 		getInstance().getMultiMap(getName()).put(key, value) ;
 	}
 

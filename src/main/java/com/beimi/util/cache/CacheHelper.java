@@ -65,7 +65,10 @@ public class CacheHelper {
 	public static CacheBean getApiUserCacheBean() {
 		return cacheInstance!=null ? cacheInstance.getApiUserCacheBean() : null ;
 	}
-	
+	/**
+	 * 存放游戏数据的 ，Board
+	 * @return
+	 */
 	public static CacheBean getGameCacheBean() {
 		return cacheInstance!=null ? cacheInstance.getGameCacheBean() : null ;
 	}

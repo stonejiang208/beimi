@@ -1,16 +1,14 @@
 package com.beimi.util.server.handler;
 
-import java.util.Collection;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alibaba.fastjson.JSON;
+import com.beimi.config.web.model.Game;
 import com.beimi.core.BMDataContext;
-import com.beimi.core.engine.game.task.CreateAITask;
+import com.beimi.core.engine.game.state.GameEvent;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.util.client.NettyClients;
-import com.beimi.web.model.GameRoom;
 import com.beimi.web.model.PlayUserClient;
 import com.beimi.web.model.Token;
 import com.corundumstudio.socketio.SocketIOClient;
@@ -22,10 +20,13 @@ public class GameEventHandler
 {  
 	protected SocketIOServer server;
 	
+	private Game game ;
+	
     @Autowired  
-    public GameEventHandler(SocketIOServer server)   
+    public GameEventHandler(SocketIOServer server , Game game)   
     {  
         this.server = server ;
+        this.game = game ;
     }  
     
     @OnConnect  
@@ -55,22 +56,29 @@ public class GameEventHandler
 				//鉴权完毕
 				PlayUserClient userClient = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(userToken.getUserid(), userToken.getOrgi()) ;
 				NettyClients.getInstance().putGameEventClient(userClient.getId(), client);
-				GameRoom gameRoom = BMDataContext.getGameEngine().gameRequest(userToken.getUserid(), playway, room, orgi , userClient) ;
-				if(gameRoom != null){
-					client.joinRoom(gameRoom.getId());
-					server.getRoomOperations(gameRoom.getId()).sendEvent("joinroom",JSON.toJSONString(userClient));
-					client.sendEvent("players", JSON.toJSONString(CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), orgi)));
+				GameEvent gameEvent = BMDataContext.getGameEngine().gameRequest(userToken.getUserid(), playway, room, orgi , userClient) ;
+				if(gameEvent != null){
+					/**
+					 * 游戏状态 ， 玩家请求 游戏房间，活动房间状态后，发送事件给 StateMachine，由 StateMachine驱动 游戏状态 ， 此处只负责通知房间内的玩家
+					 * 1、有新的玩家加入
+					 * 2、给当前新加入的玩家发送房间中所有玩家信息（不包含隐私信息，根据业务需求，修改PlayUserClient的字段，剔除掉隐私信息后发送）
+					 */
+					server.getRoomOperations(gameEvent.getRoomid()).sendEvent("joinroom",JSON.toJSONString(userClient));
+					client.sendEvent("players", JSON.toJSONString(CacheHelper.getGamePlayerCacheBean().getCacheObject(gameEvent.getRoomid(), orgi)));
+						
+					game.change(gameEvent);	//通知状态机
 					
-					if(CacheHelper.getExpireCache().get(gameRoom.getId())==null){
-						Collection<Object> playerList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
-						if(gameRoom.getPlayers() == playerList.size()){
-							//结束撮合，可以开始玩游戏了
-							CacheHelper.getExpireCache().put(gameRoom.getId(), new CreateAITask(0 , gameRoom , server , gameRoom.getOrgi()));
-						}else{
-							//等5秒，然后进AI ， 每次有玩家加入，先判断当前状态，是否是玩家已凑齐或已开始游戏，否则，计时重新开始
-							CacheHelper.getExpireCache().put(gameRoom.getId(), new CreateAITask(5 , gameRoom , server , gameRoom.getOrgi()));
-						}
-					}
+					
+//					if(CacheHelper.getExpireCache().get(gameEvent.getRoomid())==null){
+//						Collection<Object> playerList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameEvent.getRoomid(), gameEvent.getOrgi()) ;
+//						if(gameEvent.getPlayers() == playerList.size()){
+//							//结束撮合，可以开始玩游戏了
+//							CacheHelper.getExpireCache().put(gameEvent.getRoomid(), new CreateAITask(0 , gameEvent , server , gameEvent.getOrgi()));
+//						}else{
+//							//等5秒，然后进AI ， 每次有玩家加入，先判断当前状态，是否是玩家已凑齐或已开始游戏，否则，计时重新开始
+//							CacheHelper.getExpireCache().put(gameEvent.getOrgi(), new CreateAITask(5 , gameEvent, server , gameEvent.getOrgi()));
+//						}
+//					}
 				}
 			}
 		} catch (Exception e) {

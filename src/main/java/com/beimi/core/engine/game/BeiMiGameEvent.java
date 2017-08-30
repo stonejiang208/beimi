@@ -7,9 +7,10 @@ package com.beimi.core.engine.game;
  *
  */
 public enum BeiMiGameEvent {
-	ENTER,
+	ENTER,		//创建房间 （仅第一个加入房间的人触发的事件）
 	BEGIN ,		//开始
 	JOIN,		//成员加入
+	AUTO,		//自动
 	ENOUGH,		//凑够一桌子
 	RAISEHANDS,	//所有成员举手
 	ALLCARDS;	//1、单个玩家打完牌（地主，推到胡）；2、打完桌面的所有牌（血战，血流，德州）

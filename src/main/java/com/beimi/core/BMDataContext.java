@@ -1,10 +1,7 @@
 package com.beimi.core;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.statemachine.StateMachine;
 
-import com.beimi.core.engine.game.BeiMiGameEnum;
-import com.beimi.core.engine.game.BeiMiGameEvent;
 import com.beimi.core.engine.game.GameEngine;
 
 public class BMDataContext {
@@ -34,8 +31,6 @@ public class BMDataContext {
 	
 	private static GameEngine gameEngine ;
 	
-	private static StateMachine<BeiMiGameEnum, BeiMiGameEvent> stateMachine;
-	
 	public static int getWebIMPort() {
 		return WebIMPort;
 	}
@@ -47,9 +42,7 @@ public class BMDataContext {
 	public static void setApplicationContext(ApplicationContext context){
 		applicationContext = context ;
 	}
-	public static void setStateMachine(StateMachine<BeiMiGameEnum, BeiMiGameEvent> tempStateMachine){
-		stateMachine = tempStateMachine ;
-	}
+	
 	public static void setGameEngine(GameEngine engine){
 		gameEngine = engine ;
 	}
@@ -66,9 +59,6 @@ public class BMDataContext {
 		return applicationContext ;
 	}
 	
-	public static StateMachine<BeiMiGameEnum, BeiMiGameEvent> getStateMachine(){
-		return stateMachine ;
-	}
 	public static GameEngine getGameEngine(){
 		return gameEngine; 
 	}

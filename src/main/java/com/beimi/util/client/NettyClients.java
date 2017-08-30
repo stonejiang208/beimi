@@ -47,4 +47,11 @@ public class NettyClients {
 			gameClient.sendEvent(event, data);
 		}
 	}
+	
+	public void joinRoom(String id , String roomid){
+		List<SocketIOClient> gameClients = systemClients.getClients(id) ;
+		for(SocketIOClient gameClient : gameClients){
+			gameClient.joinRoom(roomid);
+		}
+	}
 }

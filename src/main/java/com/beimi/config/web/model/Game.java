@@ -15,39 +15,20 @@ package com.beimi.config.web.model;
  * See the License for the specific language governing permissions and 
  * limitations under the License. 
  */
-import org.springframework.messaging.Message;
-import org.springframework.messaging.support.MessageBuilder;
-import org.springframework.statemachine.StateMachine;
-import org.springframework.statemachine.recipes.persist.PersistStateMachineHandler;
-import org.springframework.statemachine.recipes.persist.PersistStateMachineHandler.PersistStateChangeListener;
-import org.springframework.statemachine.state.State;
-import org.springframework.statemachine.transition.Transition;
 
-import com.beimi.core.engine.game.BeiMiGameEvent;
-import com.beimi.web.model.GameRoom;
+import com.beimi.core.engine.game.state.GameEvent;
+import com.beimi.core.statemachine.impl.BeiMiMachineHandler;
+import com.beimi.core.statemachine.impl.MessageBuilder;
 
 public class Game { 
 
-	private final PersistStateMachineHandler handler; 
+	private final BeiMiMachineHandler handler; 
 
-	private final PersistStateChangeListener listener = new LocalPersistStateChangeListener(); 
-
-	public Game(PersistStateMachineHandler handler) { 
+	public Game(BeiMiMachineHandler handler) { 
 		this.handler = handler; 
-		this.handler.addPersistStateChangeListener(listener); 
 	} 
 	
-	public void change(GameRoom room, BeiMiGameEvent event) { 
-		  handler.handleEventWithState(MessageBuilder.withPayload(event.toString()).setHeader("room", room.getRoomid()).build(), room.getStatus()); 
-	} 
-
-	private class LocalPersistStateChangeListener implements PersistStateChangeListener { 
-		@Override 
-		public void onPersist(State<String, String> state, Message<String> message, 
-				Transition<String, String> transition, StateMachine<String, String> stateMachine) { 
-			if (message != null && message.getHeaders().containsKey("order")) { 
-				
-			} 
-		} 
+	public void change(GameEvent gameEvent) { 
+		handler.handleEventWithState(MessageBuilder.withPayload(gameEvent.getEvent()).setHeader("room", gameEvent.getRoomid()).build(), gameEvent.getEvent()); 
 	} 
 }
