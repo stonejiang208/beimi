@@ -71,7 +71,8 @@ cc.Class({
                     //其他玩家加入，初始化
                     var inroom = false ;
                     for(var i = 0 ; i < self.player.length ; i++){
-                        if(self.player[i].id == data.id){
+                        var player = self.player[i].getComponent("PlayerRender") ;
+                        if(player.userid == data.id){
                             inroom = true ;
                         }
                     }

@@ -40,6 +40,7 @@ cc.Class({
     },
     initplayer:function(data , inx){
         this.username.string = data.username ;
+        this.userid = data.id ;
         if(inx == 1){
             this.pokertag.x = this.pokertag.x * -1;
         }

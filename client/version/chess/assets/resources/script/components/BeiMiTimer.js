@@ -29,9 +29,10 @@ cc.Class({
         this.text.string = text +"（"+ this.remaining +"）" ;
         this.schedule(function() {
             this.remaining = this.remaining - 1 ;
-            self.text.string = text +"（"+ this.remaining +"）" ;
-            if(this.remaining <= 0){
+            if(this.remaining < 0){
                 self.unschedule(this);
+            }else{
+                self.text.string = text +"（"+ this.remaining +"）" ;
             }
         }, 1 , time);
     },
