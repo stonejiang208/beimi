@@ -49,6 +49,7 @@ cc.Class({
     },
     initgame:function(opendeal){
         let self = this ;
+        this.game = this.getCommon("DizhuDataBind");
         /**
          * opendeal:明牌
          * playway:传入的玩法参数
@@ -99,7 +100,24 @@ cc.Class({
                     }
                 }
             });
-            this.game = self.getCommon("DizhuDataBind");
+            /**
+             * 开始抢地主
+             */
+            socket.on("catch" , function(result){
+                var data = JSON.parse(result);
+                if(data.userid == cc.beimi.user.id){    //该我抢
+                    self.game.catchtimer();
+                }else{                              //该别人抢
+                    for(var inx =0 ; inx<self.player.length ; inx++){
+                        var render = self.player[inx].getComponent("PlayerRender") ;
+                        if(render.userid && render.userid == data.userid){
+                            render.catchtimer();
+                            break ;
+                        }
+                    }
+                }
+            });
+
             socket.on("play" , function(result){
                 var data = JSON.parse(result) ;
                 var mycards = self.decode(data.player.cards);
