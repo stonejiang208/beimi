@@ -4,7 +4,7 @@
 
 	<groupId>com.beimi</groupId>
 	<artifactId>beimi</artifactId>
-	<version>0.4.0</version>
+	<version>0.5.0</version>
 	<packaging>war</packaging>
 
 	<name>chess</name>
@@ -185,19 +185,6 @@
 		</dependency>
 		
 		<dependency>
-	        <groupId>org.springframework.statemachine</groupId>
-	        <artifactId>spring-statemachine-core</artifactId>
-	        <version>1.2.6.RELEASE</version>
-	    </dependency>
-	    
-		<dependency>
-		    <groupId>org.springframework.statemachine</groupId>
-		    <artifactId>spring-statemachine-recipes-common</artifactId>
-		    <version>1.2.6.RELEASE</version>
-		</dependency>
-			    
-		
-		<dependency>
 		    <groupId>net.coobird</groupId>
 		    <artifactId>thumbnailator</artifactId>
 		    <version>0.4.8</version>
@@ -284,7 +271,6 @@
 		    <artifactId>cache2k-core</artifactId>
 		    <version>1.0.1.Final</version>
 		</dependency>
-				
         
         <dependency>
             <groupId>org.kie</groupId>
