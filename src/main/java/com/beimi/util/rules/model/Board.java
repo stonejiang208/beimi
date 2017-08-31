@@ -26,7 +26,10 @@ public class Board implements java.io.Serializable{
 	
 	private byte position ;		//地主牌
 	
-	private String banker ;		//庄家
+	private boolean docatch ;	//叫地主 OR 抢地主
+	private int ratio ;			//倍数
+	
+	private String banker ;		//庄家|地主
 	private String currplayer ;	//当前出牌人
 	private byte currcard ;		//当前出牌
 	
@@ -71,5 +74,17 @@ public class Board implements java.io.Serializable{
 	}
 	public void setPosition(byte position) {
 		this.position = position;
+	}
+	public boolean isDocatch() {
+		return docatch;
+	}
+	public void setDocatch(boolean docatch) {
+		this.docatch = docatch;
+	}
+	public int getRatio() {
+		return ratio;
+	}
+	public void setRatio(int ratio) {
+		this.ratio = ratio;
 	}
 }

@@ -5,8 +5,11 @@ import org.springframework.context.annotation.Configuration;
 
 import com.beimi.core.engine.game.BeiMiGameEnum;
 import com.beimi.core.engine.game.BeiMiGameEvent;
+import com.beimi.core.engine.game.action.AutoAction;
+import com.beimi.core.engine.game.action.EnoughAction;
 import com.beimi.core.engine.game.action.EnterAction;
 import com.beimi.core.engine.game.action.EventAction;
+import com.beimi.core.engine.game.action.JoinAction;
 import com.beimi.core.statemachine.BeiMiStateMachine;
 import com.beimi.core.statemachine.config.StateConfigurer;
 import com.beimi.core.statemachine.config.StateMachineTransitionConfigurer;
@@ -37,7 +40,6 @@ public class BeiMiStateMachineConfig<T, S>  {
 
     public void configure(StateMachineTransitionConfigurer<String, String> transitions)
             throws Exception {
-		EventAction action = new EventAction();
 		/**
 		 * 状态切换：BEGIN->WAITTING->READY->PLAY->END
 		 */
@@ -48,23 +50,23 @@ public class BeiMiStateMachineConfig<T, S>  {
 		    	.and()
 		    .withExternal()	
 	        	.source(BeiMiGameEnum.CRERATED.toString()).target(BeiMiGameEnum.WAITTING.toString())
-	        	.event(BeiMiGameEvent.JOIN.toString()).action(action)
+	        	.event(BeiMiGameEvent.JOIN.toString()).action(new JoinAction<String,String>())
 	        	.and()
             .withExternal()	
                 .source(BeiMiGameEnum.WAITTING.toString()).target(BeiMiGameEnum.READY.toString())
-                .event(BeiMiGameEvent.ENOUGH.toString()).action(action)
+                .event(BeiMiGameEvent.ENOUGH.toString()).action(new EnoughAction<String, String>())
                 .and()
             .withExternal()
                 .source(BeiMiGameEnum.READY.toString()).target(BeiMiGameEnum.BEGIN.toString())
-                .event(BeiMiGameEvent.AUTO.toString()).action(action)
+                .event(BeiMiGameEvent.AUTO.toString()).action(new AutoAction<String,String>())	//抢地主 
                 .and()
             .withExternal()
                 .source(BeiMiGameEnum.BEGIN.toString()).target(BeiMiGameEnum.PLAY.toString())
-                .event(BeiMiGameEvent.RAISEHANDS.toString()).action(action)
+                .event(BeiMiGameEvent.RAISEHANDS.toString()).action(new EventAction<String,String>())
                 .and()
             .withExternal()
                 .source(BeiMiGameEnum.PLAY.toString()).target(BeiMiGameEnum.END.toString())
-                .event(BeiMiGameEvent.ALLCARDS.toString()).action(action)
+                .event(BeiMiGameEvent.ALLCARDS.toString()).action(new EventAction<String,String>())
             ;
     }
 }

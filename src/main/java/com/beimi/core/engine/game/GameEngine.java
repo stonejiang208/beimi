@@ -92,7 +92,6 @@ public class GameEngine {
 				CacheHelper.getOnlineUserCacheBean().put(userid, gameRoom.getId(), orgi);
 			}
 		}
-		System.out.println("状态："+gameEvent.getEvent());
 		return gameEvent;
 	}
 	

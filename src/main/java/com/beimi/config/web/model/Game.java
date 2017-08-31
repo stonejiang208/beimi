@@ -19,6 +19,7 @@ package com.beimi.config.web.model;
 import com.beimi.core.engine.game.state.GameEvent;
 import com.beimi.core.statemachine.impl.BeiMiMachineHandler;
 import com.beimi.core.statemachine.impl.MessageBuilder;
+import com.beimi.web.model.GameRoom;
 
 public class Game { 
 
@@ -27,8 +28,19 @@ public class Game {
 	public Game(BeiMiMachineHandler handler) { 
 		this.handler = handler; 
 	} 
+	public void change(GameRoom gameRoom , String event) { 
+		change(gameRoom, event , 0);
+	}
+	
+	public void change(GameRoom gameRoom , String event , int interval ) { 
+		handler.handleEventWithState(MessageBuilder.withPayload(event).setHeader("room", gameRoom.getId()).setHeader("interval", interval).build(), event);
+	}
 	
 	public void change(GameEvent gameEvent) { 
-		handler.handleEventWithState(MessageBuilder.withPayload(gameEvent.getEvent()).setHeader("room", gameEvent.getRoomid()).build(), gameEvent.getEvent()); 
+		change(gameEvent , 0); 
+	} 
+	
+	public void change(GameEvent gameEvent , int interval ) { 
+		handler.handleEventWithState(MessageBuilder.withPayload(gameEvent.getEvent()).setHeader("room", gameEvent.getRoomid()).setHeader("interval", interval).build(), gameEvent.getEvent()); 
 	} 
 }

@@ -38,7 +38,7 @@ public class BeiMiMachineHandler {
 				 * 1、任务的执行应该为异步执行，可以考虑放入 RingBuffer中处理
 				 * 2、启用异步线程并增加线程池处理
 				 */
-				action.execute(event);
+				action.execute(event , transition);
 				/**
 				 * 修改当前状态，并持久化
 				 */

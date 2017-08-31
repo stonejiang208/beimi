@@ -69,7 +69,7 @@ public class CacheHelper {
 	 * 存放游戏数据的 ，Board
 	 * @return
 	 */
-	public static CacheBean getGameCacheBean() {
+	public static CacheBean getBoardCacheBean() {
 		return cacheInstance!=null ? cacheInstance.getGameCacheBean() : null ;
 	}
 	

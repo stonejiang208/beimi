@@ -65,20 +65,10 @@ public class GameEventHandler
 					 */
 					server.getRoomOperations(gameEvent.getRoomid()).sendEvent("joinroom",JSON.toJSONString(userClient));
 					client.sendEvent("players", JSON.toJSONString(CacheHelper.getGamePlayerCacheBean().getCacheObject(gameEvent.getRoomid(), orgi)));
-						
-					game.change(gameEvent);	//通知状态机
-					
-					
-//					if(CacheHelper.getExpireCache().get(gameEvent.getRoomid())==null){
-//						Collection<Object> playerList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameEvent.getRoomid(), gameEvent.getOrgi()) ;
-//						if(gameEvent.getPlayers() == playerList.size()){
-//							//结束撮合，可以开始玩游戏了
-//							CacheHelper.getExpireCache().put(gameEvent.getRoomid(), new CreateAITask(0 , gameEvent , server , gameEvent.getOrgi()));
-//						}else{
-//							//等5秒，然后进AI ， 每次有玩家加入，先判断当前状态，是否是玩家已凑齐或已开始游戏，否则，计时重新开始
-//							CacheHelper.getExpireCache().put(gameEvent.getOrgi(), new CreateAITask(5 , gameEvent, server , gameEvent.getOrgi()));
-//						}
-//					}
+					/**
+					 * 当前是在游戏中还是 未开始
+					 */
+					game.change(gameEvent);	//通知状态机 , 此处应由状态机处理异步执行
 				}
 			}
 		} catch (Exception e) {

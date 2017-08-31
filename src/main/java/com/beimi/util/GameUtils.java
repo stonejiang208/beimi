@@ -16,7 +16,6 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.beimi.core.BMDataContext;
-import com.beimi.core.engine.game.state.GameEvent;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.util.rules.model.Board;
 import com.beimi.util.rules.model.Player;
@@ -81,7 +80,7 @@ public class GameUtils {
 			cards[i] = temp.get(i) ;
 		}
 		board.setCards(cards);
-		board.setPosition((byte)new Random().nextInt(54));
+		board.setPosition((byte)new Random().nextInt(55));
 		
 		Player[] players = new Player[playUsers.size()];
 		
@@ -97,7 +96,7 @@ public class GameUtils {
 			int pos = i%players.length ; 
 			players[pos].getCards()[i/players.length] = cards[i] ;
 			if(i == board.getPosition()){
-				players[pos].setDizhu(true);
+				players[pos].setRandomcard(true);		//起到地主牌的人
 			}
 		}
 		for(Player tempPlayer : players){
@@ -121,7 +120,9 @@ public class GameUtils {
 			
 		}
 		board.setPlayers(players);
-		board.setBanker(tempbanker.getPlayuser());
+		if(tempbanker!=null){
+			board.setBanker(tempbanker.getPlayuser());
+		}
 		return board;
 	}
 	
