@@ -344,8 +344,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 67.4,
-      "y": -84.4
+      "x": 101.4,
+      "y": -77.4
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -647,7 +647,16 @@
     "goldcoins": null,
     "dizhu": {
       "__id__": 8
-    }
+    },
+    "pokertag": null,
+    "pokercards": null,
+    "timer": null,
+    "jsq": null,
+    "headimg": null,
+    "atlas": null,
+    "timer_first": null,
+    "timer_sec": null,
+    "result": null
   },
   {
     "__type__": "cc.PrefabInfo",

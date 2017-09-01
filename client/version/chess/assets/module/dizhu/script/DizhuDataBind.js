@@ -33,6 +33,10 @@ cc.Class({
             default: null,
             type: cc.Prefab
         },
+        atlas: {
+            default: null,
+            type: cc.SpriteAtlas
+        },
         timer: {
             default: null,
             type: cc.Node
@@ -64,7 +68,6 @@ cc.Class({
         }
         this.myselfpool.put(cc.instantiate(this.myself));
 
-
         if(this.ready()){
             if(cc.beimi.user.goldcoins > 9999){
                 var num = cc.beimi.user.goldcoins / 10000  ;
@@ -75,10 +78,10 @@ cc.Class({
             this.cards.string = cc.beimi.user.cards + "张" ;
         }
         if(this.myselfpool.size() > 0 && cc.beimi){
-            let myself = this.myselfpool.get();
-            myself.parent = this.root() ;
-            myself.setPosition(-500,-180);
-            var render = myself.getComponent("PlayerRender") ;
+            this.playermysql = this.myselfpool.get();
+            this.playermysql.parent = this.root() ;
+            this.playermysql.setPosition(-500,-180);
+            var render = this.playermysql.getComponent("PlayerRender") ;
             render.initplayer(cc.beimi.user);
         }
     },
@@ -87,32 +90,21 @@ cc.Class({
             this.timer.active = true ;
         }
         let self = this ;
-        if(this.atlas){
-            var timer_first_num = this.atlas.getSpriteFrame('jsq1');
-            var timer_sec_num = this.atlas.getSpriteFrame('jsq5');
-            this.timer_first.getComponent(cc.Sprite).spriteFrame = timer_first_num;
-            this.timer_sec.getComponent(cc.Sprite).spriteFrame = timer_sec_num;
-            /**
-             * 15秒计时，最长不超过15秒
-             */
-            self.remaining = 15 ;
-            this.timersc = this.schedule(function() {
-                self.remaining = self.remaining - 1 ;
-                if(self.remaining < 0){
-                    self.unschedule(this);
-                    self.timer.active = false ;
-                }else{
-                    if(self.remaining<10){
-                        timer_first_num = self.atlas.getSpriteFrame('jsq0')
-                    }else{
-                        timer_first_num = self.atlas.getSpriteFrame('jsq1')
-                    }
-                    timer_sec_num = self.atlas.getSpriteFrame('jsq'+self.remaining % 10) ;
-                    self.timer_first.getComponent(cc.Sprite).spriteFrame = timer_first_num;
-                    self.timer_sec.getComponent(cc.Sprite).spriteFrame = timer_sec_num;
-                }
-            }, 1 , 15 , 0);
+        var gameTimer = require("GameTimer");
+        this.beimitimer = new gameTimer();
+        this.timesrc = this.beimitimer.runtimer(this , this.timer , this.atlas , this.timer_first , this.timer_sec , 15);
+    },
+    catchresult:function(){
+        if(this.timer){
+            this.timer.active = false ;
         }
+        if(this.timesrc){
+            this.beimitimer.stoptimer(this , this.timer , this.atlas);
+        }
+    },
+    lasthands:function(self,data){   //设置地主
+        var render = this.playermysql.getComponent("PlayerRender") ;
+        render.lasthands(self , data) ;
     }
 
     // called every frame, uncomment this function to activate update callback

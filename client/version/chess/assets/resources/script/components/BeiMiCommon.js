@@ -69,15 +69,35 @@ cc.Class({
     root:function(){
         return cc.find("Canvas");
     },
-    decode:function(str){
-        var strArray = cc.Codec.Base64.decode(str) ;
+    decode:function(data){
         var cards = new Array();
-        if(strArray && strArray.length > 0){
-            for(var i= 0 ; i<strArray.length ; i++){
-                cards[i] = strArray[i].charCodeAt();
+
+        if(!cc.sys.isNative) {
+            var dataView = new DataView(data);
+            for(var i= 0 ; i<data.byteLength ; i++){
+                cards[i] = dataView.getInt8(i);
+            }
+        }else{
+            var Base64 = require("Base64");
+            var strArray = Base64.decode(data) ;
+
+            if(strArray && strArray.length > 0){
+                for(var i= 0 ; i<strArray.length ; i++){
+                    cards[i] = strArray[i];
+                }
             }
         }
+
         return cards ;
+    },
+    parse(result){
+        var data ;
+        if(!cc.sys.isNative){
+            data = result;
+        }else{
+            data = JSON.parse(result) ;
+        }
+        return data ;
     }
 
     // called every frame, uncomment this function to activate update callback

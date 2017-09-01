@@ -21,6 +21,10 @@ cc.Class({
             default: null,
             type: cc.Node
         },
+        lastCardsPanel: {   //底牌
+            default: null,
+            type: cc.Node
+        },
         waitting: {
             default: null,
             type: cc.Prefab
@@ -31,6 +35,9 @@ cc.Class({
     onLoad: function () {
         this.player = new Array() ;     //存放玩家数据
         this.pokercards = new Array();
+        this.lastcards = new Array();
+        this.playerindex = 0 ;
+        this.lastCardsPanel.active = false ;
     },
     begin:function(){
         this.game.active = false ;
@@ -50,24 +57,31 @@ cc.Class({
     initgame:function(opendeal){
         let self = this ;
         this.game = this.getCommon("DizhuDataBind");
+        this.socket = window.io.connect(cc.beimi.http.wsURL + '/bm/game');
+        this.socket.on("connect" , function(){
+            var param = {
+                token:cc.beimi.authorization,
+                playway:'402888815e21d735015e21d995680000',
+                orgi:cc.beimi.user.orgi
+            } ;
+            self.socket.emit("joinroom" ,JSON.stringify(param)) ;
+        });
         /**
          * opendeal:明牌
          * playway:传入的玩法参数
          * 连接服务器，进入ROOM，开始等待其他玩家或AI加入 , 发送 创建ROOM的 HTTP请求，创建 ROOM ，ROOM创建成功后开始建立 SocketIO链接
          */
         if(cc.beimi && cc.beimi.authorization && cc.beimi.user){
-            var socket = window.io.connect(cc.beimi.http.wsURL + '/bm/game?token='+cc.beimi.authorization+"&playway=402888815e21d735015e21d995680000&orgi="+cc.beimi.user.orgi);
-            socket.on("connect" , function(){
-               //显示 匹配中，并计时间，超过设定的倒计时时间即AI加入，根据当前的 玩家数量 匹配机器人
-                //console.log("testabc");
-            });
-            socket.on("joinroom" , function(result){
-                var data = JSON.parse(result);
+
+            this.socket.on("joinroom" , function(result){
+                var data = self.parse(result) ;
+
                 //显示 匹配中，并计时间，超过设定的倒计时时间即AI加入，根据当前的 玩家数量 匹配机器人
                 if(data.id && data.id == cc.beimi.user.id){
                     //本人，开始计时
                     //console.log("本人") ;
                     //self.player[0] = data ;
+                    self.playerindex = data.playerindex ;
                 }else{
                     //其他玩家加入，初始化
                     var inroom = false ;
@@ -82,8 +96,8 @@ cc.Class({
                     }
                 }
             });
-            socket.on("players" , function(result){
-                var data = JSON.parse(result);
+            this.socket.on("players" , function(result){
+                var data = self.parse(result);
                 if(data.length > 1){
                     var inx = 0 ;
                     for(i = 0 ; i<data.length ; i++){
@@ -103,8 +117,8 @@ cc.Class({
             /**
              * 开始抢地主
              */
-            socket.on("catch" , function(result){
-                var data = JSON.parse(result);
+            this.socket.on("catch" , function(result){
+                var data = self.parse(result);
                 if(data.userid == cc.beimi.user.id){    //该我抢
                     self.game.catchtimer();
                 }else{                              //该别人抢
@@ -118,8 +132,47 @@ cc.Class({
                 }
             });
 
-            socket.on("play" , function(result){
-                var data = JSON.parse(result) ;
+            /**
+             * 开始抢地主
+             */
+            this.socket.on("catchresult" , function(result){
+                var data = self.parse(result);
+                if(data.userid == cc.beimi.user.id){    //该我抢
+                    self.game.catchresult(data);
+                }else{                              //该别人抢
+                    for(var inx =0 ; inx<self.player.length ; inx++){
+                        var render = self.player[inx].getComponent("PlayerRender") ;
+                        if(render.userid && render.userid == data.userid){
+                            setTimeout(function(){
+                                render.catchresult(data);
+                            },1500) ;
+                            break ;
+                        }
+                    }
+                }
+            });
+
+            /**
+             * 底牌
+             */
+            this.socket.on("lasthands" , function(result){
+                var data = self.parse(result);
+                var lasthands = self.decode(data.lasthands);
+                for(var i=0 ; i<self.lastcards.length ; i++){
+                    var last = self.lastcards[i].getComponent("BeiMiCard") ;
+                    last.setCard(lasthands[i]);
+                    last.order();
+                }
+
+                self.game.lasthands(self , data);
+                for(var inx =0 ; inx<self.player.length ; inx++){
+                    var render = self.player[inx].getComponent("PlayerRender") ;
+                    render.lasthands(self,data);
+                }
+            });
+
+            this.socket.on("play" , function(result){
+                var data = self.parse(result) ;
                 var mycards = self.decode(data.player.cards);
                 if(self.waittimer){
                     let timer = self.waittimer.getComponent("BeiMiTimer");
@@ -151,8 +204,12 @@ cc.Class({
                             pokencard.getComponent("BeiMiCard").order();
                         }
 
+                        data.self.lastCardsPanel.active = true ;
+
                     }
                 }, this , {game : self.game  , self: self, left :left , right : right , current : center});
+
+                self.doLastCards(self.game , self , 3 , 0);
 
                 /**
                  *  发牌动作，每次6张，本人保留总计17张，其他人发完即回收
@@ -176,9 +233,12 @@ cc.Class({
          * 处理当前玩家的 牌， 发牌 ，  17张牌， 分三次动作处理完成
          */
         for(var i=0 ; i<num ; i++){
-            self.current(game , self ,times * 300 + i * 50-300, cards[times * 6 + i] , finished) ;
+            if(finished == null){
+                self.playcards(game , self ,times * 300 + i * 50-300, cards[times * 6 + i] ) ;
+            }else{
+                self.current(game , self ,times * 300 + i * 50-300, cards[times * 6 + i] , finished) ;
+            }
         }
-
         self.otherplayer(left  , 0 , num ,game , self) ;
         self.otherplayer(right , 1 , num ,game , self) ;
 
@@ -201,16 +261,41 @@ cc.Class({
             render.countcards(1);
         }
     },
-    current:function(game , self , posx , card , func){
+    playcards:function(game , self , posx , card){
         let currpoker = game.pokerpool.get() ;
-
-        currpoker.getComponent("BeiMiCard").init(card) ;
-
+        currpoker.getComponent("BeiMiCard").setCard(card) ;
         currpoker.card = card ;
         currpoker.parent = self.root() ;
         currpoker.setPosition(0,200);
+
+        self.pokercards[self.pokercards.length] = currpoker ;
+        let action = cc.moveTo(0.2, posx, -180) ;
+
+        currpoker.runAction(action);
+    },
+    doLastCards:function(game , self , num , card){//发三张底牌
+        for(var i=0 ; i<num ; i++){
+            var width = i * 80 - 80;
+            let currpoker = game.pokerpool.get() ;
+            currpoker.getComponent("BeiMiCard").setCard(card) ;
+            currpoker.card = card ;
+            currpoker.parent = this.lastCardsPanel;
+            currpoker.setPosition(width , 0);
+            currpoker.setScale(0.5 , 0.5);
+
+            self.lastcards[self.lastcards.length] = currpoker ;
+        }
+    },
+    current:function(game , self , posx , card , func){
+        let currpoker = game.pokerpool.get() ;
+        currpoker.getComponent("BeiMiCard").setCard(card) ;
+        currpoker.card = card ;
+        currpoker.parent = self.root() ;
+        currpoker.setPosition(0,200);
+
         self.pokercards[self.pokercards.length] = currpoker ;
         let seq = cc.sequence(cc.moveTo(0.2, posx, -180) , func);
+
         currpoker.runAction(seq);
     },
     reordering:function(self){
@@ -219,8 +304,14 @@ cc.Class({
         }
     },
     newplayer:function(inx , self , data){
+        var isRight = false ;
+        if((data.playerindex - this.playerindex) == 1){
+            isRight = true ;
+        }else if(data.playerindex == 0){
+            isRight = true ;
+        }
         var pos = cc.v2(520, 100) ;
-        if(inx == 0){
+        if(isRight == false){
             pos = cc.v2(-520,100) ;
         }
         let game = self.getCommon("DizhuDataBind");
@@ -229,12 +320,23 @@ cc.Class({
             self.player[inx].parent = self.root() ;
             self.player[inx].setPosition(pos);
             var render = self.player[inx].getComponent("PlayerRender") ;
-            render.initplayer(data , inx);
+            render.initplayer(data , isRight);
         }
-    }
-
+    },
     // called every frame, uncomment this function to activate update callback
     // update: function (dt) {
 
     // },
+    /**
+     * 不抢/叫地主
+     */
+    givup:function(){
+        this.socket.emit("giveup");
+    },
+    /**
+     * 抢/叫地主触发事件
+     */
+    docatch:function(){
+        this.socket.emit("docatch");
+    }
 });

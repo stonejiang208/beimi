@@ -22,19 +22,12 @@ cc.Class({
     // use this for initialization
     onLoad: function () {
         this.posy = this.card.y ;
-        this.mouse_down  = false ;
-        this.card.on(cc.Node.EventType.MOUSE_DOWN, function (event) {
-            console.log('Mouse down');
-        }, this);
-        this.card.on(cc.Node.EventType.MOUSE_ENTER, function (event) {
-            console.log('Mouse down');
-        }, this);
     },
-    takecard:function(){
-        if(this.card.y == this.posy){
-            this.card.y = this.card.y + 30 ;
+    takecard:function(event){
+        if(event.target.y == this.posy){
+            event.target.y = event.target.y + 30 ;
         }else{
-            this.card.y = this.card.y - 30 ;
+            event.target.y = event.target.y - 30 ;
         }
     }
 

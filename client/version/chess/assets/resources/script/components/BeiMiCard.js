@@ -57,7 +57,7 @@ cc.Class({
         this.initcard.active = true ;
         this.normal.active = false;
     },
-    init:function(card){
+    setCard:function(card){
         this.card = card ;
     },
     order:function(){
@@ -75,7 +75,12 @@ cc.Class({
             }else if(cardvalue % 4 == 3){
                 frame = this.atlas.getSpriteFrame('牌-梅花');
             }
-            var src = (self.card  - self.card % 4 ) / 4 + 1;
+            var src = (self.card  - self.card % 4 ) / 4 + 1 + 2;
+            if(src == 14){
+                src = 1 ;
+            }else if(src == 15){
+                src = 2 ;
+            }
             if(self.card % 2 == 0){
                 cardframe = this.atlas.getSpriteFrame('牌-'+src);
             }else{
@@ -85,6 +90,8 @@ cc.Class({
             this.lefttop.getComponent(cc.Sprite).spriteFrame = cardframe;
             this.rightcolor.getComponent(cc.Sprite).spriteFrame = frame;
             this.rightbottom.getComponent(cc.Sprite).spriteFrame = cardframe;
+
+
             this.initcard.active = false ;
             this.normal.active = true ;
             this.kingbg.active = false ;
