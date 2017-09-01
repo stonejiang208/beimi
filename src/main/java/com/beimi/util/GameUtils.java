@@ -3,10 +3,8 @@ package com.beimi.util;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -67,7 +65,7 @@ public class GameUtils {
 	 * 开始斗地主游戏
 	 * @return
 	 */
-	public static Board playDizhuGame(Collection<Object> playUsers , GameRoom gameRoom , String banker , int cardsnum){
+	public static Board playDizhuGame(List<PlayUserClient> playUsers , GameRoom gameRoom , String banker , int cardsnum){
 		Board board = new Board() ;
 		board.setCards(null);
 		List<Byte> temp = new ArrayList<Byte>() ;
@@ -80,14 +78,15 @@ public class GameUtils {
 			cards[i] = temp.get(i) ;
 		}
 		board.setCards(cards);
-		board.setPosition((byte)new Random().nextInt(55));
+		
+		board.setRatio(15); 	//默认倍率 15
+		
+		board.setPosition((byte)new Random().nextInt(playUsers.size() * gameRoom.getCardsnum()));	//按照人数计算在随机界牌 的位置，避免出现在底牌里
 		
 		Player[] players = new Player[playUsers.size()];
 		
-		Iterator<Object> playerIter = playUsers.iterator() ;
 		int inx = 0 ;
-		while(playerIter.hasNext()){
-			PlayUserClient playUser = (PlayUserClient) playerIter.next() ;
+		for(PlayUserClient playUser : playUsers){
 			Player player = new Player(playUser.getId()) ;
 			player.setCards(new byte[cardsnum]);
 			players[inx++] = player ;
@@ -101,10 +100,7 @@ public class GameUtils {
 		}
 		for(Player tempPlayer : players){
 			Arrays.sort(tempPlayer.getCards());
-			StringBuffer strb = new StringBuffer() ;
-			for(byte v : tempPlayer.getCards()){
-				strb.append(",").append(v) ;
-			}
+			tempPlayer.setCards(reverseCards(tempPlayer.getCards()));
 		}
 		board.setRoom(gameRoom.getId());
 		Player tempbanker = players[0];
@@ -136,6 +132,15 @@ public class GameUtils {
 	public static PlayUserClient create(PlayUser player , IP ipdata , HttpServletRequest request ) throws IllegalAccessException, InvocationTargetException{
 		return create(player, ipdata, request, BMDataContext.PlayerTypeEnum.NORMAL.toString()) ;
 	}
+	
+	public static byte[] reverseCards(byte[] cards) {  
+		byte[] target_cards = new byte[cards.length];  
+		for (int i = 0; i < cards.length; i++) {  
+			// 反转后数组的第一个元素等于源数组的最后一个元素：  
+			target_cards[i] = cards[cards.length - i - 1];  
+		}  
+		return target_cards;  
+	}  
 	
 	/**
 	 * 注册用户

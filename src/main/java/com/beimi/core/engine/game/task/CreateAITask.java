@@ -1,12 +1,9 @@
 package com.beimi.core.engine.game.task;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.cache2k.expiry.ValueWithExpiryTime;
 
-import com.alibaba.fastjson.JSON;
 import com.beimi.core.BMDataContext;
 import com.beimi.core.engine.game.BeiMiGameEvent;
 import com.beimi.core.engine.game.BeiMiGameTask;
@@ -37,17 +34,15 @@ public class CreateAITask extends AbstractTask implements ValueWithExpiryTime  ,
 	public void execute(){
 		//执行生成AI
 		GameUtils.removeGameRoom(gameRoom.getId(), orgi);
-		Collection<Object> playerList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
-		List<Object> playUserClientList = new ArrayList<Object>();
-		playUserClientList.addAll(playerList) ;
+		List<PlayUserClient> playerList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
 		int aicount = gameRoom.getPlayers() - playerList.size() ;
 		if(aicount>0){
 			for(int i=0 ; i<aicount ; i++){
 				PlayUserClient playerUser = GameUtils.create(new PlayUser() , BMDataContext.PlayerTypeEnum.AI.toString()) ;
-				playerUser.setPlayerindex(playerList.size()+i);
+				playerUser.setPlayerindex(gameRoom.getPlayers() - playerList.size());
 				CacheHelper.getGamePlayerCacheBean().put(gameRoom.getId(), playerUser, orgi); //将用户加入到 room ， MultiCache
-				BMDataContext.getContext().getBean(SocketIOServer.class).getRoomOperations(gameRoom.getId()).sendEvent("joinroom",JSON.toJSONString(playerUser));
-				playUserClientList.add(playerUser) ;
+				BMDataContext.getContext().getBean(SocketIOServer.class).getRoomOperations(gameRoom.getId()).sendEvent("joinroom",playerUser);
+				playerList.add(playerUser) ;
 			}
 			/**
 			 * 发送一个 Enough 事件

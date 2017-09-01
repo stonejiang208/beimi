@@ -1,6 +1,6 @@
 package com.beimi.core.engine.game.action;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -13,6 +13,7 @@ import com.beimi.core.statemachine.impl.BeiMiExtentionTransitionConfigurer;
 import com.beimi.core.statemachine.message.Message;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.web.model.GameRoom;
+import com.beimi.web.model.PlayUserClient;
 
 /**
  * 创建房间的人，房卡模式下的 房主， 大厅模式下的首个进入房间的人
@@ -34,7 +35,7 @@ public class JoinAction<T,S> implements Action<T, S>{
 		if(!StringUtils.isBlank(room)){
 			GameRoom gameRoom = (GameRoom) CacheHelper.getGameRoomCacheBean().getCacheObject(room, BMDataContext.SYSTEM_ORGI) ; 
 			if(gameRoom!=null){
-				Collection<Object> playerList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getRoomid(), gameRoom.getOrgi()) ;
+				List<PlayUserClient> playerList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getRoomid(), gameRoom.getOrgi()) ;
 				if(gameRoom.getPlayers() == playerList.size()){
 					//结束撮合，可以开始玩游戏了
 					/**

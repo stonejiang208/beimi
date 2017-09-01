@@ -1,7 +1,7 @@
 package com.beimi.core.engine.game;
 
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,8 @@ import com.beimi.core.engine.game.state.GameEvent;
 import com.beimi.util.UKTools;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.util.client.NettyClients;
+import com.beimi.util.rules.model.Board;
+import com.beimi.util.rules.model.Player;
 import com.beimi.web.model.GamePlayway;
 import com.beimi.web.model.GameRoom;
 import com.beimi.web.model.PlayUserClient;
@@ -33,7 +35,7 @@ public class GameEngine {
 	 */
 	public GameEvent gameRequest(String userid ,String playway , String room , String orgi , PlayUserClient playUser){
 		GameEvent gameEvent = null ;
-		String roomid = (String) CacheHelper.getOnlineUserCacheBean().getCacheObject(userid, orgi) ;
+		String roomid = (String) CacheHelper.getRoomMappingCacheBean().getCacheObject(userid, orgi) ;
 		GamePlayway gamePlayway = (GamePlayway) CacheHelper.getSystemCacheBean().getCacheObject(playway, orgi) ;
 		if(gamePlayway!=null){
 			gameEvent = new GameEvent(gamePlayway.getPlayers() , gamePlayway.getCardsnum() , orgi) ;
@@ -54,10 +56,11 @@ public class GameEngine {
 						/**
 						 * 如果当前房间到达了最大玩家数量，则不再加入到 撮合队列
 						 */
-						Collection<Object> playerList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
-						if((playerList.size() + 1) < gamePlayway.getPlayers()){
+						List<PlayUserClient> playerList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
+						if((playerList.size() + 1) < gamePlayway.getPlayers() && CacheHelper.getExpireCache().get(gameRoom.getId()) != null){
 							CacheHelper.getQueneCache().offer(gameRoom, orgi);	//未达到最大玩家数量，加入到游戏撮合 队列，继续撮合
 						}
+						playUser.setPlayerindex(gameRoom.getPlayers() - playerList.size() - 1);//从后往前坐，房主进入以后优先坐在 首位
 					}
 				}
 			}
@@ -66,7 +69,7 @@ public class GameEngine {
 				/**
 				 * 如果当前房间到达了最大玩家数量，则不再加入到 撮合队列
 				 */
-				Collection<Object> playerList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
+				List<PlayUserClient> playerList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
 				if(playerList.size() == 0){
 					gameEvent.setEvent(BeiMiGameEvent.ENTER.toString());
 				}else{	//达到最大玩家数量，可以开局了
@@ -75,7 +78,7 @@ public class GameEngine {
 				
 				gameEvent.setRoomid(gameRoom.getId());
 				NettyClients.getInstance().joinRoom(userid, gameRoom.getId());
-				Collection<Object> userList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), orgi) ;
+				List<PlayUserClient> userList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), orgi) ;
 				boolean inroom = false ;
 				for(Object user : userList){
 					PlayUserClient tempPlayUser = (PlayUserClient) user ;
@@ -84,15 +87,41 @@ public class GameEngine {
 					}
 				}
 				if(inroom == false){
+					if(userid.equals(gameRoom.getMaster())){
+						playUser.setPlayerindex(0); 
+					}
 					CacheHelper.getGamePlayerCacheBean().put(gameRoom.getId(), playUser, orgi); //将用户加入到 room ， MultiCache
 				}
 				/**
 				 *	不管状态如何，玩家一定会加入到这个房间 
 				 */
-				CacheHelper.getOnlineUserCacheBean().put(userid, gameRoom.getId(), orgi);
+				CacheHelper.getRoomMappingCacheBean().put(userid, gameRoom.getId(), orgi);
 			}
 		}
 		return gameEvent;
+	}
+	
+	/**
+	 * 抢地主，斗地主
+	 * @param roomid
+	 * @param userid
+	 * @param orgi
+	 * @return
+	 */
+	public void actionRequest(String roomid, PlayUserClient playUser, String orgi , boolean accept){
+		GameRoom gameRoom = (GameRoom) CacheHelper.getGameRoomCacheBean().getCacheObject(roomid, orgi) ;
+		if(gameRoom!=null){
+			Board board = (Board) CacheHelper.getBoardCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi());
+			Player player = board.player(playUser.getId()) ;
+			board = ActionTaskUtils.doCatch(board, player , accept) ;
+			
+			ActionTaskUtils.getRoom(gameRoom).sendEvent("catchresult", new GameBoard(player.getPlayuser() , player.isAccept(), board.isDocatch() , board.getRatio())) ;
+			ActionTaskUtils.game().change(gameRoom , BeiMiGameEvent.AUTO.toString() , 15);	//通知状态机 , 继续执行
+			
+			CacheHelper.getBoardCacheBean().put(gameRoom.getId() , board , gameRoom.getOrgi()) ;
+			
+			CacheHelper.getExpireCache().put(gameRoom.getRoomid(), ActionTaskUtils.createAutoTask(1, gameRoom));
+		}
 	}
 	
 	/**
@@ -102,10 +131,10 @@ public class GameEngine {
 	 * @param orgi
 	 * @return
 	 */
-	public GameRoom joinRoom(String roomid, String userid , String orgi){
+	public GameRoom joinRoom(String roomid, PlayUserClient playUser, String orgi){
 		GameRoom gameRoom = (GameRoom) CacheHelper.getGameRoomCacheBean().getCacheObject(roomid, orgi) ;
 		if(gameRoom!=null){
-			CacheHelper.getGamePlayerCacheBean().put(gameRoom.getId(), userid, orgi); //将用户加入到 room ， MultiCache
+			CacheHelper.getGamePlayerCacheBean().put(gameRoom.getId(), playUser, orgi); //将用户加入到 room ， MultiCache
 		}
 		return gameRoom ;
 	}
@@ -119,11 +148,10 @@ public class GameEngine {
 	 * @param orgi
 	 * @return
 	 */
-	public void leaveRoom(String userid , String orgi){
-		GameRoom gameRoom = whichRoom(userid, orgi) ;
+	public void leaveRoom(PlayUserClient playUser , String orgi){
+		GameRoom gameRoom = whichRoom(playUser.getId(), orgi) ;
 		if(gameRoom!=null){
-			CacheHelper.getGamePlayerCacheBean().put(gameRoom.getId(), userid, orgi); //
-			Collection<Object> players = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), orgi) ;
+			List<PlayUserClient> players = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), orgi) ;
 			if(gameRoom.isCardroom()){
 				CacheHelper.getGameRoomCacheBean().delete(gameRoom.getId(), gameRoom.getOrgi()) ;
 				CacheHelper.getGamePlayerCacheBean().delete(gameRoom.getId()) ;
@@ -133,7 +161,7 @@ public class GameEngine {
 					//解散房间 , 保留 ROOM资源 ， 避免 从队列中取出ROOM
 					CacheHelper.getGamePlayerCacheBean().delete(gameRoom.getId()) ;
 				}else{
-					CacheHelper.getGamePlayerCacheBean().delete(gameRoom.getId(), userid) ;
+					CacheHelper.getGamePlayerCacheBean().delete(gameRoom.getId(), playUser) ;
 				}
 			}
 		}
@@ -146,7 +174,7 @@ public class GameEngine {
 	 */
 	public GameRoom whichRoom(String userid, String orgi){
 		GameRoom gameRoom = null ;
-		String roomid = (String) CacheHelper.getOnlineUserCacheBean().getCacheObject(userid, orgi) ;
+		String roomid = (String) CacheHelper.getRoomMappingCacheBean().getCacheObject(userid, orgi) ;
 		if(!StringUtils.isBlank(roomid)){//
 			gameRoom = (GameRoom) CacheHelper.getGameRoomCacheBean().getCacheObject(roomid, orgi) ;		//直接加入到 系统缓存 （只有一个地方对GameRoom进行二次写入，避免分布式锁）
 		}

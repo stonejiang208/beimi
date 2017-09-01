@@ -19,6 +19,7 @@ public class Player implements java.io.Serializable , Cloneable{
 	private byte info ;		//复合信息存储，用于存储玩家位置（2^4,占用4个Bit，最大支持16个玩家）（是否在线1个Bit），是否庄家/地主（1个Bit），是否当前出牌玩家（1个Bit）（是否机器人1个Bit）
 	private boolean randomcard ;	//起到地主牌的人
 	private boolean docatch ;	//抢过庄（地主）
+	private boolean recatch ;	//补抢
 	private boolean accept ;	//抢地主 : 过地主
 	private byte[] played ;	//杠碰吃胡
 
@@ -94,4 +95,13 @@ public class Player implements java.io.Serializable , Cloneable{
 		}
 		return null;
     }
+
+	public boolean isRecatch() {
+		return recatch;
+	}
+
+	public void setRecatch(boolean recatch) {
+		this.recatch = recatch;
+	}
+	
 }

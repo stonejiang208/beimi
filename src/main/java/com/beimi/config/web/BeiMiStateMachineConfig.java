@@ -10,6 +10,8 @@ import com.beimi.core.engine.game.action.EnoughAction;
 import com.beimi.core.engine.game.action.EnterAction;
 import com.beimi.core.engine.game.action.EventAction;
 import com.beimi.core.engine.game.action.JoinAction;
+import com.beimi.core.engine.game.action.PlayCardsAction;
+import com.beimi.core.engine.game.action.RaiseHandsAction;
 import com.beimi.core.statemachine.BeiMiStateMachine;
 import com.beimi.core.statemachine.config.StateConfigurer;
 import com.beimi.core.statemachine.config.StateMachineTransitionConfigurer;
@@ -61,8 +63,12 @@ public class BeiMiStateMachineConfig<T, S>  {
                 .event(BeiMiGameEvent.AUTO.toString()).action(new AutoAction<String,String>())	//抢地主 
                 .and()
             .withExternal()
-                .source(BeiMiGameEnum.BEGIN.toString()).target(BeiMiGameEnum.PLAY.toString())
-                .event(BeiMiGameEvent.RAISEHANDS.toString()).action(new EventAction<String,String>())
+                .source(BeiMiGameEnum.BEGIN.toString()).target(BeiMiGameEnum.LASTHANDS.toString())
+                .event(BeiMiGameEvent.RAISEHANDS.toString()).action(new RaiseHandsAction<String,String>())
+                .and()
+            .withExternal()
+                .source(BeiMiGameEnum.LASTHANDS.toString()).target(BeiMiGameEnum.PLAY.toString())
+                .event(BeiMiGameEvent.PLAYCARDS.toString()).action(new PlayCardsAction<String,String>())
                 .and()
             .withExternal()
                 .source(BeiMiGameEnum.PLAY.toString()).target(BeiMiGameEnum.END.toString())

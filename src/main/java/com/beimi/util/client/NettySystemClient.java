@@ -1,32 +1,42 @@
 package com.beimi.util.client;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.corundumstudio.socketio.SocketIOClient;
-import com.google.common.collect.ArrayListMultimap;
+import com.beimi.util.server.handler.BeiMiClient;
 
 public class NettySystemClient implements NettyClient{
 	
-	private ArrayListMultimap<String, SocketIOClient> systemClientsMap = ArrayListMultimap.create();
+	private Map<String, BeiMiClient> systemClientsMap = new HashMap<String,BeiMiClient>();
 	
-	public List<SocketIOClient> getClients(String key){
-		return systemClientsMap.get(key) ;
+	public BeiMiClient getClient(String key){
+		return  systemClientsMap.get(key);
 	}
 	
-	public void putClient(String key , SocketIOClient client){
-		systemClientsMap.put(key, client) ;
+	public void putClient(String userid , BeiMiClient client){
+		systemClientsMap.put(userid, client) ;
+		systemClientsMap.put(client.getSession(), client) ;
 	}
 	
-	public void removeClient(String key , String id){
-		List<SocketIOClient> keyClients = this.getClients(key) ;
-		for(SocketIOClient client : keyClients){
-			if(client.getSessionId().equals(id)){
-				keyClients.remove(client) ;
-				break ;
-			}
+	public void removeClient(String id){
+		BeiMiClient beiMiClient = this.getClient(id) ;
+		systemClientsMap.remove(id) ;
+		if(beiMiClient!=null){
+			systemClientsMap.remove(beiMiClient.getUserid()) ;
 		}
-		if(keyClients.size() == 0){
-			systemClientsMap.removeAll(key) ;
+	}
+
+	public void joinRoom(String userid, String roomid) {
+		BeiMiClient beiMiClient = this.getClient(userid) ;
+		if(beiMiClient!=null){
+			beiMiClient.getClient().joinRoom(roomid);
+		}
+	}
+
+	public void sendGameEventMessage(String userid, String event, Object data) {
+		BeiMiClient beiMiClient = this.getClient(userid) ;
+		if(beiMiClient!=null){
+			beiMiClient.getClient().sendEvent(event, data);
 		}
 	}
 }

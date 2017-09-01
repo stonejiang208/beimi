@@ -1,10 +1,15 @@
 package com.beimi.util.cache.hazelcast.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.beimi.web.model.PlayUserClient;
 import com.hazelcast.core.HazelcastInstance;
 
 @Service("multi_cache")
@@ -23,8 +28,7 @@ public class MultiCache{
 		return this ;
 	}
 	
-	public void put(String key, Object value, String orgi) {
-		
+	public void put(String key, PlayUserClient value, String orgi) {
 		getInstance().getMultiMap(getName()).put(key, value) ;
 	}
 
@@ -32,7 +36,7 @@ public class MultiCache{
 		getInstance().getMultiMap(getName()).clear();
 	}
 
-	public Object delete(String key, String value) {
+	public Object delete(String key, PlayUserClient value) {
 		return getInstance().getMultiMap(getName()).remove(key , value) ;
 	}
 	
@@ -40,13 +44,25 @@ public class MultiCache{
 		return getInstance().getMultiMap(getName()).remove(key) ;
 	}
 
-
-	public void update(String key, String orgi, Object value) {
+	public void update(String key, String orgi, PlayUserClient value) {
 		getInstance().getMultiMap(getName()).put(key, value);
 	}
 
-	public Collection<Object> getCacheObject(String key, String orgi) {
-		return getInstance().getMultiMap(getName()).get(key);
+	public List<PlayUserClient> getCacheObject(String key, String orgi) {
+		List<PlayUserClient> values = new ArrayList<PlayUserClient>();
+		Collection<Object> dataList = getInstance().getMultiMap(getName()).get(key) ; 
+		for(Object data : dataList){
+			values.add((PlayUserClient) data) ;
+		}
+		Collections.sort(values, new Comparator<PlayUserClient>(){
+
+			@Override
+			public int compare(PlayUserClient o1, PlayUserClient o2) {
+				return o1.getPlayerindex() < o2.getPlayerindex() ? 1 : -1;
+			}
+			
+		});
+		return values;
 	}
 
 	public String getName() {

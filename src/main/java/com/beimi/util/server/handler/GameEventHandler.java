@@ -11,10 +11,12 @@ import com.beimi.util.cache.CacheHelper;
 import com.beimi.util.client.NettyClients;
 import com.beimi.web.model.PlayUserClient;
 import com.beimi.web.model.Token;
+import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.annotation.OnConnect;
 import com.corundumstudio.socketio.annotation.OnDisconnect;
+import com.corundumstudio.socketio.annotation.OnEvent;
 
 public class GameEventHandler     
 {  
@@ -32,11 +34,31 @@ public class GameEventHandler
     @OnConnect  
     public void onConnect(SocketIOClient client)  
     {  
-    	try {
-			String token = client.getHandshakeData().getSingleUrlParam("token") ;
-			String room = client.getHandshakeData().getSingleUrlParam("room") ;	//房卡标识，使用房卡创建 ， 获取 6位数字 房间号
-			String orgi = client.getHandshakeData().getSingleUrlParam("orgi") ;	//租户ID
-			String playway = client.getHandshakeData().getSingleUrlParam("playway") ;	//租户ID
+    	
+    }  
+    
+  //添加@OnDisconnect事件，客户端断开连接时调用，刷新客户端信息  
+    @OnDisconnect  
+    public void onDisconnect(SocketIOClient client)  
+    {  
+    	String token = client.getHandshakeData().getSingleUrlParam("token") ;
+		if(!StringUtils.isBlank(token)){
+			Token userToken = (Token) CacheHelper.getApiUserCacheBean().getCacheObject(token, BMDataContext.SYSTEM_ORGI) ;
+			if(userToken!=null){
+				PlayUserClient playUser = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(userToken.getUserid(), userToken.getOrgi()) ;
+				BMDataContext.getGameEngine().leaveRoom(playUser, userToken.getOrgi());
+			}
+			NettyClients.getInstance().removeClient(client.getSessionId().toString());
+		}
+    }  
+    
+  //抢地主事件
+    @OnEvent(value = "joinroom")   
+    public void onJoinRoom(SocketIOClient client , AckRequest request, String data)  
+    {  
+    	BeiMiClient beiMiClient = JSON.parseObject(data , BeiMiClient.class) ;
+    	String token = beiMiClient.getToken();
+		if(!StringUtils.isBlank(token)){
 			/**
 			 * Token不为空，并且，验证Token有效，验证完毕即开始进行游戏撮合，房卡类型的
 			 * 1、大厅房间处理
@@ -52,41 +74,61 @@ public class GameEventHandler
 			 * 	  b、加入到等待中队列
 			 */
 			Token userToken ;
-			if(!StringUtils.isBlank(token) && (userToken = (Token) CacheHelper.getApiUserCacheBean().getCacheObject(token, orgi))!=null){
+			if(beiMiClient!=null && !StringUtils.isBlank(token) && (userToken = (Token) CacheHelper.getApiUserCacheBean().getCacheObject(token, beiMiClient.getOrgi()))!=null){
 				//鉴权完毕
 				PlayUserClient userClient = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(userToken.getUserid(), userToken.getOrgi()) ;
-				NettyClients.getInstance().putGameEventClient(userClient.getId(), client);
-				GameEvent gameEvent = BMDataContext.getGameEngine().gameRequest(userToken.getUserid(), playway, room, orgi , userClient) ;
+				beiMiClient.setClient(client);
+				beiMiClient.setUserid(userClient.getId());
+				beiMiClient.setSession(client.getSessionId().toString());
+				NettyClients.getInstance().putClient(userClient.getId(), beiMiClient);
+				
+				GameEvent gameEvent = BMDataContext.getGameEngine().gameRequest(userToken.getUserid(), beiMiClient.getPlayway(), beiMiClient.getRoom(), beiMiClient.getOrgi(), userClient) ;
 				if(gameEvent != null){
 					/**
 					 * 游戏状态 ， 玩家请求 游戏房间，活动房间状态后，发送事件给 StateMachine，由 StateMachine驱动 游戏状态 ， 此处只负责通知房间内的玩家
 					 * 1、有新的玩家加入
 					 * 2、给当前新加入的玩家发送房间中所有玩家信息（不包含隐私信息，根据业务需求，修改PlayUserClient的字段，剔除掉隐私信息后发送）
 					 */
-					server.getRoomOperations(gameEvent.getRoomid()).sendEvent("joinroom",JSON.toJSONString(userClient));
-					client.sendEvent("players", JSON.toJSONString(CacheHelper.getGamePlayerCacheBean().getCacheObject(gameEvent.getRoomid(), orgi)));
+					server.getRoomOperations(gameEvent.getRoomid()).sendEvent("joinroom",userClient);
+					client.sendEvent("players", CacheHelper.getGamePlayerCacheBean().getCacheObject(gameEvent.getRoomid(), beiMiClient.getOrgi()));
 					/**
 					 * 当前是在游戏中还是 未开始
 					 */
 					game.change(gameEvent);	//通知状态机 , 此处应由状态机处理异步执行
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
-    }  
+    }
       
-    //添加@OnDisconnect事件，客户端断开连接时调用，刷新客户端信息  
-    @OnDisconnect  
-    public void onDisconnect(SocketIOClient client)  
+    //抢地主事件
+    @OnEvent(value = "docatch")   
+    public void onCatch(SocketIOClient client , String data)  
     {  
-    	String token = client.getHandshakeData().getSingleUrlParam("token") ;
+    	BeiMiClient beiMiClient = NettyClients.getInstance().getClient(client.getSessionId().toString()) ;
+    	String token = beiMiClient.getToken();
 		if(!StringUtils.isBlank(token)){
 			Token userToken = (Token) CacheHelper.getApiUserCacheBean().getCacheObject(token, BMDataContext.SYSTEM_ORGI) ;
 			if(userToken!=null){
-				BMDataContext.getGameEngine().leaveRoom(userToken.getUserid(), userToken.getOrgi());
+				PlayUserClient playUser = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(userToken.getUserid(), userToken.getOrgi()) ;
+				String roomid = (String) CacheHelper.getRoomMappingCacheBean().getCacheObject(playUser.getId(), playUser.getOrgi()) ;
+				BMDataContext.getGameEngine().actionRequest(roomid, playUser, playUser.getOrgi(), true);
 			}
-			NettyClients.getInstance().removeGameEventClient(token , client.getSessionId().toString());
 		}
-    }  
+    }
+    
+  //不抢/叫地主事件
+    @OnEvent(value = "giveup")   
+    public void onGiveup(SocketIOClient client , String data)  
+    {  
+    	BeiMiClient beiMiClient = NettyClients.getInstance().getClient(client.getSessionId().toString()) ;
+    	String token = beiMiClient.getToken();
+		if(!StringUtils.isBlank(token)){
+			Token userToken = (Token) CacheHelper.getApiUserCacheBean().getCacheObject(token, BMDataContext.SYSTEM_ORGI) ;
+			if(userToken!=null){
+				PlayUserClient playUser = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(userToken.getUserid(), userToken.getOrgi()) ;
+				String roomid = (String) CacheHelper.getRoomMappingCacheBean().getCacheObject(playUser.getId(), playUser.getOrgi()) ;
+				BMDataContext.getGameEngine().actionRequest(roomid, playUser, playUser.getOrgi(), false);
+			}
+		}
+    }
 }  

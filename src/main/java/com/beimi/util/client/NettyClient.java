@@ -1,14 +1,12 @@
 package com.beimi.util.client;
 
-import java.util.List;
-
-import com.corundumstudio.socketio.SocketIOClient;
+import com.beimi.util.server.handler.BeiMiClient;
 
 public interface NettyClient {
 	
-	public List<SocketIOClient> getClients(String key) ;
+	public BeiMiClient getClient(String key) ;
 	
-	public void putClient(String key , SocketIOClient client) ;
+	public void putClient(String key , BeiMiClient client) ;
 	
-	public void removeClient(String key , String id) ;
+	public void removeClient(String key) ;
 }

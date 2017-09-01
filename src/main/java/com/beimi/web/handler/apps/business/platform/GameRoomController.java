@@ -1,7 +1,6 @@
 package com.beimi.web.handler.apps.business.platform;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,7 +48,7 @@ public class GameRoomController extends Handler{
 		Page<GameRoom> gameRoomList = gameRoomRes.findByOrgi(super.getOrgi(request), new PageRequest(super.getP(request), super.getPs(request))) ;
 		List<String> playUsersList = new ArrayList<String>() ;
 		for(GameRoom gameRoom : gameRoomList.getContent()){
-			Collection<Object> players = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(),gameRoom.getOrgi()) ;
+			List<PlayUserClient> players = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(),gameRoom.getOrgi()) ;
 			gameRoom.setPlayers(players.size());
 			if(!StringUtils.isBlank(gameRoom.getMaster())){
 				playUsersList.add(gameRoom.getMaster()) ;
@@ -85,10 +84,9 @@ public class GameRoomController extends Handler{
 			}
 			GameUtils.removeGameRoom(gameRoom.getId(), super.getOrgi(request));
 			CacheHelper.getGameRoomCacheBean().delete(gameRoom.getId(), super.getOrgi(request)) ;
-			Collection<Object> playerUsers = CacheHelper.getGamePlayerCacheBean().getCacheObject(id, super.getOrgi(request)) ;
-			for(Object tempPlayUser : playerUsers){
-				PlayUserClient palyUser = (PlayUserClient) tempPlayUser ;
-				CacheHelper.getOnlineUserCacheBean().delete(palyUser.getId(), super.getOrgi(request)) ;
+			List<PlayUserClient> playerUsers = CacheHelper.getGamePlayerCacheBean().getCacheObject(id, super.getOrgi(request)) ;
+			for(PlayUserClient tempPlayUser : playerUsers){
+				CacheHelper.getRoomMappingCacheBean().delete(tempPlayUser.getId(), super.getOrgi(request)) ;
 			}
 			CacheHelper.getGamePlayerCacheBean().delete(gameRoom.getId()) ;
 		}

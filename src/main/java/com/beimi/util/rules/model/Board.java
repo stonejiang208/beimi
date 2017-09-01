@@ -1,5 +1,7 @@
 package com.beimi.util.rules.model;
 
+import org.apache.commons.lang.ArrayUtils;
+
 /**
  * 牌局，用于描述当前牌局的内容 ， 
  * 1、随机排序生成的 当前 待起牌（麻将、德州有/斗地主无）
@@ -14,77 +16,26 @@ package com.beimi.util.rules.model;
  * @author iceworld
  *
  */
-public class Board implements java.io.Serializable{
-	private static final long serialVersionUID = 1L;
+public class Board extends AbstractBoard implements java.io.Serializable{
+
 	/**
 	 * 
 	 */
-	
-	private byte[] cards;	//4个Bit描述一张牌，麻将：136+2/2 = 69 byte ; 扑克 54/2 = 27 byte 
-	private Player[] players;//3~10人(4 byte)
-	private String room ;		//房间ID（4 byte）
-	
-	private byte position ;		//地主牌
-	
-	private boolean docatch ;	//叫地主 OR 抢地主
-	private int ratio ;			//倍数
-	
-	private String banker ;		//庄家|地主
-	private String currplayer ;	//当前出牌人
-	private byte currcard ;		//当前出牌
-	
-	public byte[] getCards() {
-		return cards;
+	private static final long serialVersionUID = 6143646772231515350L;
+
+	/**
+	 * 翻底牌 ， 斗地主
+	 */
+	@Override
+	public byte[] pollLastHands() {
+		return ArrayUtils.subarray(this.getCards() , this.getCards().length - 3 , this.getCards() .length);
 	}
-	public void setCards(byte[] cards) {
-		this.cards = cards;
-	}
-	public Player[] getPlayers() {
-		return players;
-	}
-	public void setPlayers(Player[] players) {
-		this.players = players;
-	}
-	public String getRoom() {
-		return room;
-	}
-	public void setRoom(String room) {
-		this.room = room;
-	}
-	public String getBanker() {
-		return banker;
-	}
-	public void setBanker(String banker) {
-		this.banker = banker;
-	}
-	public String getCurrplayer() {
-		return currplayer;
-	}
-	public void setCurrplayer(String currplayer) {
-		this.currplayer = currplayer;
-	}
-	public byte getCurrcard() {
-		return currcard;
-	}
-	public void setCurrcard(byte currcard) {
-		this.currcard = currcard;
-	}
-	public byte getPosition() {
-		return position;
-	}
-	public void setPosition(byte position) {
-		this.position = position;
-	}
-	public boolean isDocatch() {
-		return docatch;
-	}
-	public void setDocatch(boolean docatch) {
-		this.docatch = docatch;
-	}
-	public int getRatio() {
-		return ratio;
-	}
-	public void setRatio(int ratio) {
-		this.ratio = ratio;
+
+	/**
+	 * 暂时不做处理，根据业务规则修改，例如：底牌有大王翻两倍，底牌有小王 翻一倍，底牌是顺子 翻两倍 ====
+	 */
+	@Override
+	public int calcRatio() {
+		return 1;
 	}
 }

@@ -384,6 +384,4 @@ public class PlayUserClient implements UserEvent , java.io.Serializable{
 	public void setPlayerindex(int playerindex) {
 		this.playerindex = playerindex;
 	}
-	
-	
 }

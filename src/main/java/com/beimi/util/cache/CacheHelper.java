@@ -47,7 +47,7 @@ public class CacheHelper {
 	}
 	private static CacheInstance cacheInstance = new HazlcastCacheHelper();
 	
-	public static CacheBean getOnlineUserCacheBean() {
+	public static CacheBean getRoomMappingCacheBean() {
 		return cacheInstance!=null ? cacheInstance.getOnlineCacheBean() : null;
 	}
 	public static CacheBean getSystemCacheBean() {

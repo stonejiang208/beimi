@@ -12,5 +12,6 @@ public enum BeiMiGameEvent {
 	AUTO,		//自动 , 抢地主
 	ENOUGH,		//凑够一桌子
 	RAISEHANDS,	//所有成员举手
+	PLAYCARDS,	//出牌
 	ALLCARDS;	//1、单个玩家打完牌（地主，推到胡）；2、打完桌面的所有牌（血战，血流，德州）
 }

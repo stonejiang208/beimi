@@ -9,6 +9,7 @@ public enum BeiMiGameEnum {
 	BEGIN ,	//开局
 	WAITTING,	//等待玩家
 	READY,		//凑齐一桌子
+	LASTHANDS,	//翻底牌
 	PLAY,		//打牌
 	END;		//结束
 }
