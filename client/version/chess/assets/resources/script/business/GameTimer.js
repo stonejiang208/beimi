@@ -16,7 +16,6 @@ cc.Class({
 
     // use this for initialization
     onLoad: function () {
-        this.runtimer = true ;
     },
     /**
      * @param self              调用的源
@@ -27,39 +26,35 @@ cc.Class({
      * @param times             计时器执行次数
      */
     runtimer:function(source , timernode  , atlas, timer_first , timer_sec , times){
+
+        let self = this ;
+        if(timernode){
+            timernode.active = false ;
+        }
+        this.remaining = times ;
+        let timer_first_num = atlas.getSpriteFrame('jsq'+parseInt(self.remaining/10))
+        let timer_sec_num = atlas.getSpriteFrame('jsq'+self.remaining % 10) ;
+        timer_first.getComponent(cc.Sprite).spriteFrame = timer_first_num;
+        timer_sec.getComponent(cc.Sprite).spriteFrame = timer_sec_num;
         if(timernode){
             timernode.active = true ;
         }
-        let self = this ;
-        var timersc ;
 
-        if(atlas){
-            var timer_first_num = atlas.getSpriteFrame('jsq1');
-            var timer_sec_num = atlas.getSpriteFrame('jsq5');
-            timer_first.getComponent(cc.Sprite).spriteFrame = timer_first_num;
-            timer_sec.getComponent(cc.Sprite).spriteFrame = timer_sec_num;
-            /**
-             * 15秒计时，最长不超过15秒
-             */
-            this.remaining = times ;
-            timersc = source.schedule(function() {
-                self.remaining = self.remaining - 1 ;
-                if(self.remaining < 0){
-                    source.unschedule(this);
-                    timernode.active = false ;
-                }else{
-                    if(self.remaining<10){
-                        timer_first_num = atlas.getSpriteFrame('jsq0')
-                    }else{
-                        timer_first_num = atlas.getSpriteFrame('jsq1')
-                    }
-                    timer_sec_num = atlas.getSpriteFrame('jsq'+self.remaining % 10) ;
-                    timer_first.getComponent(cc.Sprite).spriteFrame = timer_first_num;
-                    timer_sec.getComponent(cc.Sprite).spriteFrame = timer_sec_num;
-                }
-            }, 1 , times , 0);
-        }
-        return this.timesrc ;
+        this.timersrc = function() {
+            self.remaining = self.remaining - 1 ;
+            if(self.remaining < 0){
+                source.unschedule(this);
+                timernode.active = false ;
+            }else{
+                timer_first_num = atlas.getSpriteFrame('jsq'+parseInt(self.remaining/10))
+                timer_sec_num = atlas.getSpriteFrame('jsq'+self.remaining % 10) ;
+                timer_first.getComponent(cc.Sprite).spriteFrame = timer_first_num;
+                timer_sec.getComponent(cc.Sprite).spriteFrame = timer_sec_num;
+            }
+        } ;
+        source.schedule(this.timersrc, 1 , times , 0);
+
+        return this.timersrc ;
     },
     stoptimer:function(source , timernode , timer){
         if(timernode){
