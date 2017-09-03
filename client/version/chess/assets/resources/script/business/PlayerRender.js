@@ -156,7 +156,6 @@ cc.Class({
             this.beimitimer.stoptimer(this, this.jsq, this.timesrc);
         }
         if(this.userid == data.userid){//设置地主
-            this.dizhu.active = true ;
             if(this.pokercards){
                 this.countcards(3) ;
             }
@@ -164,6 +163,12 @@ cc.Class({
              * 开始计时
              */
             this.playtimer(game , 25) ;
+        }
+        this.setDizhuFlag(data);
+    },
+    setDizhuFlag:function(data){
+        if(this.userid == data.userid){//设置地主
+            this.dizhu.active = true ;
         }else{
             this.dizhu.active = false ;
         }

@@ -169,6 +169,7 @@ cc.Class({
                  * 当前玩家的 底牌处理
                  */
                 if(data.userid == cc.beimi.user.id) {
+                    self.game.lasthands(self , self.game , data ) ;
                     for(var i=0 ; i<lasthands.length ; i++){
                         let pc = self.playcards(self.game , self ,2 * 300 + (6 + i) * 50-300, lasthands[i]) ;
                         pc.getComponent("BeiMiCard").order();

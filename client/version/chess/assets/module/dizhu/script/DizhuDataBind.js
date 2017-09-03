@@ -138,7 +138,7 @@ cc.Class({
     },
     lasthands:function(self, game,data){   //设置地主
         var render = this.playermysql.getComponent("PlayerRender") ;
-        render.lasthands(self ,game , data) ;
+        render.setDizhuFlag(data);
     },
     lasttakecards:function(game , self , cardsnum ,lastcards){
         if(this.result){
