@@ -72,7 +72,7 @@ public class GameEngine {
 				List<PlayUserClient> playerList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
 				if(playerList.size() == 0){
 					gameEvent.setEvent(BeiMiGameEvent.ENTER.toString());
-				}else{	//达到最大玩家数量，可以开局了
+				}else{	
 					gameEvent.setEvent(BeiMiGameEvent.JOIN.toString());
 				}
 				
@@ -87,9 +87,8 @@ public class GameEngine {
 					}
 				}
 				if(inroom == false){
-					if(userid.equals(gameRoom.getMaster())){
-						playUser.setPlayerindex(0); 
-					}
+					playUser.setPlayerindex(gameRoom.getPlayers() - playerList.size());
+					playUser.setPlayertype(BMDataContext.PlayerTypeEnum.NORMAL.toString());
 					CacheHelper.getGamePlayerCacheBean().put(gameRoom.getId(), playUser, orgi); //将用户加入到 room ， MultiCache
 				}
 				/**
@@ -115,7 +114,7 @@ public class GameEngine {
 			Player player = board.player(playUser.getId()) ;
 			board = ActionTaskUtils.doCatch(board, player , accept) ;
 			
-			ActionTaskUtils.getRoom(gameRoom).sendEvent("catchresult", new GameBoard(player.getPlayuser() , player.isAccept(), board.isDocatch() , board.getRatio())) ;
+			ActionTaskUtils.sendEvent("catchresult",UKTools.json(new GameBoard(player.getPlayuser() , player.isAccept(), board.isDocatch() , board.getRatio())) ,gameRoom) ;
 			ActionTaskUtils.game().change(gameRoom , BeiMiGameEvent.AUTO.toString() , 15);	//通知状态机 , 继续执行
 			
 			CacheHelper.getBoardCacheBean().put(gameRoom.getId() , board , gameRoom.getOrgi()) ;
@@ -148,7 +147,7 @@ public class GameEngine {
 	 * @param orgi
 	 * @return
 	 */
-	public void leaveRoom(PlayUserClient playUser , String orgi){
+	public GameRoom leaveRoom(PlayUserClient playUser , String orgi){
 		GameRoom gameRoom = whichRoom(playUser.getId(), orgi) ;
 		if(gameRoom!=null){
 			List<PlayUserClient> players = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), orgi) ;
@@ -165,6 +164,7 @@ public class GameEngine {
 				}
 			}
 		}
+		return gameRoom;
 	}
 	/**
 	 * 当前用户所在的房间

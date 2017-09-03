@@ -6,9 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.fastjson.JSON;
 import com.beimi.config.web.model.Game;
 import com.beimi.core.BMDataContext;
+import com.beimi.core.engine.game.ActionTaskUtils;
 import com.beimi.core.engine.game.state.GameEvent;
+import com.beimi.util.UKTools;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.util.client.NettyClients;
+import com.beimi.web.model.GameRoom;
 import com.beimi.web.model.PlayUserClient;
 import com.beimi.web.model.Token;
 import com.corundumstudio.socketio.AckRequest;
@@ -89,8 +92,8 @@ public class GameEventHandler
 					 * 1、有新的玩家加入
 					 * 2、给当前新加入的玩家发送房间中所有玩家信息（不包含隐私信息，根据业务需求，修改PlayUserClient的字段，剔除掉隐私信息后发送）
 					 */
-					server.getRoomOperations(gameEvent.getRoomid()).sendEvent("joinroom",userClient);
-					client.sendEvent("players", CacheHelper.getGamePlayerCacheBean().getCacheObject(gameEvent.getRoomid(), beiMiClient.getOrgi()));
+					ActionTaskUtils.sendEvent("joinroom", UKTools.json(userClient) , (GameRoom) CacheHelper.getGameRoomCacheBean().getCacheObject(gameEvent.getRoomid(), gameEvent.getOrgi()));
+					client.sendEvent("players", UKTools.json(CacheHelper.getGamePlayerCacheBean().getCacheObject(gameEvent.getRoomid(), beiMiClient.getOrgi())));
 					/**
 					 * 当前是在游戏中还是 未开始
 					 */

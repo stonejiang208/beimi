@@ -1,14 +1,18 @@
 package com.beimi.core.engine.game.task;
 
+import java.util.List;
+
 import org.cache2k.expiry.ValueWithExpiryTime;
 
 import com.beimi.config.web.model.Game;
 import com.beimi.core.engine.game.ActionTaskUtils;
+import com.beimi.util.UKTools;
+import com.beimi.util.cache.CacheHelper;
 import com.beimi.util.rules.model.Board;
-import com.beimi.util.rules.model.TakeCards;
 import com.beimi.util.rules.model.Player;
+import com.beimi.util.rules.model.TakeCards;
 import com.beimi.web.model.GameRoom;
-import com.corundumstudio.socketio.BroadcastOperations;
+import com.beimi.web.model.PlayUserClient;
 
 public abstract class AbstractTask implements ValueWithExpiryTime {
 	protected Game game ;
@@ -17,8 +21,8 @@ public abstract class AbstractTask implements ValueWithExpiryTime {
 		game = ActionTaskUtils.game();
 	}
 	
-	public BroadcastOperations getRoom(GameRoom gameRoom){
-		return ActionTaskUtils.getRoom(gameRoom);
+	public void sendEvent(String event , Object data , GameRoom gameRoom){
+		ActionTaskUtils.sendEvent(event, data, gameRoom);
 	}
 	/**
 	 * 找到玩家
@@ -78,14 +82,55 @@ public abstract class AbstractTask implements ValueWithExpiryTime {
 		}
 		return catchPlayer;
 	}
+	
+
+	public Player nextPlayer(Board board, int index) {
+		if(index == 0){
+			index = board.getPlayers().length - 1 ;
+		}else{
+			index = index - 1 ;
+		}
+		return board.getPlayers()[index];
+	}
 	/**
 	 * 当前玩家随机出牌，能管住当前出牌的 最小牌
 	 * @param player
 	 * @param current
 	 * @return
 	 */
-	public TakeCards takecard(Player player , TakeCards current) {
-		
-		return null;
+	public TakeCards takecard(Board board , Player player , TakeCards last) {
+		TakeCards current = null;
+		if(last == null){
+			current = new TakeCards(player);
+		}else{
+			current = new TakeCards(player);
+		}
+		return current;
 	}
+	
+	/**
+	 * 当前玩家随机出牌，能管住当前出牌的 最小牌
+	 * @param player
+	 * @param current
+	 * @return
+	 */
+	public TakeCards takecard(Board board ,Player player) {
+		return takecard(board  , player , null);
+	}
+	
+	public PlayUserClient getPlayUserClient(String roomid,String player , String orgi){
+		PlayUserClient playUserClient = null;
+		List<PlayUserClient> players = CacheHelper.getGamePlayerCacheBean().getCacheObject(roomid, orgi) ;
+		for(PlayUserClient user : players){
+			if(player.equals(user.getId())){
+				playUserClient = user ;
+			}
+		}
+		return playUserClient;
+	}
+	
+	public Object json(Object data){
+		return UKTools.json(data) ;
+	}
+
 }

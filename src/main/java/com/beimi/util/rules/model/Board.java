@@ -38,4 +38,9 @@ public class Board extends AbstractBoard implements java.io.Serializable{
 	public int calcRatio() {
 		return 1;
 	}
+
+	@Override
+	public TakeCards takeCards(Player player , String playerType, TakeCards current) {
+		return new TakeCards(player);
+	}
 }

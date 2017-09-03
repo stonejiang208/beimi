@@ -73,19 +73,19 @@ public class CreateAutoTask extends AbstractTask implements BeiMiGameTask{
 					if(!playUser.getPlayertype().equals(BMDataContext.PlayerTypeEnum.NORMAL.toString())){
 						//AI或托管，自动抢地主，后台配置 自动抢地主的触发时间，或者 抢还是不抢， 无配置的情况下，默认的是抢地主
 						isNormal = false ;
-						board = ActionTaskUtils.doCatch(board, catchPlayer , true) ;
+						board = ActionTaskUtils.doCatch(board, catchPlayer , false) ;
 						break ;
 					}
 				}
 			}
 			catchPlayer.setDocatch(true);//抢过了
 //			board.setBanker(catchPlayer.getPlayuser());	//玩家 点击 抢地主按钮后 赋值
-			getRoom(gameRoom).sendEvent("catch", new GameBoard(catchPlayer.getPlayuser() , board.isDocatch() , board.isDocatch() , board.getRatio())) ;
+			sendEvent("catch", super.json(new GameBoard(catchPlayer.getPlayuser() , board.isDocatch() , board.isDocatch() , board.getRatio())) , gameRoom) ;
 			
 			if(isNormal){	//真人
 				game.change(gameRoom , BeiMiGameEvent.AUTO.toString() , 17);	//通知状态机 , 此处应由状态机处理异步执行
 			}else{			//AI或托管
-				getRoom(gameRoom).sendEvent("catchresult", new GameBoard(catchPlayer.getPlayuser() , catchPlayer.isAccept(), board.isDocatch() , board.getRatio())) ;
+				sendEvent("catchresult", super.json(new GameBoard(catchPlayer.getPlayuser() , catchPlayer.isAccept(), board.isDocatch() , board.getRatio())) , gameRoom) ;
 				game.change(gameRoom , BeiMiGameEvent.AUTO.toString() , 2);	//通知状态机 , 此处应由状态机处理异步执行
 				board.setDocatch(true);	//变成抢地主
 			}

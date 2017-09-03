@@ -84,6 +84,7 @@ public class GameRoomController extends Handler{
 			}
 			GameUtils.removeGameRoom(gameRoom.getId(), super.getOrgi(request));
 			CacheHelper.getGameRoomCacheBean().delete(gameRoom.getId(), super.getOrgi(request)) ;
+			CacheHelper.getExpireCache().remove(gameRoom.getId());
 			List<PlayUserClient> playerUsers = CacheHelper.getGamePlayerCacheBean().getCacheObject(id, super.getOrgi(request)) ;
 			for(PlayUserClient tempPlayUser : playerUsers){
 				CacheHelper.getRoomMappingCacheBean().delete(tempPlayUser.getId(), super.getOrgi(request)) ;

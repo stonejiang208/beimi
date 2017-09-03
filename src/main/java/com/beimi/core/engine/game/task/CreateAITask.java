@@ -41,7 +41,7 @@ public class CreateAITask extends AbstractTask implements ValueWithExpiryTime  ,
 				PlayUserClient playerUser = GameUtils.create(new PlayUser() , BMDataContext.PlayerTypeEnum.AI.toString()) ;
 				playerUser.setPlayerindex(gameRoom.getPlayers() - playerList.size());
 				CacheHelper.getGamePlayerCacheBean().put(gameRoom.getId(), playerUser, orgi); //将用户加入到 room ， MultiCache
-				BMDataContext.getContext().getBean(SocketIOServer.class).getRoomOperations(gameRoom.getId()).sendEvent("joinroom",playerUser);
+				BMDataContext.getContext().getBean(SocketIOServer.class).getRoomOperations(gameRoom.getId()).sendEvent("joinroom",super.json(playerUser));
 				playerList.add(playerUser) ;
 			}
 			/**

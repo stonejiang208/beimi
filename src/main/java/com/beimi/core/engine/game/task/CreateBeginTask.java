@@ -44,7 +44,7 @@ public class CreateBeginTask extends AbstractTask implements ValueWithExpiryTime
 			/**
 			 * 每个人收到的 牌面不同，所以不用 ROOM发送广播消息，而是用 遍历房间里所有成员发送消息的方式
 			 */
-			NettyClients.getInstance().sendGameEventMessage(playerUser.getId(), "play", new UserBoard(board , playerUser.getId()) );
+			NettyClients.getInstance().sendGameEventMessage(playerUser.getId(), "play",super.json(new UserBoard(board , playerUser.getId())));
 		}
 		
 		CacheHelper.getGameRoomCacheBean().put(gameRoom.getId(), gameRoom, gameRoom.getOrgi());

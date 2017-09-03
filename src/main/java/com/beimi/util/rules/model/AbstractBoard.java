@@ -15,6 +15,9 @@ public abstract class AbstractBoard implements java.io.Serializable {
 	public abstract int calcRatio() ;
 	
 	
+	public abstract TakeCards takeCards(Player player ,String playerType , TakeCards current);
+	
+	
 	private static final long serialVersionUID = 1L;
 	/**
 	 * 
@@ -23,7 +26,7 @@ public abstract class AbstractBoard implements java.io.Serializable {
 	private byte[] cards;	//4个Bit描述一张牌，麻将：136+2/2 = 69 byte ; 扑克 54/2 = 27 byte 
 	private Player[] players;//3~10人(4 byte)
 	
-	private TakeCards current;
+	private TakeCards last;
 	
 	private String room ;		//房间ID（4 byte）
 	
@@ -118,11 +121,11 @@ public abstract class AbstractBoard implements java.io.Serializable {
 		this.lasthands = lasthands;
 	}
 
-	public TakeCards getCurrent() {
-		return current;
+	public TakeCards getLast() {
+		return last;
 	}
 
-	public void setCurrent(TakeCards current) {
-		this.current = current;
+	public void setLast(TakeCards last) {
+		this.last = last;
 	}
 }

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.apache.commons.lang.ArrayUtils;
 import org.cache2k.expiry.ValueWithExpiryTime;
 
+import com.beimi.core.BMDataContext;
 import com.beimi.core.engine.game.BeiMiGameEvent;
 import com.beimi.core.engine.game.BeiMiGameTask;
 import com.beimi.core.engine.game.GameBoard;
@@ -13,6 +14,7 @@ import com.beimi.util.cache.CacheHelper;
 import com.beimi.util.rules.model.Board;
 import com.beimi.util.rules.model.Player;
 import com.beimi.web.model.GameRoom;
+import com.beimi.web.model.PlayUserClient;
 
 public class CreateRaiseHandsTask extends AbstractTask implements ValueWithExpiryTime  , BeiMiGameTask{
 
@@ -57,15 +59,21 @@ public class CreateRaiseHandsTask extends AbstractTask implements ValueWithExpir
 		/**
 		 * 发送一个通知，翻底牌消息
 		 */
-		getRoom(gameRoom).sendEvent("lasthands", new GameBoard(lastHandsPlayer.getPlayuser() , board.getLasthands(), board.getRatio())) ;
+		sendEvent("lasthands", super.json(new GameBoard(lastHandsPlayer.getPlayuser() , board.getLasthands(), board.getRatio())) , gameRoom) ;
 		
 		/**
 		 * 更新牌局状态
 		 */
 		CacheHelper.getBoardCacheBean().put(gameRoom.getId(), board, orgi);
 		/**
-		 * 发送一个 开始打牌的事件
+		 * 发送一个 开始打牌的事件 ， 判断当前出牌人是 玩家还是 AI，如果是 AI，则默认 1秒时间，如果是玩家，则超时时间是25秒
 		 */
-		game.change(gameRoom , BeiMiGameEvent.PLAYCARDS.toString() , 1);	//通知状态机 , 此处应由状态机处理异步执行
+		PlayUserClient playUserClient = super.getPlayUserClient(gameRoom.getId(), lastHandsPlayer.getPlayuser(), orgi) ;
+		
+		if(BMDataContext.PlayerTypeEnum.NORMAL.toString().equals(playUserClient.getPlayertype())){
+			game.change(gameRoom , BeiMiGameEvent.PLAYCARDS.toString() , 3);	//应该从 游戏后台配置参数中获取
+		}else{
+			game.change(gameRoom , BeiMiGameEvent.PLAYCARDS.toString() ,3);	//应该从游戏后台配置参数中获取
+		}
 	}
 }

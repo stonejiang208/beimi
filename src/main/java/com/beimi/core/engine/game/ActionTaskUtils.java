@@ -1,15 +1,19 @@
 package com.beimi.core.engine.game;
 
+import java.util.List;
+
 import com.alibaba.fastjson.JSON;
 import com.beimi.config.web.model.Game;
 import com.beimi.core.BMDataContext;
 import com.beimi.core.engine.game.task.AbstractTask;
 import com.beimi.core.engine.game.task.CreateAutoTask;
+import com.beimi.util.cache.CacheHelper;
+import com.beimi.util.client.NettyClients;
 import com.beimi.util.rules.model.Board;
 import com.beimi.util.rules.model.Player;
+import com.beimi.util.server.handler.BeiMiClient;
 import com.beimi.web.model.GameRoom;
-import com.corundumstudio.socketio.BroadcastOperations;
-import com.corundumstudio.socketio.SocketIOServer;
+import com.beimi.web.model.PlayUserClient;
 
 public class ActionTaskUtils {
 	/**
@@ -28,8 +32,14 @@ public class ActionTaskUtils {
 	public static Game game(){
 		return BMDataContext.getContext().getBean(Game.class) ;
 	}
-	public static BroadcastOperations getRoom(GameRoom gameRoom){
-		return BMDataContext.getContext().getBean(SocketIOServer.class).getRoomOperations(gameRoom.getId());
+	public static void sendEvent(String event, Object data ,GameRoom gameRoom){
+		List<PlayUserClient> players = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
+		for(PlayUserClient user : players){
+			BeiMiClient client = NettyClients.getInstance().getClient(user.getId()) ;
+			if(client!=null){
+				client.getClient().sendEvent(event, data);
+			}
+		}
 	}
 	
 	public static String json(Object data){

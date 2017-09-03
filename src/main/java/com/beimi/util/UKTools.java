@@ -734,5 +734,9 @@ public class UKTools {
             hexString.append(strHex);  
         }  
         return hexString.toString();  
-    }  
+    }
+	
+	public static Object json(Object data){
+		return data ;
+	}
 }

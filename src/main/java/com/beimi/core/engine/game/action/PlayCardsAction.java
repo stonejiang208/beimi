@@ -9,6 +9,7 @@ import com.beimi.core.statemachine.impl.BeiMiExtentionTransitionConfigurer;
 import com.beimi.core.statemachine.message.Message;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.util.rules.model.Board;
+import com.beimi.util.rules.model.TakeCards;
 import com.beimi.web.model.GameRoom;
 
 /**
@@ -25,7 +26,12 @@ public class PlayCardsAction<T,S> implements Action<T, S>{
 			if(gameRoom!=null){
 				Board board = (Board) CacheHelper.getBoardCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
 				int interval = (int) message.getMessageHeaders().getHeaders().get("interval") ;
-				CacheHelper.getExpireCache().put(gameRoom.getRoomid(), new CreatePlayCardsTask(interval , board.getBanker() , gameRoom , gameRoom.getOrgi()));
+				String nextPlayer = board.getBanker();
+				TakeCards lastTakeCards = board.getLast() ;
+				if(lastTakeCards!=null){
+					nextPlayer = lastTakeCards.getNextplayer() ;
+				}
+				CacheHelper.getExpireCache().put(gameRoom.getRoomid(), new CreatePlayCardsTask(interval , nextPlayer , gameRoom , gameRoom.getOrgi()));
 			}
 		}
 	}
