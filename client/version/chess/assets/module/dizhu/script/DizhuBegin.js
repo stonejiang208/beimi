@@ -37,6 +37,7 @@ cc.Class({
         this.pokercards = new Array();
         this.lastcards = new Array();
         this.lastCardsPanel.active = false ;
+
     },
     begin:function(){
         this.gamebtn.active = false ;
@@ -172,7 +173,9 @@ cc.Class({
                     self.game.lasthands(self , self.game , data ) ;
                     for(var i=0 ; i<lasthands.length ; i++){
                         let pc = self.playcards(self.game , self ,2 * 300 + (6 + i) * 50-300, lasthands[i]) ;
-                        pc.getComponent("BeiMiCard").order();
+                        var beiMiCard = pc.getComponent("BeiMiCard") ;
+                        beiMiCard.order();
+                        self.registerProxy(pc);
                     }
                     self.game.playtimer(self.game,25);
                 }else{
@@ -194,17 +197,29 @@ cc.Class({
              */
             this.socket.on("takecards" , function(result){
                 var data = self.parse(result);
-                var lastcards = self.decode(data.cards);        //解析牌型
-                if(data.userid == cc.beimi.user.id){
-                    self.game.lasttakecards(self.game , self , data.cardsnum , lastcards);
-                }else{
-                    self.getPlayer(data.userid).lasttakecards(self.game , self , data.cardsnum , lastcards);
+                if(data.allow == true) {
+                    var lastcards ;
+                    if(data.donot == false){
+                        lastcards = self.decode(data.cards);        //解析牌型
+                    }
+                    if (data.userid == cc.beimi.user.id) {
+                        self.game.lasttakecards(self.game, self, data.cardsnum, lastcards , data);
+                    } else {
+                        self.getPlayer(data.userid).lasttakecards(self.game, self, data.cardsnum, lastcards , data);
+                    }
+                    self.game.selectedcards.splice(0 ,self.game.selectedcards.length );//清空
+                    if (data.nextplayer == cc.beimi.user.id) {
+                        self.game.playtimer(self.game, 25);
+                    } else {
+                        self.getPlayer(data.nextplayer).playtimer(self.game, 25);
+                    }
+                }else{//出牌不符合规则，需要进行提示
+                    self.game.notallow.active = true ;
+                    setTimeout(function(){
+                        self.game.notallow.active = false ;
+                    } , 2000);
                 }
-                if(data.nextplayer == cc.beimi.user.id){
-                    self.game.playtimer(self.game,25);
-                }else{
-                    self.getPlayer(data.nextplayer).playtimer(self.game , 25);
-                }
+
             });
 
             this.socket.on("play" , function(result){
@@ -279,11 +294,13 @@ cc.Class({
          * 处理当前玩家的 牌， 发牌 ，  17张牌， 分三次动作处理完成
          */
         for(var i=0 ; i<num ; i++){
+            var myCards ;
             if(finished == null){
-                self.playcards(game , self ,times * 300 + i * 50-300, cards[times * 6 + i] ) ;
+                myCards = self.playcards(game , self ,times * 300 + i * 50-300, cards[times * 6 + i] ) ;
             }else{
-                self.current(game , self ,times * 300 + i * 50-300, cards[times * 6 + i] , finished) ;
+                myCards = self.current(game , self ,times * 300 + i * 50-300, cards[times * 6 + i] , finished) ;
             }
+            this.registerProxy(myCards);
         }
         self.otherplayer(left  , 0 , num ,game , self) ;
         self.otherplayer(right , 1 , num ,game , self) ;
@@ -309,8 +326,12 @@ cc.Class({
     },
     playcards:function(game , self , posx , card){
         let currpoker = game.pokerpool.get() ;
-        currpoker.getComponent("BeiMiCard").setCard(card) ;
+        var beiMiCard = currpoker.getComponent("BeiMiCard") ;
+        beiMiCard.setCard(card) ;
+
         currpoker.card = card ;
+
+
         currpoker.parent = self.poker ;
         currpoker.setPosition(0,200);
 
@@ -335,19 +356,29 @@ cc.Class({
             self.lastcards[self.lastcards.length] = currpoker ;
         }
     },
+    registerProxy:function(myCard){
+        if(myCard){
+            var beiMiCard = myCard.getComponent("BeiMiCard") ;
+            beiMiCard.proxy(this.game);
+        }
+    },
     current:function(game , self , posx , card , func){
         let currpoker = game.pokerpool.get() ;
-        currpoker.getComponent("BeiMiCard").setCard(card) ;
+        var beiMiCard = currpoker.getComponent("BeiMiCard") ;
+        beiMiCard.setCard(card) ;
         currpoker.card = card ;
         currpoker.parent = self.root() ;
         currpoker.setPosition(0,200);
 
         currpoker.setScale(1,1);
 
+
+
         self.pokercards[self.pokercards.length] = currpoker ;
         let seq = cc.sequence(cc.moveTo(0.2, posx, -180) , func);
 
         currpoker.runAction(seq);
+        return currpoker;
     },
     reordering:function(self){
         for(var i=0 ; i<self.pokercards.length ; i++){
@@ -387,5 +418,17 @@ cc.Class({
      */
     docatch:function(){
         this.socket.emit("docatch");
+    },
+    /**
+     * 出牌
+     */
+    doPlayCards:function(){
+        this.socket.emit("doplaycards" , this.game.selectedcards.join());
+    },
+    /**
+     * 不出牌
+     */
+    noCards:function(){
+        this.socket.emit("nocards");
     }
 });
