@@ -1,0 +1,13 @@
+version: '2'
+
+services:
+  mysql:
+    build: ./docker/mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: beimi
+    volumes:
+      - ./docker/mysql/conf:/etc/mysql/conf.d
+      - ./docker/mysql/data:/var/lib/mysql
