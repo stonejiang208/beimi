@@ -6,6 +6,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.cache2k.expiry.ValueWithExpiryTime;
 
 import com.beimi.core.BMDataContext;
+import com.beimi.core.engine.game.ActionTaskUtils;
 import com.beimi.core.engine.game.BeiMiGameEvent;
 import com.beimi.core.engine.game.BeiMiGameTask;
 import com.beimi.core.engine.game.GameBoard;
@@ -68,10 +69,10 @@ public class CreateRaiseHandsTask extends AbstractTask implements ValueWithExpir
 		/**
 		 * 发送一个 开始打牌的事件 ， 判断当前出牌人是 玩家还是 AI，如果是 AI，则默认 1秒时间，如果是玩家，则超时时间是25秒
 		 */
-		PlayUserClient playUserClient = super.getPlayUserClient(gameRoom.getId(), lastHandsPlayer.getPlayuser(), orgi) ;
+		PlayUserClient playUserClient = ActionTaskUtils.getPlayUserClient(gameRoom.getId(), lastHandsPlayer.getPlayuser(), orgi) ;
 		
 		if(BMDataContext.PlayerTypeEnum.NORMAL.toString().equals(playUserClient.getPlayertype())){
-			game.change(gameRoom , BeiMiGameEvent.PLAYCARDS.toString() , 3);	//应该从 游戏后台配置参数中获取
+			game.change(gameRoom , BeiMiGameEvent.PLAYCARDS.toString() , 25);	//应该从 游戏后台配置参数中获取
 		}else{
 			game.change(gameRoom , BeiMiGameEvent.PLAYCARDS.toString() ,3);	//应该从游戏后台配置参数中获取
 		}

@@ -14,6 +14,7 @@ import com.beimi.util.cache.CacheHelper;
 import com.beimi.util.client.NettyClients;
 import com.beimi.util.rules.model.Board;
 import com.beimi.util.rules.model.Player;
+import com.beimi.util.rules.model.TakeCards;
 import com.beimi.web.model.GamePlayway;
 import com.beimi.web.model.GameRoom;
 import com.beimi.web.model.PlayUserClient;
@@ -65,7 +66,6 @@ public class GameEngine {
 				}
 			}
 			if(gameRoom!=null){
-				
 				/**
 				 * 如果当前房间到达了最大玩家数量，则不再加入到 撮合队列
 				 */
@@ -75,7 +75,7 @@ public class GameEngine {
 				}else{	
 					gameEvent.setEvent(BeiMiGameEvent.JOIN.toString());
 				}
-				
+				gameEvent.setGameRoom(gameRoom);
 				gameEvent.setRoomid(gameRoom.getId());
 				NettyClients.getInstance().joinRoom(userid, gameRoom.getId());
 				List<PlayUserClient> userList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), orgi) ;
@@ -121,6 +121,119 @@ public class GameEngine {
 			
 			CacheHelper.getExpireCache().put(gameRoom.getRoomid(), ActionTaskUtils.createAutoTask(1, gameRoom));
 		}
+	}
+	
+	/**
+	 * 出牌，并校验出牌是否合规
+	 * @param roomid
+	 * 
+	 * @param auto 是否自动出牌，超时/托管/AI会调用 = true
+	 * @param userid
+	 * @param orgi
+	 * @return
+	 */
+	public TakeCards takeCardsRequest(String roomid, String playUserClient, String orgi , boolean auto , byte[] playCards){
+		TakeCards takeCards = null ;
+		GameRoom gameRoom = (GameRoom) CacheHelper.getGameRoomCacheBean().getCacheObject(roomid, orgi) ;
+		if(gameRoom!=null){
+			Board board = (Board) CacheHelper.getBoardCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi());
+			Player player = board.player(playUserClient) ;
+//			board = ActionTaskUtils.doCatch(board, player , accept) ;
+			
+			if(board!=null){
+				//超时了 ， 执行自动出牌
+				if(auto == true || playCards != null){
+					if(board.getLast() == null || board.getLast().getUserid().equals(player.getPlayuser())){	//当前无出牌信息，刚开始出牌，或者出牌无玩家 压
+						/**
+						 * 超时处理，如果当前是托管的或玩家超时，直接从最小的牌开始出，如果是 AI，则 需要根据AI级别（低级/中级/高级） 计算出牌 ， 目前先不管，直接从最小的牌开始出
+						 */
+						takeCards = board.takecard(player , true , playCards) ;
+					}else{
+						if(playCards == null){
+							takeCards = board.takecard(player , board.getLast()) ;
+						}else{
+							CardType playCardType = ActionTaskUtils.identification(playCards) ;
+							CardType lastCardType = ActionTaskUtils.identification(board.getLast().getCards()) ;
+							if(ActionTaskUtils.allow(playCardType, lastCardType)){//合规，允许出牌
+								takeCards = board.takecard(player , true , playCards) ;
+							}else{
+								//不合规的牌 ， 需要通知客户端 出牌不符合规则 ， 此处放在服务端判断，防外挂
+							}
+						}
+					}
+				}else{
+					takeCards = new TakeCards();
+					takeCards.setUserid(player.getPlayuser());
+				}
+				if(takeCards!=null){		//通知出牌
+					takeCards.setCardsnum(player.getCards().length);
+					takeCards.setAllow(true);
+					
+					if(takeCards.getCards()!=null){
+						board.setLast(takeCards);
+						takeCards.setDonot(false);	//出牌
+					}else{		
+						takeCards.setDonot(true);	//不出牌
+					}
+					Player next = board.nextPlayer(board.index(player.getPlayuser())) ;
+					if(next!=null){
+						takeCards.setNextplayer(next.getPlayuser());
+						board.setNextplayer(next.getPlayuser());
+						
+					}
+					CacheHelper.getBoardCacheBean().put(gameRoom.getId(), board, gameRoom.getOrgi());
+					/**
+					 * 判断下当前玩家是不是和最后一手牌 是一伙的，如果是一伙的，手机端提示 就是 不要， 如果不是一伙的，就提示要不起
+					 */
+					if(player.getPlayuser().equals(board.getBanker())){ //当前玩家是地主
+						takeCards.setSameside(false);
+					}else{
+						if(board.getLast().getUserid().equals(board.getBanker())){ //最后一把是地主出的，然而我却不是地主
+							takeCards.setSameside(false);	
+						}else{
+							takeCards.setSameside(true);
+						}
+					}
+					/**
+					 * 移除定时器，然后重新设置
+					 */
+					CacheHelper.getExpireCache().remove(gameRoom.getRoomid());
+					
+					/**
+					 * 牌出完了就算赢了
+					 */
+					if(board.isWin()){//出完了
+						ActionTaskUtils.game().change(gameRoom , BeiMiGameEvent.ALLCARDS.toString() , 0);	//赢了，通知结算
+					}else{
+						PlayUserClient nextPlayUserClient = ActionTaskUtils.getPlayUserClient(gameRoom.getId(), takeCards.getNextplayer(), orgi) ;
+						if(BMDataContext.PlayerTypeEnum.NORMAL.toString().equals(nextPlayUserClient.getPlayertype())){
+							ActionTaskUtils.game().change(gameRoom , BeiMiGameEvent.PLAYCARDS.toString() , 25);	//应该从 游戏后台配置参数中获取
+						}else{
+							ActionTaskUtils.game().change(gameRoom , BeiMiGameEvent.PLAYCARDS.toString() , 3);	//应该从游戏后台配置参数中获取
+						}
+						
+						ActionTaskUtils.sendEvent("takecards", ActionTaskUtils.json(takeCards) , gameRoom);	//type字段用于客户端的音效
+					}
+				}else{
+					takeCards = new TakeCards();
+					takeCards.setAllow(false);
+					ActionTaskUtils.sendEvent("takecards", ActionTaskUtils.json(takeCards) , gameRoom);	//type字段用于客户端的音效
+				}
+				
+			}
+		}
+		return takeCards ;
+	}
+	
+	/**
+	 * 出牌，不出牌
+	 * @param roomid
+	 * @param userid
+	 * @param orgi
+	 * @return
+	 */
+	public void noCardsRequest(String roomid, PlayUserClient playUser, String orgi){
+		
 	}
 	
 	/**

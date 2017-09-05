@@ -52,7 +52,7 @@ public class CreateAutoTask extends AbstractTask implements BeiMiGameTask{
 				index = i;
 			}
 			if(randomCardPlayer.isDocatch()){
-				catchPlayer = next(board , index);
+				catchPlayer = board.next(index);
 			}else{
 				catchPlayer = randomCardPlayer;
 			}
