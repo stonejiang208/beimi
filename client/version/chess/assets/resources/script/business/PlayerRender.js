@@ -156,7 +156,7 @@ cc.Class({
         if(this.beimitimer){
             this.beimitimer.stoptimer(this , this.jsq , this.timesrc);
             var dograb = this.atlas.getSpriteFrame('提示_抢地主');
-            var docatch = this.atlas.getSpriteFrame('提示_叫地主');
+            var docatch = this.atlas.getSpriteFrame('提示_不抢');
             if(data.grab){
                 //抢地主
                 if(this.result){
@@ -184,9 +184,9 @@ cc.Class({
             }
         }
     },
-    lasthands:function(self, game ,data){      //所有玩家共用的
+    hideresult:function(){
         if(this.result){
-            this.result.active = false
+            this.result.active = false ;
         }
         if(this.cannot){
             this.cannot.active = false ;
@@ -194,6 +194,9 @@ cc.Class({
         if(this.donot){
             this.donot.active = false ;
         }
+    },
+    lasthands:function(self, game ,data){      //所有玩家共用的
+        this.hideresult();
         if(this.beimitimer && this.timesrc) {
             this.beimitimer.stoptimer(this, this.jsq, this.timesrc);
         }

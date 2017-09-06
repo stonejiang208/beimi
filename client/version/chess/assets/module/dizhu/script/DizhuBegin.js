@@ -171,6 +171,14 @@ cc.Class({
                  */
                 if(data.userid == cc.beimi.user.id) {
                     self.game.lasthands(self , self.game , data ) ;
+                    /**
+                     * 隐藏 其他玩家的 抢地主/不抢地主的 提示信息
+                     */
+                    for(var inx =0 ; inx<self.player.length ; inx++){
+                        var render = self.player[inx].getComponent("PlayerRender") ;
+                        render.hideresult();
+                    }
+
                     for(var i=0 ; i<lasthands.length ; i++){
                         let pc = self.playcards(self.game , self ,2 * 300 + (6 + i) * 50-300, lasthands[i]) ;
                         var beiMiCard = pc.getComponent("BeiMiCard") ;
