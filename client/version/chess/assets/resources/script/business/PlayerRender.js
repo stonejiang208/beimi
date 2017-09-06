@@ -279,8 +279,6 @@ cc.Class({
     },
     playcards:function(game , index, lastcards , card){
         let currpoker = game.pokerpool.get() ;
-        let beiMiCard = currpoker.getComponent("BeiMiCard");
-        beiMiCard.setCard(card) ;
         currpoker.card = card ;
 
         currpoker.setScale(0.5,0.5);
@@ -289,13 +287,11 @@ cc.Class({
 
         currpoker.x = index * 30 - 30 ;
         currpoker.y = 0;
-
-        beiMiCard.order();
-
-
         currpoker.zIndex = lastcards.length - index;
 
-        console.log(currpoker.zIndex +"  card:"+card) ;
+        let beiMiCard = currpoker.getComponent("BeiMiCard");
+        beiMiCard.setCard(card) ;
+        beiMiCard.order();
 
         this.cardslist[this.cardslist.length] = currpoker ;
     },
