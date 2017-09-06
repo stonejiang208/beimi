@@ -65,7 +65,7 @@ cc.Class({
             default: null,
             type: cc.Node
         },
-        opresult:{
+        operesult:{
             default: null,
             type: cc.Node
         }
@@ -85,8 +85,8 @@ cc.Class({
         if(this.notallow){
             this.notallow.active = false ;
         }
-        if(this.opresult){
-            this.opresult.active = false ;
+        if(this.operesult){
+            this.operesult.active = false ;
         }
 
         this.playerspool = new cc.NodePool();
@@ -152,11 +152,14 @@ cc.Class({
         if(this.timesrc){
             this.beimitimer.stoptimer(this , this.timer , this.timesrc);
         }
-        this.doOperatorResult("catch" , data.grab) ;
+        this.doOperatorResult("catch" , data.grab , false) ;
     },
     lasthands:function(self, game,data){   //设置地主
         var render = this.playermysql.getComponent("PlayerRender") ;
         render.setDizhuFlag(data);
+        if(this.operesult){
+            this.operesult.active = false ;
+        }
     },
     lasttakecards:function(game , self , cardsnum ,lastcards , data){
         if(this.result){
@@ -181,10 +184,12 @@ cc.Class({
             game.pokerpool.put(this.cardslist[i]) ;//回收回去
         }
         this.cardslist.splice(0,this.cardslist.length) ;//删除数组里的所有内容
-        if (data.donot == "0") {    //选择出牌或默认出牌
+        if (data.donot == false) {    //选择出牌或默认出牌
             for(var i=0 ; i<lastcards.length ; i++){
                 this.playcards(self , i , lastcards[i]) ;
             }
+        }else{
+            this.doOperatorResult("lasttakecards" , true , data.sameside) ;
         }
     },
 
@@ -223,6 +228,9 @@ cc.Class({
         if(this.lastcards){
             this.lastcards.active = false ;
         }
+        if(this.operesult){
+            this.operesult.active = false ;
+        }
 
         for(var i=0 ; i<this.cardslist.length ; i++){
             game.pokerpool.put(this.cardslist[i]) ;//回收回去
@@ -232,9 +240,41 @@ cc.Class({
         this.beimitimer = new gameTimer();
         this.timesrc = this.beimitimer.runtimer(this , this.timer , this.atlas , this.timer_first , this.timer_sec , times);
     },
-    doOperatorResult:function(oper , resvalue){
+    doOperatorResult:function(oper , resvalue , sameside){
+        this.operesult.active = true ;
         if(oper == "catch"){
-            console.log(resvalue) ;
+            if(resvalue == true){
+                for(var i=0 ; i<this.operesult.children.length ; i++){
+                    this.operesult.children[i].active = false ;
+                    if(this.operesult.children[i].name == "提示_抢地主"){
+                        this.operesult.children[i].active = true ;
+                    }
+                }
+            }else {
+                for (var i = 0; i < this.operesult.children.length; i++) {
+                    this.operesult.children[i].active = false;
+                    if (this.operesult.children[i].name == "不要") {
+                        this.operesult.children[i].active = true;
+                    }
+
+                }
+            }
+        }else if(oper == "lasttakecards"){
+            if(sameside == true){
+                for (var i = 0; i < this.operesult.children.length; i++) {
+                    this.operesult.children[i].active = false;
+                    if (this.operesult.children[i].name == "不要") {
+                        this.operesult.children[i].active = true;
+                    }
+                }
+            }else{
+                for (var i = 0; i < this.operesult.children.length; i++) {
+                    this.operesult.children[i].active = false;
+                    if (this.operesult.children[i].name == "要不起") {
+                        this.operesult.children[i].active = true;
+                    }
+                }
+            }
         }
     },
     doSelectCard:function(card){
