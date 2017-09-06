@@ -2,9 +2,6 @@ package com.beimi.util.rules.model;
 
 import org.apache.commons.lang.ArrayUtils;
 
-import com.beimi.core.engine.game.ActionTaskUtils;
-import com.beimi.core.engine.game.BeiMiGameEvent;
-
 /**
  * 牌局，用于描述当前牌局的内容 ， 
  * 1、随机排序生成的 当前 待起牌（麻将、德州有/斗地主无）

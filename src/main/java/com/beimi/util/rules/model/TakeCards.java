@@ -90,6 +90,7 @@ public class TakeCards implements java.io.Serializable{
 			this.cards = getAIMostSmall(player, 0) ;
 		}else{
 			this.cards = playCards ;
+			player.setCards(this.removeCards(player.getCards() , playCards));
 		}
 		this.cardType =  ActionTaskUtils.identification(cards);
 		this.type = cardType.getCardtype() ;
@@ -266,6 +267,30 @@ public class TakeCards implements java.io.Serializable{
 		for(int i=0; i<cards.length ; i++){
 			if(i<start || i >= end){
 				retCards[inx++] = cards[i] ;
+			}
+		}
+		return retCards ;
+	}
+	
+	/**
+	 * 移除出牌
+	 * @param cards
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public byte[] removeCards(byte[] cards , byte[] playcards){
+		byte[] retCards = new byte[cards.length - playcards.length] ;
+		int cardsindex = 0 ;
+		for(int i=0; i<cards.length ; i++){
+			boolean found = false ;
+			for(int inx = 0 ;inx<playcards.length ; inx++){
+				if(cards[i] == playcards[inx]){
+					found = true ; break ;
+				}
+			}
+			if(found == false){
+				retCards[cardsindex++] = cards[i] ;
 			}
 		}
 		return retCards ;

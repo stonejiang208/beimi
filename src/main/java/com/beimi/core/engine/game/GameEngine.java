@@ -204,6 +204,7 @@ public class GameEngine {
 					 */
 					if(board.isWin()){//出完了
 						ActionTaskUtils.game().change(gameRoom , BeiMiGameEvent.ALLCARDS.toString() , 0);	//赢了，通知结算
+						takeCards.setNextplayer(null);
 					}else{
 						PlayUserClient nextPlayUserClient = ActionTaskUtils.getPlayUserClient(gameRoom.getId(), takeCards.getNextplayer(), orgi) ;
 						if(BMDataContext.PlayerTypeEnum.NORMAL.toString().equals(nextPlayUserClient.getPlayertype())){
@@ -211,15 +212,12 @@ public class GameEngine {
 						}else{
 							ActionTaskUtils.game().change(gameRoom , BeiMiGameEvent.PLAYCARDS.toString() , 3);	//应该从游戏后台配置参数中获取
 						}
-						
-						ActionTaskUtils.sendEvent("takecards", ActionTaskUtils.json(takeCards) , gameRoom);	//type字段用于客户端的音效
 					}
 				}else{
 					takeCards = new TakeCards();
 					takeCards.setAllow(false);
-					ActionTaskUtils.sendEvent("takecards", ActionTaskUtils.json(takeCards) , gameRoom);	//type字段用于客户端的音效
 				}
-				
+				ActionTaskUtils.sendEvent("takecards", ActionTaskUtils.json(takeCards) , gameRoom);	//type字段用于客户端的音效
 			}
 		}
 		return takeCards ;
@@ -292,6 +290,19 @@ public class GameEngine {
 			gameRoom = (GameRoom) CacheHelper.getGameRoomCacheBean().getCacheObject(roomid, orgi) ;		//直接加入到 系统缓存 （只有一个地方对GameRoom进行二次写入，避免分布式锁）
 		}
 		return gameRoom;
+	}
+	
+	/**
+	 * 结束 当前牌局
+	 * @param userid
+	 * @param orgi
+	 * @return
+	 */
+	public void finished(String roomid, String orgi){
+		if(!StringUtils.isBlank(roomid)){//
+			CacheHelper.getExpireCache().remove(roomid);
+			CacheHelper.getBoardCacheBean().delete(roomid, orgi) ;
+		}
 	}
 	/**
 	 * 创建新房间 ，需要传入房间的玩法 ， 玩法定义在 系统运营后台，玩法创建后，放入系统缓存 ， 客户端进入房间的时候，传入 玩法ID参数

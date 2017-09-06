@@ -1,3 +1,4 @@
+
 package com.beimi.util.server.handler;
 
 import org.apache.commons.lang.StringUtils;
@@ -11,6 +12,7 @@ import com.beimi.core.engine.game.state.GameEvent;
 import com.beimi.util.UKTools;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.util.client.NettyClients;
+import com.beimi.util.rules.model.Board;
 import com.beimi.web.model.PlayUserClient;
 import com.beimi.web.model.Token;
 import com.corundumstudio.socketio.AckRequest;
@@ -96,6 +98,17 @@ public class GameEventHandler
 					/**
 					 * 当前是在游戏中还是 未开始
 					 */
+					Board board = (Board) CacheHelper.getBoardCacheBean().getCacheObject(gameEvent.getRoomid(), gameEvent.getOrgi());
+					if(board !=null){
+						if(board.isFinished()){
+							BMDataContext.getGameEngine().finished(gameEvent.getRoomid(),gameEvent.getOrgi() );
+							//game.change(gameEvent);	//通知状态机 , 此处应由状态机处理异步执行
+						}else{
+							//恢复数据
+						}
+					}else{
+						//通知状态
+					}
 					game.change(gameEvent);	//通知状态机 , 此处应由状态机处理异步执行
 				}
 			}

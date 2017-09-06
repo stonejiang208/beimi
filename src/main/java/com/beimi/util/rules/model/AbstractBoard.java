@@ -78,6 +78,8 @@ public abstract class AbstractBoard implements java.io.Serializable {
 	
 	private TakeCards last;
 	
+	private boolean finished ;
+	
 	private String nextplayer ;
 	
 	private String room ;		//房间ID（4 byte）
@@ -188,5 +190,12 @@ public abstract class AbstractBoard implements java.io.Serializable {
 	public void setNextplayer(String nextplayer) {
 		this.nextplayer = nextplayer;
 	}
-	
+
+	public boolean isFinished() {
+		return finished;
+	}
+
+	public void setFinished(boolean finished) {
+		this.finished = finished;
+	}
 }

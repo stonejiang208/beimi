@@ -35,7 +35,7 @@ public class JoinAction<T,S> implements Action<T, S>{
 		if(!StringUtils.isBlank(room)){
 			GameRoom gameRoom = (GameRoom) CacheHelper.getGameRoomCacheBean().getCacheObject(room, BMDataContext.SYSTEM_ORGI) ; 
 			if(gameRoom!=null){
-				List<PlayUserClient> playerList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getRoomid(), gameRoom.getOrgi()) ;
+				List<PlayUserClient> playerList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
 				if(gameRoom.getPlayers() == playerList.size()){
 					//结束撮合，可以开始玩游戏了
 					/**

@@ -123,6 +123,15 @@ public class ActionTaskUtils {
 	 * @return
 	 */
 	public static CardType identification(byte[] cards){
+		if(cards!=null){
+			System.out.print("出牌：");
+			for(byte card : cards){
+				System.out.print(card+",");
+			}
+		}else{
+			System.out.println("出牌为空了。。。。。");
+		}
+		System.out.println();
 		CardType cardTypeBean = new CardType();
 		Map<Integer,Integer> types = new HashMap<Integer,Integer>();
 		int max = -1 , maxcard = -1 , cardtype = 0 , mincard = -1;
