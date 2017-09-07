@@ -27,7 +27,7 @@ import com.beimi.web.model.PlayUser;
 import com.beimi.web.model.PlayUserClient;
 import com.beimi.web.model.ResultData;
 import com.beimi.web.model.Token;
-import com.beimi.web.service.repository.es.PlayUserClientClientESRepository;
+import com.beimi.web.service.repository.es.PlayUserClientESRepository;
 import com.beimi.web.service.repository.es.PlayUserESRepository;
 import com.beimi.web.service.repository.es.TokenESRepository;
 import com.beimi.web.service.repository.jpa.PlayUserRepository;
@@ -40,7 +40,7 @@ public class GuestRegisterController extends Handler{
 	private PlayUserESRepository playUserESRes;
 	
 	@Autowired
-	private PlayUserClientClientESRepository playUserClientRes ;
+	private PlayUserClientESRepository playUserClientRes ;
 	
 	@Autowired
 	private PlayUserRepository playUserRes ;

@@ -3,8 +3,10 @@ package com.beimi.web.model;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -19,6 +21,9 @@ import com.beimi.util.event.UserEvent;
  * 
  */
 @Document(indexName = "beimi", type = "uk_playuser")
+@Entity
+@Table(name = "bm_playuser")
+@org.hibernate.annotations.Proxy(lazy = false)
 public class PlayUserClient implements UserEvent , java.io.Serializable{
 	/**
 	 * 

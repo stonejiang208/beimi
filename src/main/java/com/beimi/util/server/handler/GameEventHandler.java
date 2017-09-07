@@ -15,6 +15,8 @@ import com.beimi.util.client.NettyClients;
 import com.beimi.util.rules.model.Board;
 import com.beimi.web.model.PlayUserClient;
 import com.beimi.web.model.Token;
+import com.beimi.web.service.repository.es.PlayUserClientESRepository;
+import com.beimi.web.service.repository.jpa.PlayUserClientRepository;
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
@@ -38,20 +40,22 @@ public class GameEventHandler
     @OnConnect  
     public void onConnect(SocketIOClient client)  
     {  
-    	
     }  
     
   //添加@OnDisconnect事件，客户端断开连接时调用，刷新客户端信息  
     @OnDisconnect  
     public void onDisconnect(SocketIOClient client)  
     {  
-    	String token = client.getHandshakeData().getSingleUrlParam("token") ;
-		if(!StringUtils.isBlank(token)){
-			Token userToken = (Token) CacheHelper.getApiUserCacheBean().getCacheObject(token, BMDataContext.SYSTEM_ORGI) ;
-			if(userToken!=null){
-				PlayUserClient playUser = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(userToken.getUserid(), userToken.getOrgi()) ;
-				BMDataContext.getGameEngine().leaveRoom(playUser, userToken.getOrgi());
-			}
+    	BeiMiClient beiMiClient = NettyClients.getInstance().getClient(client.getSessionId().toString()) ;
+		if(beiMiClient!=null){
+			PlayUserClient playUser = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(beiMiClient.getUserid(), beiMiClient.getOrgi()) ;
+			/**
+			 * 更新当前玩家状态，在线|离线
+			 */
+			playUser.setOnline(false);
+			UKTools.published(playUser,BMDataContext.getContext().getBean(PlayUserClientESRepository.class), BMDataContext.getContext().getBean(PlayUserClientRepository.class));
+			BMDataContext.getGameEngine().leaveRoom(playUser, beiMiClient.getOrgi());
+			
 			NettyClients.getInstance().removeClient(client.getSessionId().toString());
 		}
     }  
@@ -85,6 +89,12 @@ public class GameEventHandler
 				beiMiClient.setUserid(userClient.getId());
 				beiMiClient.setSession(client.getSessionId().toString());
 				NettyClients.getInstance().putClient(userClient.getId(), beiMiClient);
+				
+				/**
+				 * 更新当前玩家状态，在线|离线
+				 */
+				userClient.setOnline(true);
+				UKTools.published(userClient,BMDataContext.getContext().getBean(PlayUserClientESRepository.class), BMDataContext.getContext().getBean(PlayUserClientRepository.class));
 				
 				GameEvent gameEvent = BMDataContext.getGameEngine().gameRequest(userToken.getUserid(), beiMiClient.getPlayway(), beiMiClient.getRoom(), beiMiClient.getOrgi(), userClient) ;
 				if(gameEvent != null){

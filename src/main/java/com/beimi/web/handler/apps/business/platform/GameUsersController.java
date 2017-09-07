@@ -29,14 +29,7 @@ public class GameUsersController extends Handler{
 	@RequestMapping({"/gameusers"})
 	@Menu(type="platform", subtype="gameusers")
 	public ModelAndView gameusers(ModelMap map , HttpServletRequest request , @Valid String id){
-		Page<PlayUser> playerList = playersRes.findByOrgi(super.getOrgi(request), new PageRequest(super.getP(request), super.getPs(request))) ;
-		for(PlayUser player  : playerList.getContent()){
-			if(CacheHelper.getGamePlayerCacheBean().getCacheObject(player.getId(), super.getOrgi(request))!=null){
-				player.setOnline(true);
-			}
-		}
-		map.addAttribute("playersList", playerList) ;
-		
+		map.addAttribute("playersList", playersRes.findByOrgi(super.getOrgi(request), new PageRequest(super.getP(request), super.getPs(request)))) ;
 		return request(super.createAppsTempletResponse("/apps/business/platform/game/data/index"));
 	}
 	

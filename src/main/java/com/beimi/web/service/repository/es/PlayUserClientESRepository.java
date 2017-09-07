@@ -6,7 +6,7 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchCrudReposi
 
 import com.beimi.web.model.PlayUserClient;
 
-public abstract interface PlayUserClientClientESRepository  extends ElasticsearchCrudRepository<PlayUserClient, String>{
+public abstract interface PlayUserClientESRepository  extends ElasticsearchCrudRepository<PlayUserClient, String>{
 	
   public abstract PlayUserClient findById(String paramString);
   
