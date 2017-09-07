@@ -1,5 +1,7 @@
 package com.beimi.core.engine.game.state;
 
+import com.beimi.web.model.GameRoom;
+
 public class GameEvent implements java.io.Serializable {
 	/**
 	 * 
@@ -26,6 +28,7 @@ public class GameEvent implements java.io.Serializable {
 	private String event ;
 	private String orgi ;
 	private int cardsnum ;
+	private GameRoom gameRoom ;
 	
 	private int players ;
 	private long time ;
@@ -66,5 +69,13 @@ public class GameEvent implements java.io.Serializable {
 	}
 	public void setCardsnum(int cardsnum) {
 		this.cardsnum = cardsnum;
+	}
+
+	public GameRoom getGameRoom() {
+		return gameRoom;
+	}
+
+	public void setGameRoom(GameRoom gameRoom) {
+		this.gameRoom = gameRoom;
 	}
 }

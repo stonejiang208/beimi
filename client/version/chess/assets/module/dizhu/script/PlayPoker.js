@@ -24,10 +24,15 @@ cc.Class({
         this.posy = this.card.y ;
     },
     takecard:function(event){
-        if(event.target.y == this.posy){
-            event.target.y = event.target.y + 30 ;
-        }else{
-            event.target.y = event.target.y - 30 ;
+        var beiMiCard = event.target.parent.getComponent("BeiMiCard") ;
+        if(beiMiCard.game != null){
+            if(event.target.y == this.posy){
+                event.target.y = event.target.y + 30 ;
+                beiMiCard.game.doSelectCard(beiMiCard.card);
+            }else{
+                event.target.y = event.target.y - 30 ;
+                beiMiCard.game.doUnSelectCard(beiMiCard.card);
+            }
         }
     }
 

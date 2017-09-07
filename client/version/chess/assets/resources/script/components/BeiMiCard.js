@@ -51,7 +51,9 @@ cc.Class({
             type: cc.SpriteAtlas
         }
     },
-
+    proxy:function(data){
+        this.game = data ;
+    },
     // use this for initialization
     onLoad: function () {
         this.initcard.active = true ;

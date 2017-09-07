@@ -80,8 +80,10 @@ public class GameUtils {
 		board.setCards(cards);
 		
 		board.setRatio(15); 	//默认倍率 15
+		int random = playUsers.size() * gameRoom.getCardsnum() ;
+		System.out.println("random:"+random);
 		
-		board.setPosition((byte)new Random().nextInt(playUsers.size() * gameRoom.getCardsnum()));	//按照人数计算在随机界牌 的位置，避免出现在底牌里
+		board.setPosition((byte)new Random().nextInt(random));	//按照人数计算在随机界牌 的位置，避免出现在底牌里
 		
 		Player[] players = new Player[playUsers.size()];
 		

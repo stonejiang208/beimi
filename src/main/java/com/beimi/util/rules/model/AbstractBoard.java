@@ -17,6 +17,56 @@ public abstract class AbstractBoard implements java.io.Serializable {
 	
 	public abstract TakeCards takeCards(Player player ,String playerType , TakeCards current);
 	
+	/**
+	 * 找到玩家的 位置
+	 * @param board
+	 * @param userid
+	 * @return
+	 */
+	public abstract int index(String userid);
+	
+	/**
+	 * 是否赢了
+	 * @return
+	 */
+	public abstract boolean isWin() ;
+	
+	
+	/**
+	 * 找到下一个玩家
+	 * @param board
+	 * @param index
+	 * @return
+	 */
+	protected abstract Player next(int index);
+	
+
+	public abstract Player nextPlayer(int index);
+	/**
+	 * 玩家随机出牌，能管住当前出牌的 最小牌
+	 * @param player
+	 * @param current
+	 * @return
+	 */
+	public abstract TakeCards takecard( Player player , boolean allow , byte[] playCards) ;
+	
+	/**
+	 * 当前玩家随机出牌
+	 * @param player
+	 * @param current
+	 * @return
+	 */
+	public abstract TakeCards takecard(Player player) ;
+	
+	
+	/**
+	 * 玩家出牌
+	 * @param player
+	 * @param cards
+	 * @return
+	 */
+	public abstract TakeCards takecard(Player player , TakeCards last) ;
+	
 	
 	private static final long serialVersionUID = 1L;
 	/**
@@ -27,6 +77,8 @@ public abstract class AbstractBoard implements java.io.Serializable {
 	private Player[] players;//3~10人(4 byte)
 	
 	private TakeCards last;
+	
+	private String nextplayer ;
 	
 	private String room ;		//房间ID（4 byte）
 	
@@ -128,4 +180,13 @@ public abstract class AbstractBoard implements java.io.Serializable {
 	public void setLast(TakeCards last) {
 		this.last = last;
 	}
+
+	public String getNextplayer() {
+		return nextplayer;
+	}
+
+	public void setNextplayer(String nextplayer) {
+		this.nextplayer = nextplayer;
+	}
+	
 }

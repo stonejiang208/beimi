@@ -63,6 +63,14 @@ cc.Class({
         lastcards:{
             default: null,
             type: cc.Node
+        },
+        cannot:{
+            default: null,
+            type: cc.Node
+        },
+        donot:{
+            default: null,
+            type: cc.Node
         }
     },
 
@@ -81,6 +89,10 @@ cc.Class({
             this.timer.x = this.timer.x * -1;
             this.headimg.x = this.headimg.x * -1
             this.result.x = this.result.x * -1
+
+            this.cannot.x = this.cannot.x * -1
+            this.donot.x = this.donot.x * -1
+
             this.jsq.x = this.jsq.x * -1
             this.dizhu.x = this.dizhu.x * -1
             // this.lastcards.x = this.lastcards.x * -1
@@ -104,6 +116,12 @@ cc.Class({
         if(this.result){
             this.result.active = false ;
         }
+        if(this.cannot){
+            this.cannot.active = false ;
+        }
+        if(this.donot){
+            this.donot.active = false ;
+        }
         if(this.takecards){
             this.takecards.active = false ;
         }
@@ -123,6 +141,12 @@ cc.Class({
         if(this.result){
             this.result.active = false ;
         }
+        if(this.cannot){
+            this.cannot.active = false ;
+        }
+        if(this.donot){
+            this.donot.active = false ;
+        }
         let self = this ;
         var gameTimer = require("GameTimer");
         this.beimitimer = new gameTimer();
@@ -139,11 +163,23 @@ cc.Class({
                     this.result.getComponent(cc.Sprite).spriteFrame = dograb;
                     this.result.active = true ;
                 }
+                if(this.cannot){
+                    this.cannot.active = false ;
+                }
+                if(this.donot){
+                    this.donot.active = false ;
+                }
             }else{
                 //叫地主
                 if(this.result){
                     this.result.getComponent(cc.Sprite).spriteFrame = docatch;
                     this.result.active = true ;
+                }
+                if(this.cannot){
+                    this.cannot.active = false ;
+                }
+                if(this.donot){
+                    this.donot.active = false ;
                 }
             }
         }
@@ -151,6 +187,12 @@ cc.Class({
     lasthands:function(self, game ,data){      //所有玩家共用的
         if(this.result){
             this.result.active = false
+        }
+        if(this.cannot){
+            this.cannot.active = false ;
+        }
+        if(this.donot){
+            this.donot.active = false ;
         }
         if(this.beimitimer && this.timesrc) {
             this.beimitimer.stoptimer(this, this.jsq, this.timesrc);
@@ -173,26 +215,63 @@ cc.Class({
             this.dizhu.active = false ;
         }
     },
-    lasttakecards:function(game , self , cardsnum ,lastcards){
-        if(this.beimitimer && this.timesrc) {
+    lasttakecards:function(game , self , cardsnum ,lastcards ,data) {
+        if (this.beimitimer && this.timesrc) {
             this.beimitimer.stoptimer(this, this.jsq, this.timesrc);
         }
+        if (this.result) {
+            this.result.active = false;
+        }
+        if (this.cannot) {
+            this.cannot.active = false;
+        }
+        if (this.donot) {
+            this.donot.active = false;
+        }
+        if (this.jsq) {
+            this.jsq.active = false;
+        }
+        if (this.lastcards) {
+            this.lastcards.active = true;
+        }
+        for (var i = 0; i < this.cardslist.length; i++) {
+            game.pokerpool.put(this.cardslist[i]);//回收回去
+        }
+        this.cardslist.splice(0, this.cardslist.length);//删除数组里的所有内容
+        if (data.donot == false) {
+            this.resetcards(cardsnum);
+
+            for (var i = 0; i < lastcards.length; i++) {
+                this.playcards(game, i, lastcards, lastcards[i]);
+            }
+        }else{
+            if(data.sameside == "1"){
+                self.getPlayer(data.userid).tipdonot();
+            }else{
+                self.getPlayer(data.userid).tipcannot();
+            }
+        }
+    },
+    tipcannot:function(){
         if(this.result){
             this.result.active = false ;
         }
-        if(this.jsq){
-            this.jsq.active = false ;
+        if(this.cannot){
+            this.cannot.active = true ;
         }
-        if(this.lastcards){
-            this.lastcards.active = true ;
+        if(this.donot){
+            this.donot.active = false ;
         }
-        for(var i=0 ; i<this.cardslist.length ; i++){
-            game.pokerpool.put(this.cardslist[i]) ;//回收回去
+    },
+    tipdonot:function(){
+        if(this.result){
+            this.result.active = false ;
         }
-        this.cardslist.splice(0,this.cardslist.length) ;//删除数组里的所有内容
-        this.resetcards(cardsnum) ;
-        for(var i=0 ; i<lastcards.length ; i++){
-            this.playcards(game , i , lastcards , lastcards[i]) ;
+        if(this.cannot){
+            this.cannot.active = false ;
+        }
+        if(this.donot){
+            this.donot.active = true ;
         }
     },
     playcards:function(game , index, lastcards , card){
@@ -201,12 +280,13 @@ cc.Class({
         beiMiCard.setCard(card) ;
         currpoker.card = card ;
 
-        currpoker.x = index * 30 - 30 ;
-        currpoker.y = 0;
-
         currpoker.setScale(0.5,0.5);
 
         currpoker.parent = this.lastcards ;
+
+        currpoker.x = index * 30 - 30 ;
+        currpoker.y = 0;
+
         beiMiCard.order();
 
 
@@ -219,6 +299,12 @@ cc.Class({
     playtimer:function(game , times){
         if(this.result){
             this.result.active = false ;
+        }
+        if(this.cannot){
+            this.cannot.active = false ;
+        }
+        if(this.donot){
+            this.donot.active = false ;
         }
         if(this.lastcards){
             this.lastcards.active = false ;

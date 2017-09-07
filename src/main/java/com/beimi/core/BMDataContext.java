@@ -127,6 +127,36 @@ public class BMDataContext {
 		}
 	}
 	
+	public enum CardsTypeEnum{
+		ONE(1),		//单张      3~K,A,2
+		TWO(2),		//一对	 3~K,A,2
+		THREE(3),	//三张	 3~K,A,2
+		FOUR(4),	//三带一	 AAA+K
+		FIVE(5),	//单顺	连子		10JQKA
+		SIX(6),		//双顺	连对		JJQQKK
+		SEVEN(7),	//三顺	飞机		JJJQQQ
+		EIGHT(8),	//飞机	带翅膀	JJJ+QQQ+K+A
+		NINE(9),	//四带二			JJJJ+Q+K
+		TEN(10),	//炸弹			JJJJ
+		ELEVEN(11);	//王炸			0+0
+		
+		private int type ;
+		
+		CardsTypeEnum(int type){
+			this.type = type ;
+		} 
+		
+
+		public int getType() {
+			return type;
+		}
+
+
+		public void setType(int type) {
+			this.type = type;
+		}
+	}
+	
 	public enum MessageTypeEnum{
 		JOINROOM,
 		MESSAGE, 

@@ -60,6 +60,14 @@ cc.Class({
         playbtn:{
             default: null,
             type: cc.Node
+        },
+        notallow:{
+            default: null,
+            type: cc.Node
+        },
+        opresult:{
+            default: null,
+            type: cc.Node
         }
     },
 
@@ -74,10 +82,19 @@ cc.Class({
         if(this.playbtn){
             this.playbtn.active = false ;
         }
+        if(this.notallow){
+            this.notallow.active = false ;
+        }
+        if(this.opresult){
+            this.opresult.active = false ;
+        }
 
         this.playerspool = new cc.NodePool();
         this.myselfpool = new cc.NodePool();
         this.pokerpool = new cc.NodePool();     //背面
+
+
+        this.selectedcards = new Array();   //存放当前玩家 选中 的牌
 
         this.cardslist = new Array();
 
@@ -122,7 +139,7 @@ cc.Class({
         this.beimitimer = new gameTimer();
         this.timesrc = this.beimitimer.runtimer(this , this.timer , this.atlas , this.timer_first , this.timer_sec , times);
     },
-    catchresult:function(){
+    catchresult:function(data){
         if(this.timer){
             this.timer.active = false ;
         }
@@ -135,12 +152,13 @@ cc.Class({
         if(this.timesrc){
             this.beimitimer.stoptimer(this , this.timer , this.timesrc);
         }
+        this.doOperatorResult("catch" , data.grab) ;
     },
     lasthands:function(self, game,data){   //设置地主
         var render = this.playermysql.getComponent("PlayerRender") ;
         render.setDizhuFlag(data);
     },
-    lasttakecards:function(game , self , cardsnum ,lastcards){
+    lasttakecards:function(game , self , cardsnum ,lastcards , data){
         if(this.result){
             this.result.active = false ;
         }
@@ -163,8 +181,10 @@ cc.Class({
             game.pokerpool.put(this.cardslist[i]) ;//回收回去
         }
         this.cardslist.splice(0,this.cardslist.length) ;//删除数组里的所有内容
-        for(var i=0 ; i<lastcards.length ; i++){
-            this.playcards(self , i , lastcards[i]) ;
+        if (data.donot == "0") {    //选择出牌或默认出牌
+            for(var i=0 ; i<lastcards.length ; i++){
+                this.playcards(self , i , lastcards[i]) ;
+            }
         }
     },
 
@@ -203,6 +223,7 @@ cc.Class({
         if(this.lastcards){
             this.lastcards.active = false ;
         }
+
         for(var i=0 ; i<this.cardslist.length ; i++){
             game.pokerpool.put(this.cardslist[i]) ;//回收回去
         }
@@ -210,6 +231,25 @@ cc.Class({
         var gameTimer = require("GameTimer");
         this.beimitimer = new gameTimer();
         this.timesrc = this.beimitimer.runtimer(this , this.timer , this.atlas , this.timer_first , this.timer_sec , times);
+    },
+    doOperatorResult:function(oper , resvalue){
+        if(oper == "catch"){
+            console.log(resvalue) ;
+        }
+    },
+    doSelectCard:function(card){
+        var existcard = this.selectedcards.find(function(pokercard){
+            pokercard.card == card
+        });
+        if(existcard == undefined){
+            this.selectedcards.push(card) ;
+        }
+    },
+    doUnSelectCard:function(card){
+        var inx = this.selectedcards.indexOf(card);
+        if(inx >= 0){
+            this.selectedcards.splice(inx , inx+1) ;
+        }
     }
 
     // called every frame, uncomment this function to activate update callback
