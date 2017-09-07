@@ -235,10 +235,6 @@ CREATE TABLE `bm_game_room` (
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of bm_game_room
--- ----------------------------
-INSERT INTO `bm_game_room` VALUES ('140e07fd820e498da61b44390c9ae3a4', null, null, '2017-09-02 23:18:05', null, '2017-09-02 23:18:05', 'beimi', null, null, null, null, '6f72462503374c47804150656511707f', 'CRERATED', null, '3', '1281abdefa264b2ea0f336aff8a945a9', null, '402888815e21d735015e21d995680000', '0', '0', '1', '0', '17');
 
 -- ----------------------------
 -- Table structure for `bm_generation`
