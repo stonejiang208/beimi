@@ -293,6 +293,8 @@ cc.Class({
         beiMiCard.setCard(card) ;
         beiMiCard.order();
 
+        console.log("牌的位置:"+currpoker.y) ;
+
         this.cardslist[this.cardslist.length] = currpoker ;
     },
     playtimer:function(game , times){
