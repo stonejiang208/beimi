@@ -29,7 +29,7 @@ public class GameRoom implements UserEvent, java.io.Serializable{
 	private String code ;
 	private String roomid ;	//房间ID，房卡游戏的 房间ID是 6位数字，其他为 UUID
 	
-	private boolean match ;	//是否比赛房间
+	private boolean matchmodel ;	//是否比赛房间
 	private String matchid ;//赛事ID
 	private int matchscreen;//比赛场次
 	private String matchtype;	//比赛类型
@@ -216,11 +216,11 @@ public class GameRoom implements UserEvent, java.io.Serializable{
 	public void setGamePlayway(GamePlayway gamePlayway) {
 		this.gamePlayway = gamePlayway;
 	}
-	public boolean isMatch() {
-		return match;
+	public boolean isMatchmodel() {
+		return matchmodel;
 	}
-	public void setMatch(boolean match) {
-		this.match = match;
+	public void setMatchmodel(boolean matchmodel) {
+		this.matchmodel = matchmodel;
 	}
 	public String getMatchid() {
 		return matchid;
