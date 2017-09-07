@@ -49,11 +49,12 @@ public class TakeCards implements java.io.Serializable{
 	public TakeCards(Player player){
 		this.userid = player.getPlayuser() ;
 		this.cards = getAIMostSmall(player, 0) ;
-		this.cardType =  ActionTaskUtils.identification(cards);
-		this.type = cardType.getCardtype() ;
-		
+		if(this.cards != null){
+			player.setCards(this.removeCards(player.getCards() , cards));
+			this.cardType =  ActionTaskUtils.identification(cards);
+			this.type = cardType.getCardtype() ;
+		}
 		this.allow = true ;
-		
 		this.cardsnum = player.getCards().length ;
 	}
 	/**
@@ -69,6 +70,7 @@ public class TakeCards implements java.io.Serializable{
 			this.cards = getAIMostSmall(player, 0) ;
 		}
 		if(cards!=null){
+			player.setCards(this.removeCards(player.getCards() , cards));
 			this.allow = true ;
 			this.cardType =  ActionTaskUtils.identification(cards);
 			this.type = cardType.getCardtype() ;
@@ -90,10 +92,12 @@ public class TakeCards implements java.io.Serializable{
 			this.cards = getAIMostSmall(player, 0) ;
 		}else{
 			this.cards = playCards ;
-			player.setCards(this.removeCards(player.getCards() , playCards));
 		}
-		this.cardType =  ActionTaskUtils.identification(cards);
-		this.type = cardType.getCardtype() ;
+		if(this.cards!=null){
+			player.setCards(this.removeCards(player.getCards() , this.cards));
+			this.cardType =  ActionTaskUtils.identification(cards);
+			this.type = cardType.getCardtype() ;
+		}
 		this.cardsnum = player.getCards().length ;
 		this.allow = true;
 	}
@@ -133,25 +137,13 @@ public class TakeCards implements java.io.Serializable{
 				}
 			}else if(lastTakeCards.getCardType().getCardnum() == 2){	//对子
 				retValue = this.getPair(player.getCards(), types, lastTakeCards.getCardType().getMincard() ,1, new HashMap<Integer , Integer>()) ;
+			}else if(lastTakeCards.getCardType().getCardnum() == 3){	//对子
+				retValue = this.getThree(player.getCards(), types, lastTakeCards.getCardType().getMincard() ,1, new HashMap<Integer , Integer>()) ;
 			}else{	//单张
 				retValue = this.getSingle(player.getCards(), types, lastTakeCards.getCardType().getMincard(), 1, new HashMap<Integer , Integer>()) ;
 			}
 		}else{//单顺，双顺， 三顺
 			
-		}
-		/**
-		 * 有命中的牌型，当前玩家的手牌中移除
-		 */
-		if(retValue!=null){
-			for(byte card : retValue){
-				for(int i=0 ; i<player.getCards().length ; ){
-					if(player.getCards()[i] == card){
-						player.setCards(ArrayUtils.remove(player.getCards(), i)) ;
-						continue ;
-					}
-					i++ ;
-				}
-			}
 		}
 		return retValue ;
 	}
@@ -161,7 +153,34 @@ public class TakeCards implements java.io.Serializable{
 	 * @return
 	 */
 	public byte[] getPair(byte[] cards , Map<Integer,Integer> types , int mincard , int num , Map<Integer,Integer> exist){
-		return null ;
+		byte[] retCards = null;
+		List<Integer> retValue = new ArrayList<Integer>();
+		for(int i=0 ; i<14 ; i++){
+			if(types.get(i) != null && types.get(i) == 2  && retValue.size() < num && (i<0 || i>mincard) && !exist.containsKey(i)){
+				retValue.add(i) ;
+				exist.put(i, i) ;
+			}
+			if(retValue.size() == num){
+				break ;
+			}
+		}
+		if(retValue.size() == num){
+			retCards = new byte[num*2] ;
+			int inx = 0 ;
+			for(int temp : retValue){
+				int times = 0 ;
+				for(byte card : cards){
+					if(card/4 == temp){
+						retCards[inx++] = card ;
+						times++;
+					}
+					if(times == 2){
+						break ;
+					}
+				}
+			}
+		}
+		return retCards ;
 	}
 	public byte[] getSingle(byte[] cards, Map<Integer,Integer> types , int mincard ,int num , Map<Integer,Integer> exist){
 		byte[] retCards = null;
@@ -202,6 +221,41 @@ public class TakeCards implements java.io.Serializable{
 		}
 		return retCards ;
 	}
+	/**
+	 * 找到num对子
+	 * @param num
+	 * @return
+	 */
+	public byte[] getThree(byte[] cards , Map<Integer,Integer> types , int mincard , int num , Map<Integer,Integer> exist){
+		byte[] retCards = null;
+		List<Integer> retValue = new ArrayList<Integer>();
+		for(int i=0 ; i<14 ; i++){
+			if(types.get(i) != null && types.get(i) == 2  && retValue.size() < num && (i<0 || i>mincard) && !exist.containsKey(i)){
+				retValue.add(i) ;
+				exist.put(i, i) ;
+			}
+			if(retValue.size() == num){
+				break ;
+			}
+		}
+		if(retValue.size() == num){
+			retCards = new byte[num*3] ;
+			int inx = 0 ;
+			for(int temp : retValue){
+				int times = 0 ;
+				for(byte card : cards){
+					if(card/4 == temp){
+						retCards[inx++] = card ;
+						times++;
+					}
+					if(times == 3){
+						break ;
+					}
+				}
+			}
+		}
+		return retCards ;
+	}
 //	
 //	public byte[] searchBegin(Player player , int card){
 //		
@@ -231,7 +285,6 @@ public class TakeCards implements java.io.Serializable{
 					continue ;
 				}else{
 					takeCards = ArrayUtils.subarray(player.getCards(), i+1, player.getCards().length - start) ;
-					player.setCards(this.removeCards(player.getCards(), i+1, player.getCards().length - start));
 					break ;
 				}
 			}
