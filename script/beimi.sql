@@ -227,7 +227,7 @@ CREATE TABLE `bm_game_room` (
   `curpalyers` int(11) DEFAULT NULL,
   `cardroom` tinyint(4) DEFAULT NULL,
   `cardsnum` int(11) DEFAULT NULL,
-  `match` tinyint(4) DEFAULT NULL,
+  `matchmodel` tinyint(4) DEFAULT NULL,
   `matchid` varchar(32) DEFAULT NULL,
   `matchscreen` int(11) DEFAULT NULL,
   `matchtype` varchar(32) DEFAULT NULL,
