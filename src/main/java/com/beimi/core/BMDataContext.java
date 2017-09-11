@@ -13,6 +13,7 @@ public class BMDataContext {
 	public static final String DEFAULT_TYPE = "default"	;		//默认分类代码
 	public static final String BEIMI_SYSTEM_DIC = "com.dic.system.template";
 	public static final String BEIMI_SYSTEM_GAME_TYPE_DIC = "com.dic.game.type";
+	public static final String BEIMI_SYSTEM_GAME_SCENE_DIC = "com.dic.scene.item";
 	
 	public static final String BEIMI_SYSTEM_GAME_ACCOUNT_CONFIG = "game_account_config";
 	public static final String BEIMI_GAME_PLAYWAY = "game_playway";
@@ -96,6 +97,16 @@ public class BMDataContext {
 	
 	public enum ModelType{
 		ROOM;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+	public enum ConfigNames{
+		GAMECONFIG,
+		AICONFIG,
+		ACCOUNTCONFIG,
+		PLAYWAYCONFIG;
 		public String toString(){
 			return super.toString().toLowerCase() ;
 		}

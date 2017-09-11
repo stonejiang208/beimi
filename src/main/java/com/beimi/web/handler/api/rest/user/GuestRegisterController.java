@@ -22,7 +22,7 @@ import com.beimi.util.MessageEnum;
 import com.beimi.util.UKTools;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.web.handler.Handler;
-import com.beimi.web.model.GameAccountConfig;
+import com.beimi.web.model.AccountConfig;
 import com.beimi.web.model.PlayUser;
 import com.beimi.web.model.PlayUserClient;
 import com.beimi.web.model.ResultData;
@@ -67,10 +67,10 @@ public class GuestRegisterController extends Handler{
 				}
 			}
 		}
+		String ip = UKTools.getIpAddr(request);
+		IP ipdata = IPTools.getInstance().findGeography(ip);
 		if(playUserClient == null){
 			try {
-				String ip = UKTools.getIpAddr(request);
-				IP ipdata = IPTools.getInstance().findGeography(ip);
 				playUserClient = register(new PlayUser() , ipdata , request) ;
 			} catch (IllegalAccessException | InvocationTargetException e) {
 				e.printStackTrace();
@@ -78,11 +78,13 @@ public class GuestRegisterController extends Handler{
 		}
 		if(userToken == null){
 			userToken = new Token();
+			userToken.setIp(ip);
+			userToken.setRegion(ipdata.getProvince()+ipdata.getCity());
 			userToken.setId(UKTools.getUUID());
 			userToken.setUserid(playUserClient.getId());
 			userToken.setCreatetime(new Date());
 			userToken.setOrgi(playUserClient.getOrgi());
-			GameAccountConfig config = CacheConfigTools.getGameAccountConfig(BMDataContext.SYSTEM_ORGI) ;
+			AccountConfig config = CacheConfigTools.getGameAccountConfig(BMDataContext.SYSTEM_ORGI) ;
     		if(config!=null && config.getExpdays() > 0){
     			userToken.setExptime(new Date(System.currentTimeMillis()+60*60*24*config.getExpdays()*1000));//默认有效期 ， 7天
     		}else{
@@ -96,7 +98,21 @@ public class GuestRegisterController extends Handler{
 		playUserClient.setToken(userToken.getId());
 		CacheHelper.getApiUserCacheBean().put(userToken.getId(),userToken, userToken.getOrgi());
 		CacheHelper.getApiUserCacheBean().put(playUserClient.getId(),playUserClient, userToken.getOrgi());
-        return new ResponseEntity<>(new ResultData( playUserClient!=null , playUserClient != null ? MessageEnum.USER_REGISTER_SUCCESS: MessageEnum.USER_REGISTER_FAILD_USERNAME , playUserClient , userToken), HttpStatus.OK);
+		ResultData playerResultData = new ResultData( playUserClient!=null , playUserClient != null ? MessageEnum.USER_REGISTER_SUCCESS: MessageEnum.USER_REGISTER_FAILD_USERNAME , playUserClient , userToken) ;
+		playerResultData.setGametype(GameUtils.gameConfig(userToken.getOrgi()).getGametype());
+		/**
+		 * 封装 游戏对象，发送到客户端
+		 */
+		if(!StringUtils.isBlank(playerResultData.getGametype())){
+			/**
+			 * 找到游戏配置的 模式 和玩法，如果多选，则默认进入的是 大厅模式，如果是单选，则进入的是选场模式
+			 */
+			playerResultData.setGames(GameUtils.games(playerResultData.getGametype()));
+		}
+		/**
+		 * 根据游戏配置 ， 选择 返回的 玩法列表
+		 */
+        return new ResponseEntity<>(playerResultData, HttpStatus.OK);
     }
 	/**
 	 * 注册用户

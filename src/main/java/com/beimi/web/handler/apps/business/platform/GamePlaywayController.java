@@ -7,12 +7,14 @@ import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.beimi.core.BMDataContext;
+import com.beimi.util.GameUtils;
 import com.beimi.util.Menu;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.web.handler.Handler;
@@ -37,7 +39,7 @@ public class GamePlaywayController extends Handler{
 		map.addAttribute("game", BeiMiDic.getInstance().getDicItem(id)) ;
 		map.addAttribute("gameModelList", BeiMiDic.getInstance().getDic(BMDataContext.BEIMI_SYSTEM_GAME_TYPE_DIC, id)) ;
 		
-		map.addAttribute("playwayList", playwayRes.findByOrgi(super.getOrgi(request))) ;
+		map.addAttribute("playwayList", playwayRes.findByOrgi(super.getOrgi(request) , new Sort(Sort.Direction.ASC, "sortindex"))) ;
 		
 		return request(super.createAppsTempletResponse("/apps/business/platform/game/playway/index"));
 	}
@@ -48,6 +50,7 @@ public class GamePlaywayController extends Handler{
 		
 		map.addAttribute("game", BeiMiDic.getInstance().getDicItem(id)) ;
 		map.addAttribute("gameModelList", BeiMiDic.getInstance().getDic(BMDataContext.BEIMI_SYSTEM_GAME_TYPE_DIC, id)) ;
+		map.addAttribute("sceneList", BeiMiDic.getInstance().getDic(BMDataContext.BEIMI_SYSTEM_GAME_SCENE_DIC)) ;
 		
 		return request(super.createRequestPageTempletResponse("/apps/business/platform/game/playway/add"));
 	}
@@ -60,6 +63,14 @@ public class GamePlaywayController extends Handler{
 		playway.setCreatetime(new Date());
 		playway.setUpdatetime(new Date());
 		playwayRes.save(playway) ;
+		
+		/**
+		 * 清除缓存
+		 */
+		if(!StringUtils.isBlank(playway.getTypeid())){
+			GameUtils.cleanPlaywayCache(playway.getTypeid(), super.getOrgi(request));
+		}
+		
 		CacheHelper.getSystemCacheBean().put(playway.getId(), playway, playway.getOrgi());
     	return request(super.createRequestPageTempletResponse("redirect:/apps/platform/playway.html?id="+playway.getGame()));
     }
@@ -74,6 +85,8 @@ public class GamePlaywayController extends Handler{
 		map.addAttribute("game", BeiMiDic.getInstance().getDicItem(game)) ;
 		map.addAttribute("gameModelList", BeiMiDic.getInstance().getDic(BMDataContext.BEIMI_SYSTEM_GAME_TYPE_DIC, game)) ;
 		
+		map.addAttribute("sceneList", BeiMiDic.getInstance().getDic(BMDataContext.BEIMI_SYSTEM_GAME_SCENE_DIC)) ;
+		
 		return request(super.createRequestPageTempletResponse("/apps/business/platform/game/playway/edit"));
 	}
 	
@@ -87,6 +100,17 @@ public class GamePlaywayController extends Handler{
 			playway.setCreatetime(tempPlayway.getCreatetime());
 			playway.setUpdatetime(new Date());
 			playwayRes.save(playway) ;
+			/**
+			 * 清除修改之前的缓存
+			 */
+			GameUtils.cleanPlaywayCache(tempPlayway.getTypeid(), super.getOrgi(request));
+			
+			/**
+			 * 清除修改之后的缓存
+			 */
+			GameUtils.cleanPlaywayCache(playway.getTypeid(), super.getOrgi(request));
+			
+			
 			CacheHelper.getSystemCacheBean().put(playway.getId(), playway, playway.getOrgi());
 		}
     	return request(super.createRequestPageTempletResponse("redirect:/apps/platform/playway.html?id="+playway.getGame()));
@@ -101,6 +125,10 @@ public class GamePlaywayController extends Handler{
 			if(tempPlayway!=null){
 				playwayRes.delete(tempPlayway);
 			}
+			/**
+			 * 清除缓存
+			 */
+			GameUtils.cleanPlaywayCache(tempPlayway.getTypeid(), super.getOrgi(request));
 		}
 		return request(super.createRequestPageTempletResponse("redirect:/apps/platform/playway.html?id="+game));
 	}

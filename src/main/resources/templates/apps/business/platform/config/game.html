@@ -1,0 +1,90 @@
+<div class="layui-layout layui-layout-content">
+	<div class="layui-side layui-beimi-left">
+		<div class="layui-side-scroll">
+		<#include "/apps/business/platform/include/left.html"/></div>
+	</div>
+	<div class="layui-body">
+		<div class="layui-side-scroll">
+			<form method="post" key="set-mine" enctype="multipart/form-data" action="/apps/platform/config/game/save.html" class="layui-form">
+				<#if gameConfig??><input type="hidden" name="id" value="${gameConfig.id!''}"></#if>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="ukefu-customer-div setting-wrapper">
+							<div class="box default-box">
+								<div class="box-header">
+									<h3 class="box-title">游戏系统设置</h3>
+								</div>
+								<div class="box-body ukefu-im-theme">
+									<div class="layui-fluid">
+										<div class="layui-col-md8">
+									    </div>
+									</div>   
+									<div class="row">
+										<div class="col-lg-8">
+											<div class="ukefu-webim-prop">
+												<div class="ukefu-webim-tl" style="clear:both;">1、玩家登录后默认接入的游戏类型</div>
+												<div class="box-item">
+													<div class="row">
+														<div class="col-lg-12">
+															<p style="color:#888888;font-size:13px;margin-top:10px;">选择默认的游戏类型，游戏类型决定了登录以后的玩法列表</p>
+														</div>
+													</div>
+												</div>
+												<div class="box-item">
+													<input type="hidden" id="gametype" name="gametype" value="<#if gameConfig??>${gameConfig.gametype!''}</#if>"/>
+													<div class="row">
+														<#list gameModelList as gameModel>
+														<div class="col-lg-4">
+															<div data-type="${gameModel.id!''}" class="game_type <#if gameConfig.gametype?? && gameConfig.gametype == gameModel.id>selected</#if>" title="${gameModel.name!''}">
+																<#if gameConfig.gametype?? && gameConfig.gametype == gameModel.id><i class="layui-icon">&#xe618;</i></#if>
+																<img src="${gameModel.iconstr!''}"/>
+															</div>
+														</div>
+														</#list>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-3"></div>
+					<div class="col-lg-9">
+						<div class="layui-form-item">
+						  <div class="layui-input-block">
+							<button class="layui-btn" lay-submit="" lay-filter="formDemo">保存</button>
+							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						  </div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script language="javascript"> 		
+	$('.game_type').on("click" , function(){
+		$('.game_type').removeClass("selected");
+		$('.game_type').find("i").remove();
+		$(this).addClass("selected");	
+		$(this).prepend("<i class='layui-icon'>&#xe618;</i>");
+		$('#gametype').val($(this).data("type"));
+	});
+	layui.use('form', function(){
+		var form = layui.form;
+		form.render('select'); //刷新select选择框渲染
+		form.on("checkbox(initaccount)" , function(data){
+			if(data.elem.checked == true){
+				$('#initaccount').show();		
+			}else{
+				$('#initaccount').hide();
+			}
+		});
+	});
+</script>

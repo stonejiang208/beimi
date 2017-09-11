@@ -9,13 +9,12 @@
 			<dd  <#if subtype?? && subtype == 'account'>class="layui-this"</#if>>
 				<a href="/apps/platform/config/account.html">用户账号</a>
 			</dd>
-			<#if gameTypeList??>
-			<#list gameTypeList as gameType>
-			<dd  <#if subtype?? && subtype == 'user'>class="layui-this"</#if>>
-				<a href="/admin/user/index.html">${gameType.name!''}</a>
+			<dd  <#if subtype?? && subtype == 'gameconfig'>class="layui-this"</#if>>
+				<a href="/apps/platform/config/game.html">游戏设置</a>
 			</dd>
-			</#list>
-			</#if>
+			<dd  <#if subtype?? && subtype == 'aiconfig'>class="layui-this"</#if>>
+				<a href="/apps/platform/config/ai.html">机器人设置</a>
+			</dd>
 		</dl>
 	</li>
 	
@@ -38,8 +37,8 @@
 			<dd  <#if subtype?? && subtype == 'gameusers'>class="layui-this"</#if>>
 				<a href="/apps/platform/gameusers.html">注册玩家</a>
 			</dd>
-			<dd  <#if subtype?? && subtype == 'palyers'>class="layui-this"</#if>>
-				<a href="/apps/platform/players.html">在线玩家</a>
+			<dd  <#if subtype?? && subtype == 'onlinegameusers'>class="layui-this"</#if>>
+				<a href="/apps/platform/online/gameusers.html">在线玩家</a>
 			</dd>
 			<dd  <#if subtype?? && subtype == 'gameroom'>class="layui-this"</#if>>
 				<a href="/apps/platform/gameroom.html">游戏房间</a>

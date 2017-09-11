@@ -12,7 +12,19 @@
 			</div>
 		</div>
 		
-			
+		<div class="layui-form-item">
+			<label class="layui-form-label">场景代码：</label>
+			<div class="layui-input-inline">
+				<select name="code" lay-verify="required">
+					<#if sceneList??>
+					<#list sceneList as scene>
+					<option value="${scene.code!''}" <#if scene.code == playway.code>selected="selected"</#if>>${scene.name!''}</option>
+					</#list>
+					</#if>
+				</select>
+			</div>
+		</div>
+		
 		<div class="layui-form-item">
 			<label class="layui-form-label">游戏模式：</label>
 			<div class="layui-input-inline">
@@ -22,6 +34,37 @@
 					<option value="${gameModel.id!''}" <#if game?? && game.id == gameModel.id>selected="selected"</#if>>${gameModel.name!''}</option>
 					</#list>
 					</#if>
+				</select>
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">玩法级别：</label>
+			<div class="layui-input-inline">
+				<select name="typelevel" lay-verify="required">
+					<option value="1" <#if playway?? && playway.typelevel == "1">selected="selected"</#if>>初级场</option>
+					<option value="2" <#if playway?? && playway.typelevel == "2">selected="selected"</#if>>高级场</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">图标颜色：</label>
+			<div class="layui-input-inline">
+				<select name="typecolor" lay-verify="required">
+					<option value="1" <#if playway?? && playway.typecolor == "1">selected="selected"</#if>>配色一</option>
+					<option value="2" <#if playway?? && playway.typecolor == "2">selected="selected"</#if>>配色二</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">排序位置：</label>
+			<div class="layui-input-inline">
+				<select name="sortindex" lay-verify="required">
+					<#list 1..20 as inx>
+					<option value="${inx}" <#if playway?? && playway.sortindex == inx>selected="selected"</#if>>${inx}</option>
+					</#list>
 				</select>
 			</div>
 		</div>

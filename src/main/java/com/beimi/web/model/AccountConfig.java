@@ -13,7 +13,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "bm_account_config")
 @org.hibernate.annotations.Proxy(lazy = false)
-public class GameAccountConfig implements java.io.Serializable{
+public class AccountConfig implements java.io.Serializable{
 	/**
 	 * 
 	 */

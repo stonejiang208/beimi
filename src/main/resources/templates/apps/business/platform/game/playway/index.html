@@ -32,11 +32,10 @@
 													<th>底分</th>
 													<th>金币要求</th>
 													<th>是否换牌</th>
+													<th>排序位置</th>
 													<th>是否洗牌</th>
 													<th>最大局数</th>
 													<th>发牌数量</th>
-													<th>创建时间</th>
-													
 													<th style="white-space:nowrap;width:1%;" nowrap="nowrap">操作</th>
 												</tr>
 											</thead>
@@ -55,14 +54,14 @@
 														<i class="layui-icon" style="color:#19a55d;">&#xe618;</i>
 														</#if>
 													</td>
+													<td>${playway.sortindex!''}</td>
 													<td>
 														<#if playway.shuffle?? && playway.shuffle> 
 														<i class="layui-icon" style="color:#19a55d;">&#xe618;</i>
 														</#if>
 													</td>
 													<td>${playway.numofgames!''}</td>
-													<td>${playway.cards!''}</td>
-													<td>${playway.createtime?string("yyyy-MM-dd HH:mm:ss")}</td>
+													<td>${playway.cardsnum!''}</td>
 													<td style="white-space:nowrap;width:1%;" nowrap="nowrap"><a
 														href="/apps/platform/playway/edit.html?id=${playway.id!''}&game=${game.id!''}"
 														data-toggle="ajax" data-width="750" data-height="450"

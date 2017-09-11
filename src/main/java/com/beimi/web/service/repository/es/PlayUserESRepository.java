@@ -21,4 +21,5 @@ public abstract interface PlayUserESRepository
   
   public abstract Page<PlayUser> findByOrgi(String orgi, Pageable page);
   
+  public abstract Page<PlayUser> findByOrgiAndOnline(String orgi ,boolean online, Pageable page);
 }

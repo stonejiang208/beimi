@@ -42,6 +42,11 @@ public class Token implements UserEvent , java.io.Serializable{
 	
 	private String client ;		//终端类型 ， IOS/ANDROID/H5/OTHER
 	
+	private String ip ;
+	
+	
+	private String region ;
+	
 	private String orgi ;
 	private String creater;
 	private Date createtime = new Date();
@@ -143,5 +148,21 @@ public class Token implements UserEvent , java.io.Serializable{
 
 	public void setClient(String client) {
 		this.client = client;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
+	public String getRegion() {
+		return region;
+	}
+
+	public void setRegion(String region) {
+		this.region = region;
 	}
 }

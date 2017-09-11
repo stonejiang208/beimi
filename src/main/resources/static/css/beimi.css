@@ -3718,3 +3718,34 @@ select{
 .layui-beimi-left .layui-nav-itemed .layui-nav-child{
 	background-color: #FFFFFF!important;
 }
+.game_type{
+    cursor: pointer;
+    display: inline-block;
+    position: relative;    
+    padding:5px;
+}
+
+.game_type.selected{
+    border:5px solid #1E9FFF !important;
+    padding:0px;
+}
+.selected:after{
+	content: " ";
+    right: 0px;
+    position: absolute;
+    top: 0px;
+    height: 20;
+    border-top: 40px solid #1E9FFF;
+    border-left: 40px solid transparent;
+}
+.selected i{
+	right: -7px;
+    position: absolute;
+    top: 0px;
+    font-size:22px;
+    color:#ffffff;
+    z-index:10000;
+}
+.game_type .game_type_name{
+	margin:0 auto;
+}

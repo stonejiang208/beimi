@@ -12,29 +12,27 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.data.domain.Sort;
 
 import com.beimi.core.BMDataContext;
+import com.beimi.core.engine.game.BeiMiGame;
+import com.beimi.core.engine.game.model.Playway;
+import com.beimi.core.engine.game.model.Type;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.util.rules.model.Board;
 import com.beimi.util.rules.model.Player;
-import com.beimi.web.model.GameAccountConfig;
+import com.beimi.web.model.AccountConfig;
+import com.beimi.web.model.BeiMiDic;
+import com.beimi.web.model.GameConfig;
 import com.beimi.web.model.GamePlayway;
 import com.beimi.web.model.GameRoom;
 import com.beimi.web.model.PlayUser;
 import com.beimi.web.model.PlayUserClient;
+import com.beimi.web.model.SysDic;
+import com.beimi.web.service.repository.jpa.GameConfigRepository;
 import com.beimi.web.service.repository.jpa.GamePlaywayRepository;
 
 public class GameUtils {
-	@SuppressWarnings("unchecked")
-	public static List<GamePlayway> cacheGamePlayway(String orgi){
-		List<GamePlayway> gamePlaywayList = (List<GamePlayway>) CacheHelper.getSystemCacheBean().getCacheObject(BMDataContext.BEIMI_GAME_PLAYWAY+"."+orgi, orgi) ; 
-		if(gamePlaywayList == null){
-			GamePlaywayRepository gamePlayRes = BMDataContext.getContext().getBean(GamePlaywayRepository.class) ;
-			gamePlaywayList = gamePlayRes.findByOrgi(orgi) ;
-			CacheHelper.getSystemCacheBean().put(BMDataContext.BEIMI_GAME_PLAYWAY+"."+orgi , gamePlaywayList, orgi) ;
-		}
-		return gamePlaywayList;
-	}
 	/**
 	 * 移除GameRoom
 	 * @param gameRoom
@@ -190,7 +188,7 @@ public class GameUtils {
     		
     		player.setOrgi(BMDataContext.SYSTEM_ORGI);
     		
-    		GameAccountConfig config = CacheConfigTools.getGameAccountConfig(BMDataContext.SYSTEM_ORGI) ;
+    		AccountConfig config = CacheConfigTools.getGameAccountConfig(BMDataContext.SYSTEM_ORGI) ;
     		if(config!=null){
     			player.setGoldcoins(config.getInitcoins());
     			player.setCards(config.getInitcards());
@@ -207,5 +205,84 @@ public class GameUtils {
     		}
     	}
 		return playUserClient ;
+	}
+	/**
+	 * 获取游戏全局配置，后台管理界面上的配置功能
+	 * @param orgi
+	 * @return
+	 */
+	public static GameConfig gameConfig(String orgi){
+		GameConfig gameConfig = (GameConfig) CacheHelper.getSystemCacheBean().getCacheObject(BMDataContext.ConfigNames.GAMECONFIG.toString()+"."+orgi, orgi) ;
+		if(gameConfig == null){
+			List<GameConfig> gameConfigList = BMDataContext.getContext().getBean(GameConfigRepository.class).findByOrgi(orgi) ;
+			if(gameConfigList.size() > 0){
+				gameConfig = gameConfigList.get(0) ;
+			}else{
+				gameConfig = new GameConfig() ;
+			}
+		}
+		return gameConfig ;
+	}
+	
+	/**
+	 * 获取游戏全局配置，后台管理界面上的配置功能
+	 * @param orgi
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<GamePlayway> playwayConfig(String gametype,String orgi){
+		List<GamePlayway> gamePlayList = (List<GamePlayway>) CacheHelper.getSystemCacheBean().getCacheObject(gametype+"."+BMDataContext.ConfigNames.PLAYWAYCONFIG.toString(), orgi) ;
+		if(gamePlayList == null){
+			gamePlayList = BMDataContext.getContext().getBean(GamePlaywayRepository.class).findByOrgiAndTypeid(orgi, gametype , new Sort(Sort.Direction.ASC, "sortindex")) ;
+			CacheHelper.getSystemCacheBean().put(gametype+"."+BMDataContext.ConfigNames.PLAYWAYCONFIG.toString() , gamePlayList , orgi) ;
+		}
+		return gamePlayList ;
+	}
+	/**
+	 * 
+	 * @param gametype
+	 * @param orgi
+	 */
+	public static void cleanPlaywayCache(String gametype,String orgi){
+		CacheHelper.getSystemCacheBean().delete(gametype+"."+BMDataContext.ConfigNames.PLAYWAYCONFIG.toString(), orgi) ;
+	}
+	/**
+	 * 封装Game信息，基于缓存操作
+	 * @param gametype
+	 * @return
+	 */
+	public static List<BeiMiGame> games(String gametype){
+		List<BeiMiGame> beiMiGameList = new ArrayList<BeiMiGame>();
+		if(!StringUtils.isBlank(gametype)){
+			/**
+			 * 找到游戏配置的 模式 和玩法，如果多选，则默认进入的是 大厅模式，如果是单选，则进入的是选场模式
+			 */
+			String[] games = gametype.split(",") ;
+			for(String game : games){
+				BeiMiGame beiMiGame = new BeiMiGame();
+				for(SysDic sysDic : BeiMiDic.getInstance().getDic(BMDataContext.BEIMI_SYSTEM_GAME_TYPE_DIC)){
+					if(sysDic.getId().equals(game)){
+						beiMiGame.setName(sysDic.getName());
+						beiMiGame.setId(sysDic.getId());
+						beiMiGame.setCode(sysDic.getCode());
+						
+						List<SysDic> gameModelList = BeiMiDic.getInstance().getDic(BMDataContext.BEIMI_SYSTEM_GAME_TYPE_DIC, game) ;
+						for(SysDic gameModel : gameModelList){
+							Type type = new Type(gameModel.getId(), gameModel.getName() , gameModel.getCode()) ;
+							beiMiGame.getTypes().add(type) ;
+							List<GamePlayway> gamePlaywayList = playwayConfig(gameModel.getId(), gameModel.getOrgi()) ;
+							for(GamePlayway gamePlayway : gamePlaywayList){
+								Playway playway = new Playway(gamePlayway.getId(), gamePlayway.getName() , gamePlayway.getCode(), gamePlayway.getScore() , gamePlayway.getMincoins(), gamePlayway.getMaxcoins(), gamePlayway.isChangecard() , gamePlayway.isShuffle()) ;
+								playway.setLevel(gamePlayway.getTypelevel());
+								playway.setSkin(gamePlayway.getTypecolor());
+								type.getPlayways().add(playway) ;
+							}
+						}
+						beiMiGameList.add(beiMiGame) ;
+					}
+				}
+			}
+		}
+		return beiMiGameList ;
 	}
 }

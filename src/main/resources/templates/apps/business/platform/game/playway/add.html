@@ -10,7 +10,18 @@
 					placeholder="玩法名称" autocomplete="off" class="layui-input">
 			</div>
 		</div>
-		
+		<div class="layui-form-item">
+			<label class="layui-form-label">场景代码：</label>
+			<div class="layui-input-inline">
+				<select name="code" lay-verify="required">
+					<#if sceneList??>
+					<#list sceneList as scene>
+					<option value="${scene.code!''}">${scene.name!''}</option>
+					</#list>
+					</#if>
+				</select>
+			</div>
+		</div>
 			
 		<div class="layui-form-item">
 			<label class="layui-form-label">游戏模式：</label>
@@ -26,12 +37,32 @@
 		</div>
 		
 		<div class="layui-form-item">
-			<label class="layui-form-label">玩家数量：</label>
+			<label class="layui-form-label">玩法级别：</label>
 			<div class="layui-input-inline">
-				<select name="players" lay-verify="required">
-					<option value="2">2</option>
-					<option value="3">3</option>
-					<option value="4">4</option>
+				<select name="typelevel" lay-verify="required">
+					<option value="1">初级场</option>
+					<option value="2">高级场</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">图标颜色：</label>
+			<div class="layui-input-inline">
+				<select name="typecolor" lay-verify="required">
+					<option value="1">配色一</option>
+					<option value="2">配色二</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">排序位置：</label>
+			<div class="layui-input-inline">
+				<select name="sortindex" lay-verify="required">
+					<#list 1..20 as inx>
+					<option value="${inx}">${inx}</option>
+					</#list>
 				</select>
 			</div>
 		</div>

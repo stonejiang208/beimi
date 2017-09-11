@@ -13,7 +13,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "bm_gameconfig")
 @org.hibernate.annotations.Proxy(lazy = false)
-public class GameConfig implements java.io.Serializable{
+public class AiConfig implements java.io.Serializable{
 	/**
 	 * 
 	 */
@@ -24,8 +24,6 @@ public class GameConfig implements java.io.Serializable{
 	private String creater ;
 	private String username ;
 	private String name ;
-	
-	private String gametype ;	//玩家默认进入的游戏类型
 	
 	private int maxuser = 10 ;	
 	
@@ -197,11 +195,5 @@ public class GameConfig implements java.io.Serializable{
 	}
 	public void setHourcheck(boolean hourcheck) {
 		this.hourcheck = hourcheck;
-	}
-	public String getGametype() {
-		return gametype;
-	}
-	public void setGametype(String gametype) {
-		this.gametype = gametype;
 	}
 }

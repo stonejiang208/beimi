@@ -27,7 +27,12 @@ public class GamePlayway implements java.io.Serializable{
 	private String parentid ;
 	private String typeid ;
 	private String creater;
+	
+	private int sortindex = 1; 	//排序编号
 	private String username ;
+	
+	private String typelevel ;	//初级|高级
+	private String typecolor ;	//玩法图标颜色
 	
 	private String status ;	//当前状态
 	
@@ -189,5 +194,23 @@ public class GamePlayway implements java.io.Serializable{
 	}
 	public void setCardsnum(int cardsnum) {
 		this.cardsnum = cardsnum;
+	}
+	public String getTypelevel() {
+		return typelevel;
+	}
+	public void setTypelevel(String typelevel) {
+		this.typelevel = typelevel;
+	}
+	public String getTypecolor() {
+		return typecolor;
+	}
+	public void setTypecolor(String typecolor) {
+		this.typecolor = typecolor;
+	}
+	public int getSortindex() {
+		return sortindex;
+	}
+	public void setSortindex(int sortindex) {
+		this.sortindex = sortindex;
 	}
 }
