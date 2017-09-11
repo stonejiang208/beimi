@@ -34,8 +34,6 @@ cc.Class({
         }
         this.initMgr();
 
-        cc.beimi.audio.playBGM("bgMain.mp3");
-
     },
     start:function(){        
         var self = this;
@@ -48,24 +46,30 @@ cc.Class({
          */
     },
     initMgr:function(){
-        cc.beimi = {};
-        cc.beimi.http = require("HTTP");
-        cc.beimi.seckey = "beimi";
+        if(cc.beimi == null){
+            cc.beimi = {};
+            cc.beimi.http = require("HTTP");
+            cc.beimi.seckey = "beimi";
 
-        cc.beimi.loadding = new cc.NodePool();
-        cc.beimi.loadding.put(cc.instantiate(this.loaddingPrefab)); // 创建节点
+            cc.beimi.dialog = null ;
 
-        cc.beimi.dialog = new cc.NodePool();
-        cc.beimi.dialog.put(cc.instantiate(this.alertPrefab)); // 创建节点
+            cc.beimi.loadding = new cc.NodePool();
+            cc.beimi.loadding.put(cc.instantiate(this.loaddingPrefab)); // 创建节点
 
-        var Audio = require("Audio");
-        cc.beimi.audio = new Audio();
-        cc.beimi.audio.init();
-                
-        if(cc.sys.isNative){
-            window.io = SocketIO;
-        }else{
-            window.io = require("socket.io"); 
+            cc.beimi.dialog = new cc.NodePool();
+            cc.beimi.dialog.put(cc.instantiate(this.alertPrefab)); // 创建节点
+
+            var Audio = require("Audio");
+            cc.beimi.audio = new Audio();
+            cc.beimi.audio.init();
+
+            if(cc.sys.isNative){
+                window.io = SocketIO;
+            }else{
+                window.io = require("socket.io");
+            }
+
+            cc.beimi.audio.playBGM("bgMain.mp3");
         }
     }
 

@@ -13,19 +13,20 @@ cc.Class({
         //    readonly: false,    // optional, default is false
         // },
         // ...
+        setting: {
+            default: null,
+            type: cc.Prefab
+        }
     },
+
 
     // use this for initialization
     onLoad: function () {
 
     },
-    back:function(){
-        this.loadding();
-        let self = this ;
-        setTimeout(function(){
-            self.scene("dizhuhall" , self);
-        } , 500)
-
+    onSettingClick:function(){
+        cc.beimi.dialog = cc.instantiate(this.setting) ;
+        cc.beimi.dialog.parent = this.root();
     }
 
     // called every frame, uncomment this function to activate update callback

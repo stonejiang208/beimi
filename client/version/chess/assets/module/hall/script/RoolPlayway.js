@@ -1,7 +1,6 @@
 var beiMiCommon = require("BeiMiCommon");
 cc.Class({
     extends: beiMiCommon,
-
     properties: {
         // foo: {
         //    default: null,      // The default value will be used only when the component attaching
@@ -13,21 +12,26 @@ cc.Class({
         //    readonly: false,    // optional, default is false
         // },
         // ...
+        atlas: {
+            default: null,
+            type: cc.SpriteAtlas
+        }
     },
 
     // use this for initialization
     onLoad: function () {
 
     },
-    back:function(){
-        this.loadding();
-        let self = this ;
-        setTimeout(function(){
-            self.scene("dizhuhall" , self);
-        } , 500)
+    init:function(playway){
+        /**
+         * 需要预先请求 在线人数
+         */
+        if(playway){
 
+            this.data = playway ;
+
+        }
     }
-
     // called every frame, uncomment this function to activate update callback
     // update: function (dt) {
 

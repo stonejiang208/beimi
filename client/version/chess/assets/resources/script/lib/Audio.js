@@ -70,13 +70,14 @@ cc.Class({
             this.deskVolume = v;
         }
     },
-    
+    getState:function(){
+        return cc.audioEngine.getState(this.bgAudioID);
+    },
     setBGMVolume:function(v,force){
         if(this.bgAudioID >= 0){
-            if(v > 0){
+            if(v > 0 && cc.audioEngine.getState(this.bgAudioID) === cc.audioEngine.AudioState.PAUSED){
                 cc.audioEngine.resume(this.bgAudioID);
-            }
-            else{
+            }else if(v == 0){
                 cc.audioEngine.pause(this.bgAudioID);
             }
         }

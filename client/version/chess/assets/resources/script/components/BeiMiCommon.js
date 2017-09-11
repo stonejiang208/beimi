@@ -98,6 +98,26 @@ cc.Class({
             data = JSON.parse(result) ;
         }
         return data ;
+    },
+    reset:function(data , result){
+        //放在全局变量
+        cc.beimi.authorization = data.token.id ;
+        cc.beimi.user = data.data ;
+        cc.beimi.games = data.games ;
+
+        cc.beimi.playway = null ;
+        this.io.put("userinfo" ,result );
+    },
+    logout:function(){
+        if(cc.beimi.dialog != null){
+            cc.beimi.dialog.destroy();
+            cc.beimi.dialog = null ;
+        }
+        cc.beimi.authorization = null ;
+        cc.beimi.user = null ;
+        cc.beimi.games = null ;
+
+        cc.beimi.playway = null ;
     }
 
     // called every frame, uncomment this function to activate update callback

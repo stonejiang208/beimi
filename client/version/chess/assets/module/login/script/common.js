@@ -10,7 +10,22 @@ cc.Class({
          */
         // this.loginFormPool = new cc.NodePool();
         // this.loginFormPool.put(cc.instantiate(this.prefab)); // 创建节点
-
+        cc.beimi.game = {
+            model : null ,
+            playway : null,
+            type:function(name){
+                var temp ;
+                if(cc.beimi.game.model !=null){
+                    for(var i=0 ; i<cc.beimi.game.model.types.length ; i++){
+                        var type = cc.beimi.game.model.types[i] ;
+                        if(type.code == name){
+                            temp = type ;
+                        }
+                    }
+                }
+                return temp ;
+            }
+        };
     },
     login:function(){
         this.io = require("IOUtils");
@@ -26,21 +41,23 @@ cc.Class({
             }
         }
 	},
-    reset:function(data , result){
-        //放在全局变量
-        cc.beimi.authorization = data.token.id ;
-        cc.beimi.user = data.data ;
-        this.io.put("userinfo" ,result );
-    },
     sucess:function(result , object){
         var data = JSON.parse(result) ;
         if(data!=null && data.token!=null && data.data!=null){
             //放在全局变量
             object.reset(data , result);
             //预加载场景
-            setTimeout(function(){
-                object.scene("defaulthall" , object) ;
-            } , 200);
+            if(cc.beimi.games && cc.beimi.games.length == 1){//只定义了单一游戏类型 ，否则 进入游戏大厅
+                object.scene(cc.beimi.games[0].code , object) ;
+                /**
+                 * 传递全局参数，当前进入的游戏类型，另外全局参数是 选场
+                 */
+                cc.beimi.game.model = cc.beimi.games[0];
+            }else{
+                /**
+                 * 暂未实现功能
+                 */
+            }
         }
     },
     error:function(object){

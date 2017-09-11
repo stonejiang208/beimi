@@ -25,6 +25,11 @@ cc.Class({
             default: null,
             type: cc.Label
         }
+        ,
+        girl:{
+            default: null,
+            type: cc.Node
+        }
     },
 
     // use this for initialization
@@ -40,6 +45,14 @@ cc.Class({
             this.cards.string = cc.beimi.user.cards + "张" ;
         }
     },
+    playToLeft:function(){
+        this._girlAnimCtrl = this.girl.getComponent(cc.Animation);
+        this._girlAnimCtrl.play("girl_to_left");
+    },
+    playToRight:function(){
+        this._girlAnimCtrl = this.girl.getComponent(cc.Animation);
+        this._girlAnimCtrl.play("girl_to_right");
+    }
 
     // called every frame, uncomment this function to activate update callback
     // update: function (dt) {

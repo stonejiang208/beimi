@@ -1,6 +1,5 @@
-var beiMiCommon = require("BeiMiCommon");
 cc.Class({
-    extends: beiMiCommon,
+    extends: cc.Component,
 
     properties: {
         // foo: {
@@ -19,13 +18,12 @@ cc.Class({
     onLoad: function () {
 
     },
-    back:function(){
-        this.loadding();
-        let self = this ;
-        setTimeout(function(){
-            self.scene("dizhuhall" , self);
-        } , 500)
-
+    onClick:function(event){
+        event.stopPropagation();
+    },
+    onCloseClick:function(){
+        cc.beimi.dialog.destroy();
+        cc.beimi.dialog = null ;
     }
 
     // called every frame, uncomment this function to activate update callback

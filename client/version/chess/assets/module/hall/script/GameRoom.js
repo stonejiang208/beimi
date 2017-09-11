@@ -19,13 +19,12 @@ cc.Class({
     onLoad: function () {
 
     },
-    back:function(){
+    onClick:function(event, data){
         this.loadding();
-        let self = this ;
+        let object = this ;
         setTimeout(function(){
-            self.scene("dizhuhall" , self);
-        } , 500)
-
+            object.scene(data , object) ;
+        } , 200);
     }
 
     // called every frame, uncomment this function to activate update callback

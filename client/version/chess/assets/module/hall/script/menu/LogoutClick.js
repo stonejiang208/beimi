@@ -19,15 +19,10 @@ cc.Class({
     onLoad: function () {
 
     },
-    back:function(){
-        this.loadding();
-        let self = this ;
-        setTimeout(function(){
-            self.scene("dizhuhall" , self);
-        } , 500)
-
+    onClick:function(){
+        this.logout();
+        this.scene("login", this) ;
     }
-
     // called every frame, uncomment this function to activate update callback
     // update: function (dt) {
 
