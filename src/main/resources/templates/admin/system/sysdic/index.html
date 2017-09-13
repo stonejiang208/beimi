@@ -75,7 +75,7 @@
 		  <#if msg??>
 		  top.layer.msg('${msg}');
 		  </#if>
-		  laypage({
+		  laypage.render({
 				cont: 'page'
 				,pages: <#if sysDicList??>${sysDicList.totalPages}<#else>0</#if> //总页数
 				,curr:<#if sysDicList??>${sysDicList.number+1}<#else>0</#if>

@@ -94,7 +94,7 @@
 		  <#if msg??>
 		  top.layer.msg('${msg}');
 		  </#if>
-		  laypage({
+		  laypage.render({
 				cont: 'page'
 				,pages: <#if metadataList??>${metadataList.totalPages}<#else>0</#if> //总页数
 				,curr:<#if metadataList??>${metadataList.number+1}<#else>0</#if>
