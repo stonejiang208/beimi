@@ -1,9 +1,9 @@
-package com.beimi.core.engine.game.action;
+package com.beimi.core.engine.game.action.dizhu;
 
 import org.apache.commons.lang3.StringUtils;
 
 import com.beimi.core.BMDataContext;
-import com.beimi.core.engine.game.task.CreatePlayCardsTask;
+import com.beimi.core.engine.game.task.majiang.CreateMJPlayCardsTask;
 import com.beimi.core.statemachine.action.Action;
 import com.beimi.core.statemachine.impl.BeiMiExtentionTransitionConfigurer;
 import com.beimi.core.statemachine.message.Message;
@@ -16,7 +16,7 @@ import com.beimi.web.model.GameRoom;
  * @author iceworld
  *
  */
-public class PlayCardsAction<T,S> implements Action<T, S>{
+public class PlayMJCardsAction<T,S> implements Action<T, S>{
 	@Override
 	public void execute(Message<T> message , BeiMiExtentionTransitionConfigurer<T,S> configurer) {
 		String room = (String)message.getMessageHeaders().getHeaders().get("room") ;
@@ -29,7 +29,7 @@ public class PlayCardsAction<T,S> implements Action<T, S>{
 				if(!StringUtils.isBlank(board.getNextplayer())){
 					nextPlayer = board.getNextplayer() ;
 				}
-				CacheHelper.getExpireCache().put(gameRoom.getRoomid(), new CreatePlayCardsTask(interval , nextPlayer , gameRoom , gameRoom.getOrgi()));
+				CacheHelper.getExpireCache().put(gameRoom.getRoomid(), new CreateMJPlayCardsTask(interval , nextPlayer , gameRoom , gameRoom.getOrgi()));
 			}
 		}
 	}

@@ -15,6 +15,9 @@ public class BMDataContext {
 	public static final String BEIMI_SYSTEM_GAME_TYPE_DIC = "com.dic.game.type";
 	public static final String BEIMI_SYSTEM_GAME_SCENE_DIC = "com.dic.scene.item";
 	
+	public static final String BEIMI_MESSAGE_EVENT = "command" ;
+	public static final String BEIMI_PLAYERS_EVENT = "players" ;
+	
 	public static final String BEIMI_SYSTEM_GAME_ACCOUNT_CONFIG = "game_account_config";
 	public static final String BEIMI_GAME_PLAYWAY = "game_playway";
 	
@@ -47,6 +50,7 @@ public class BMDataContext {
 	public static void setGameEngine(GameEngine engine){
 		gameEngine = engine ;
 	}
+	
 	/**
 	 * 根据ORGI找到对应 游戏配置
 	 * @param orgi
@@ -119,6 +123,25 @@ public class BMDataContext {
 		}
 	}
 	
+	public enum PlayerAction{
+		GANG,
+		PENG,
+		HU,
+		CHI,
+		GUO;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+	public enum PlayerGangAction{
+		MING,		//明杠
+		AN,			//暗杠
+		WAN;		//弯杠
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
 	
 	public enum GameTypeEnum{
 		MAJIANG,

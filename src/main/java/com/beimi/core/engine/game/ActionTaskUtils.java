@@ -4,14 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.beimi.config.web.model.Game;
 import com.beimi.core.BMDataContext;
 import com.beimi.core.engine.game.task.AbstractTask;
-import com.beimi.core.engine.game.task.CreateAutoTask;
+import com.beimi.core.engine.game.task.dizhu.CreateAutoTask;
 import com.beimi.util.UKTools;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.util.client.NettyClients;
-import com.beimi.util.rules.model.Board;
+import com.beimi.util.rules.model.DuZhuBoard;
 import com.beimi.util.rules.model.Player;
 import com.beimi.util.server.handler.BeiMiClient;
 import com.beimi.web.model.GameRoom;
@@ -27,21 +26,64 @@ public class ActionTaskUtils {
 	public static AbstractTask createAutoTask(int times , GameRoom gameRoom){
 		return new CreateAutoTask(times , gameRoom , gameRoom.getOrgi()) ;
 	}
-	/**
-	 * 
-	 * @return
-	 */
-	public static Game game(){
-		return BMDataContext.getContext().getBean(Game.class) ;
-	}
-	public static void sendEvent(String event, Object data ,GameRoom gameRoom){
+	
+	public static void sendEvent(String event, Message message,GameRoom gameRoom){
+		message.setCommand(event);
 		List<PlayUserClient> players = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
 		for(PlayUserClient user : players){
 			BeiMiClient client = NettyClients.getInstance().getClient(user.getId()) ;
 			if(client!=null){
-				client.getClient().sendEvent(event, data);
+				client.getClient().sendEvent(BMDataContext.BEIMI_MESSAGE_EVENT, message);
 			}
 		}
+	}
+	
+	public static void sendEvent(String event, String userid, Message message){
+		message.setCommand(event);
+		BeiMiClient client = NettyClients.getInstance().getClient(userid) ;
+		if(client!=null){
+			client.getClient().sendEvent(BMDataContext.BEIMI_MESSAGE_EVENT, message);
+		}
+	}
+	
+	/**
+	 * 发送消息给 玩家
+	 * @param beiMiClient
+	 * @param event
+	 * @param gameRoom
+	 */
+	public static void sendPlayers(BeiMiClient beiMiClient , GameRoom gameRoom){
+		beiMiClient.getClient().sendEvent(BMDataContext.BEIMI_PLAYERS_EVENT, CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), beiMiClient.getOrgi()));
+	}
+	
+	public static void sendPlayers(GameRoom gameRoom , List<PlayUserClient> players){
+		for(PlayUserClient user : players){
+			BeiMiClient client = NettyClients.getInstance().getClient(user.getId()) ;
+			if(client!=null){
+				client.getClient().sendEvent(BMDataContext.BEIMI_PLAYERS_EVENT, players);
+			}
+		}
+	}
+	
+	
+	/**
+	 * 发送消息给 玩家
+	 * @param beiMiClient
+	 * @param event
+	 * @param gameRoom
+	 */
+	public static void sendEvent(PlayUserClient playerUser  , Message message){
+		NettyClients.getInstance().sendGameEventMessage(playerUser.getId(), BMDataContext.BEIMI_MESSAGE_EVENT , message);
+	}
+	
+	/**
+	 * 发送消息给 玩家
+	 * @param beiMiClient
+	 * @param event
+	 * @param gameRoom
+	 */
+	public static void sendEvent(String userid  , Message message){
+		NettyClients.getInstance().sendGameEventMessage(userid, BMDataContext.BEIMI_MESSAGE_EVENT , message);
 	}
 	
 	public static PlayUserClient getPlayUserClient(String roomid,String player , String orgi){
@@ -64,7 +106,7 @@ public class ActionTaskUtils {
 	 * @param player
 	 * @return
 	 */
-	public static Board doCatch(Board board, Player player , boolean result){
+	public static DuZhuBoard doCatch(DuZhuBoard board, Player player , boolean result){
 		player.setAccept(result); //抢地主
 		player.setDocatch(true);
 		board.setDocatch(true);

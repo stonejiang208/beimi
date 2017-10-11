@@ -1,6 +1,6 @@
 package com.beimi.core.engine.game;
 
-public class GameBoard implements java.io.Serializable{
+public class GameBoard implements Message , java.io.Serializable{
 	/**
 	 * 
 	 */
@@ -18,11 +18,28 @@ public class GameBoard implements java.io.Serializable{
 		this.lasthands = lasthands ;
 		this.ratio = ratio ;
 	}
+	
+	public GameBoard(String userid,int ratio){
+		this.userid = userid ;
+		this.ratio = ratio ;
+	}
+	
+	public GameBoard(String userid , String banker ,int ratio){
+		this.userid = userid ;
+		this.ratio = ratio ;
+		this.banker = banker ;
+	}
+	
 	private byte[] lasthands ;
 	private String userid ;
 	private boolean docatch ;
 	private boolean grab ;
 	private int ratio ;
+	
+	private String banker ;
+	
+	private String command ;
+	
 	public String getUserid() {
 		return userid;
 	}
@@ -54,5 +71,21 @@ public class GameBoard implements java.io.Serializable{
 
 	public void setLasthands(byte[] lasthands) {
 		this.lasthands = lasthands;
+	}
+
+	public String getCommand() {
+		return command;
+	}
+
+	public void setCommand(String command) {
+		this.command = command;
+	}
+
+	public String getBanker() {
+		return banker;
+	}
+
+	public void setBanker(String banker) {
+		this.banker = banker;
 	}
 }

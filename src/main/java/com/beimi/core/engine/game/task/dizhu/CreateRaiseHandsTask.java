@@ -1,4 +1,4 @@
-package com.beimi.core.engine.game.task;
+package com.beimi.core.engine.game.task.dizhu;
 
 import java.util.Arrays;
 
@@ -10,9 +10,10 @@ import com.beimi.core.engine.game.ActionTaskUtils;
 import com.beimi.core.engine.game.BeiMiGameEvent;
 import com.beimi.core.engine.game.BeiMiGameTask;
 import com.beimi.core.engine.game.GameBoard;
+import com.beimi.core.engine.game.task.AbstractTask;
 import com.beimi.util.GameUtils;
 import com.beimi.util.cache.CacheHelper;
-import com.beimi.util.rules.model.Board;
+import com.beimi.util.rules.model.DuZhuBoard;
 import com.beimi.util.rules.model.Player;
 import com.beimi.web.model.GameRoom;
 import com.beimi.web.model.PlayUserClient;
@@ -39,7 +40,7 @@ public class CreateRaiseHandsTask extends AbstractTask implements ValueWithExpir
 		 * 
 		 * 顺手 把牌发了，注：此处应根据 GameRoom的类型获取 发牌方式
 		 */
-		Board board = (Board) CacheHelper.getBoardCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi());
+		DuZhuBoard board = (DuZhuBoard) CacheHelper.getBoardCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi());
 		Player lastHandsPlayer = null ;
 		for(Player player : board.getPlayers()){
 			if(player.getPlayuser().equals(board.getBanker())){//抢到地主的人
@@ -60,7 +61,7 @@ public class CreateRaiseHandsTask extends AbstractTask implements ValueWithExpir
 		/**
 		 * 发送一个通知，翻底牌消息
 		 */
-		sendEvent("lasthands", super.json(new GameBoard(lastHandsPlayer.getPlayuser() , board.getLasthands(), board.getRatio())) , gameRoom) ;
+		sendEvent("lasthands", new GameBoard(lastHandsPlayer.getPlayuser() , board.getLasthands(), board.getRatio()) , gameRoom) ;
 		
 		/**
 		 * 更新牌局状态
@@ -72,9 +73,9 @@ public class CreateRaiseHandsTask extends AbstractTask implements ValueWithExpir
 		PlayUserClient playUserClient = ActionTaskUtils.getPlayUserClient(gameRoom.getId(), lastHandsPlayer.getPlayuser(), orgi) ;
 		
 		if(BMDataContext.PlayerTypeEnum.NORMAL.toString().equals(playUserClient.getPlayertype())){
-			game.change(gameRoom , BeiMiGameEvent.PLAYCARDS.toString() , 25);	//应该从 游戏后台配置参数中获取
+			super.getGame(gameRoom.getPlayway(), orgi).change(gameRoom , BeiMiGameEvent.PLAYCARDS.toString() , 25);	//应该从 游戏后台配置参数中获取
 		}else{
-			game.change(gameRoom , BeiMiGameEvent.PLAYCARDS.toString() ,3);	//应该从游戏后台配置参数中获取
+			super.getGame(gameRoom.getPlayway(), orgi).change(gameRoom , BeiMiGameEvent.PLAYCARDS.toString() ,3);	//应该从游戏后台配置参数中获取
 		}
 	}
 }

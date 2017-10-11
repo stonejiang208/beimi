@@ -11,7 +11,12 @@ public interface TransitionConfigurer<T, S, E> extends AbstractTransitionConfigu
 	 */
 	T source(S source);
 	
-	ExternalTransitionConfigurer<S, E> target(S target);
+	/**
+	 * 
+	 * @param target
+	 * @return
+	 */
+	T target(S target);
 
 	/**
 	 * Specify event {@code E} for this {@link Transition} which will be triggered

@@ -1,9 +1,10 @@
-package com.beimi.core.engine.game.task;
+package com.beimi.core.engine.game.task.majiang;
 
 import org.cache2k.expiry.ValueWithExpiryTime;
 
 import com.beimi.core.BMDataContext;
 import com.beimi.core.engine.game.BeiMiGameTask;
+import com.beimi.core.engine.game.task.AbstractTask;
 import com.beimi.web.model.GameRoom;
 
 /**
@@ -11,14 +12,14 @@ import com.beimi.web.model.GameRoom;
  * @author zhangtianyi
  *
  */
-public class CreatePlayCardsTask extends AbstractTask implements ValueWithExpiryTime  , BeiMiGameTask{
+public class CreateMJPlayCardsTask extends AbstractTask implements ValueWithExpiryTime  , BeiMiGameTask{
 
 	private long timer  ;
 	private GameRoom gameRoom = null ;
 	private String orgi ;
 	private String player ;
 	
-	public CreatePlayCardsTask(long timer ,String userid, GameRoom gameRoom, String orgi){
+	public CreateMJPlayCardsTask(long timer ,String userid, GameRoom gameRoom, String orgi){
 		super();
 		this.timer = timer ;
 		this.gameRoom = gameRoom ;

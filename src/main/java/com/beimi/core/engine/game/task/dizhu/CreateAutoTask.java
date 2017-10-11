@@ -1,4 +1,4 @@
-package com.beimi.core.engine.game.task;
+package com.beimi.core.engine.game.task.dizhu;
 
 import java.util.List;
 
@@ -7,8 +7,9 @@ import com.beimi.core.engine.game.ActionTaskUtils;
 import com.beimi.core.engine.game.BeiMiGameEvent;
 import com.beimi.core.engine.game.BeiMiGameTask;
 import com.beimi.core.engine.game.GameBoard;
+import com.beimi.core.engine.game.task.AbstractTask;
 import com.beimi.util.cache.CacheHelper;
-import com.beimi.util.rules.model.Board;
+import com.beimi.util.rules.model.DuZhuBoard;
 import com.beimi.util.rules.model.Player;
 import com.beimi.web.model.GameRoom;
 import com.beimi.web.model.PlayUserClient;
@@ -36,7 +37,7 @@ public class CreateAutoTask extends AbstractTask implements BeiMiGameTask{
 	}
 	
 	public void execute(){
-		Board board = (Board) CacheHelper.getBoardCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi());
+		DuZhuBoard board = (DuZhuBoard) CacheHelper.getBoardCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi());
 		Player randomCardPlayer = null , catchPlayer = null;
 		int index = 0 ;
 		if(board!=null){
@@ -83,20 +84,20 @@ public class CreateAutoTask extends AbstractTask implements BeiMiGameTask{
 			}
 			catchPlayer.setDocatch(true);//抢过了
 //			board.setBanker(catchPlayer.getPlayuser());	//玩家 点击 抢地主按钮后 赋值
-			sendEvent("catch", super.json(new GameBoard(catchPlayer.getPlayuser() , board.isDocatch() , catchPlayer.isAccept() , board.getRatio())) , gameRoom) ;
+			sendEvent("catch", new GameBoard(catchPlayer.getPlayuser() , board.isDocatch() , catchPlayer.isAccept() , board.getRatio()), gameRoom) ;
 			
 			if(isNormal){	//真人
-				game.change(gameRoom , BeiMiGameEvent.AUTO.toString() , 17);	//通知状态机 , 此处应由状态机处理异步执行
+				super.getGame(gameRoom.getPlayway(), orgi).change(gameRoom , BeiMiGameEvent.AUTO.toString() , 17);	//通知状态机 , 此处应由状态机处理异步执行
 			}else{			//AI或托管
-				sendEvent("catchresult", super.json(new GameBoard(catchPlayer.getPlayuser() , catchPlayer.isAccept(), catchPlayer.isAccept() , board.getRatio())) , gameRoom) ;
-				game.change(gameRoom , BeiMiGameEvent.AUTO.toString() , 2);	//通知状态机 , 此处应由状态机处理异步执行
+				sendEvent("catchresult", new GameBoard(catchPlayer.getPlayuser() , catchPlayer.isAccept(), catchPlayer.isAccept() , board.getRatio()) , gameRoom) ;
+				super.getGame(gameRoom.getPlayway(), orgi).change(gameRoom , BeiMiGameEvent.AUTO.toString() , 2);	//通知状态机 , 此处应由状态机处理异步执行
 				board.setDocatch(true);	//变成抢地主
 			}
 			
 			CacheHelper.getBoardCacheBean().put(gameRoom.getId(), board, orgi);
 		}else{
 			//开始打牌，地主的人是最后一个抢了地主的人
-			game.change(gameRoom , BeiMiGameEvent.RAISEHANDS.toString());	//通知状态机 , 全部都抢过地主了 ， 把底牌发给 最后一个抢到地主的人
+			super.getGame(gameRoom.getPlayway(), orgi).change(gameRoom , BeiMiGameEvent.RAISEHANDS.toString());	//通知状态机 , 全部都抢过地主了 ， 把底牌发给 最后一个抢到地主的人
 		}
 	}
 }

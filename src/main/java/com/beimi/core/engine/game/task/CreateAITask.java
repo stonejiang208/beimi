@@ -5,6 +5,7 @@ import java.util.List;
 import org.cache2k.expiry.ValueWithExpiryTime;
 
 import com.beimi.core.BMDataContext;
+import com.beimi.core.engine.game.ActionTaskUtils;
 import com.beimi.core.engine.game.BeiMiGameEvent;
 import com.beimi.core.engine.game.BeiMiGameTask;
 import com.beimi.util.GameUtils;
@@ -12,7 +13,6 @@ import com.beimi.util.cache.CacheHelper;
 import com.beimi.web.model.GameRoom;
 import com.beimi.web.model.PlayUser;
 import com.beimi.web.model.PlayUserClient;
-import com.corundumstudio.socketio.SocketIOServer;
 
 public class CreateAITask extends AbstractTask implements ValueWithExpiryTime  , BeiMiGameTask{
 
@@ -33,21 +33,23 @@ public class CreateAITask extends AbstractTask implements ValueWithExpiryTime  ,
 	
 	public void execute(){
 		//执行生成AI
-		GameUtils.removeGameRoom(gameRoom.getId(), orgi);
+		GameUtils.removeGameRoom(gameRoom.getPlayway(), gameRoom.getId(), orgi);
 		List<PlayUserClient> playerList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
 		int aicount = gameRoom.getPlayers() - playerList.size() ;
 		if(aicount>0){
 			for(int i=0 ; i<aicount ; i++){
 				PlayUserClient playerUser = GameUtils.create(new PlayUser() , BMDataContext.PlayerTypeEnum.AI.toString()) ;
-				playerUser.setPlayerindex(gameRoom.getPlayers() - playerList.size());
+				playerUser.setPlayerindex(System.currentTimeMillis());	//按照加入房间的时间排序，有玩家离开后，重新发送玩家信息列表，重新座位
+				
 				CacheHelper.getGamePlayerCacheBean().put(gameRoom.getId(), playerUser, orgi); //将用户加入到 room ， MultiCache
-				BMDataContext.getContext().getBean(SocketIOServer.class).getRoomOperations(gameRoom.getId()).sendEvent("joinroom",super.json(playerUser));
 				playerList.add(playerUser) ;
 			}
 			/**
 			 * 发送一个 Enough 事件
 			 */
-			game.change(gameRoom , BeiMiGameEvent.ENOUGH.toString());	//通知状态机 , 此处应由状态机处理异步执行
+			ActionTaskUtils.sendPlayers(gameRoom, playerList);
+			
+			super.getGame(gameRoom.getPlayway(), orgi).change(gameRoom , BeiMiGameEvent.ENOUGH.toString());	//通知状态机 , 此处应由状态机处理异步执行
 		}
 	}
 }

@@ -4,13 +4,13 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.beimi.config.web.model.Game;
 import com.beimi.core.BMDataContext;
 import com.beimi.core.engine.game.BeiMiGameEnum;
 import com.beimi.core.engine.game.BeiMiGameEvent;
 import com.beimi.core.statemachine.action.Action;
 import com.beimi.core.statemachine.impl.BeiMiExtentionTransitionConfigurer;
 import com.beimi.core.statemachine.message.Message;
+import com.beimi.util.GameUtils;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.web.model.GameRoom;
 import com.beimi.web.model.PlayUserClient;
@@ -45,7 +45,7 @@ public class JoinAction<T,S> implements Action<T, S>{
 					/**
 					 * 发送一个 Enough 事件
 					 */
-					BMDataContext.getContext().getBean(Game.class).change(gameRoom , BeiMiGameEvent.ENOUGH.toString());	//通知状态机 , 此处应由状态机处理异步执行
+					GameUtils.getGame(gameRoom.getPlayway() , gameRoom.getOrgi()).change(gameRoom , BeiMiGameEvent.ENOUGH.toString());	//通知状态机 , 此处应由状态机处理异步执行
 				}else{
 					/**
 					 * 啥也不干，等着

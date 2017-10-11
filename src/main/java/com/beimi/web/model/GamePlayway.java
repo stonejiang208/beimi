@@ -40,6 +40,14 @@ public class GamePlayway implements java.io.Serializable{
 	private int mincoins ;	//最小金币数量
 	private int maxcoins ;	//最大金币数量
 	
+	private boolean wind ;	//有无风
+	
+	private int shuffletimes	;	//洗牌次数
+	
+	
+	private String powerful ;	//癞子生成规则  ， 
+	
+	
 	private int cardsnum ;	//每个玩家获牌数量
 	
 	private boolean changecard ;	//换牌
@@ -212,5 +220,23 @@ public class GamePlayway implements java.io.Serializable{
 	}
 	public void setSortindex(int sortindex) {
 		this.sortindex = sortindex;
+	}
+	public String getPowerful() {
+		return powerful;
+	}
+	public void setPowerful(String powerful) {
+		this.powerful = powerful;
+	}
+	public int getShuffletimes() {
+		return shuffletimes;
+	}
+	public void setShuffletimes(int shuffletimes) {
+		this.shuffletimes = shuffletimes;
+	}
+	public boolean isWind() {
+		return wind;
+	}
+	public void setWind(boolean wind) {
+		this.wind = wind;
 	}
 }

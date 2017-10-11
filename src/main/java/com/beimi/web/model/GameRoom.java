@@ -34,6 +34,8 @@ public class GameRoom implements UserEvent, java.io.Serializable{
 	private int matchscreen;//比赛场次
 	private String matchtype;	//比赛类型
 	
+	private String lastwinner ;	//最后赢的人 ， 可多人 ， 逗号隔开
+	
 	
 	private Date createtime ;
 	private String parentid ;
@@ -245,5 +247,11 @@ public class GameRoom implements UserEvent, java.io.Serializable{
 	}
 	public void setCardsnum(int cardsnum) {
 		this.cardsnum = cardsnum;
+	}
+	public String getLastwinner() {
+		return lastwinner;
+	}
+	public void setLastwinner(String lastwinner) {
+		this.lastwinner = lastwinner;
 	}
 }

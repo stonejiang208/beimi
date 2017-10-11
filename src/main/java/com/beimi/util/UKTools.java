@@ -54,6 +54,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.beimi.core.BMDataContext;
+import com.beimi.core.engine.game.Message;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.util.event.UserDataEvent;
 import com.beimi.util.event.UserEvent;

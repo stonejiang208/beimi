@@ -1,65 +1,25 @@
 package com.beimi.util.rules.model;
 
-import org.apache.commons.lang.ArrayUtils;
+import java.util.List;
 
-/**
- * 牌局，用于描述当前牌局的内容 ， 
- * 1、随机排序生成的 当前 待起牌（麻将、德州有/斗地主无）
- * 2、玩家 手牌
- * 3、玩家信息
- * 4、当前牌
- * 5、当前玩家
- * 6、房间/牌桌信息
- * 7、其他附加信息
- * 数据结构内存占用 78 byte ， 一副牌序列化到 数据库 占用的存储空间约为 78 byt， 数据库字段长度约为 20
- *
- * @author iceworld
- *
- */
-public class Board extends AbstractBoard implements java.io.Serializable{
+import com.beimi.core.engine.game.Message;
+import com.beimi.web.model.GameRoom;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6143646772231515350L;
-
-	/**
-	 * 翻底牌 ， 斗地主
-	 */
-	@Override
-	public byte[] pollLastHands() {
-		return ArrayUtils.subarray(this.getCards() , this.getCards().length - 3 , this.getCards() .length);
-	}
-
-	/**
-	 * 暂时不做处理，根据业务规则修改，例如：底牌有大王翻两倍，底牌有小王 翻一倍，底牌是顺子 翻两倍 ====
-	 */
-	@Override
-	public int calcRatio() {
-		return 1;
-	}
-
-	@Override
-	public TakeCards takeCards(Player player , String playerType, TakeCards current) {
-		return new TakeCards(player);
-	}
-	
+public abstract class Board implements Message,java.io.Serializable {
 	
 	/**
-	 * 找到玩家
-	 * @param board
-	 * @param userid
 	 * @return
 	 */
-	public Player player(String userid){
-		Player target = null ;
-		for(Player temp : this.getPlayers()){
-			if(temp.getPlayuser().equals(userid)){
-				target = temp ; break ;
-			}
-		}
-		return target ;
-	}
+	public abstract byte[] pollLastHands() ;
+	
+	/**
+	 * 计算倍率， 规则每种游戏不同，斗地主 翻到底牌 大小王 翻倍
+	 * @return
+	 */
+	public abstract int calcRatio() ;
+	
+	
+	public abstract TakeCards takeCards(Player player ,String playerType , TakeCards current);
 	
 	/**
 	 * 找到玩家的 位置
@@ -67,16 +27,13 @@ public class Board extends AbstractBoard implements java.io.Serializable{
 	 * @param userid
 	 * @return
 	 */
-	public int index(String userid){
-		int index = 0;
-		for(int i=0 ; i<this.getPlayers().length ; i++){
-			Player temp = this.getPlayers()[i] ;
-			if(temp.getPlayuser().equals(userid)){
-				index = i ; break ;
-			}
-		}
-		return index ;
-	}
+	public abstract int index(String userid);
+	
+	/**
+	 * 是否赢了
+	 * @return
+	 */
+	public abstract boolean isWin() ;
 	
 	
 	/**
@@ -85,71 +42,220 @@ public class Board extends AbstractBoard implements java.io.Serializable{
 	 * @param index
 	 * @return
 	 */
-	public Player next(int index){
-		Player catchPlayer = null;
-		if(index == 0 && this.getPlayers()[index].isRandomcard()){	//fixed
-			index = this.getPlayers().length - 1 ;
-		}
-		for(int i = index ; i>=0 ; i--){
-			Player player = this.getPlayers()[i] ;
-			if(player.isDocatch() == false){
-				catchPlayer = player ;
-				break ;
-			}else if(player.isRandomcard()){	//重新遍历一遍，发现找到了地主牌的人，终止查找
-				break ;
-			}else if(i == 0){
-				i = this.getPlayers().length;
-			}
-		}
-		return catchPlayer;
-	}
+	protected abstract Player next(int index);
 	
 
-	public Player nextPlayer(int index) {
-		if(index == 0){
-			index = this.getPlayers().length - 1 ;
-		}else{
-			index = index - 1 ;
-		}
-		return this.getPlayers()[index];
-	}
+	public abstract Player nextPlayer(int index);
+	/**
+	 * 玩家随机出牌，能管住当前出牌的 最小牌
+	 * @param player
+	 * @param current
+	 * @return
+	 */
+	public abstract TakeCards takecard( Player player , boolean allow , byte[] playCards) ;
+	
+	/**
+	 * 当前玩家随机出牌
+	 * @param player
+	 * @param current
+	 * @return
+	 */
+	public abstract TakeCards takecard(Player player) ;
+	
+	/**
+	 * 出牌请求
+	 * @param roomid
+	 * @param playUserClient
+	 * @param orgi
+	 * @param auto
+	 * @param playCards
+	 * @return
+	 */
+	public abstract TakeCards takeCardsRequest(GameRoom gameRoom,Board board, Player player, String orgi , boolean auto , byte[] playCards) ;
+	
+	/**
+	 * 发牌动作
+	 * @param gameRoom
+	 * @param board
+	 * @param orgi
+	 */
+	public abstract void dealRequest(GameRoom gameRoom , Board board , String orgi , boolean reverse, String nextplayer) ;
+	
+	/**
+	 * 下一个出牌玩家
+	 * @param board
+	 * @param gameRoom
+	 * @param player
+	 * @param orgi
+	 */
+	public abstract void playcards(Board board , GameRoom gameRoom ,  Player player , String orgi) ;
+	/**
+	 * 玩家出牌
+	 * @param player
+	 * @param cards
+	 * @return
+	 */
+	public abstract TakeCards takecard(Player player , TakeCards last) ;
+	
+	
+	private static final long serialVersionUID = 1L;
 	/**
 	 * 
-	 * @param player
-	 * @param current
-	 * @return
 	 */
-	public TakeCards takecard( Player player , boolean allow , byte[] playCards) {
-		return new TakeCards(player , allow , playCards);
-	}
+	
+	private byte[] cards;	//4个Bit描述一张牌，麻将：136+2/2 = 69 byte ; 扑克 54/2 = 27 byte 
+	private Player[] players;//3~10人(4 byte)
+	
+	private List<Byte>  deskcards ;
+	
+	private TakeCards last;
+	
+	private boolean finished ;
+	
+	private String nextplayer ;
+	
+	private String command ;
+	
+	private String room ;		//房间ID（4 byte）
+	
+	private byte[] lasthands ;	//底牌
+	
+	private byte[] powerful ;	//癞子 ， 麻将里的 单张癞子 ， 地主里的 天地癞子
+	
+	private int position ;		//地主牌
+	
+	private boolean docatch ;	//叫地主 OR 抢地主
+	private int ratio = 1;			//倍数
+	
+	private String banker ;		//庄家|地主
+	private String currplayer ;	//当前出牌人
+	private byte currcard ;		//当前出牌
 	
 	/**
-	 * 当前玩家随机出牌，能管住当前出牌的 最小牌
-	 * @param player
-	 * @param current
+	 * 找到玩家数据
+	 * @param userid
 	 * @return
 	 */
-	public TakeCards takecard(Player player) {
-		return new TakeCards(player);
+	public Player player(String userid){
+		Player temp = null;
+		if(this.players!=null){
+			for(Player user : players){
+				if(user.getPlayuser()!=null && user.getPlayuser().equals(userid)){
+					temp = user ; break ;
+				}
+			}
+		}
+		return temp ;
 	}
 	
-	/**
-	 * 当前玩家随机出牌，能管住当前出牌的 最小牌
-	 * @param player
-	 * @param current
-	 * @return
-	 */
-	public TakeCards takecard(Player player , TakeCards last) {
-		return new TakeCards(player, last);
+	public byte[] getCards() {
+		return cards;
+	}
+	public void setCards(byte[] cards) {
+		this.cards = cards;
+	}
+	public Player[] getPlayers() {
+		return players;
+	}
+	public void setPlayers(Player[] players) {
+		this.players = players;
+	}
+	public String getRoom() {
+		return room;
+	}
+	public void setRoom(String room) {
+		this.room = room;
+	}
+	public String getBanker() {
+		return banker;
+	}
+	public void setBanker(String banker) {
+		this.banker = banker;
+	}
+	public String getCurrplayer() {
+		return currplayer;
+	}
+	public void setCurrplayer(String currplayer) {
+		this.currplayer = currplayer;
+	}
+	public byte getCurrcard() {
+		return currcard;
+	}
+	public void setCurrcard(byte currcard) {
+		this.currcard = currcard;
+	}
+	public int getPosition() {
+		return position;
+	}
+	public void setPosition(int position) {
+		this.position = position;
+	}
+	public boolean isDocatch() {
+		return docatch;
+	}
+	public void setDocatch(boolean docatch) {
+		this.docatch = docatch;
+	}
+	public int getRatio() {
+		return ratio;
+	}
+	public void setRatio(int ratio) {
+		this.ratio = ratio;
 	}
 
-	@Override
-	public boolean isWin() {
-		boolean win = false ;
-		if(this.getLast()!=null && this.getLast().getCardsnum() == 0){//出完了
-			win = true ;
-		}
-		return win;
+	public byte[] getLasthands() {
+		return lasthands;
 	}
-	
+
+	public void setLasthands(byte[] lasthands) {
+		this.lasthands = lasthands;
+	}
+
+	public TakeCards getLast() {
+		return last;
+	}
+
+	public void setLast(TakeCards last) {
+		this.last = last;
+	}
+
+	public String getNextplayer() {
+		return nextplayer;
+	}
+
+	public void setNextplayer(String nextplayer) {
+		this.nextplayer = nextplayer;
+	}
+
+	public boolean isFinished() {
+		return finished;
+	}
+
+	public void setFinished(boolean finished) {
+		this.finished = finished;
+	}
+
+	public String getCommand() {
+		return command;
+	}
+
+	public void setCommand(String command) {
+		this.command = command;
+	}
+
+	public byte[] getPowerful() {
+		return powerful;
+	}
+
+	public void setPowerful(byte[] powerful) {
+		this.powerful = powerful;
+	}
+
+	public List<Byte> getDeskcards() {
+		return deskcards;
+	}
+
+	public void setDeskcards(List<Byte> deskcards) {
+		this.deskcards = deskcards;
+	}
 }

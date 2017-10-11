@@ -12,6 +12,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.elasticsearch.annotations.Document;
 
+import com.beimi.core.engine.game.Message;
 import com.beimi.util.UKTools;
 import com.beimi.util.event.UserEvent;
 
@@ -24,7 +25,7 @@ import com.beimi.util.event.UserEvent;
 @Entity
 @Table(name = "bm_playuser")
 @org.hibernate.annotations.Proxy(lazy = false)
-public class PlayUserClient implements UserEvent , java.io.Serializable{
+public class PlayUserClient implements UserEvent ,Message, java.io.Serializable{
 	/**
 	 * 
 	 */
@@ -44,7 +45,9 @@ public class PlayUserClient implements UserEvent , java.io.Serializable{
 	private Date updatetime = new Date();
 	private Date passupdatetime = new Date();
 	
-	private int playerindex ;
+	private long playerindex ;
+	
+	private String command ;	//指令
 	
 	private String memo;
 	private String city ;	//城市
@@ -381,12 +384,22 @@ public class PlayUserClient implements UserEvent , java.io.Serializable{
 	}
 
 	@Transient
-	public int getPlayerindex() {
+	public long getPlayerindex() {
 		return playerindex;
 	}
 
 
-	public void setPlayerindex(int playerindex) {
+	public void setPlayerindex(long playerindex) {
 		this.playerindex = playerindex;
+	}
+
+	@Transient
+	public String getCommand() {
+		return command;
+	}
+
+
+	public void setCommand(String command) {
+		this.command = command;
 	}
 }

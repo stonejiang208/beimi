@@ -2,11 +2,11 @@ package com.beimi.util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,13 +14,17 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.data.domain.Sort;
 
+import com.beimi.config.web.model.Game;
 import com.beimi.core.BMDataContext;
 import com.beimi.core.engine.game.BeiMiGame;
+import com.beimi.core.engine.game.iface.ChessGame;
+import com.beimi.core.engine.game.impl.DizhuGame;
+import com.beimi.core.engine.game.impl.MaJiangGame;
+import com.beimi.core.engine.game.model.MJCardMessage;
 import com.beimi.core.engine.game.model.Playway;
 import com.beimi.core.engine.game.model.Type;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.util.rules.model.Board;
-import com.beimi.util.rules.model.Player;
 import com.beimi.web.model.AccountConfig;
 import com.beimi.web.model.BeiMiDic;
 import com.beimi.web.model.GameConfig;
@@ -33,18 +37,39 @@ import com.beimi.web.service.repository.jpa.GameConfigRepository;
 import com.beimi.web.service.repository.jpa.GamePlaywayRepository;
 
 public class GameUtils {
+	
+	private static Map<String,ChessGame> games = new HashMap<String,ChessGame>();
+	static{
+		games.put("dizhu", new DizhuGame()) ;
+		games.put("majiang", new MaJiangGame()) ;
+	}
+	
+	public static Game getGame(String playway ,String orgi){
+		GamePlayway gamePlayway = (GamePlayway) CacheHelper.getSystemCacheBean().getCacheObject(playway, orgi) ;
+		Game game = null ;
+		if(gamePlayway!=null){
+			SysDic dic = (SysDic) CacheHelper.getSystemCacheBean().getCacheObject(gamePlayway.getGame(), gamePlayway.getOrgi()) ;
+			if(dic.getCtype().equals("dizhu")){
+				game = (Game) BMDataContext.getContext().getBean("dizhuGame") ;
+			}else if(dic.getCtype().equals("majiang")){
+				game = (Game) BMDataContext.getContext().getBean("majiangGame") ;
+			}
+		}
+		return game;
+	}
+	
 	/**
 	 * 移除GameRoom
 	 * @param gameRoom
 	 * @param orgi
 	 */
-	public static void removeGameRoom(String roomid,String orgi){
+	public static void removeGameRoom(String roomid,String playway,String orgi){
 		GameRoom tempGameRoom ;
-		while((tempGameRoom = (GameRoom) CacheHelper.getQueneCache().poll(orgi)) != null){
+		while((tempGameRoom = (GameRoom) CacheHelper.getQueneCache().poll(playway,orgi)) != null){
 			if(tempGameRoom.getId().equals(roomid)){
 				break ;		//拿走，不排队了，开始增加AI
 			}else{
-				CacheHelper.getQueneCache().offer(tempGameRoom , orgi) ;	//还回去
+				CacheHelper.getQueneCache().offer(playway,tempGameRoom , orgi) ;	//还回去
 			}
 		}
 	}
@@ -60,63 +85,17 @@ public class GameUtils {
 		return create(player, null , null , playertype) ;
 	}
 	/**
-	 * 开始斗地主游戏
+	 * 开始游戏，根据玩法创建游戏 对局
 	 * @return
 	 */
-	public static Board playDizhuGame(List<PlayUserClient> playUsers , GameRoom gameRoom , String banker , int cardsnum){
-		Board board = new Board() ;
-		board.setCards(null);
-		List<Byte> temp = new ArrayList<Byte>() ;
-		for(int i= 0 ; i<54 ; i++){
-			temp.add((byte)i) ;
-		}
-		Collections.shuffle(temp);
-		byte[] cards = new byte[54] ;
-		for(int i=0 ; i<temp.size() ; i++){
-			cards[i] = temp.get(i) ;
-		}
-		board.setCards(cards);
-		
-		board.setRatio(15); 	//默认倍率 15
-		int random = playUsers.size() * gameRoom.getCardsnum() ;
-		
-		board.setPosition((byte)new Random().nextInt(random));	//按照人数计算在随机界牌 的位置，避免出现在底牌里
-		
-		Player[] players = new Player[playUsers.size()];
-		
-		int inx = 0 ;
-		for(PlayUserClient playUser : playUsers){
-			Player player = new Player(playUser.getId()) ;
-			player.setCards(new byte[cardsnum]);
-			players[inx++] = player ;
-		}
-		for(int i = 0 ; i<gameRoom.getCardsnum()*gameRoom.getPlayers(); i++){
-			int pos = i%players.length ; 
-			players[pos].getCards()[i/players.length] = cards[i] ;
-			if(i == board.getPosition()){
-				players[pos].setRandomcard(true);		//起到地主牌的人
+	public static Board playGame(List<PlayUserClient> playUsers , GameRoom gameRoom , String banker , int cardsnum){
+		Board board = null ;
+		GamePlayway gamePlayWay = (GamePlayway) CacheHelper.getSystemCacheBean().getCacheObject(gameRoom.getPlayway(), gameRoom.getOrgi()) ;
+		if(gamePlayWay!=null){
+			ChessGame chessGame = games.get(gamePlayWay.getCode());
+			if(chessGame!=null){
+				board = chessGame.process(playUsers, gameRoom, gamePlayWay , banker, cardsnum);
 			}
-		}
-		for(Player tempPlayer : players){
-			Arrays.sort(tempPlayer.getCards());
-			tempPlayer.setCards(reverseCards(tempPlayer.getCards()));
-		}
-		board.setRoom(gameRoom.getId());
-		Player tempbanker = players[0];
-		if(!StringUtils.isBlank(banker)){
-			for(int i= 0 ; i<players.length ; i++){
-				Player player = players[i] ;
-				if(player.equals(banker)){
-					if(i < (players.length - 1)){
-						tempbanker = players[i+1] ;
-					}
-				}
-			}
-			
-		}
-		board.setPlayers(players);
-		if(tempbanker!=null){
-			board.setBanker(tempbanker.getPlayuser());
 		}
 		return board;
 	}
@@ -284,5 +263,261 @@ public class GameUtils {
 			}
 		}
 		return beiMiGameList ;
+	}
+	
+//	public static void main(String[] args){
+//		long start = System.nanoTime() ;
+//		for(int i=0 ; i<1 ; i++){
+//			byte[] cards = new byte[]{7, 12, 13, 14, 77,81, 87, 90,  95, 97, 97, 100, 105} ;
+//			byte takecard = 6 ;
+//			List<Byte> test = new ArrayList<Byte>();
+//			for(byte temp : cards){
+//				test.add(temp) ;
+//			}
+//			test.add(takecard) ;
+//			Collections.sort(test);
+//			for(byte temp : test){
+//				int value = (temp%36) / 4 ;			//牌面值
+//				int rote = temp / 36 ;				//花色
+//				System.out.print(value+1);
+//				if(rote == 0){
+//					System.out.print("万,");
+//				}else if(rote == 1){
+//					System.out.print("筒,");
+//				}else if(rote == 2){
+//					System.out.print("条,");
+//				}
+//			}
+//			
+//			processMJCard("USER1", cards, takecard, false) ;
+//		}
+//		long end = System.nanoTime() - start ;
+//		System.out.println("判断100W次胡牌花费时间："+(end)+"纳秒，约等于："+ end/1000000f+"ms");
+//	}
+	/**
+	 * 麻将的出牌判断，杠碰吃胡
+	 * @param cards
+	 * @param card
+	 * @param deal	是否抓牌
+	 * @return
+	 */
+	public static MJCardMessage processMJCard(String userid,byte[] cards , byte takecard , boolean deal){
+		MJCardMessage mjCard = new MJCardMessage();
+		mjCard.setCommand("action");
+		mjCard.setUserid(userid);
+		Map<Integer, Byte> data = new HashMap<Integer, Byte>();
+		if(cards.length > 0){
+			for(byte temp : cards){
+				int value = (temp%36) / 4 ;			//牌面值
+				int rote = temp / 36 ;				//花色
+				int key = value + 9 * rote ;		//
+				if(data.get(key) == null){
+					data.put(key , (byte)1) ;
+				}else{
+					data.put(key, (byte)(data.get(key)+1)) ;
+				}
+				if(data.get(key) == 4 && deal == true){	//自己发牌的时候，需要先判断是否有杠牌
+					mjCard.setGang(true);
+				}
+			}
+			/**
+			 * 检查是否有 杠碰
+			 */
+			int value = (takecard %36)/4 ;
+			int key = value + 9*(takecard/36) ;
+			Byte card = data.get(key) ;
+			if(card!=null){
+				if(card ==2 && deal == false){
+					//碰
+					mjCard.setPeng(true);
+				}else if(card == 3){
+					//明杠
+					mjCard.setGang(true);
+				}
+			}
+			/**
+			 * 后面胡牌判断使用
+			 */
+			if(data.get(key) == null){
+				data.put(key , (byte)1) ;
+			}else{
+				data.put(key, (byte)(data.get(key)+1)) ;
+			}
+		}
+		/**
+		 * 检查是否有 胡 , 胡牌算法，先移除 对子
+		 */
+		List<Byte> pairs = new ArrayList<Byte>();
+		List<Byte> others = new ArrayList<Byte>();
+		List<Byte> kezi = new ArrayList<Byte>();
+		/**
+		 * 处理玩家手牌
+		 */
+		for(byte temp : cards){
+			int key = (((temp%36) / 4) + 9 * (int)(temp / 36)) ;			//字典编码
+			if(data.get(key) == 1 ){
+				others.add(temp) ;
+			}else if(data.get(key) == 2){
+				pairs.add(temp) ;
+			}else if(data.get(key) == 3){
+				kezi.add(temp) ;
+			}
+		}
+		/**
+		 * 处理一个单张
+		 */
+		{
+			int key = (((takecard%36) / 4) + 9 * (int)(takecard / 36)) ;			//字典编码
+			if(data.get(key) == 1 ){
+				others.add(takecard) ;
+			}else if(data.get(key) == 2){
+				pairs.add(takecard) ;
+			}else if(data.get(key) == 3){
+				kezi.add(takecard) ;
+			}
+		}
+		/**
+		 * 是否有胡
+		 */
+		processOther(others);
+		
+		if(others.size() == 0){
+			if(pairs.size() == 2 || pairs.size() == 14){//有一对，胡
+				mjCard.setHu(true);
+			}else{	//然后分别验证 ，只有一种特殊情况，的 3连对，可以组两个顺子，也可以胡 ， 其他情况就呵呵了
+				
+			}
+		}else if(pairs.size() > 2){	//对子的牌大于>张，否则肯定是不能胡的
+			//检查对子里 是否有额外多出来的 牌，如果有，则进行移除
+			for(int i=0 ; i<pairs.size() ; i++){
+				if(i%2==0){
+					others.add(pairs.get(i)) ;
+				}
+			}
+			processOther( others);
+			
+			for(int i=0 ; i<pairs.size() ; i++){
+				if(i%2==1){
+					others.add(pairs.get(i)) ;
+				}
+			}
+			
+			processOther(others);
+			
+			/**
+			 * 检查 others
+			 */
+			/**
+			 * 最后一次，检查所有的值都是 2，就胡了
+			 */
+			if(others.size() == 2 && getKey(others.get(0)) == getKey(others.get(1))){
+				mjCard.setHu(true);
+			}else{	//还不能胡？
+				
+			}
+		}
+		if(mjCard.isHu()){
+			System.out.println("胡牌了");
+			for(byte temp : cards){
+				System.out.print(temp+",");
+			}
+			System.out.println(takecard);
+		}
+		return mjCard;
+	}
+	
+	private static void processOther(List<Byte> others){
+		Collections.sort(others);
+		for(int i=0 ; i<others.size() && others.size() >(i+2) ; ){
+			byte color = (byte) (others.get(i) / 36) ;							//花色
+			byte key = getKey(others.get(i));
+			byte nextcolor = (byte) (others.get(i) / 36) ;							//花色
+			byte nextkey = getKey(others.get(i+1));
+			if(color == nextcolor && nextkey == key+1){
+				nextcolor = (byte) (others.get(i+2) / 36) ;							//花色
+				nextkey = getKey(others.get(i+2));
+				if(color == nextcolor && nextkey == key+2){		//数字，移除掉
+					others.remove(i+2) ;
+					others.remove(i+1) ;
+					others.remove(i) ;
+				}else{
+					i = i+2 ;
+				}
+			}else{
+				i = i+1 ; 	//下一步
+			}
+		}
+	}
+	
+	public static byte getKey(byte card){
+		byte value = (byte) ((card%36) / 4) ;			//牌面值
+		int rate = card / 36 ;							//花色
+		byte key = (byte) (value + 9 * rate) ;			//字典编码
+		return key ;
+	}
+	
+	/**
+	 * 麻将的出牌判断，杠碰吃胡
+	 * @param cards
+	 * @param card
+	 * @param deal	是否抓牌
+	 * @return
+	 */
+	public static Byte getGangCard(byte[] cards){
+		Byte card = null ;
+		Map<Integer, Byte> data = new HashMap<Integer, Byte>();
+		for(byte temp : cards){
+			int value = (temp%36) / 4 ;			//牌面值
+			int rote = temp / 36 ;				//花色
+			int key = value + 9 * rote ;		//
+			if(data.get(key) == null){
+				data.put(key , (byte)1) ;
+			}else{
+				data.put(key, (byte)(data.get(key)+1)) ;
+			}
+			if(data.get(key) == 4){	//自己发牌的时候，需要先判断是否有杠牌
+				card = temp ;
+				break ;
+			}
+		}
+		
+		return card;
+	}
+	/**
+	 * 定缺方法，计算最少的牌
+	 * @param cards
+	 * @return
+	 */
+	public static int selectColor(byte[] cards){
+		Map<Integer, Byte> data = new HashMap<Integer, Byte>();
+		for(byte temp : cards){
+			int key = temp / 36 ;				//花色
+			if(data.get(key) == null){
+				data.put(key , (byte)1) ;
+			}else{
+				data.put(key, (byte)(data.get(key)+1)) ;
+			}
+		}
+		int color = 0 , cardsNum = 0 ;
+		if(data.get(0)!=null){
+			cardsNum = data.get(0) ;
+			if(data.get(1) == null){
+				color = 1 ;
+			}else{
+				if(data.get(1) < cardsNum){
+					cardsNum = data.get(1) ;
+					color = 1 ;
+				}
+				if(data.get(2)==null){
+					color = 2 ;
+				}else{
+					if(data.get(2) < cardsNum){
+						cardsNum = data.get(2) ;
+						color = 2 ;
+					}
+				}
+			}
+		}
+		return color ;
 	}
 }

@@ -1,5 +1,8 @@
 package com.beimi.util.rules.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Player implements java.io.Serializable , Cloneable{
 
 	/**
@@ -20,8 +23,15 @@ public class Player implements java.io.Serializable , Cloneable{
 	private boolean randomcard ;	//起到地主牌的人
 	private boolean docatch ;	//抢过庄（地主）
 	private boolean recatch ;	//补抢
+	private int deskcards ;	//剩下多少张牌
+	
+	private boolean selected ;	//已经选择 花色
+	private int color ;		//定缺 花色   0  : wan , 1:tong , 2 :tiao
+	
 	private boolean accept ;	//抢地主 : 过地主
+	private boolean banker ;	//庄家
 	private byte[] played ;	//杠碰吃胡
+	private List<Action> actions = new ArrayList<Action>();
 
 	public byte[] getCards() {
 		return cards;
@@ -103,5 +113,44 @@ public class Player implements java.io.Serializable , Cloneable{
 	public void setRecatch(boolean recatch) {
 		this.recatch = recatch;
 	}
-	
+
+	public boolean isBanker() {
+		return banker;
+	}
+
+	public void setBanker(boolean banker) {
+		this.banker = banker;
+	}
+
+	public int getDeskcards() {
+		return deskcards;
+	}
+
+	public void setDeskcards(int deskcards) {
+		this.deskcards = deskcards;
+	}
+
+	public int getColor() {
+		return color;
+	}
+
+	public void setColor(int color) {
+		this.color = color;
+	}
+
+	public boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
+
+	public List<Action> getActions() {
+		return actions;
+	}
+
+	public void setActions(List<Action> actions) {
+		this.actions = actions;
+	}
 }

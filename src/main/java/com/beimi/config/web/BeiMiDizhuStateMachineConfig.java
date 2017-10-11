@@ -6,20 +6,20 @@ import org.springframework.context.annotation.Configuration;
 import com.beimi.core.engine.game.BeiMiGameEnum;
 import com.beimi.core.engine.game.BeiMiGameEvent;
 import com.beimi.core.engine.game.action.AllCardsAction;
-import com.beimi.core.engine.game.action.AutoAction;
 import com.beimi.core.engine.game.action.EnoughAction;
 import com.beimi.core.engine.game.action.EnterAction;
 import com.beimi.core.engine.game.action.JoinAction;
-import com.beimi.core.engine.game.action.PlayCardsAction;
-import com.beimi.core.engine.game.action.RaiseHandsAction;
+import com.beimi.core.engine.game.action.dizhu.AutoAction;
+import com.beimi.core.engine.game.action.dizhu.RaiseHandsAction;
+import com.beimi.core.engine.game.action.majiang.PlayCardsAction;
 import com.beimi.core.statemachine.BeiMiStateMachine;
 import com.beimi.core.statemachine.config.StateConfigurer;
 import com.beimi.core.statemachine.config.StateMachineTransitionConfigurer;
 
 @Configuration
-public class BeiMiStateMachineConfig<T, S>  {
+public class BeiMiDizhuStateMachineConfig<T, S>  {
 	
-	@Bean
+	@Bean("dizhu")
 	public BeiMiStateMachine<String,String> create() throws Exception{
 		BeiMiStateMachine<String,String> beiMiStateMachine = new BeiMiStateMachine<String,String>();
 		this.configure(beiMiStateMachine.getConfig());
@@ -73,6 +73,7 @@ public class BeiMiStateMachineConfig<T, S>  {
             .withExternal()
                 .source(BeiMiGameEnum.PLAY.toString()).target(BeiMiGameEnum.END.toString())
                 .event(BeiMiGameEvent.ALLCARDS.toString()).action(new AllCardsAction<String,String>())
+                .and()
             ;
     }
 }

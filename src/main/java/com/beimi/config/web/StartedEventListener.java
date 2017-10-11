@@ -3,7 +3,8 @@ package com.beimi.config.web;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -25,7 +26,7 @@ import com.beimi.web.service.repository.jpa.SystemConfigRepository;
 @Component
 public class StartedEventListener implements ApplicationListener<ContextRefreshedEvent> {
 	
-	@Autowired
+	@Resource
 	private GameEngine gameEngine ;
 	
 	private SysDicRepository sysDicRes;
@@ -76,7 +77,7 @@ public class StartedEventListener implements ApplicationListener<ContextRefreshe
     			if(gameRoom.isCardroom()){
     				gameRoomRes.delete(gameRoom);//回收房卡房间资源
     			}else{
-    				CacheHelper.getQueneCache().offer(gameRoom, gameRoom.getOrgi());
+    				CacheHelper.getQueneCache().offer(gameRoom.getPlayway(),gameRoom, gameRoom.getOrgi());
     				CacheHelper.getGameRoomCacheBean().put(gameRoom.getId(), gameRoom, gameRoom.getOrgi());
     			}
     		}

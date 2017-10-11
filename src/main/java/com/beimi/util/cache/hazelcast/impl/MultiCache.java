@@ -58,7 +58,7 @@ public class MultiCache{
 
 			@Override
 			public int compare(PlayUserClient o1, PlayUserClient o2) {
-				return o1.getPlayerindex() < o2.getPlayerindex() ? 1 : -1;
+				return o1.getPlayerindex() > o2.getPlayerindex() ? 1 : -1;
 			}
 			
 		});
