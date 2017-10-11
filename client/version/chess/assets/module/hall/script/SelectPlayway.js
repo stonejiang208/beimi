@@ -25,6 +25,10 @@ cc.Class({
             default: null,
             type: cc.Node
         },
+        title:{
+            default: null,
+            type: cc.Node
+        },
         global: {
             default: null,
             type: cc.Node
@@ -55,6 +59,16 @@ cc.Class({
         this._secondAnimCtrl = this.second.getComponent(cc.Animation);
         this._secondAnimCtrl.play("playway_display");
 
+        if(this.title){
+            for(var inx = 0 ; inx<this.title.children.length ; inx++){
+                if(this.title.children[inx].name == data){
+                    this.title.children[inx].active = true ;
+                }else{
+                    this.title.children[inx].active = false ;
+                }
+
+            }
+        }
         /**
          * 加载预制的 玩法
          */
@@ -96,15 +110,21 @@ cc.Class({
         if(order == 'first'){
             this.first.active = true ;
             this.second.active = false ;
-            this.third.active = false ;
+            if(this.third != null){
+                this.third.active = false ;
+            }
         }else if(order == 'second'){
             this.first.active = false;
             this.second.active = true;
-            this.third.active = false ;
+            if(this.third != null){
+                this.third.active = false ;
+            }
         }else if(order == 'third'){
             this.first.active = false;
             this.second.active = false;
-            this.third.active = true ;
+            if(this.third != null){
+                this.third.active = true ;
+            }
         }
     }
     // called every frame, uncomment this function to activate update callback

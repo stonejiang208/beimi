@@ -29,6 +29,9 @@ cc.Class({
         var selectPlayway = this.getCommon("SelectPlayway");
 
         let thisplayway = this.playway.getComponent("Playway");
+
+        cc.beimi.playway = thisplayway.data.id ;
+
         setTimeout(function(){
             /**
              * 优化交互，预加载场景完毕后再回收资源

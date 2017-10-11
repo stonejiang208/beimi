@@ -46,6 +46,11 @@ cc.Class({
         if(data!=null && data.token!=null && data.data!=null){
             //放在全局变量
             object.reset(data , result);
+
+            /**
+             * 登录成功后即创建Socket链接
+             */
+            object.connect();
             //预加载场景
             if(cc.beimi.games && cc.beimi.games.length == 1){//只定义了单一游戏类型 ，否则 进入游戏大厅
                 object.scene(cc.beimi.games[0].code , object) ;

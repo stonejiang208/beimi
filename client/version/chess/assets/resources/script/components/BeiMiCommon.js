@@ -28,6 +28,23 @@ cc.Class({
         }
         return check ;
     },
+    connect:function(){
+        /**
+         * 登录成功后，创建 Socket链接，
+         */
+        if(cc.beimi.socket != null){
+            cc.beimi.socket.disconnect();
+            cc.beimi.socket = null ;
+        }
+        cc.beimi.socket = window.io.connect(cc.beimi.http.wsURL + '/bm/game');
+        return cc.beimi.socket ;
+    },
+    disconnect:function(){
+        if(cc.beimi.socket != null){
+            cc.beimi.socket.disconnect();
+            cc.beimi.socket = null ;
+        }
+    },
     getCommon:function(common){
         var object = cc.find("Canvas/script/"+common) ;
         return object.getComponent(common);
@@ -118,6 +135,21 @@ cc.Class({
         cc.beimi.games = null ;
 
         cc.beimi.playway = null ;
+
+        this.disconnect();
+    },
+    socket:function(){
+        let socket = cc.beimi.socket ;
+        if(socket == null){
+            socket = this.connect();
+        }
+        return socket ;
+    },
+    map:function(command, callback){
+        this.routes[command] = callback || function(){};
+    },
+    route:function(command){
+        return this.routes[command] || function(){};
     }
 
     // called every frame, uncomment this function to activate update callback
