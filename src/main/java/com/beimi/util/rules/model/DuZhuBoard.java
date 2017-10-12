@@ -246,6 +246,7 @@ public class DuZhuBoard extends Board implements java.io.Serializable{
 		}else{
 			takeCards = new TakeDiZhuCards();
 			takeCards.setAllow(false);
+			ActionTaskUtils.sendEvent("takecards", takeCards , gameRoom);	
 		}
 		return takeCards;
 	}
