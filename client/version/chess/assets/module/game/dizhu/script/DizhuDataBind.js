@@ -45,13 +45,9 @@ cc.Class({
             default: null,
             type: cc.Node
         },
-        timer_first:{
+        timer_num:{
             default: null,
-            type: cc.Node
-        },
-        timer_sec:{
-            default: null,
-            type: cc.Node
+            type: cc.Label
         },
         lastcards:{
             default: null,
@@ -137,7 +133,7 @@ cc.Class({
         let self = this ;
         var gameTimer = require("GameTimer");
         this.beimitimer = new gameTimer();
-        this.timesrc = this.beimitimer.runtimer(this , this.timer , this.atlas , this.timer_first , this.timer_sec , times);
+        this.timesrc = this.beimitimer.runtimer(this , this.timer , this.atlas , this.timer_num , this.timer_num , times);
     },
     catchresult:function(data){
         if(this.timer){
@@ -238,7 +234,7 @@ cc.Class({
         let self = this ;
         var gameTimer = require("GameTimer");
         this.beimitimer = new gameTimer();
-        this.timesrc = this.beimitimer.runtimer(this , this.timer , this.atlas , this.timer_first , this.timer_sec , times);
+        this.timesrc = this.beimitimer.runtimer(this , this.timer , this.atlas , this.timer_num , this.timer_num , times);
     },
     doOperatorResult:function(oper , resvalue , sameside){
         this.operesult.active = true ;

@@ -32,10 +32,7 @@ cc.Class({
             timernode.active = false ;
         }
         this.remaining = times ;
-        let timer_first_num = atlas.getSpriteFrame('jsq'+parseInt(self.remaining/10))
-        let timer_sec_num = atlas.getSpriteFrame('jsq'+self.remaining % 10) ;
-        timer_first.getComponent(cc.Sprite).spriteFrame = timer_first_num;
-        timer_sec.getComponent(cc.Sprite).spriteFrame = timer_sec_num;
+        timer_first.string = times ;
         if(timernode){
             timernode.active = true ;
         }
@@ -46,10 +43,7 @@ cc.Class({
                 source.unschedule(this);
                 timernode.active = false ;
             }else{
-                timer_first_num = atlas.getSpriteFrame('jsq'+parseInt(self.remaining/10))
-                timer_sec_num = atlas.getSpriteFrame('jsq'+self.remaining % 10) ;
-                timer_first.getComponent(cc.Sprite).spriteFrame = timer_first_num;
-                timer_sec.getComponent(cc.Sprite).spriteFrame = timer_sec_num;
+                timer_first.string = self.remaining  ;
             }
         } ;
         source.schedule(this.timersrc, 1 , times , 0);

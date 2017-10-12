@@ -48,13 +48,9 @@ cc.Class({
             default: null,
             type: cc.SpriteAtlas
         },
-        timer_first:{
+        timer_num:{
             default: null,
-            type: cc.Node
-        },
-        timer_sec:{
-            default: null,
-            type: cc.Node
+            type: cc.Label
         },
         result:{
             default: null,
@@ -150,7 +146,7 @@ cc.Class({
         let self = this ;
         var gameTimer = require("GameTimer");
         this.beimitimer = new gameTimer();
-        this.timesrc = this.beimitimer.runtimer(this , this.jsq , this.atlas , this.timer_first , this.timer_sec , times);
+        this.timesrc = this.beimitimer.runtimer(this , this.jsq , this.atlas , this.timer_num , this.timer_num , times);
     },
     catchresult:function(data){
         if(this.beimitimer){
@@ -316,7 +312,7 @@ cc.Class({
         let self = this ;
         var gameTimer = require("GameTimer");
         this.beimitimer = new gameTimer();
-        this.timesrc = this.beimitimer.runtimer(this , this.jsq , this.atlas , this.timer_first , this.timer_sec , times);
+        this.timesrc = this.beimitimer.runtimer(this , this.jsq , this.atlas , this.timer_num , this.timer_num , times);
     }
     // called every frame, uncomment this function to activate update callback
     // update: function (dt) {
