@@ -23,7 +23,9 @@ public class UserBoard implements Message,Serializable{
 	public UserBoard(Board board , String curruser , String command){
 		players = new Player[board.getPlayers().length-1] ;
 		this.command = command ;
-		this.deskcards = board.getDeskcards().size() ;
+		if(board.getDeskcards()!=null){
+			this.deskcards = board.getDeskcards().size() ;
+		}
 		int inx = 0 ;
 		for(Player temp : board.getPlayers()){
 			if(temp.getPlayuser().equals(curruser)){

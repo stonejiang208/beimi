@@ -224,7 +224,7 @@ public class DuZhuBoard extends Board implements java.io.Serializable{
 			CacheHelper.getExpireCache().remove(gameRoom.getRoomid());
 			
 			
-			if(takeCards.getCards().length == 1){
+			if(takeCards.getCards()!=null && takeCards.getCards().length == 1){
 				takeCards.setCard(takeCards.getCards()[0]);
 			}
 			ActionTaskUtils.sendEvent("takecards", takeCards , gameRoom);	
