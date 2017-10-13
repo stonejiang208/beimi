@@ -207,7 +207,7 @@ public class ActionTaskUtils {
 			case 3 : 
 				switch(max){
 					case 1 : ;break;	//无牌型
-					case 2 : cardtype = BMDataContext.CardsTypeEnum.SIX.getType() ;break;		//双顺 ， 3连对
+					case 2 : if(cards.length == 6){cardtype = BMDataContext.CardsTypeEnum.SIX.getType() ;}break;		//双顺 ， 3连对
 					case 3 : cardtype = BMDataContext.CardsTypeEnum.SEVEN.getType() ;break;		//三顺
 					case 4 : cardtype = BMDataContext.CardsTypeEnum.SEVEN.getType() ;break;		//四带二
 				}
@@ -215,18 +215,19 @@ public class ActionTaskUtils {
 			case 4 : 
 				switch(max){
 					case 1 : ;break;		//无牌型
-					case 2 : cardtype = BMDataContext.CardsTypeEnum.SIX.getType() ;break;		//双顺 ， 4连对 
+					case 2 : if(cards.length == 8){cardtype = BMDataContext.CardsTypeEnum.SIX.getType() ;}break;		//双顺 ， 4连对
+					case 3 : if(cards.length == 8 || cards.length == 10){cardtype = BMDataContext.CardsTypeEnum.SEVEN.getType() ;}break;		//双顺 ， 4连对
 				};break ;
 			case 5 : 
 				switch(max){
 					case 1 : cardtype = BMDataContext.CardsTypeEnum.FIVE.getType() ;break;		//连子
-					case 2 : cardtype = BMDataContext.CardsTypeEnum.SIX.getType() ;break;		//5连对
+					case 2 : if(cards.length == 10){cardtype = BMDataContext.CardsTypeEnum.SIX.getType() ;}break;		//5连对
 					case 3 : cardtype = BMDataContext.CardsTypeEnum.SEVEN.getType() ;break;		//5飞机
 				};break ;
 			case 6 : 
 				switch(max){
 					case 1 : cardtype = BMDataContext.CardsTypeEnum.FIVE.getType() ;break;		//连子
-					case 2 : cardtype = BMDataContext.CardsTypeEnum.SIX.getType() ;break;		//6连对
+					case 2 : if(cards.length == 12){cardtype = BMDataContext.CardsTypeEnum.SIX.getType() ;}break;		//6连对
 					case 3 : cardtype = BMDataContext.CardsTypeEnum.SEVEN.getType() ;break;		//6飞机
 				};break ;
 			default: 
