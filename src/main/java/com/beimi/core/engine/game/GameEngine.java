@@ -281,8 +281,22 @@ public class GameEngine {
 					}else{
 						actionEvent.setActype(BMDataContext.PlayerGangAction.MING.toString());	//还需要进一步区分一下是否 弯杠
 					}
+					/**
+					 * 检查是否有弯杠
+					 */
+					boolean wan = false ;
+					for(Action ac : player.getActions()){
+						if(ac.getCard() == card && ac.getAction().equals(BMDataContext.PlayerAction.PENG.toString())){
+							ac.setGang(true);
+							wan = true; 
+							break ;
+						}
+					}
 					
 					Action playerAction = new Action(userid , action , card);
+					if(wan == true){
+						playerAction.setType(BMDataContext.PlayerGangAction.WAN.toString());
+					}
 					int color = card / 36 ;
 					int value = card % 36 / 4 ;
 					List<Byte> otherCardList = new ArrayList<Byte>(); 

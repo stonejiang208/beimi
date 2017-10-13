@@ -24,7 +24,9 @@ import com.beimi.core.engine.game.model.MJCardMessage;
 import com.beimi.core.engine.game.model.Playway;
 import com.beimi.core.engine.game.model.Type;
 import com.beimi.util.cache.CacheHelper;
+import com.beimi.util.rules.model.Action;
 import com.beimi.util.rules.model.Board;
+import com.beimi.util.rules.model.Player;
 import com.beimi.web.model.AccountConfig;
 import com.beimi.web.model.BeiMiDic;
 import com.beimi.web.model.GameConfig;
@@ -301,10 +303,10 @@ public class GameUtils {
 	 * @param deal	是否抓牌
 	 * @return
 	 */
-	public static MJCardMessage processMJCard(String userid,byte[] cards , byte takecard , boolean deal){
+	public static MJCardMessage processMJCard(Player player,byte[] cards , byte takecard , boolean deal){
 		MJCardMessage mjCard = new MJCardMessage();
 		mjCard.setCommand("action");
-		mjCard.setUserid(userid);
+		mjCard.setUserid(player.getPlayuser());
 		Map<Integer, Byte> data = new HashMap<Integer, Byte>();
 		if(cards.length > 0){
 			for(byte temp : cards){
@@ -333,6 +335,18 @@ public class GameUtils {
 				}else if(card == 3){
 					//明杠
 					mjCard.setGang(true);
+				}
+			}
+			
+			/**
+			 * 检查是否有弯杠 , 碰过 AND 自己抓了一张碰过的牌
+			 */
+			if(deal == true){
+				for(Action action : player.getActions()){
+					if(action.getCard() == takecard && action.getAction().equals(BMDataContext.PlayerAction.PENG.toString())){
+						//
+						mjCard.setGang(true); break ;
+					}
 				}
 			}
 			/**
