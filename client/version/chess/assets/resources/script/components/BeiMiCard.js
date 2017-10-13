@@ -63,7 +63,6 @@ cc.Class({
         this.card = card ;
     },
     order:function(){
-
         let self = this ;
         var frame , cardframe ;
         if(self.card < 52){
@@ -97,18 +96,21 @@ cc.Class({
             this.initcard.active = false ;
             this.normal.active = true ;
             this.kingbg.active = false ;
+            this.normal.y = 0 ;
         }else if(self.card == 52){
             frame = this.atlas.getSpriteFrame('牌-小王_大');
             this.king.getComponent(cc.Sprite).spriteFrame = frame;
             this.initcard.active = false ;
             this.normal.active = false;
             this.kingbg.active = true ;
+            this.kingbg.y = 0 ;
         }else if(self.card == 53){
             frame = this.atlas.getSpriteFrame('牌-大王_大');
             this.king.getComponent(cc.Sprite).spriteFrame = frame;
             this.initcard.active = false ;
             this.normal.active = false;
             this.kingbg.active = true ;
+            this.kingbg.y = 0 ;
         }
 
     }
