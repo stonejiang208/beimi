@@ -280,7 +280,7 @@ public class TakeDiZhuCards extends TakeCards implements Message , java.io.Seria
 				card = temp/4 ;
 				index = i ;
 			}else{
-				if(card == temp/4){
+				if(card == temp/4 && i>0){
 					continue ;
 				}else if((i - index) == 4 && (i+1) < player.getCards().length){	//炸弹，AI先不出，往下重新继续
 					index = i ;
