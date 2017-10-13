@@ -166,22 +166,27 @@ public class DuZhuBoard extends Board implements java.io.Serializable{
 			String orgi, boolean auto, byte[] playCards) {
 		TakeCards takeCards = null ;
 		//超时了 ， 执行自动出牌
-		if(auto == true || playCards != null){
-			if(board.getLast() == null || board.getLast().getUserid().equals(player.getPlayuser())){	//当前无出牌信息，刚开始出牌，或者出牌无玩家 压
-				/**
-				 * 超时处理，如果当前是托管的或玩家超时，直接从最小的牌开始出，如果是 AI，则 需要根据AI级别（低级/中级/高级） 计算出牌 ， 目前先不管，直接从最小的牌开始出
-				 */
-				takeCards = board.takecard(player , true , playCards) ;
-			}else{
-				if(playCards == null){
-					takeCards = board.takecard(player , board.getLast()) ;
+		if((auto == true || playCards != null)){
+			CardType playCardType = null ;
+			if(playCards!=null && playCards.length > 0){
+				playCardType = ActionTaskUtils.identification(playCards) ;
+			}
+			if(playCardType == null || playCardType.getCardtype() > 0){
+				if(board.getLast() == null || board.getLast().getUserid().equals(player.getPlayuser())){	//当前无出牌信息，刚开始出牌，或者出牌无玩家 压
+					/**
+					 * 超时处理，如果当前是托管的或玩家超时，直接从最小的牌开始出，如果是 AI，则 需要根据AI级别（低级/中级/高级） 计算出牌 ， 目前先不管，直接从最小的牌开始出
+					 */
+					takeCards = board.takecard(player , true , playCards) ;
 				}else{
-					CardType playCardType = ActionTaskUtils.identification(playCards) ;
-					CardType lastCardType = ActionTaskUtils.identification(board.getLast().getCards()) ;
-					if(ActionTaskUtils.allow(playCardType, lastCardType)){//合规，允许出牌
-						takeCards = board.takecard(player , true , playCards) ;
+					if(playCards == null){
+						takeCards = board.takecard(player , board.getLast()) ;
 					}else{
-						//不合规的牌 ， 需要通知客户端 出牌不符合规则 ， 此处放在服务端判断，防外挂
+						CardType lastCardType = ActionTaskUtils.identification(board.getLast().getCards()) ;
+						if(playCardType.getCardtype() >0 && ActionTaskUtils.allow(playCardType, lastCardType)){//合规，允许出牌
+							takeCards = board.takecard(player , true , playCards) ;
+						}else{
+							//不合规的牌 ， 需要通知客户端 出牌不符合规则 ， 此处放在服务端判断，防外挂
+						}
 					}
 				}
 			}

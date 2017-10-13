@@ -136,7 +136,7 @@ public class ActionTaskUtils {
 			}
 		}else if(lastCardType.isBomb()){	//最后一手牌是炸弹 ， 当前出牌不是炸弹
 			
-		}else if(playCardType.getMaxcard() > lastCardType.getMaxcard()){
+		}else if(playCardType.getMaxcard() > lastCardType.getMaxcard() && playCardType.getCardtype()>0 && lastCardType.getCardtype() > 0){
 			allow = true ;
 		}
 		return allow ;
@@ -165,15 +165,6 @@ public class ActionTaskUtils {
 	 * @return
 	 */
 	public static CardType identification(byte[] cards){
-		if(cards!=null){
-			System.out.print("出牌：");
-			for(byte card : cards){
-				System.out.print(card+",");
-			}
-		}else{
-			System.out.println("出牌为空了。。。。。");
-		}
-		System.out.println();
 		CardType cardTypeBean = new CardType();
 		Map<Integer,Integer> types = new HashMap<Integer,Integer>();
 		int max = -1 , maxcard = -1 , cardtype = 0 , mincard = -1;
@@ -208,7 +199,7 @@ public class ActionTaskUtils {
 				;break ;
 			case 2 :
 				switch(max){
-					case 1 : cardtype = BMDataContext.CardsTypeEnum.ELEVEN.getType() ;break;	//王炸
+					case 1 : if(mincard > 52){cardtype = BMDataContext.CardsTypeEnum.ELEVEN.getType();} break;	//王炸
 					case 3 : cardtype = BMDataContext.CardsTypeEnum.FOUR.getType() ;break;	//三带一（或一对）
 					case 4 : cardtype = BMDataContext.CardsTypeEnum.NINE.getType() ;break;	//四带一对
 				}
