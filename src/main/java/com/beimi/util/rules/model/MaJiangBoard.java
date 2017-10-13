@@ -235,7 +235,7 @@ public class MaJiangBoard extends Board implements java.io.Serializable{
 	 * @return
 	 */
 	public MJCardMessage checkMJCard(Player player , byte card , boolean deal){
-		MJCardMessage mjCard = GameUtils.processMJCard(player.getPlayuser(),player.getCards(), card , deal) ;
+		MJCardMessage mjCard = GameUtils.processMJCard(player,player.getCards(), card , deal) ;
 		mjCard.setCard(card);
 		mjCard.setDeal(deal);
 		mjCard.setTakeuser(player.getPlayuser());

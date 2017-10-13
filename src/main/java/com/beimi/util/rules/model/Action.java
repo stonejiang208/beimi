@@ -9,6 +9,7 @@ public class Action implements java.io.Serializable{
 	private String action ;
 	private String type ;			//动作类型， 杠 ： 明杠|暗杠|弯杠  ，  胡：胡法
 	private String userid ;
+	private boolean gang ;			//碰了以后，是否已再杠
 	
 	
 	public Action(){}
@@ -48,5 +49,11 @@ public class Action implements java.io.Serializable{
 	}
 	public void setUserid(String userid) {
 		this.userid = userid;
+	}
+	public boolean isGang() {
+		return gang;
+	}
+	public void setGang(boolean gang) {
+		this.gang = gang;
 	}
 }
