@@ -1,7 +1,6 @@
 package com.beimi.util.rules.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -114,39 +113,32 @@ public class TakeDiZhuCards extends TakeCards implements Message , java.io.Seria
 	public byte[] search(Player player , TakeCards lastTakeCards){
 		byte[] retValue = null ;
 		Map<Integer,Integer> types = ActionTaskUtils.type(player.getCards()) ;
-		if(lastTakeCards.getCardType().getTypesize() <= 3){//三带一 、 四带二
-			if(lastTakeCards.getCardType().getCardnum() == 4 || lastTakeCards.getCardType().getCardnum() == 3){
-				for(int i=lastTakeCards.getCardType().getMincard() + 1; i<14 ; i++){
-					if(types.get(i) != null){	//找到能管得住的了 ， 再选 一张到两张配牌
-						byte[] supplement = null ;
-						Map<Integer,Integer> exist = new HashMap<Integer ,Integer>();
-						exist.put(i, i) ;
-						if(lastTakeCards.getCardType().getTypesize() == 1){
-							supplement = this.getPair(player.getCards(), types , -1, 1, exist) ;
-						}else{
-							supplement = this.getSingle(player.getCards(), types, -1 , 2, exist) ;
-						}
-						if(supplement!=null){
-							retValue = new byte[types.get(i)] ;
-							int length = 0 ;
-							for(int inx =0 ; inx < player.getCards().length ; inx++){
-								if(player.getCards()[inx] / 4 == i){
-									retValue[length++] = player.getCards()[inx] ;
-								}
-							}
-							retValue = ArrayUtils.addAll(retValue, supplement) ;
-						}
+		switch(lastTakeCards.getCardType().getCardtype()){
+			case 1 : //单张
+				retValue = this.getSingle(player.getCards(), types, lastTakeCards.getCardType().getMincard(), 1) ;
+				break ;
+			case 2 : //一对儿
+				retValue = this.getPair(player.getCards(), types, lastTakeCards.getCardType().getMincard() ,1) ;
+				break ;
+			case 3 : //三张
+				retValue = this.getThree(player.getCards(), types, lastTakeCards.getCardType().getMincard() ,1) ;
+				break ;
+			case 4 : //三带一
+				retValue = this.getThree(player.getCards(), types, lastTakeCards.getCardType().getMincard() ,1) ;
+				if(retValue!=null && retValue.length == 3){
+					byte[] supplement = null ;
+					if(lastTakeCards.getCards().length == 4){	//三带一
+						supplement = this.getSingle(player.getCards(), types, -1 , 1) ;
+					}else if(lastTakeCards.getCards().length == 5){	//三带一对儿
+						supplement = this.getPair(player.getCards(), types , -1, 1) ;
+					}else if(lastTakeCards.getCards().length == 6){	//三顺
+						supplement = this.getThree(player.getCards(), types , -1, 1) ;
+					}
+					if(supplement!=null){
+						retValue = ArrayUtils.addAll(retValue, supplement) ;
 					}
 				}
-			}else if(lastTakeCards.getCardType().getCardnum() == 2){	//对子
-				retValue = this.getPair(player.getCards(), types, lastTakeCards.getCardType().getMincard() ,1, new HashMap<Integer , Integer>()) ;
-			}else if(lastTakeCards.getCardType().getCardnum() == 3){	//对子
-				retValue = this.getThree(player.getCards(), types, lastTakeCards.getCardType().getMincard() ,1, new HashMap<Integer , Integer>()) ;
-			}else{	//单张
-				retValue = this.getSingle(player.getCards(), types, lastTakeCards.getCardType().getMincard(), 1, new HashMap<Integer , Integer>()) ;
-			}
-		}else{//单顺，双顺， 三顺
-			
+				break ;
 		}
 		return retValue ;
 	}
@@ -155,15 +147,14 @@ public class TakeDiZhuCards extends TakeCards implements Message , java.io.Seria
 	 * @param num
 	 * @return
 	 */
-	public byte[] getPair(byte[] cards , Map<Integer,Integer> types , int mincard , int num , Map<Integer,Integer> exist){
+	public byte[] getPair(byte[] cards , Map<Integer,Integer> types , int mincard , int num ){
 		byte[] retCards = null;
 		List<Integer> retValue = new ArrayList<Integer>();
 		for(int i=0 ; i<14 ; i++){
-			if(types.get(i) != null && types.get(i) == 2  && retValue.size() < num && (i<0 || i>mincard) && !exist.containsKey(i)){
+			if(types.get(i) != null && types.get(i) == 2  && retValue.size() < num && (i<0 || i>mincard)){
 				retValue.add(i) ;
-				exist.put(i, i) ;
 			}
-			if(retValue.size() == num){
+			if(retValue.size() >= num){
 				break ;
 			}
 		}
@@ -185,15 +176,14 @@ public class TakeDiZhuCards extends TakeCards implements Message , java.io.Seria
 		}
 		return retCards ;
 	}
-	public byte[] getSingle(byte[] cards, Map<Integer,Integer> types , int mincard ,int num , Map<Integer,Integer> exist){
+	public byte[] getSingle(byte[] cards, Map<Integer,Integer> types , int mincard ,int num ){
 		byte[] retCards = null;
 		List<Integer> retValue = new ArrayList<Integer>();
 		for(int i=0 ; i<14 ; i++){
-			if(types.get(i) != null && types.get(i) ==1  && retValue.size() < num && (i<0 || i>mincard) && !exist.containsKey(i)){
+			if(types.get(i) != null && types.get(i) ==1  && retValue.size() < num && (i<0 || i>mincard)){
 				retValue.add(i) ;
-				exist.put(i, i) ;
 			}
-			if(retValue.size() == num){
+			if(retValue.size() >= num){
 				break ;
 			}
 		}
@@ -201,7 +191,6 @@ public class TakeDiZhuCards extends TakeCards implements Message , java.io.Seria
 			for(int i=0 ; i<14 ; i++){
 				if(types.get(i) != null && types.get(i) >1 && (i<0 || i>mincard)  && retValue.size() < num){
 					retValue.add(i) ;
-					exist.put(i, i) ;
 					if(retValue.size() == num){
 						break ;
 					}
@@ -229,15 +218,14 @@ public class TakeDiZhuCards extends TakeCards implements Message , java.io.Seria
 	 * @param num
 	 * @return
 	 */
-	public byte[] getThree(byte[] cards , Map<Integer,Integer> types , int mincard , int num , Map<Integer,Integer> exist){
+	public byte[] getThree(byte[] cards , Map<Integer,Integer> types , int mincard , int num){
 		byte[] retCards = null;
 		List<Integer> retValue = new ArrayList<Integer>();
 		for(int i=0 ; i<14 ; i++){
-			if(types.get(i) != null && types.get(i) == 2  && retValue.size() < num && (i<0 || i>mincard) && !exist.containsKey(i)){
+			if(types.get(i) != null && types.get(i) == 3  && retValue.size() < num && (i<0 || i>mincard)){
 				retValue.add(i) ;
-				exist.put(i, i) ;
 			}
-			if(retValue.size() == num){
+			if(retValue.size() >= num){
 				break ;
 			}
 		}

@@ -284,18 +284,14 @@ public class GameEngine {
 					/**
 					 * 检查是否有弯杠
 					 */
-					boolean wan = false ;
+					Action playerAction = new Action(userid , action , card);
 					for(Action ac : player.getActions()){
 						if(ac.getCard() == card && ac.getAction().equals(BMDataContext.PlayerAction.PENG.toString())){
 							ac.setGang(true);
-							wan = true; 
+							ac.setType(BMDataContext.PlayerGangAction.WAN.toString());
+							playerAction = ac ;
 							break ;
 						}
-					}
-					
-					Action playerAction = new Action(userid , action , card);
-					if(wan == true){
-						playerAction.setType(BMDataContext.PlayerGangAction.WAN.toString());
 					}
 					int color = card / 36 ;
 					int value = card % 36 / 4 ;
@@ -313,7 +309,7 @@ public class GameEngine {
 					player.setCards(otherCards);
 					player.getActions().add(playerAction) ;
 					
-					actionEvent.setTarget("all");
+					actionEvent.setTarget("all");	//只有明杠 是 其他人打出的 ， target 是单一对象
 					
 					ActionTaskUtils.sendEvent("selectaction", actionEvent , gameRoom);
 					
