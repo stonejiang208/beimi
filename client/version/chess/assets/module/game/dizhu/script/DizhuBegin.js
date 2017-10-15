@@ -200,7 +200,7 @@ cc.Class({
          * 当前玩家的 底牌处理
          */
         if(data.userid == cc.beimi.user.id) {
-            context.game.lasthands(context , self.game , data ) ;
+            context.game.lasthands(context , context.game , data ) ;
             /**
              * 隐藏 其他玩家的 抢地主/不抢地主的 提示信息
              */
@@ -215,7 +215,7 @@ cc.Class({
                 beiMiCard.order();
                 context.registerProxy(pc);
             }
-            context.game.playtimer(self.game,25);
+            context.game.playtimer(context.game,25);
         }else{
             for(var inx =0 ; inx<context.player.length ; inx++){
                 var render = context.player[inx].getComponent("PlayerRender") ;
