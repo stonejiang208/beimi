@@ -280,16 +280,14 @@ public class TakeDiZhuCards extends TakeCards implements Message , java.io.Seria
 				}
 			}
 		}
-		if(takeCards.length == 3){		//
-			if(takeCards!=null && takeCards.length == 3){
-				Map<Integer,Integer> types = ActionTaskUtils.type(player.getCards()) ;
-				byte[] supplement = this.getSingle(player.getCards(), types, -1 , 1) ;
-				if(supplement == null){
-					this.getPair(player.getCards(), types, -1 , 1) ;
-				}
-				if(supplement!=null){
-					takeCards = ArrayUtils.addAll(takeCards, supplement) ;
-				}
+		if(takeCards!=null && takeCards.length == 3){
+			Map<Integer,Integer> types = ActionTaskUtils.type(player.getCards()) ;
+			byte[] supplement = this.getSingle(player.getCards(), types, -1 , 1) ;
+			if(supplement == null){
+				this.getPair(player.getCards(), types, -1 , 1) ;
+			}
+			if(supplement!=null){
+				takeCards = ArrayUtils.addAll(takeCards, supplement) ;
 			}
 		}
 		return takeCards;
