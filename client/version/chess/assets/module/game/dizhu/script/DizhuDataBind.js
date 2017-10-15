@@ -201,7 +201,7 @@ cc.Class({
             cacheCard.x = index * 30 - 30 ;
             cacheCard.y = 0;
 
-            cacheCard.zIndex = i ;
+            cacheCard.zIndex = 100 - i ;
 
             cacheCard.setScale(0.5,0.5);
 

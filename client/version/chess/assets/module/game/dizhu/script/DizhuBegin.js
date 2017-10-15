@@ -28,6 +28,14 @@ cc.Class({
         waitting: {
             default: null,
             type: cc.Prefab
+        },
+        summary_win:{
+            default:null ,
+            type : cc.Prefab
+        },
+        summary:{
+            default:null ,
+            type : cc.Prefab
         }
     },
 
@@ -84,6 +92,7 @@ cc.Class({
             this.map("lasthands" , this.lasthands_event) ;            //接受玩家列表
             this.map("takecards" , this.takecards_event) ;            //接受玩家列表
             this.map("play" , this.play_event) ;            //接受玩家列表
+            this.map("allcards" , this.allcards_event) ;                //我出的牌
 
             socket.on("command" , function(result){
                 var data = self.parse(result) ;
@@ -315,6 +324,11 @@ cc.Class({
                 },500) ;
             },500) ;
         }, 0);
+    },
+    allcards_event:function(data , context){
+        //结算界面，
+        let temp = cc.instantiate(context.summary) ;
+        temp.parent = context.root() ;
     },
     getPlayer:function(userid){
         var tempRender;

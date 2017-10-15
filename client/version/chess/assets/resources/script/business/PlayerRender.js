@@ -92,7 +92,7 @@ cc.Class({
             this.jsq.x = this.jsq.x * -1
             this.dizhu.x = this.dizhu.x * -1
             // this.lastcards.x = this.lastcards.x * -1
-            this.lastcards.getComponent(cc.Layout).horizontalDirection = 1 ;
+            this.lastcards.getComponent(cc.Layout).horizontalDirection = 0 ;
             this.isRight = isRight ;
         }
         if(this.goldcoins){
@@ -283,13 +283,16 @@ cc.Class({
 
         currpoker.x = index * 30 - 30 ;
         currpoker.y = 0;
-        currpoker.zIndex = lastcards.length - index;
+
+        if(this.isRight == true){
+            currpoker.zIndex = 100 - index;
+        }else{
+            currpoker.zIndex = index;
+        }
 
         let beiMiCard = currpoker.getComponent("BeiMiCard");
         beiMiCard.setCard(card) ;
         beiMiCard.order();
-
-        console.log("牌的位置:"+currpoker.y) ;
 
         this.cardslist[this.cardslist.length] = currpoker ;
     },
