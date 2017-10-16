@@ -234,15 +234,17 @@ cc.Class({
         if (this.lastcards) {
             this.lastcards.active = true;
         }
-        for (var i = 0; i < this.cardslist.length; i++) {
-            game.pokerpool.put(this.cardslist[i]);//回收回去
+        if(this.cardslist.length > 0){
+            for (var i = 0; i < this.cardslist.length; i++) {
+                game.pokerpool.put(this.cardslist[i]);//回收回去
+            }
+            this.cardslist.splice(0, this.cardslist.length);//删除数组里的所有内容
         }
-        this.cardslist.splice(0, this.cardslist.length);//删除数组里的所有内容
         if (data.donot == false || data.finished == true) {
             this.resetcards(cardsnum);
 
             for (var i = 0; i < lastcards.length; i++) {
-                this.playcards(game, i, lastcards, lastcards[i]);
+                this.playcards(game, i, lastcards[i]);
             }
         }else{
             if(data.sameside == "1"){
@@ -274,28 +276,20 @@ cc.Class({
             this.donot.active = true ;
         }
     },
-    playcards:function(game , index, lastcards , card){
-        let currpoker = game.pokerpool.get() ;
-        currpoker.card = card ;
-
-        currpoker.setScale(0.5,0.5);
-
-        currpoker.parent = this.lastcards ;
+    playcards:function(game , index, card){
+        let currpoker = game.minpokerpool.get() ;
 
         currpoker.x = index * 30 - 30 ;
-        currpoker.y = 0;
-
         if(this.isRight == true){
             currpoker.zIndex = 100 - index;
         }else{
             currpoker.zIndex = index;
         }
-
+        currpoker.parent = this.lastcards ;
+        this.cardslist.push(currpoker) ;
         let beiMiCard = currpoker.getComponent("BeiMiCard");
         beiMiCard.setCard(card) ;
         beiMiCard.order();
-
-        this.cardslist[this.cardslist.length] = currpoker ;
     },
     playtimer:function(game , times){
         if(this.result){
@@ -311,7 +305,7 @@ cc.Class({
             this.lastcards.active = false ;
         }
         for(var i=0 ; i<this.cardslist.length ; i++){
-            game.pokerpool.put(this.cardslist[i]) ;//回收回去
+            game.minpokerpool.put(this.cardslist[i]) ;//回收回去
         }
         let self = this ;
         var gameTimer = require("GameTimer");

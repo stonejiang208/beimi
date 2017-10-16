@@ -28,9 +28,6 @@ cc.Class({
     runtimer:function(source , timernode  , atlas, timer_first , timer_sec , times){
 
         let self = this ;
-        if(timernode){
-            timernode.active = false ;
-        }
         this.remaining = times ;
         timer_first.string = times ;
         if(timernode){
@@ -57,7 +54,7 @@ cc.Class({
         let self = this ;
         this.remaining = 0;
         if(timer){
-            source.unschedule(timer);
+            source.unscheduleAllCallbacks();
         }
     }
 

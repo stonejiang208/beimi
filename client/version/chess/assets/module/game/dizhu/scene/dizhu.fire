@@ -703,6 +703,9 @@
     "poker": {
       "__uuid__": "68ab7fec-c02c-44c8-9351-6a71440e198f"
     },
+    "poker_min": {
+      "__uuid__": "7f1ee82b-99ca-4293-8479-502eb255892c"
+    },
     "myself": {
       "__uuid__": "546df676-2b56-430e-8a1c-c7c5f411f064"
     },
@@ -1893,7 +1896,7 @@
     },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
-    "_N$string": "32倍",
+    "_N$string": "15倍",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -2611,6 +2614,9 @@
     },
     "waitting": {
       "__uuid__": "214ed945-fdf7-4e9b-8f78-e0c78f96979f"
+    },
+    "ratio": {
+      "__id__": 42
     },
     "summary_win": {
       "__uuid__": "55222b2f-4d7d-449a-8376-248ac438d990"

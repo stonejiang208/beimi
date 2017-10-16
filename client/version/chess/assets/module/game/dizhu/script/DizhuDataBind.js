@@ -29,6 +29,10 @@ cc.Class({
             default: null,
             type: cc.Prefab
         },
+        poker_min: {
+            default: null,
+            type: cc.Prefab
+        },
         myself: {
             default: null,
             type: cc.Prefab
@@ -92,6 +96,7 @@ cc.Class({
         this.playerspool = new cc.NodePool();
         this.myselfpool = new cc.NodePool();
         this.pokerpool = new cc.NodePool();     //背面
+        this.minpokerpool = new cc.NodePool();     //背面
 
 
         this.selectedcards = new Array();   //存放当前玩家 选中 的牌
@@ -101,8 +106,11 @@ cc.Class({
         for(i=0 ; i<2 ; i++){
             this.playerspool.put(cc.instantiate(this.player)); // 创建节点
         }
-        for(i =0 ; i<35 ; i++){
+        for(i =0 ; i<25 ; i++){
             this.pokerpool.put(cc.instantiate(this.poker));     //牌-背面
+        }
+        for(i =0 ; i<30 ; i++){
+            this.minpokerpool.put(cc.instantiate(this.poker_min));     //牌-背面
         }
         this.myselfpool.put(cc.instantiate(this.myself));
 
@@ -134,6 +142,10 @@ cc.Class({
         if(this.catchbtn){
             this.catchbtn.active = true ;
         }
+        if(this.operesult){
+            this.operesult.active = false ;
+        }
+
         let self = this ;
         var gameTimer = require("GameTimer");
         this.beimitimer = new gameTimer();
@@ -152,7 +164,12 @@ cc.Class({
         if(this.timesrc){
             this.beimitimer.stoptimer(this , this.timer , this.timesrc);
         }
-        this.doOperatorResult("catch" , data.grab , false) ;
+        this.doOperatorResult("catch" , data.docatch , false) ;
+    },
+    hideresult:function(){
+        if(this.operesult){
+            this.operesult.active = false ;
+        }
     },
     lasthands:function(self, game,data){   //设置地主
         var render = this.playermysql.getComponent("PlayerRender") ;
@@ -265,7 +282,7 @@ cc.Class({
             }else {
                 for (var i = 0; i < this.operesult.children.length; i++) {
                     this.operesult.children[i].active = false;
-                    if (this.operesult.children[i].name == "不要") {
+                    if (this.operesult.children[i].name == "提示_不抢") {
                         this.operesult.children[i].active = true;
                     }
 

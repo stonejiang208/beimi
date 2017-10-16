@@ -29,6 +29,10 @@ cc.Class({
             default: null,
             type: cc.Prefab
         },
+        ratio:{   //底牌
+            default: null,
+            type: cc.Label
+        },
         summary_win:{
             default:null ,
             type : cc.Prefab
@@ -87,12 +91,13 @@ cc.Class({
 
             this.map("joinroom" , this.joinroom_event) ;          //加入房价
             this.map("players" , this.players_event) ;            //接受玩家列表
-            this.map("catch" , this.catch_event) ;            //接受玩家列表
-            this.map("catchresult" , this.catchresult_event) ;            //接受玩家列表
-            this.map("lasthands" , this.lasthands_event) ;            //接受玩家列表
-            this.map("takecards" , this.takecards_event) ;            //接受玩家列表
-            this.map("play" , this.play_event) ;            //接受玩家列表
-            this.map("allcards" , this.allcards_event) ;                //我出的牌
+            this.map("catch" , this.catch_event) ;                  //叫地主
+            this.map("catchresult" , this.catchresult_event) ;      //最终抢到地主的玩家
+            this.map("lasthands" , this.lasthands_event) ;            //翻底牌
+            this.map("takecards" , this.takecards_event) ;            //出牌信息
+            this.map("bomb" , this.bomb_event) ;                      //有炸
+            this.map("play" , this.play_event) ;                      //接受玩家列表
+            this.map("allcards" , this.allcards_event) ;              //我出的牌
 
             socket.on("command" , function(result){
                 var data = self.parse(result) ;
@@ -164,6 +169,12 @@ cc.Class({
      * @param context
      */
     catch_event:function(data,context){
+        /**
+         * 修改倍率
+         */
+        if(context.ratio){
+            context.ratio.string = data.ratio+"倍" ;
+        }
         if(data.userid == cc.beimi.user.id){    //该我抢
             context.game.catchtimer(15);
         }else{                              //该别人抢
@@ -177,11 +188,30 @@ cc.Class({
         }
     },
     /**
+     * 有玩家出炸
+     * @param data
+     * @param context
+     */
+    bomb_event:function(data,context){
+        /**
+         * 修改倍率
+         */
+        if(context.ratio){
+            context.ratio.string = data.ratio+"倍" ;
+        }
+    },
+    /**
      * 接收到服务端的 推送的 玩家数据，根据玩家数据 恢复牌局
      * @param data
      * @param context
      */
     catchresult_event:function(data,context){
+        /**
+         * 修改倍率
+         */
+        if(context.ratio){
+            context.ratio.string = data.ratio+"倍" ;
+        }
         if(data.userid == cc.beimi.user.id){    //该我抢
             context.game.catchresult(data);
         }else{                              //该别人抢
@@ -226,12 +256,13 @@ cc.Class({
             }
             context.game.playtimer(context.game,25 , true);
         }else{
+            context.game.hideresult();
             for(var inx =0 ; inx<context.player.length ; inx++){
                 var render = context.player[inx].getComponent("PlayerRender") ;
-                render.lasthands(context,context.game,data);
+                render.hideresult();
             }
-            context.getPlayer(data.nextplayer).lasthands(context,context.game,data);
-            context.getPlayer(data.nextplayer).playtimer(context.game , 25);
+            context.getPlayer(data.userid).lasthands(context,context.game,data);
+            context.getPlayer(data.userid).playtimer(context.game , 25);
         }
         for(var inx =0 ; inx<context.pokercards.length ; inx++){
             var pc = context.pokercards[inx] ;
@@ -254,6 +285,7 @@ cc.Class({
             } else {
                 context.getPlayer(data.userid).lasttakecards(context.game, context, data.cardsnum, lastcards , data);
             }
+
             context.game.selectedcards.splice(0 ,context.game.selectedcards.length );//清空
             if (data.nextplayer == cc.beimi.user.id) {
                 context.game.playtimer(context.game, 25 , data.automic);
@@ -418,12 +450,11 @@ cc.Class({
     doLastCards:function(game , self , num , card){//发三张底牌
         for(var i=0 ; i<num ; i++){
             var width = i * 80 - 80;
-            let currpoker = game.pokerpool.get() ;
+            let currpoker = game.minpokerpool.get() ;
             currpoker.getComponent("BeiMiCard").setCard(card) ;
             currpoker.card = card ;
             currpoker.parent = this.lastCardsPanel;
             currpoker.setPosition(width , 0);
-            currpoker.setScale(0.5 , 0.5);
 
             self.lastcards[self.lastcards.length] = currpoker ;
         }
