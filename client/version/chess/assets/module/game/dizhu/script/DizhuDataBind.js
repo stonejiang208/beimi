@@ -64,6 +64,10 @@ cc.Class({
         operesult:{
             default: null,
             type: cc.Node
+        },
+        donottake:{
+            default: null,
+            type: cc.Node
         }
     },
 
@@ -211,7 +215,13 @@ cc.Class({
             this.cardslist[this.cardslist.length] = cacheCard ;
         }
     },
-    playtimer:function(game , times){
+    /**
+     *
+     * @param game
+     * @param times
+     * @param automic 不允许 不出
+     */
+    playtimer:function(game , times , automic){
         if(this.timer){
             this.timer.active = true ;
         }
@@ -226,6 +236,12 @@ cc.Class({
         }
         if(this.operesult){
             this.operesult.active = false ;
+        }
+
+        if(automic == true){
+            this.donottake.active = false ;
+        }else{
+            this.donottake.active = true ;
         }
 
         for(var i=0 ; i<this.cardslist.length ; i++){

@@ -224,7 +224,7 @@ cc.Class({
                 beiMiCard.order();
                 context.registerProxy(pc);
             }
-            context.game.playtimer(context.game,25);
+            context.game.playtimer(context.game,25 , true);
         }else{
             for(var inx =0 ; inx<context.player.length ; inx++){
                 var render = context.player[inx].getComponent("PlayerRender") ;
@@ -256,7 +256,7 @@ cc.Class({
             }
             context.game.selectedcards.splice(0 ,context.game.selectedcards.length );//清空
             if (data.nextplayer == cc.beimi.user.id) {
-                context.game.playtimer(context.game, 25);
+                context.game.playtimer(context.game, 25 , data.automic);
             } else {
                 context.getPlayer(data.nextplayer).playtimer(context.game, 25);
             }
