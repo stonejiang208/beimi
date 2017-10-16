@@ -28,10 +28,10 @@ cc.Class({
         if(beiMiCard.game != null){
             if(event.target.y == this.posy){
                 event.target.y = event.target.y + 30 ;
-                beiMiCard.game.doSelectCard(beiMiCard.card);
+                beiMiCard.selected = true ;
             }else{
                 event.target.y = event.target.y - 30 ;
-                beiMiCard.game.doUnSelectCard(beiMiCard.card);
+                beiMiCard.selected = false ;
             }
         }
     }

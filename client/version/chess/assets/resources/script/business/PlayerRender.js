@@ -89,9 +89,10 @@ cc.Class({
             this.cannot.x = this.cannot.x * -1
             this.donot.x = this.donot.x * -1
 
+
             this.jsq.x = this.jsq.x * -1
             this.dizhu.x = this.dizhu.x * -1
-            // this.lastcards.x = this.lastcards.x * -1
+            //this.lastcards.x = this.lastcards.x * -1
             this.lastcards.getComponent(cc.Layout).horizontalDirection = 0 ;
             this.isRight = isRight ;
         }
@@ -237,7 +238,7 @@ cc.Class({
             game.pokerpool.put(this.cardslist[i]);//回收回去
         }
         this.cardslist.splice(0, this.cardslist.length);//删除数组里的所有内容
-        if (data.donot == false) {
+        if (data.donot == false || data.finished == true) {
             this.resetcards(cardsnum);
 
             for (var i = 0; i < lastcards.length; i++) {

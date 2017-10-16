@@ -58,9 +58,16 @@ cc.Class({
     onLoad: function () {
         this.initcard.active = true ;
         this.normal.active = false;
+        this.selected = false ;
     },
     setCard:function(card){
         this.card = card ;
+    },
+    unselected:function(){
+        if(this.selected){
+            this.normal.y = this.normal.y - 30;
+        }
+        this.selected = false ;
     },
     order:function(){
         let self = this ;

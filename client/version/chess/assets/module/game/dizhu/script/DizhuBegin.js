@@ -325,10 +325,31 @@ cc.Class({
             },500) ;
         }, 0);
     },
+    /**
+     * 打完牌，进入结算界面，结算界面流程：
+     * 1、提示你赢/输了
+     * 2、1秒后所有玩家的牌翻出来，显示剩余的牌
+     * 3、2秒后显示结算界面
+     * 4、玩家点选明牌开始还是继续游戏
+     * @param data
+     * @param context
+     */
     allcards_event:function(data , context){
         //结算界面，
-        let temp = cc.instantiate(context.summary) ;
-        temp.parent = context.root() ;
+        for(var i=0 ; i<data.players.length ; i++){
+            var player = data.players[i] ;
+            if(player.playuser != cc.beimi.user.id){
+                var cards = context.decode(player.cards);        //解析牌型
+                var temp = context.getPlayer(player.playuser) ;
+                for(var inx = 0 ; inx < cards.length ; inx++) {
+                    temp.lasttakecards(context.game, context, cards.length, cards, data);
+                }
+            }
+        }
+        setTimeout(function(){
+            let temp = cc.instantiate(context.summary) ;
+            temp.parent = context.root() ;
+        } , 2000);
     },
     getPlayer:function(userid){
         var tempRender;
@@ -482,6 +503,15 @@ cc.Class({
     doPlayCards:function(){
         if(this.ready()){
             let socket = this.socket();
+            this.game.selectedcards.splice(0 , this.game.selectedcards.length) ;
+            for(var i=0 ; i<this.pokercards.length ; i++){
+                var card = this.pokercards[i] ;
+                var temp = card.getComponent("BeiMiCard");
+                if(temp.selected == true){
+                    this.game.selectedcards.push(temp.card) ;
+                }
+                temp.unselected();
+            }
             socket.emit("doplaycards" , this.game.selectedcards.join());
         }
     },
