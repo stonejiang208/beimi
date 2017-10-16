@@ -165,6 +165,7 @@ public class DuZhuBoard extends Board implements java.io.Serializable{
 	public TakeCards takeCardsRequest(GameRoom gameRoom , Board board, Player player,
 			String orgi, boolean auto, byte[] playCards) {
 		TakeCards takeCards = null ;
+		boolean automic = false ;
 		//超时了 ， 执行自动出牌
 		if((auto == true || playCards != null)){
 			CardType playCardType = null ;
@@ -208,7 +209,11 @@ public class DuZhuBoard extends Board implements java.io.Serializable{
 			if(next!=null){
 				takeCards.setNextplayer(next.getPlayuser());
 				board.setNextplayer(next.getPlayuser());
-				
+
+				if(board.getLast() != null && board.getLast().getUserid().equals(next.getPlayuser())){	//当前无出牌信息，刚开始出牌，或者出牌无玩家 压
+					automic = true ;
+				}
+				takeCards.setAutomic(automic);
 			}
 			CacheHelper.getBoardCacheBean().put(gameRoom.getId(), board, gameRoom.getOrgi());
 			/**
@@ -232,6 +237,7 @@ public class DuZhuBoard extends Board implements java.io.Serializable{
 			if(takeCards.getCards()!=null && takeCards.getCards().length == 1){
 				takeCards.setCard(takeCards.getCards()[0]);
 			}
+			
 			ActionTaskUtils.sendEvent("takecards", takeCards , gameRoom);	
 			
 			/**

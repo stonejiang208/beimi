@@ -35,6 +35,7 @@ public abstract class TakeCards implements Message , java.io.Serializable{
 	private int cardsnum ;	//当前出牌的人 剩下多少张 牌
 	
 	private String nextplayer ;		// 下一个出牌玩家
+	private boolean automic ;		//是否允许不出牌过
 	private byte nextplayercard ;	//下一个玩家翻到的新牌
 	
 	/**
@@ -177,5 +178,13 @@ public abstract class TakeCards implements Message , java.io.Serializable{
 
 	public void setNextplayercard(byte nextplayercard) {
 		this.nextplayercard = nextplayercard;
+	}
+
+	public boolean isAutomic() {
+		return automic;
+	}
+
+	public void setAutomic(boolean automic) {
+		this.automic = automic;
 	}
 }
