@@ -205,6 +205,12 @@ public class DuZhuBoard extends Board implements java.io.Serializable{
 			}else{		
 				takeCards.setDonot(true);	//不出牌
 			}
+			if(takeCards.getCardType()!=null && (takeCards.getCardType().getCardtype() == BMDataContext.CardsTypeEnum.TEN.getType() || takeCards.getCardType().getCardtype() == BMDataContext.CardsTypeEnum.ELEVEN.getType())){
+				takeCards.setBomb(true);
+				ActionTaskUtils.doBomb(board, true);
+				ActionTaskUtils.sendEvent("bomb", board, gameRoom);	
+			}
+			
 			Player next = board.nextPlayer(board.index(player.getPlayuser())) ;
 			if(next!=null){
 				takeCards.setNextplayer(next.getPlayuser());

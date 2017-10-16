@@ -126,6 +126,7 @@ public abstract class Board implements Message,java.io.Serializable {
 	
 	private boolean docatch ;	//叫地主 OR 抢地主
 	private int ratio = 1;			//倍数
+	private boolean added ;			//已翻倍
 	
 	private String banker ;		//庄家|地主
 	private String currplayer ;	//当前出牌人
@@ -257,5 +258,13 @@ public abstract class Board implements Message,java.io.Serializable {
 
 	public void setDeskcards(List<Byte> deskcards) {
 		this.deskcards = deskcards;
+	}
+
+	public boolean isAdded() {
+		return added;
+	}
+
+	public void setAdded(boolean added) {
+		this.added = added;
 	}
 }

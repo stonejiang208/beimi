@@ -113,32 +113,34 @@ public class TakeDiZhuCards extends TakeCards implements Message , java.io.Seria
 	public byte[] search(Player player , TakeCards lastTakeCards){
 		byte[] retValue = null ;
 		Map<Integer,Integer> types = ActionTaskUtils.type(player.getCards()) ;
-		switch(lastTakeCards.getCardType().getCardtype()){
-			case 1 : //单张
-				retValue = this.getSingle(player.getCards(), types, lastTakeCards.getCardType().getMincard(), 1) ;
-				break ;
-			case 2 : //一对儿
-				retValue = this.getPair(player.getCards(), types, lastTakeCards.getCardType().getMincard() ,1) ;
-				break ;
-			case 3 : //三张
-				retValue = this.getThree(player.getCards(), types, lastTakeCards.getCardType().getMincard() ,1) ;
-				break ;
-			case 4 : //三带一
-				retValue = this.getThree(player.getCards(), types, lastTakeCards.getCardType().getMincard() ,1) ;
-				if(retValue!=null && retValue.length == 3){
-					byte[] supplement = null ;
-					if(lastTakeCards.getCards().length == 4){	//三带一
-						supplement = this.getSingle(player.getCards(), types, -1 , 1) ;
-					}else if(lastTakeCards.getCards().length == 5){	//三带一对儿
-						supplement = this.getPair(player.getCards(), types , -1, 1) ;
-					}else if(lastTakeCards.getCards().length == 6){	//三顺
-						supplement = this.getThree(player.getCards(), types , -1, 1) ;
+		if(lastTakeCards!=null && lastTakeCards.getCardType()!=null){
+			switch(lastTakeCards.getCardType().getCardtype()){
+				case 1 : //单张
+					retValue = this.getSingle(player.getCards(), types, lastTakeCards.getCardType().getMincard(), 1) ;
+					break ;
+				case 2 : //一对儿
+					retValue = this.getPair(player.getCards(), types, lastTakeCards.getCardType().getMincard() ,1) ;
+					break ;
+				case 3 : //三张
+					retValue = this.getThree(player.getCards(), types, lastTakeCards.getCardType().getMincard() ,1) ;
+					break ;
+				case 4 : //三带一
+					retValue = this.getThree(player.getCards(), types, lastTakeCards.getCardType().getMincard() ,1) ;
+					if(retValue!=null && retValue.length == 3){
+						byte[] supplement = null ;
+						if(lastTakeCards.getCards().length == 4){	//三带一
+							supplement = this.getSingle(player.getCards(), types, -1 , 1) ;
+						}else if(lastTakeCards.getCards().length == 5){	//三带一对儿
+							supplement = this.getPair(player.getCards(), types , -1, 1) ;
+						}else if(lastTakeCards.getCards().length == 6){	//三顺
+							supplement = this.getThree(player.getCards(), types , -1, 1) ;
+						}
+						if(supplement!=null){
+							retValue = ArrayUtils.addAll(retValue, supplement) ;
+						}
 					}
-					if(supplement!=null){
-						retValue = ArrayUtils.addAll(retValue, supplement) ;
-					}
-				}
-				break ;
+					break ;
+			}
 		}
 		return retValue ;
 	}

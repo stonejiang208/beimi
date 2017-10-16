@@ -24,6 +24,8 @@ public abstract class TakeCards implements Message , java.io.Serializable{
 	private byte[] cards ;
 	private byte card ;			//麻将出牌
 	
+	private boolean bomb ;		//炸
+	
 	private long time ;
 	private int type ;		//出牌类型 ： 1:单张 | 2:对子 | 3:三张 | 4:四张（炸） | 5:单张连 | 6:连对 | 7:飞机 : 8:4带2 | 9:王炸
 	private CardType cardType ;//出牌的牌型
@@ -186,5 +188,13 @@ public abstract class TakeCards implements Message , java.io.Serializable{
 
 	public void setAutomic(boolean automic) {
 		this.automic = automic;
+	}
+
+	public boolean isBomb() {
+		return bomb;
+	}
+
+	public void setBomb(boolean bomb) {
+		this.bomb = bomb;
 	}
 }

@@ -77,7 +77,7 @@ public class CreateAutoTask extends AbstractTask implements BeiMiGameTask{
 						/**
 						 * 根据 配置参数获取是否选择叫地主
 						 */
-						board = ActionTaskUtils.doCatch(board, catchPlayer , false) ;
+						board = ActionTaskUtils.doCatch(board, catchPlayer , true) ;
 						break ;
 					}
 				}

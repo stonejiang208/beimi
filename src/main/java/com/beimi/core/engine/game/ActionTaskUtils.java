@@ -10,6 +10,7 @@ import com.beimi.core.engine.game.task.dizhu.CreateAutoTask;
 import com.beimi.util.UKTools;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.util.client.NettyClients;
+import com.beimi.util.rules.model.Board;
 import com.beimi.util.rules.model.DuZhuBoard;
 import com.beimi.util.rules.model.Player;
 import com.beimi.util.server.handler.BeiMiClient;
@@ -111,10 +112,26 @@ public class ActionTaskUtils {
 		player.setDocatch(true);
 		board.setDocatch(true);
 		if(result){	//抢了地主
-			board.setRatio(board.getRatio()*2);
+			if(board.isAdded() == false){
+				board.setAdded(true);
+			}else{
+				board.setRatio(board.getRatio()*2);
+			}
 			board.setBanker(player.getPlayuser());
 		}
 		return board ;
+	}
+	
+	/**
+	 * 临时放这里，重构的时候 放到 游戏类型的 实现类里
+	 * @param board
+	 * @param player
+	 * @return
+	 */
+	public static void doBomb(Board board , boolean add){
+		if(add){	//抢了地主
+			board.setRatio(board.getRatio()*2);
+		}
 	}
 	/**
 	 * 校验当前出牌是否合规
