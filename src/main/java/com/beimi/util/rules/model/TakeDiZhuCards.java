@@ -105,7 +105,7 @@ public class TakeDiZhuCards extends TakeCards implements Message , java.io.Seria
 	}
 	
 	/**
-	 * 搜索符合条件的当前最小 牌型
+	 * 搜索符合条件的当前最小 牌型 , 机器人出牌 ， 只处理到 三带一，其他以后在扩展
 	 * @param player
 	 * @param last
 	 * @return
@@ -267,6 +267,9 @@ public class TakeDiZhuCards extends TakeCards implements Message , java.io.Seria
 			if(card == null){
 				card = temp/4 ;
 				index = i ;
+				if(player.getCards().length - 1 - start == 0){
+					takeCards = ArrayUtils.subarray(player.getCards(), i, i+1) ;
+				}
 			}else{
 				if(card == temp/4 && i>0){
 					continue ;
@@ -280,6 +283,7 @@ public class TakeDiZhuCards extends TakeCards implements Message , java.io.Seria
 				}
 			}
 		}
+		
 		if(takeCards!=null && takeCards.length == 3){
 			Map<Integer,Integer> types = ActionTaskUtils.type(player.getCards()) ;
 			byte[] supplement = this.getSingle(player.getCards(), types, -1 , 1) ;
