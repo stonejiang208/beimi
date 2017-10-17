@@ -50,7 +50,7 @@ cc.Class({
         this.pokercards = new Array();
         this.lastcards = new Array();
         this.lastCardsPanel.active = false ;
-
+        this.summarypage = null ;
     },
     begin:function(){
         this.gamebtn.active = false ;
@@ -368,19 +368,30 @@ cc.Class({
      */
     allcards_event:function(data , context){
         //结算界面，
+        let player ;
         for(var i=0 ; i<data.players.length ; i++){
-            var player = data.players[i] ;
-            if(player.playuser != cc.beimi.user.id){
-                var cards = context.decode(player.cards);        //解析牌型
-                var temp = context.getPlayer(player.playuser) ;
+            var temp = data.players[i] ;
+            if(temp.userid != cc.beimi.user.id){
+                var cards = context.decode(temp.cards);        //解析牌型
+                var tempscript = context.getPlayer(temp.userid) ;
                 for(var inx = 0 ; inx < cards.length ; inx++) {
-                    temp.lasttakecards(context.game, context, cards.length, cards, data);
+                    //tempscript.lasttakecards(context.game, context, cards.length, cards, data);
                 }
+            }else{
+                player = temp  ;
             }
         }
         setTimeout(function(){
-            let temp = cc.instantiate(context.summary) ;
-            temp.parent = context.root() ;
+            if(player!=null){
+                if(player.win == true){
+                    this.summarypage = cc.instantiate(context.summary_win) ;
+                }else{
+                    this.summarypage = cc.instantiate(context.summary) ;
+                }
+                this.summarypage.parent = context.root() ;
+                let temp = this.summarypage.getComponent("SummaryDetail") ;
+                temp.create(data);
+            }
         } , 2000);
     },
     getPlayer:function(userid){

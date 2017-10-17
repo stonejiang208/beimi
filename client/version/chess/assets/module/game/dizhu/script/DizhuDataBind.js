@@ -109,7 +109,7 @@ cc.Class({
         for(i =0 ; i<25 ; i++){
             this.pokerpool.put(cc.instantiate(this.poker));     //牌-背面
         }
-        for(i =0 ; i<30 ; i++){
+        for(i =0 ; i<60 ; i++){
             this.minpokerpool.put(cc.instantiate(this.poker_min));     //牌-背面
         }
         this.myselfpool.put(cc.instantiate(this.myself));
