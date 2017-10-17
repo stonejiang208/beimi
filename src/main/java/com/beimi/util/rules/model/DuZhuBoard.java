@@ -6,8 +6,11 @@ import com.beimi.core.BMDataContext;
 import com.beimi.core.engine.game.ActionTaskUtils;
 import com.beimi.core.engine.game.BeiMiGameEvent;
 import com.beimi.core.engine.game.CardType;
+import com.beimi.core.engine.game.model.Summary;
+import com.beimi.core.engine.game.model.SummaryPlayer;
 import com.beimi.util.GameUtils;
 import com.beimi.util.cache.CacheHelper;
+import com.beimi.web.model.GamePlayway;
 import com.beimi.web.model.GameRoom;
 import com.beimi.web.model.PlayUserClient;
 
@@ -221,6 +224,9 @@ public class DuZhuBoard extends Board implements java.io.Serializable{
 				}
 				takeCards.setAutomic(automic);
 			}
+			if(board.isWin()){//出完了
+				board.setWinner(player.getPlayuser());
+			}
 			CacheHelper.getBoardCacheBean().put(gameRoom.getId(), board, gameRoom.getOrgi());
 			/**
 			 * 判断下当前玩家是不是和最后一手牌 是一伙的，如果是一伙的，手机端提示 就是 不要， 如果不是一伙的，就提示要不起
@@ -278,6 +284,27 @@ public class DuZhuBoard extends Board implements java.io.Serializable{
 	@Override
 	public void playcards(Board board, GameRoom gameRoom, Player player,
 			String orgi) {
+	}
+
+	@Override
+	public Summary summary(Board board, GameRoom gameRoom , GamePlayway playway) {
+		Summary summary = new Summary(gameRoom.getId() , board.getId() , board.getRatio() , board.getRatio() * playway.getScore());
+		boolean dizhuWin = board.getWinner().equals(board.getBanker()) ;
+		for(Player player : board.getPlayers()){
+			SummaryPlayer summaryPlayer = new SummaryPlayer(player.getPlayuser() , board.getRatio() , board.getRatio() * playway.getScore() , true) ;
+			if(dizhuWin){
+				if(!player.getPlayuser().equals(board.getBanker())){
+					summaryPlayer.setScore(summaryPlayer.getScore()*-1);
+				}
+			}else{
+				if(player.getPlayuser().equals(board.getBanker())){
+					summaryPlayer.setScore(summaryPlayer.getScore()*-1 * (board.getPlayers().length - 1));
+				}
+			}
+			summaryPlayer.setCards(player.getCards()); //未出完的牌
+			summary.getPlayers().add(summaryPlayer) ;
+		}
+		return summary;
 	}
 	
 }

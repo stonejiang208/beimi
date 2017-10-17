@@ -3,6 +3,8 @@ package com.beimi.util.rules.model;
 import java.util.List;
 
 import com.beimi.core.engine.game.Message;
+import com.beimi.core.engine.game.model.Summary;
+import com.beimi.web.model.GamePlayway;
 import com.beimi.web.model.GameRoom;
 
 public abstract class Board implements Message,java.io.Serializable {
@@ -28,6 +30,13 @@ public abstract class Board implements Message,java.io.Serializable {
 	 * @return
 	 */
 	public abstract int index(String userid);
+	
+	
+	/**
+	 * 计算结算信息
+	 * @return
+	 */
+	public abstract Summary summary(Board board, GameRoom gameRoom , GamePlayway playway);
 	
 	/**
 	 * 是否赢了
@@ -103,6 +112,8 @@ public abstract class Board implements Message,java.io.Serializable {
 	 * 
 	 */
 	
+	private String id ;
+	
 	private byte[] cards;	//4个Bit描述一张牌，麻将：136+2/2 = 69 byte ; 扑克 54/2 = 27 byte 
 	private Player[] players;//3~10人(4 byte)
 	
@@ -111,6 +122,8 @@ public abstract class Board implements Message,java.io.Serializable {
 	private TakeCards last;
 	
 	private boolean finished ;
+	
+	private String winner ;		//赢的玩家
 	
 	private String nextplayer ;
 	
@@ -266,5 +279,21 @@ public abstract class Board implements Message,java.io.Serializable {
 
 	public void setAdded(boolean added) {
 		this.added = added;
+	}
+
+	public String getWinner() {
+		return winner;
+	}
+
+	public void setWinner(String winner) {
+		this.winner = winner;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 }

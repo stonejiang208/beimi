@@ -7,8 +7,10 @@ import com.beimi.core.BMDataContext;
 import com.beimi.core.engine.game.ActionTaskUtils;
 import com.beimi.core.engine.game.BeiMiGameEvent;
 import com.beimi.core.engine.game.model.MJCardMessage;
+import com.beimi.core.engine.game.model.Summary;
 import com.beimi.util.GameUtils;
 import com.beimi.util.cache.CacheHelper;
+import com.beimi.web.model.GamePlayway;
 import com.beimi.web.model.GameRoom;
 import com.beimi.web.model.PlayUserClient;
 
@@ -303,5 +305,10 @@ public class MaJiangBoard extends Board implements java.io.Serializable{
 		}else{
 			GameUtils.getGame(gameRoom.getPlayway() , orgi).change(gameRoom , BeiMiGameEvent.PLAYCARDS.toString() , 1);	//应该从游戏后台配置参数中获取
 		}
+	}
+
+	@Override
+	public Summary summary(Board board, GameRoom gameRoom , GamePlayway playway) {
+		return null;
 	}
 }

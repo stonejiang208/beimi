@@ -182,21 +182,11 @@ public class TakeDiZhuCards extends TakeCards implements Message , java.io.Seria
 		byte[] retCards = null;
 		List<Integer> retValue = new ArrayList<Integer>();
 		for(int i=0 ; i<14 ; i++){
-			if(types.get(i) != null && types.get(i) ==1  && retValue.size() < num && (i<0 || i>mincard)){
+			if(types.get(i) != null && types.get(i) ==1  && retValue.size() < num && (i>mincard || i == 13)){
 				retValue.add(i) ;
 			}
 			if(retValue.size() >= num){
 				break ;
-			}
-		}
-		if(retValue.size() < num){	//补充查找
-			for(int i=0 ; i<14 ; i++){
-				if(types.get(i) != null && types.get(i) >1 && (i<0 || i>mincard)  && retValue.size() < num){
-					retValue.add(i) ;
-					if(retValue.size() == num){
-						break ;
-					}
-				}
 			}
 		}
 		if(retValue.size() == num){
@@ -204,8 +194,12 @@ public class TakeDiZhuCards extends TakeCards implements Message , java.io.Seria
 			int inx = 0 ;
 			for(int temp : retValue){
 				for(byte card : cards){
-					if(card/4 == temp){
+					if(temp == 13 && card == 53){
 						retCards[inx++] = card ;
+					}else{
+						if(card/4 == temp){
+							retCards[inx++] = card ;
+						}
 					}
 					if(inx >= num){
 						break ;
@@ -340,8 +334,7 @@ public class TakeDiZhuCards extends TakeCards implements Message , java.io.Seria
 	 * @return
 	 */
 	public byte[] removeCards(byte[] cards , byte[] playcards){
-		byte[] retCards = new byte[cards.length - playcards.length] ;
-		int cardsindex = 0 ;
+		List<Byte> tempArray = new ArrayList<Byte>();
 		for(int i=0; i<cards.length ; i++){
 			boolean found = false ;
 			for(int inx = 0 ;inx<playcards.length ; inx++){
@@ -350,8 +343,12 @@ public class TakeDiZhuCards extends TakeCards implements Message , java.io.Seria
 				}
 			}
 			if(found == false){
-				retCards[cardsindex++] = cards[i] ;
+				tempArray.add(cards[i]);
 			}
+		}
+		byte[] retCards = new byte[tempArray.size()] ;
+		for(int i=0 ; i<tempArray.size() ; i++){
+			retCards[i] = tempArray.get(i) ;
 		}
 		return retCards ;
 	}
