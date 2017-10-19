@@ -194,8 +194,10 @@ public class TakeDiZhuCards extends TakeCards implements Message , java.io.Seria
 			int inx = 0 ;
 			for(int temp : retValue){
 				for(byte card : cards){
-					if(temp == 13 && card == 53){
-						retCards[inx++] = card ;
+					if(temp == 13 && mincard == 13){
+						if(card == 53){
+							retCards[inx++] = card ;
+						}
 					}else{
 						if(card/4 == temp){
 							retCards[inx++] = card ;
@@ -205,6 +207,9 @@ public class TakeDiZhuCards extends TakeCards implements Message , java.io.Seria
 						break ;
 					}
 				}
+			}
+			if(inx == 0){
+				retCards = null ;
 			}
 		}
 		return retCards ;
