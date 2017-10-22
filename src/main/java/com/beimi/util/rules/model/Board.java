@@ -6,6 +6,7 @@ import com.beimi.core.engine.game.Message;
 import com.beimi.core.engine.game.model.Summary;
 import com.beimi.web.model.GamePlayway;
 import com.beimi.web.model.GameRoom;
+import com.beimi.web.model.PlayUserClient;
 
 public abstract class Board implements Message,java.io.Serializable {
 	
@@ -157,6 +158,21 @@ public abstract class Board implements Message,java.io.Serializable {
 				if(user.getPlayuser()!=null && user.getPlayuser().equals(userid)){
 					temp = user ; break ;
 				}
+			}
+		}
+		return temp ;
+	}
+	
+	/**
+	 * 找到玩家数据
+	 * @param userid
+	 * @return
+	 */
+	public PlayUserClient getPlayerClient(List<PlayUserClient> players,String userid){
+		PlayUserClient temp = null;
+		for(PlayUserClient user : players){
+			if(user.getId().equals(userid)){
+				temp = user ; break ;
 			}
 		}
 		return temp ;

@@ -1,5 +1,8 @@
 package com.beimi.util.rules.model;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.commons.lang.ArrayUtils;
 
 import com.beimi.core.BMDataContext;
@@ -188,9 +191,7 @@ public class DuZhuBoard extends Board implements java.io.Serializable{
 						CardType lastCardType = ActionTaskUtils.identification(board.getLast().getCards()) ;
 						if(playCardType.getCardtype() >0 && ActionTaskUtils.allow(playCardType, lastCardType)){//合规，允许出牌
 							takeCards = board.takecard(player , true , playCards) ;
-						}else{
-							//不合规的牌 ， 需要通知客户端 出牌不符合规则 ， 此处放在服务端判断，防外挂
-						}
+						}//不合规的牌 ， 需要通知客户端 出牌不符合规则 ， 此处放在服务端判断，防外挂
 					}
 				}
 			}
@@ -201,6 +202,9 @@ public class DuZhuBoard extends Board implements java.io.Serializable{
 		if(takeCards!=null){		//通知出牌
 			takeCards.setCardsnum(player.getCards().length);
 			takeCards.setAllow(true);
+			if(takeCards.getCards()!=null){
+				Arrays.sort(takeCards.getCards());
+			}
 			
 			if(takeCards.getCards()!=null){
 				board.setLast(takeCards);
@@ -211,7 +215,7 @@ public class DuZhuBoard extends Board implements java.io.Serializable{
 			if(takeCards.getCardType()!=null && (takeCards.getCardType().getCardtype() == BMDataContext.CardsTypeEnum.TEN.getType() || takeCards.getCardType().getCardtype() == BMDataContext.CardsTypeEnum.ELEVEN.getType())){
 				takeCards.setBomb(true);
 				ActionTaskUtils.doBomb(board, true);
-				ActionTaskUtils.sendEvent("bomb", board, gameRoom);	
+				ActionTaskUtils.sendEvent("ratio", new BoardRatio(takeCards.isBomb(), false , board.getRatio()), gameRoom);	
 			}
 			
 			Player next = board.nextPlayer(board.index(player.getPlayuser())) ;
@@ -226,6 +230,7 @@ public class DuZhuBoard extends Board implements java.io.Serializable{
 			}
 			if(board.isWin()){//出完了
 				board.setWinner(player.getPlayuser());
+				takeCards.setOver(true);
 			}
 			CacheHelper.getBoardCacheBean().put(gameRoom.getId(), board, gameRoom.getOrgi());
 			/**
@@ -289,21 +294,70 @@ public class DuZhuBoard extends Board implements java.io.Serializable{
 	@Override
 	public Summary summary(Board board, GameRoom gameRoom , GamePlayway playway) {
 		Summary summary = new Summary(gameRoom.getId() , board.getId() , board.getRatio() , board.getRatio() * playway.getScore());
+		int dizhuScore = 0 ;
 		boolean dizhuWin = board.getWinner().equals(board.getBanker()) ;
+		
+		List<PlayUserClient> players = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
+		
+		PlayUserClient dizhuPlayerUser = getPlayerClient(players, board.getBanker());
+		int temp = summary.getScore() * (board.getPlayers().length - 1) ;
+		SummaryPlayer dizhuSummaryPlayer = null ;
+		boolean gameRoomOver = false ;	//解散房价
+		
 		for(Player player : board.getPlayers()){
-			SummaryPlayer summaryPlayer = new SummaryPlayer(player.getPlayuser() , board.getRatio() , board.getRatio() * playway.getScore() , true) ;
+			PlayUserClient playUser = getPlayerClient(players, player.getPlayuser());
+			SummaryPlayer summaryPlayer = new SummaryPlayer(player.getPlayuser() , playUser.getUsername() , board.getRatio() , board.getRatio() * playway.getScore() , false , player.getPlayuser().equals(board.getBanker())) ;
+			/**
+			 * 找到对应的玩家结算信息
+			 */
+			if(player.getPlayuser().equals(board.getBanker())){
+				dizhuSummaryPlayer = summaryPlayer ;
+			}
 			if(dizhuWin){
-				if(!player.getPlayuser().equals(board.getBanker())){
-					summaryPlayer.setScore(summaryPlayer.getScore()*-1);
-				}
-			}else{
 				if(player.getPlayuser().equals(board.getBanker())){
-					summaryPlayer.setScore(summaryPlayer.getScore()*-1 * (board.getPlayers().length - 1));
+					summaryPlayer.setWin(true);
+				}else{
+					/**
+					 * 扣 农民的 金币 , 扣除金币的时候需要最好做一下金币的校验，例如：签名验证是否由系统修改的 金币余额，并记录金币扣除的日志，用于账号账单信息
+					 */
+					if(playUser.getGoldcoins() > summaryPlayer.getScore()){
+						summaryPlayer.setScore(summaryPlayer.getScore());
+					}else{
+						summaryPlayer.setScore(playUser.getGoldcoins());//还有多少，扣你多少	
+						summaryPlayer.setGameover(true);				//金币不够了，破产，重新充值或领取奖励恢复状态
+						gameRoomOver = true ;
+					}
+					dizhuScore = dizhuScore  + summaryPlayer.getScore() ;
+					
+					playUser.setGoldcoins(playUser.getGoldcoins() - summaryPlayer.getScore());
+				}
+			}else{	//地主输了
+				if(!player.getPlayuser().equals(board.getBanker())){
+					summaryPlayer.setWin(true);
+					if(dizhuPlayerUser.getGoldcoins() < temp){	//金币不够扣
+						summaryPlayer.setScore(dizhuPlayerUser.getGoldcoins() / (board.getPlayers().length - 1));
+						gameRoomOver = true ;
+					}
+					dizhuScore = dizhuScore  + summaryPlayer.getScore() ;
+					
+					playUser.setGoldcoins(playUser.getGoldcoins()+summaryPlayer.getScore());
 				}
 			}
 			summaryPlayer.setCards(player.getCards()); //未出完的牌
 			summary.getPlayers().add(summaryPlayer) ;
 		}
+		if(dizhuSummaryPlayer!=null){
+			dizhuSummaryPlayer.setScore(dizhuScore);
+			if(dizhuWin){
+				dizhuPlayerUser.setGoldcoins(dizhuPlayerUser.getGoldcoins() + dizhuScore);
+			}else{
+				dizhuPlayerUser.setGoldcoins(dizhuPlayerUser.getGoldcoins() - dizhuScore);
+			}
+		}
+		summary.setGameRoomOver(gameRoomOver);	//有玩家破产，房间解散
+		/**
+		 * 上面的 Player的 金币变更需要保持 数据库的日志记录 , 机器人的 金币扣完了就出局了
+		 */
 		return summary;
 	}
 	

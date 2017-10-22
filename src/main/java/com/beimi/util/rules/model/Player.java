@@ -3,7 +3,9 @@ package com.beimi.util.rules.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player implements java.io.Serializable , Cloneable{
+import com.beimi.core.engine.game.Message;
+
+public class Player implements Message,java.io.Serializable , Cloneable{
 
 	/**
 	 * 
@@ -24,6 +26,8 @@ public class Player implements java.io.Serializable , Cloneable{
 	private boolean docatch ;	//抢过庄（地主）
 	private boolean recatch ;	//补抢
 	private int deskcards ;	//剩下多少张牌
+	
+	private String command ;
 	
 	private boolean selected ;	//已经选择 花色
 	private int color ;		//定缺 花色   0  : wan , 1:tong , 2 :tiao
@@ -152,5 +156,13 @@ public class Player implements java.io.Serializable , Cloneable{
 
 	public void setActions(List<Action> actions) {
 		this.actions = actions;
+	}
+
+	public String getCommand() {
+		return command;
+	}
+
+	public void setCommand(String command) {
+		this.command = command;
 	}
 }

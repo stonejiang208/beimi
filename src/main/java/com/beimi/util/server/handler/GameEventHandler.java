@@ -6,13 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alibaba.fastjson.JSON;
 import com.beimi.core.BMDataContext;
-import com.beimi.core.engine.game.ActionTaskUtils;
-import com.beimi.core.engine.game.state.GameEvent;
-import com.beimi.util.GameUtils;
 import com.beimi.util.UKTools;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.util.client.NettyClients;
-import com.beimi.util.rules.model.Board;
 import com.beimi.web.model.PlayUserClient;
 import com.beimi.web.model.Token;
 import com.beimi.web.service.repository.es.PlayUserClientESRepository;
@@ -96,34 +92,7 @@ public class GameEventHandler
 				userClient.setOnline(true);
 				UKTools.published(userClient,BMDataContext.getContext().getBean(PlayUserClientESRepository.class), BMDataContext.getContext().getBean(PlayUserClientRepository.class));
 				
-				GameEvent gameEvent = BMDataContext.getGameEngine().gameRequest(userToken.getUserid(), beiMiClient.getPlayway(), beiMiClient.getRoom(), beiMiClient.getOrgi(), userClient) ;
-				if(gameEvent != null){
-					/**
-					 * 游戏状态 ， 玩家请求 游戏房间，活动房间状态后，发送事件给 StateMachine，由 StateMachine驱动 游戏状态 ， 此处只负责通知房间内的玩家
-					 * 1、有新的玩家加入
-					 * 2、给当前新加入的玩家发送房间中所有玩家信息（不包含隐私信息，根据业务需求，修改PlayUserClient的字段，剔除掉隐私信息后发送）
-					 */
-					ActionTaskUtils.sendEvent("joinroom", userClient , gameEvent.getGameRoom());
-					/**
-					 * 发送给单一玩家的消息
-					 */
-					ActionTaskUtils.sendPlayers(beiMiClient, gameEvent.getGameRoom());
-					/**
-					 * 当前是在游戏中还是 未开始
-					 */
-					Board board = (Board) CacheHelper.getBoardCacheBean().getCacheObject(gameEvent.getRoomid(), gameEvent.getOrgi());
-					if(board !=null){
-						if(board.isFinished()){
-							BMDataContext.getGameEngine().finished(gameEvent.getRoomid(),gameEvent.getOrgi() );
-							//game.change(gameEvent);	//通知状态机 , 此处应由状态机处理异步执行
-						}else{
-							//恢复数据
-						}
-					}else{
-						//通知状态
-					}
-					GameUtils.getGame(beiMiClient.getPlayway() , gameEvent.getOrgi()).change(gameEvent);	//通知状态机 , 此处应由状态机处理异步执行
-				}
+				BMDataContext.getGameEngine().gameRequest(userToken.getUserid(), beiMiClient.getPlayway(), beiMiClient.getRoom(), beiMiClient.getOrgi(), userClient , beiMiClient) ;
 			}
 		}
     }
@@ -226,6 +195,37 @@ public class GameEventHandler
 				PlayUserClient playUser = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(userToken.getUserid(), userToken.getOrgi()) ;
 				String roomid = (String) CacheHelper.getRoomMappingCacheBean().getCacheObject(playUser.getId(), playUser.getOrgi()) ;
 				BMDataContext.getGameEngine().actionEventRequest(roomid, playUser.getId(), userToken.getOrgi() , data);
+			}
+		}
+    }
+    
+  //抢地主事件
+    @OnEvent(value = "restart")   
+    public void onRestart(SocketIOClient client , String data)  
+    {  
+    	BeiMiClient beiMiClient = NettyClients.getInstance().getClient(client.getSessionId().toString()) ;
+    	String token = beiMiClient.getToken();
+		if(!StringUtils.isBlank(token)){
+			Token userToken = (Token) CacheHelper.getApiUserCacheBean().getCacheObject(token, BMDataContext.SYSTEM_ORGI) ;
+			if(userToken!=null){
+				PlayUserClient playUser = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(userToken.getUserid(), userToken.getOrgi()) ;
+				String roomid = (String) CacheHelper.getRoomMappingCacheBean().getCacheObject(playUser.getId(), playUser.getOrgi()) ;
+				BMDataContext.getGameEngine().restartRequest(roomid, playUser.getId(), playUser.getOrgi() , beiMiClient);
+			}
+		}
+    }
+    
+  //抢地主事件
+    @OnEvent(value = "recovery")   
+    public void onRecovery(SocketIOClient client , String data)  
+    {  
+    	BeiMiClient beiMiClient = NettyClients.getInstance().getClient(client.getSessionId().toString()) ;
+    	String token = beiMiClient.getToken();
+		if(!StringUtils.isBlank(token)){
+			Token userToken = (Token) CacheHelper.getApiUserCacheBean().getCacheObject(token, BMDataContext.SYSTEM_ORGI) ;
+			if(userToken!=null){
+				PlayUserClient playUser = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(userToken.getUserid(), userToken.getOrgi()) ;
+				BMDataContext.getGameEngine().gameRequest(playUser.getId(), beiMiClient.getPlayway(), beiMiClient.getRoom(), beiMiClient.getOrgi(), playUser , beiMiClient) ;
 			}
 		}
     }

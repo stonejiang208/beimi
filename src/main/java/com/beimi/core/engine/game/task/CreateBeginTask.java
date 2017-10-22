@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.cache2k.expiry.ValueWithExpiryTime;
 
+import com.beimi.core.BMDataContext;
 import com.beimi.core.engine.game.ActionTaskUtils;
 import com.beimi.core.engine.game.BeiMiGameEvent;
 import com.beimi.core.engine.game.BeiMiGameTask;
@@ -59,6 +60,13 @@ public class CreateBeginTask extends AbstractTask implements ValueWithExpiryTime
 		CacheHelper.getBoardCacheBean().put(gameRoom.getId(), board, gameRoom.getOrgi());
 		for(Object temp : playerList){
 			PlayUserClient playerUser = (PlayUserClient) temp ;
+			playerUser.setGamestatus(BMDataContext.GameStatusEnum.PLAYING.toString());
+			/**
+			 * 更新状态到 PLAYING
+			 */
+			if(CacheHelper.getApiUserCacheBean().getCacheObject(playerUser.getId(), playerUser.getOrgi())!=null){
+				CacheHelper.getApiUserCacheBean().put(playerUser.getId(), playerUser, orgi);
+			}
 			/**
 			 * 每个人收到的 牌面不同，所以不用 ROOM发送广播消息，而是用 遍历房间里所有成员发送消息的方式
 			 */

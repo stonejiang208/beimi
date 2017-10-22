@@ -24,6 +24,8 @@ public abstract class TakeCards implements Message , java.io.Serializable{
 	private byte[] cards ;
 	private byte card ;			//麻将出牌
 	
+	private boolean over ;		//已结束
+	
 	private boolean bomb ;		//炸
 	
 	private long time ;
@@ -196,5 +198,13 @@ public abstract class TakeCards implements Message , java.io.Serializable{
 
 	public void setBomb(boolean bomb) {
 		this.bomb = bomb;
+	}
+
+	public boolean isOver() {
+		return over;
+	}
+
+	public void setOver(boolean over) {
+		this.over = over;
 	}
 }

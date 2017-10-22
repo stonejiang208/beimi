@@ -155,7 +155,17 @@ public class BMDataContext {
 	public enum PlayerTypeEnum{
 		AI,			//AI
 		NORMAL,		//普通玩家
-		OFFLINE;	//离线 托管玩家
+		MANAGED;	//托管玩家
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+	public enum GameStatusEnum{
+		READY,			//AI
+		NOTREADY,		//普通玩家
+		MANAGED,
+		PLAYING;	//离线 托管玩家
 		public String toString(){
 			return super.toString().toLowerCase() ;
 		}

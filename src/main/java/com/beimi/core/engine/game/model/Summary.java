@@ -17,6 +17,7 @@ public class Summary implements Message,java.io.Serializable{
 	private int ratio ;			//倍率
 	private String command ;	
 	private boolean finished = true ;
+	private boolean gameRoomOver ;	
 	private int score ;			//总分
 	private List<SummaryPlayer> players = new ArrayList<SummaryPlayer>() ;
 	
@@ -69,5 +70,11 @@ public class Summary implements Message,java.io.Serializable{
 	}
 	public void setFinished(boolean finished) {
 		this.finished = finished;
+	}
+	public boolean isGameRoomOver() {
+		return gameRoomOver;
+	}
+	public void setGameRoomOver(boolean gameRoomOver) {
+		this.gameRoomOver = gameRoomOver;
 	}
 }

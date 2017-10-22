@@ -12,6 +12,7 @@ public class CardType implements java.io.Serializable{
 	private boolean bomb;	//炸弹
 	private int mincard ; 	//最小的牌
 	private int cardnum ;	//最大牌张数  ， JJJQ，= 3
+	private byte maxcardvalue ;
 	
 	public CardType(){}
 	public CardType(int maxcard , int cardtype , boolean king , boolean bomb){
@@ -62,5 +63,11 @@ public class CardType implements java.io.Serializable{
 	}
 	public void setCardnum(int cardnum) {
 		this.cardnum = cardnum;
+	}
+	public byte getMaxcardvalue() {
+		return maxcardvalue;
+	}
+	public void setMaxcardvalue(byte maxcardvalue) {
+		this.maxcardvalue = maxcardvalue;
 	}
 }

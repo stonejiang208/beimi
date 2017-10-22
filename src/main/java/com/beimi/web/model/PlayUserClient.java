@@ -58,6 +58,8 @@ public class PlayUserClient implements UserEvent ,Message, java.io.Serializable{
 	private boolean datastatus ;//数据状态，是否已删除	
 	private boolean headimg ; 	//是否上传头像
 	
+	private String gamestatus ;	//玩家在游戏中的状态 ： READY : NOTREADY : PLAYING ：MANAGED/托管
+	
 	private String playertype ;	//玩家类型 ： 玩家：托管玩家，AI
 	
 	private String token ;
@@ -401,5 +403,15 @@ public class PlayUserClient implements UserEvent ,Message, java.io.Serializable{
 
 	public void setCommand(String command) {
 		this.command = command;
+	}
+
+
+	public String getGamestatus() {
+		return gamestatus;
+	}
+
+
+	public void setGamestatus(String gamestatus) {
+		this.gamestatus = gamestatus;
 	}
 }

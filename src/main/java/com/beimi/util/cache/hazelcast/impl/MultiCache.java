@@ -44,10 +44,6 @@ public class MultiCache{
 		return getInstance().getMultiMap(getName()).remove(key) ;
 	}
 
-	public void update(String key, String orgi, PlayUserClient value) {
-		getInstance().getMultiMap(getName()).put(key, value);
-	}
-
 	public List<PlayUserClient> getCacheObject(String key, String orgi) {
 		List<PlayUserClient> values = new ArrayList<PlayUserClient>();
 		Collection<Object> dataList = getInstance().getMultiMap(getName()).get(key) ; 

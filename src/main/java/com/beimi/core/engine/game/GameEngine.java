@@ -18,10 +18,13 @@ import com.beimi.util.client.NettyClients;
 import com.beimi.util.rules.model.Action;
 import com.beimi.util.rules.model.ActionEvent;
 import com.beimi.util.rules.model.Board;
+import com.beimi.util.rules.model.BoardRatio;
 import com.beimi.util.rules.model.DuZhuBoard;
 import com.beimi.util.rules.model.Player;
+import com.beimi.util.rules.model.RecoveryData;
 import com.beimi.util.rules.model.SelectColor;
 import com.beimi.util.rules.model.TakeCards;
+import com.beimi.util.server.handler.BeiMiClient;
 import com.beimi.web.model.GamePlayway;
 import com.beimi.web.model.GameRoom;
 import com.beimi.web.model.PlayUserClient;
@@ -33,6 +36,53 @@ public class GameEngine {
 	
 	@Autowired
 	protected SocketIOServer server;
+	
+	public void gameRequest(String userid ,String playway , String room , String orgi , PlayUserClient userClient , BeiMiClient beiMiClient ){
+		GameEvent gameEvent = gameRequest(userClient.getId(), beiMiClient.getPlayway(), beiMiClient.getRoom(), beiMiClient.getOrgi(), userClient) ;
+		if(gameEvent != null){
+			/**
+			 * 举手了，表示游戏可以开始了
+			 */
+			if(userClient!=null){
+				userClient.setGamestatus(BMDataContext.GameStatusEnum.READY.toString());
+				CacheHelper.getGamePlayerCacheBean().put(userClient.getId(),userClient, userClient.getOrgi()) ;
+			}
+			/**
+			 * 游戏状态 ， 玩家请求 游戏房间，活动房间状态后，发送事件给 StateMachine，由 StateMachine驱动 游戏状态 ， 此处只负责通知房间内的玩家
+			 * 1、有新的玩家加入
+			 * 2、给当前新加入的玩家发送房间中所有玩家信息（不包含隐私信息，根据业务需求，修改PlayUserClient的字段，剔除掉隐私信息后发送）
+			 */
+			ActionTaskUtils.sendEvent("joinroom", userClient , gameEvent.getGameRoom());
+			/**
+			 * 发送给单一玩家的消息
+			 */
+			ActionTaskUtils.sendPlayers(beiMiClient, gameEvent.getGameRoom());
+			/**
+			 * 当前是在游戏中还是 未开始
+			 */
+			Board board = (Board) CacheHelper.getBoardCacheBean().getCacheObject(gameEvent.getRoomid(), gameEvent.getOrgi());
+			if(board !=null){
+				Player currentPlayer = null;
+				for(Player player : board.getPlayers()){
+					if(player.getPlayuser().equals(userClient.getId())){
+						currentPlayer = player ; break ;
+					}
+				}
+				if(currentPlayer!=null){
+					boolean automic = false ;
+					if((board.getLast()!=null && board.getLast().getUserid().equals(currentPlayer.getPlayuser())) || (board.getLast() == null && board.getBanker().equals(currentPlayer.getPlayuser()))){
+						automic = true ;
+					}
+					ActionTaskUtils.sendEvent("recovery", new RecoveryData(currentPlayer , board.getLasthands() , board.getNextplayer() , 25 , automic , board) , gameEvent.getGameRoom());
+					ActionTaskUtils.sendEvent("ratio", new BoardRatio(board.getRatio()), gameEvent.getGameRoom());
+				}
+			}else{
+				//通知状态
+				GameUtils.getGame(beiMiClient.getPlayway() , gameEvent.getOrgi()).change(gameEvent);	//通知状态机 , 此处应由状态机处理异步执行
+			}
+		}
+	}
+	
 	/**
 	 * 玩家房间选择， 新请求，游戏撮合， 如果当前玩家是断线重连， 或者是 退出后进入的，则第一步检查是否已在房间
 	 * 如果已在房间，直接返回
@@ -53,7 +103,6 @@ public class GameEngine {
 			}else{
 				if(!StringUtils.isBlank(room)){	//房卡游戏 , 创建ROOM
 					gameRoom = this.creatGameRoom(gamePlayway, userid , true) ;
-					CacheHelper.getGameRoomCacheBean().put(gameRoom.getId(), gameRoom, orgi);
 				}else{	//
 					/**
 					 * 大厅游戏 ， 撮合游戏 , 发送异步消息，通知RingBuffer进行游戏撮合，撮合算法描述如下：
@@ -63,7 +112,6 @@ public class GameEngine {
 					gameRoom = (GameRoom) CacheHelper.getQueneCache().poll(playway , orgi) ;
 					if(gameRoom==null){	//无房间 ， 需要
 						gameRoom = this.creatGameRoom(gamePlayway, userid , false) ;
-						CacheHelper.getGameRoomCacheBean().put(gameRoom.getId(), gameRoom, orgi);
 					}else{
 					
 						/**
@@ -78,6 +126,11 @@ public class GameEngine {
 				}
 			}
 			if(gameRoom!=null){
+				gameRoom.setCurrentnum(0);
+				/**
+				 * 更新缓存
+				 */
+				CacheHelper.getGameRoomCacheBean().put(gameRoom.getId(), gameRoom, orgi);
 				/**
 				 * 如果当前房间到达了最大玩家数量，则不再加入到 撮合队列
 				 */
@@ -101,6 +154,7 @@ public class GameEngine {
 				}
 				if(inroom == false){
 					playUser.setPlayerindex(System.currentTimeMillis());
+					playUser.setGamestatus(BMDataContext.GameStatusEnum.READY.toString());
 					playUser.setPlayertype(BMDataContext.PlayerTypeEnum.NORMAL.toString());
 					CacheHelper.getGamePlayerCacheBean().put(gameRoom.getId(), playUser, orgi); //将用户加入到 room ， MultiCache
 				}
@@ -157,6 +211,53 @@ public class GameEngine {
 			}
 		}
 		return takeCards ;
+	}
+	
+	/**
+	 * 检查是否所有玩家 都已经处于就绪状态，如果所有玩家都点击了 继续开始游戏，则发送一个 ALL事件，继续游戏，
+	 * 否则，等待10秒时间，到期后如果玩家还没有就绪，就将该玩家T出去，等待新玩家加入
+	 * @param roomid
+	 * @param userid
+	 * @param orgi
+	 * @return
+	 */
+	public void restartRequest(String roomid , String userid, String orgi , BeiMiClient beiMiClient){
+		GameRoom gameRoom = (GameRoom) CacheHelper.getGameRoomCacheBean().getCacheObject(roomid, orgi) ;
+		boolean notReady = false ;
+		List<PlayUserClient> playerList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
+		if(playerList!=null && playerList.size() > 0){
+			/**
+			 * 有一个 等待 
+			 */
+			for(int i=0; i<playerList.size() ; ){
+				PlayUserClient player = playerList.get(i) ;
+				if(player.getPlayertype().equals(BMDataContext.PlayerTypeEnum.NORMAL.toString())){
+					//普通玩家，当前玩家修改为READY状态
+					PlayUserClient apiPlayUser = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(player.getId(), player.getOrgi()) ;
+					if(player.getId().equals(userid)){
+						player.setGamestatus(BMDataContext.GameStatusEnum.READY.toString());
+						/**
+						 * 更新状态
+						 */
+						CacheHelper.getApiUserCacheBean().put(player.getId(), apiPlayUser, orgi);
+					}else{//还有未就绪的玩家
+						if(!player.getGamestatus().equals(BMDataContext.GameStatusEnum.READY.toString())){
+							notReady = true ;
+						}
+					}
+				}
+				i++ ;
+			}
+		}
+		if(notReady == true){
+			/**
+			 * 需要增加一个状态机的触发事件：等待其他人就绪，超过5秒以后未就绪的，直接踢掉，然后等待机器人加入
+			 */
+			GameUtils.getGame(gameRoom.getPlayway() , orgi).change(gameRoom , BeiMiGameEvent.ENTER.toString() , 0);
+		}else if(playerList == null || playerList.size() == 0){//房间已解散
+			PlayUserClient userClient = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(userid, orgi) ;
+			BMDataContext.getGameEngine().gameRequest(userid, beiMiClient.getPlayway(), beiMiClient.getRoom(), beiMiClient.getOrgi(), userClient , beiMiClient) ;
+		}
 	}
 	
 	/**

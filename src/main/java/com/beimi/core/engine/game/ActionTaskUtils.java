@@ -155,6 +155,8 @@ public class ActionTaskUtils {
 			
 		}else if(playCardType.getMaxcard() > lastCardType.getMaxcard() && playCardType.getCardtype()>0 && lastCardType.getCardtype() > 0){
 			allow = true ;
+		}else if(playCardType.getMaxcardvalue() == 53 && playCardType.getCardtype()>0 && lastCardType.getCardtype() > 0 && playCardType.getCardtype() == lastCardType.getCardtype()){
+			allow = true ;
 		}
 		return allow ;
 	}
@@ -195,6 +197,9 @@ public class ActionTaskUtils {
 			if(types.get(card) > max){
 				max = types.get(card) ;
 				maxcard = card ;
+			}
+			if(cards[i] > cardTypeBean.getMaxcardvalue()){
+				cardTypeBean.setMaxcardvalue(cards[i]);
 			}
 			if(mincard < 0 || mincard < card){
 				mincard = card ;
