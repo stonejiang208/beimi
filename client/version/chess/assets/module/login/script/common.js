@@ -46,7 +46,7 @@ cc.Class({
         if(data!=null && data.token!=null && data.data!=null){
             //放在全局变量
             object.reset(data , result);
-
+            cc.beimi.gamestatus = data.data.gamestatus ;
             /**
              * 登录成功后即创建Socket链接
              */

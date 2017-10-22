@@ -172,11 +172,14 @@ cc.Class({
         }
     },
     lasthands:function(self, game,data){   //设置地主
-        var render = this.playermysql.getComponent("PlayerRender") ;
-        render.setDizhuFlag(data);
+        this.setDizhuFlag(data) ;
         if(this.operesult){
             this.operesult.active = false ;
         }
+    },
+    setDizhuFlag:function(data){
+        var render = this.playermysql.getComponent("PlayerRender") ;
+        render.setDizhuFlag(data);
     },
     lasttakecards:function(game , self , cardsnum ,lastcards , data){
         if(this.result){
@@ -198,7 +201,7 @@ cc.Class({
             this.beimitimer.stoptimer(this , this.timer , this.timesrc);
         }
         for(var i=0 ; i<this.cardslist.length ; i++){
-            game.pokerpool.put(this.cardslist[i]) ;//回收回去
+            this.pokerpool.put(this.cardslist[i]) ;//回收回去
         }
         this.cardslist.splice(0,this.cardslist.length) ;//删除数组里的所有内容
         if (data.donot == false) {    //选择出牌或默认出牌
@@ -318,6 +321,24 @@ cc.Class({
         var inx = this.selectedcards.indexOf(card);
         if(inx >= 0){
             this.selectedcards.splice(inx , inx+1) ;
+        }
+    },
+    clean:function(context){
+        if(this.catchbtn){
+            this.catchbtn.active = false;
+        }
+        if(this.lastcards){
+            this.lastcards.active = false ;
+        }
+        if(this.operesult){
+            this.operesult.active = false ;
+        }
+        var render = this.playermysql.getComponent("PlayerRender") ;
+        render.clean(context) ;
+    },
+    restart:function(){
+        for(i=0 ; i<2 ; i++){
+            this.playerspool.put(cc.instantiate(this.player)); // 创建节点
         }
     }
 

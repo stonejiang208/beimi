@@ -45,34 +45,36 @@ cc.Class({
 
     // use this for initialization
     onLoad: function () {
-        this.routes = {} ;
         this.player = new Array() ;     //存放玩家数据
         this.pokercards = new Array();
         this.lastcards = new Array();
         this.lastCardsPanel.active = false ;
         this.summarypage = null ;
+        this.inited = false ;
+
+        if(cc.beimi!=null && cc.beimi.gamestatus!=null && cc.beimi.gamestatus == "playing"){
+            //恢复数据
+            this.recovery() ;
+        }
     },
     begin:function(){
         this.gamebtn.active = false ;
         this.initgame(false);
-        this.waittimer = cc.instantiate(this.waitting);
-        this.waittimer.parent = this.root();
 
-        let timer = this.waittimer.getComponent("BeiMiTimer");
-        if(timer){
-            timer.init("正在匹配玩家" , 5 , this.waittimer);
-        }
+        this.statictimer("正在匹配玩家" , 5) ;
     },
     opendeal:function(){
         this.gamebtn.active = false ;
         this.initgame(false);
-        this.waittimer = cc.instantiate(this.waitting);
-        this.waittimer.parent = this.root();
 
-        let timer = this.waittimer.getComponent("BeiMiTimer");
-        if(timer){
-            timer.init("正在匹配玩家" , 5 , this.waittimer);
-        }
+        this.statictimer("正在匹配玩家" , 5) ;
+
+    },
+    recovery:function(){
+        this.gamebtn.active = false ;
+        this.initgame(false);
+
+        this.statictimer("正在恢复数据，请稍候" , 5) ;
     },
     initgame:function(opendeal){
         let self = this ;
@@ -95,24 +97,32 @@ cc.Class({
             this.map("catchresult" , this.catchresult_event) ;      //最终抢到地主的玩家
             this.map("lasthands" , this.lasthands_event) ;            //翻底牌
             this.map("takecards" , this.takecards_event) ;            //出牌信息
-            this.map("bomb" , this.bomb_event) ;                      //有炸
+            this.map("ratio" , this.ratio_event) ;                      //有炸
             this.map("play" , this.play_event) ;                      //接受玩家列表
             this.map("allcards" , this.allcards_event) ;              //我出的牌
 
+            this.map("recovery" , this.recovery_event) ;              //恢复牌局数据
+
             socket.on("command" , function(result){
-                var data = self.parse(result) ;
-                self.route(data.command)(data , self);
+                cc.beimi.gamestatus = "playing" ;
+                if(self.inited == true){
+                    var data = self.parse(result) ;
+                    self.route(data.command)(data , self);
+                }
             });
             /**
              * 接受传送的 玩家列表（含AI）
              */
             socket.on("players" , function(result){
-                var data = self.parse(result) ;
-                /**
-                 * 处理 Players
-                 */
-                self.route("players")(data, self);
+                if(self.inited == true) {
+                    var data = self.parse(result);
+                    /**
+                     * 处理 Players
+                     */
+                    self.route("players")(data, self);
+                }
             });
+            this.inited = true ;
         }
 
     },
@@ -188,14 +198,89 @@ cc.Class({
         }
     },
     /**
+     * 接收到服务端的 恢复牌局的数据 恢复牌局
+     * @param data
+     * @param context
+     */
+    recovery_event:function(data,context){
+        var mycards = context.decode(data.player.cards);
+        if(context.waittimer != null){
+            let timer = context.waittimer.getComponent("BeiMiTimer");
+            if(timer){
+                timer.stop(context.waittimer) ;
+            }
+        }
+        context.doLastCards(context.game , context , 3 , 0);
+        for(var inx =0 ; inx  < mycards.length ; inx++){
+            let pokencard = context.playcards(context.game , context, inx * 50-300 , mycards[inx]);
+            context.registerProxy(pokencard);
+        }
+        /**
+         * 赋值，解码牌面
+         */
+        for(var i=0 ; i<context.pokercards.length ; i++){
+            var pokencard = context.pokercards[i];
+            pokencard.getComponent("BeiMiCard").order();
+        }
+        context.lastCardsPanel.active = true ;
+
+        if(data.lasthands){
+            var lasthands = context.decode(data.lasthands);
+            /**
+             * 底牌 ， 顶部的 三张底牌显示区域
+             */
+            for(var i=0 ; i<context.lastcards.length ; i++){
+                var last = context.lastcards[i].getComponent("BeiMiCard") ;
+                last.setCard(lasthands[i]);
+                last.order();
+            }
+            /**
+             * 设置地主标志
+             */
+            if(data.banker == cc.beimi.user.id){
+                context.game.lasthands(context , context.game , data.data ) ;
+            }else{
+                context.getPlayer(data.banker).setDizhuFlag(data.data);
+            }
+        }
+        /**
+         * 恢复最后出的牌
+         */
+        if(data.last != null){
+            let lastcards = context.decode(data.last.cards);        //解析牌型
+            if (data.last.userid == cc.beimi.user.id) {
+                context.game.lasttakecards(context.game, context, data.last.cardsnum, lastcards , data.last);
+            } else {
+                context.getPlayer(data.last.userid).lasttakecards(context.game, context, data.last.cardsnum, lastcards , data.last);
+            }
+
+            if (data.nextplayer  == cc.beimi.user.id) {
+                context.game.playtimer(context.game, 25 , data.automic);
+            } else {
+                context.getPlayer(data.nextplayer).playtimer(context.game, 25);
+            }
+        }
+        if(data.cardsnum!=null && data.cardsnum.length > 0){
+            for(var i =0 ; i<data.cardsnum.length ; i++){
+                context.getPlayer(data.cardsnum[i].userid).resetcards(data.cardsnum[i].cardsnum);
+            }
+        }
+    },
+    /**
      * 有玩家出炸
      * @param data
      * @param context
      */
-    bomb_event:function(data,context){
+    ratio_event:function(data,context){
         /**
          * 修改倍率
          */
+
+        if(data.king == true){
+            //王炸，播放音效
+        }else if(data.bomb == true){
+            //普通炸弹，播放音效
+        }
         if(context.ratio){
             context.ratio.string = data.ratio+"倍" ;
         }
@@ -287,10 +372,12 @@ cc.Class({
             }
 
             context.game.selectedcards.splice(0 ,context.game.selectedcards.length );//清空
-            if (data.nextplayer == cc.beimi.user.id) {
-                context.game.playtimer(context.game, 25 , data.automic);
-            } else {
-                context.getPlayer(data.nextplayer).playtimer(context.game, 25);
+            if(data.over == false){
+                if (data.nextplayer == cc.beimi.user.id) {
+                    context.game.playtimer(context.game, 25 , data.automic);
+                } else {
+                    context.getPlayer(data.nextplayer).playtimer(context.game, 25);
+                }
             }
         }else{//出牌不符合规则，需要进行提示
             context.game.notallow.active = true ;
@@ -305,6 +392,11 @@ cc.Class({
      * @param context
      */
     play_event:function(data,context){
+        /**
+         * 增加了全局变量，gamestatus , 用于控制当前玩家退出后恢复数据
+         * @type {string}
+         */
+        cc.beimi.gamestatus = "playing" ;
         var mycards = context.decode(data.player.cards);
         if(context.waittimer){
             let timer = context.waittimer.getComponent("BeiMiTimer");
@@ -367,6 +459,11 @@ cc.Class({
      * @param context
      */
     allcards_event:function(data , context){
+        /**
+         * 全局变量控制，用于恢复数据
+         * @type {string}
+         */
+        cc.beimi.gamestatus = "notready" ;
         //结算界面，
         let player ;
         for(var i=0 ; i<data.players.length ; i++){
@@ -376,6 +473,9 @@ cc.Class({
                 var tempscript = context.getPlayer(temp.userid) ;
                 for(var inx = 0 ; inx < cards.length ; inx++) {
                     //tempscript.lasttakecards(context.game, context, cards.length, cards, data);
+                    /**
+                     * 最后牌局结束以后，显示所有玩家的手牌
+                     */
                 }
             }else{
                 player = temp  ;
@@ -384,15 +484,24 @@ cc.Class({
         setTimeout(function(){
             if(player!=null){
                 if(player.win == true){
-                    this.summarypage = cc.instantiate(context.summary_win) ;
+                    context.summarypage = cc.instantiate(context.summary_win) ;
                 }else{
-                    this.summarypage = cc.instantiate(context.summary) ;
+                    context.summarypage = cc.instantiate(context.summary) ;
                 }
-                this.summarypage.parent = context.root() ;
-                let temp = this.summarypage.getComponent("SummaryDetail") ;
-                temp.create(data);
+                context.summarypage.parent = context.root() ;
+                let temp = context.summarypage.getComponent("SummaryDetail") ;
+                temp.create(context , data);
+            }
+            if(data.gameRoomOver == true){//房间解散
+                for(var inx = 0 ; inx<context.player.length ; inx++){
+                    context.player[inx].destroy();
+                }
+                context.player.splice(0 , context.player.length) ;//房间解散，释放资源
+                context.player = new Array();
+                context.clean();
             }
         } , 2000);
+
     },
     getPlayer:function(userid){
         var tempRender;
@@ -443,9 +552,7 @@ cc.Class({
         let currpoker = game.pokerpool.get() ;
         var beiMiCard = currpoker.getComponent("BeiMiCard") ;
         beiMiCard.setCard(card) ;
-
         currpoker.card = card ;
-
 
         currpoker.parent = self.poker ;
         currpoker.setPosition(0,200);
@@ -481,7 +588,7 @@ cc.Class({
         var beiMiCard = currpoker.getComponent("BeiMiCard") ;
         beiMiCard.setCard(card) ;
         currpoker.card = card ;
-        currpoker.parent = self.root() ;
+        currpoker.parent = self.poker ;
         currpoker.setPosition(0,200);
 
         currpoker.setScale(1,1);
@@ -565,5 +672,45 @@ cc.Class({
             let socket = this.socket();
             socket.emit("nocards");
         }
+    },
+    clean:function(){
+        for(var inx = 0 ; inx<this.pokercards.length ; inx++){
+            let pc = this.pokercards[inx] ;
+            this.game.pokerpool.put(pc) ;//回收回去
+        }
+        for(var i=0 ; i<this.lastcards.length ; i++){
+            this.game.minpokerpool.put(this.lastcards[i]);
+        }
+
+        for(var i = 0 ; i < this.player.length ; i++){
+            var player = this.player[i].getComponent("PlayerRender") ;
+            player.clean(this.game);
+        }
+
+        this.game.clean(this);
+        this.ratio.string = "15倍" ;
+    },
+    restart:function(command){
+        this.game.restart();
+        /**
+         * 系统资源回收完毕，发送一个 重新开启游戏的 通知
+         */
+        if(this.ready()){
+            let socket = this.socket();
+            socket.emit("restart" , command);
+        }
+        this.statictimer("正在匹配玩家" , 5) ;
+    },
+    statictimer:function(message , time){
+        this.waittimer = cc.instantiate(this.waitting);
+        this.waittimer.parent = this.root();
+
+        let timer = this.waittimer.getComponent("BeiMiTimer");
+        if(timer){
+            timer.init(message , time , this.waittimer);
+        }
+    },
+    onDestroy:function(){
+        this.inited = false ;
     }
 });

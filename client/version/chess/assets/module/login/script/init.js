@@ -47,9 +47,15 @@ cc.Class({
     },
     initMgr:function(){
         if(cc.beimi == null){
+            /**
+             * 增加了游戏全局变量控制，增加了 cc.beimi.gamestatus 参数，可选值：ready|notready|playing
+             * @type {{}}
+             */
             cc.beimi = {};
+            cc.routes = {} ;
             cc.beimi.http = require("HTTP");
             cc.beimi.seckey = "beimi";
+            cc.beimi.gamestatus = "none" ;
 
             cc.beimi.dialog = null ;
 

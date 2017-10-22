@@ -146,10 +146,12 @@ cc.Class({
         return socket ;
     },
     map:function(command, callback){
-        this.routes[command] = callback || function(){};
+        if(cc.routes[command] == null){
+            cc.routes[command] = callback || function(){};
+        }
     },
     route:function(command){
-        return this.routes[command] || function(){};
+        return cc.routes[command] || function(){};
     }
 
     // called every frame, uncomment this function to activate update callback

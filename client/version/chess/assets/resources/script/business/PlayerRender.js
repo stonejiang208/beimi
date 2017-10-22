@@ -129,7 +129,9 @@ cc.Class({
     },
     resetcards:function(cards){
         this.cardcount = cards ;
-        this.pokercards.string = this.cardcount ;
+        if(this.pokercards != null){
+            this.pokercards.string = this.cardcount ;
+        }
     },
     catchtimer:function(times){
         if(this.jsq){
@@ -236,7 +238,7 @@ cc.Class({
         }
         if(this.cardslist.length > 0){
             for (var i = 0; i < this.cardslist.length; i++) {
-                game.pokerpool.put(this.cardslist[i]);//回收回去
+                game.minpokerpool.put(this.cardslist[i]);//回收回去
             }
             this.cardslist.splice(0, this.cardslist.length);//删除数组里的所有内容
         }
@@ -311,6 +313,31 @@ cc.Class({
         var gameTimer = require("GameTimer");
         this.beimitimer = new gameTimer();
         this.timesrc = this.beimitimer.runtimer(this , this.jsq , this.atlas , this.timer_num , this.timer_num , times);
+    },
+    clean:function(game){
+        for (var i = 0; i < this.cardslist.length; i++) {
+            game.minpokerpool.put(this.cardslist[i]);//回收回去
+        }
+        this.resetcards(0) ;
+
+        if(this.dizhu){
+            this.dizhu.active = false ;
+        }
+        if(this.jsq){
+            this.jsq.active = false ;
+        }
+        if(this.result){
+            this.result.active = false ;
+        }
+        if(this.cannot){
+            this.cannot.active = false ;
+        }
+        if(this.donot){
+            this.donot.active = false ;
+        }
+        if(this.takecards){
+            this.takecards.active = false ;
+        }
     }
     // called every frame, uncomment this function to activate update callback
     // update: function (dt) {

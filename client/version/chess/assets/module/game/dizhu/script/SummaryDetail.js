@@ -12,6 +12,10 @@ cc.Class({
         //    readonly: false,    // optional, default is false
         // },
         // ...
+        workitem:{
+            default: null,
+            type: cc.Node
+        },
         myscore:{   //底牌
             default: null,
             type: cc.Label
@@ -56,10 +60,73 @@ cc.Class({
 
     // use this for initialization
     onLoad: function () {
-
+        let self = this ;
+        /**
+         * SummaryClick发射的事件，方便统一处理 / 开始
+         */
+        this.workitem.on("begin",function(event){
+            if(self.context !=null){
+                self.context.summarypage.destroy();
+                /**
+                 * 恢复桌面
+                 */
+                self.context.restart("begin");
+            }
+            event.stopPropagation();
+        });
+        /**
+         * SummaryClick发射的事件，方便统一处理 / 明牌开始
+         */
+        this.workitem.on("opendeal",function(event){
+            if(self.context !=null){
+                self.context.summarypage.destroy();
+                /**
+                 * 恢复桌面，然后发送消息给服务端
+                 */
+                self.context.restart("opendeal");
+            }
+            event.stopPropagation();
+        });
     },
-    create:function(data){
+    create:function(context , data){
+        this.context = context ;
+        var index = 0 ;
+        for(var inx = 0 ; inx < data.players.length ; inx++){
+            var player = data.players[inx] ;
+            if(player.userid == cc.beimi.user.id){//
+                this.process(player , null  , this.myscore, this.myflag) ;
+            }else{
+                if(index == 0){
+                    this.process(player ,this.player_1_name  , this.player_1_score , this.player_1_flag ) ;
+                }else if(index == 1){
+                    this.process(player ,this.player_2_name  , this.player_2_score , this.player_2_flag ) ;
+                }
+                index = index + 1 ;
+            }
+        }
+    },
+    /**
+     * 显示已经处理完毕的结算信息
+     * @param player
+     * @param username
+     * @param score
+     * @param flag
+     */
+    process:function(player , username , score , flag){
+        if(username != null){
+            username.string = player.username ;
+        }
+        if(player.win == true){
+            score.string = player.score ;
+        }else{
+            score.string = "-"+player.score ;
+        }
 
+        if(player.dizhu == true){
+            flag.active = true ;
+        }else{
+            flag.active = false ;
+        }
     }
 
     // called every frame, uncomment this function to activate update callback

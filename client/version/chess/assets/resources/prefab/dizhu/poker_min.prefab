@@ -28,11 +28,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 34
+        "__id__": 33
       }
     ],
     "_prefab": {
-      "__id__": 35
+      "__id__": 34
     },
     "_id": "",
     "_opacity": 255,
@@ -447,7 +447,7 @@
       }
     ],
     "_prefab": {
-      "__id__": 33
+      "__id__": 32
     },
     "_id": "",
     "_opacity": 255,
@@ -1028,11 +1028,7 @@
     "zoomScale": 1.2,
     "pressedSprite": null,
     "hoverSprite": null,
-    "clickEvents": [
-      {
-        "__id__": 32
-      }
-    ],
+    "clickEvents": [],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
     "_N$normalColor": {
@@ -1054,13 +1050,6 @@
     "_N$target": {
       "__id__": 13
     }
-  },
-  {
-    "__type__": "cc.ClickEvent",
-    "target": null,
-    "component": "PlayPoker",
-    "handler": "takecard",
-    "customEventData": ""
   },
   {
     "__type__": "cc.PrefabInfo",
