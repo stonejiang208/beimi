@@ -62,6 +62,8 @@ cc.Class({
     },
     setCard:function(card){
         this.card = card ;
+        this.normal.y = 0;
+        this.normal.active = false;
     },
     unselected:function(){
         if(this.selected){
@@ -119,8 +121,12 @@ cc.Class({
             this.kingbg.active = true ;
             this.kingbg.y = 0 ;
         }
-
+    },
+    reset:function(){
+        this.normal.y = 0;
+        this.normal.active = false;
     }
+
 
     // called every frame, uncomment this function to activate update callback
     // update: function (dt) {
