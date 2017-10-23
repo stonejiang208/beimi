@@ -111,6 +111,12 @@ cc.Class({
                 }
             });
             /**
+             * 心跳检查，服务端发起的事件，服务端可以设置 PING的时长和 PING的 TimeOut
+             */
+            socket.on("ping" , function(){
+
+            });
+            /**
              * 接受传送的 玩家列表（含AI）
              */
             socket.on("players" , function(result){
@@ -210,6 +216,11 @@ cc.Class({
                 timer.stop(context.waittimer) ;
             }
         }
+
+        if(context.ratio){
+            context.ratio.string = data.ratio+"倍" ;
+        }
+        
         context.doLastCards(context.game , context , 3 , 0);
         for(var inx =0 ; inx  < mycards.length ; inx++){
             let pokencard = context.playcards(context.game , context, inx * 50-300 , mycards[inx]);
