@@ -205,7 +205,7 @@ public class ActionTaskUtils {
 			if(cards[i] > cardTypeBean.getMaxcardvalue()){
 				cardTypeBean.setMaxcardvalue(cards[i]);
 			}
-			if(mincard < 0 || mincard < card){
+			if(mincard < 0 || mincard > card){
 				mincard = card ;
 			}
 		}
@@ -213,6 +213,7 @@ public class ActionTaskUtils {
 		cardTypeBean.setMincard(mincard);
 		cardTypeBean.setTypesize(types.size());
 		cardTypeBean.setMaxcard(maxcard);
+		
 		
 		switch(types.size()){
 			case 1 : 
@@ -246,19 +247,19 @@ public class ActionTaskUtils {
 				};break ;
 			case 5 : 
 				switch(max){
-					case 1 : if(isAva(types ,maxcard)){cardtype = BMDataContext.CardsTypeEnum.FIVE.getType() ;}break;		//连子
+					case 1 : if(isAva(types ,mincard)){cardtype = BMDataContext.CardsTypeEnum.FIVE.getType() ;}break;		//连子
 					case 2 : if(cards.length == 10){cardtype = BMDataContext.CardsTypeEnum.SIX.getType() ;}break;		//5连对
 					case 3 : cardtype = BMDataContext.CardsTypeEnum.SEVEN.getType() ;break;		//5飞机
 				};break ;
 			case 6 : 
 				switch(max){
-					case 1 : if(isAva(types ,maxcard)){cardtype = BMDataContext.CardsTypeEnum.FIVE.getType() ;}break;		//连子
+					case 1 : if(isAva(types ,mincard)){cardtype = BMDataContext.CardsTypeEnum.FIVE.getType() ;}break;		//连子
 					case 2 : if(cards.length == 12){cardtype = BMDataContext.CardsTypeEnum.SIX.getType() ;}break;		//6连对
 					case 3 : cardtype = BMDataContext.CardsTypeEnum.SEVEN.getType() ;break;		//6飞机
 				};break ;
 			default: 
 				switch(max){
-					case 1 : if(isAva(types ,maxcard)){cardtype = BMDataContext.CardsTypeEnum.FIVE.getType() ;}break;		//连子
+					case 1 : if(isAva(types ,mincard)){cardtype = BMDataContext.CardsTypeEnum.FIVE.getType() ;}break;		//连子
 					case 2 : cardtype = BMDataContext.CardsTypeEnum.SIX.getType() ;break;		//连对
 				};break ;
 		}
@@ -268,9 +269,9 @@ public class ActionTaskUtils {
 		return cardTypeBean ;
 	}
 	
-	private static boolean isAva(Map<Integer,Integer> types , int maxcard){
+	private static boolean isAva(Map<Integer,Integer> types , int mincard){
 		boolean ava = true ;
-		for(int i=maxcard ; i>(maxcard - types.size())  ; i--){
+		for(int i=mincard ; i<(mincard + types.size())  ; i++){
 			if(types.get(i) == null){
 				ava = false  ;
 			}
