@@ -37,6 +37,17 @@ cc.Class({
             cc.beimi.socket = null ;
         }
         cc.beimi.socket = window.io.connect(cc.beimi.http.wsURL + '/bm/game');
+        var param = {
+            token:cc.beimi.authorization,
+            orgi:cc.beimi.user.orgi
+        } ;
+        cc.beimi.socket.emit("gamestatus" , JSON.stringify(param));
+        cc.beimi.socket.on("gamestatus" , function(result){
+            if(result!=null) {
+                cc.beimi.gamestatus = result.gamestatus;
+                console.log(result);
+            }
+        });
         return cc.beimi.socket ;
     },
     disconnect:function(){

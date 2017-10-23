@@ -58,27 +58,24 @@ cc.Class({
         }
     },
     begin:function(){
-        this.gamebtn.active = false ;
         this.initgame(false);
 
         this.statictimer("正在匹配玩家" , 5) ;
     },
     opendeal:function(){
-        this.gamebtn.active = false ;
         this.initgame(false);
 
         this.statictimer("正在匹配玩家" , 5) ;
 
     },
     recovery:function(){
-        this.gamebtn.active = false ;
         this.initgame(false);
 
         this.statictimer("正在恢复数据，请稍候" , 5) ;
     },
     initgame:function(opendeal){
         let self = this ;
-
+        this.gamebtn.active = false ;
         if(this.ready()) {
             let socket = this.socket();
 
@@ -158,26 +155,41 @@ cc.Class({
         }
     },
     /**
-     * 接收到服务端的 推送的 玩家数据，根据玩家数据 恢复牌局
+     * 接收到服务端的 推送的 玩家数据，根据玩家数据 恢复牌局 , 玩家座位排列方式 ， 和麻将统一， 都是东南西北方式 排列
+     * 0是首位玩家
+     * 1是右侧玩家
+     * 2是左侧玩家
+     * 麻将还有一个对家
      * @param data
      * @param context
      */
     players_event:function(data,context){
-        if(data.length > 1){
-            var inx = 0 ;
-            for(i = 0 ; i<data.length ; i++){
-                var player = data[i] ;
-                var inroom = false ;
-                for(var j = 0 ; j < context.player.length ; j++){
-                    if(context.player[j].id == player.id){
-                        inroom = true ;
-                    }
-                }
-                if(inroom == false && player.id !== cc.beimi.user.id){
-                    context.newplayer(context.player.length , context , player) ;
-                }
+        var inx = -1 ;
+        for(var i = 0 ; i<data.length ; i++){
+            if(data[i].id == cc.beimi.user.id){
+                inx = i ; break ;
             }
         }
+        if(data.length > 1 && inx >=0){
+            var pos = inx+1 ;
+            while(true){
+                if(pos == data.length){pos = 0 ;}
+                if(context.playerexist(data[pos], context) == false){
+                    context.newplayer(context.player.length , context , data[pos]) ;
+                }
+                if(pos == inx){break ;}
+                pos = pos + 1;
+            }
+        }
+    },
+    playerexist:function(player,context){
+        var inroom = false ;
+        for(var j = 0 ; j < context.player.length ; j++){
+            if(context.player[j].id == player.id){
+                inroom = true ; break ;
+            }
+        }
+        return inroom ;
     },
     /**
      * 接收到服务端的 推送的 玩家数据，根据玩家数据 恢复牌局
@@ -220,7 +232,7 @@ cc.Class({
         if(context.ratio){
             context.ratio.string = data.ratio+"倍" ;
         }
-        
+
         context.doLastCards(context.game , context , 3 , 0);
         for(var inx =0 ; inx  < mycards.length ; inx++){
             let pokencard = context.playcards(context.game , context, inx * 50-300 , mycards[inx]);
