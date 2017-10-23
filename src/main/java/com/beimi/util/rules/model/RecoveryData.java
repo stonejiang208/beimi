@@ -18,6 +18,7 @@ public class RecoveryData implements Message{
 	private int time ;		//计时器剩余时间
 	private boolean automic ;	//本轮第一个出牌，不允许出现不出按钮
 	private GameBoard data ;
+	private int ratio ;
 	
 	
 	public RecoveryData(Player player , byte[] lasthands , String nextplayer , int time , boolean automic , Board board){
@@ -28,6 +29,8 @@ public class RecoveryData implements Message{
 		this.time = time ;
 		this.automic = automic;
 		this.data = new GameBoard(board.getBanker(), board.getRatio()) ;
+		
+		this.ratio = board.getRatio() ;
 		
 		this.last = board.getLast() ;
 		this.banker = board.getBanker();
@@ -128,6 +131,16 @@ public class RecoveryData implements Message{
 
 	public void setData(GameBoard data) {
 		this.data = data;
+	}
+
+
+	public int getRatio() {
+		return ratio;
+	}
+
+
+	public void setRatio(int ratio) {
+		this.ratio = ratio;
 	}
 	
 }

@@ -203,19 +203,6 @@ public class GameEventHandler
 		}
     }
     
-    //心跳事件 ， 按照C->S方向发送，服务端和客户端都记录最后一次时间，超过5S未请求或响应，即为超时
-    @OnEvent(value = "heartbeat")   
-    public void onHeartbeat(SocketIOClient client , String data)  
-    {  
-    	BeiMiClient beiMiClient = NettyClients.getInstance().getClient(client.getSessionId().toString()) ;
-    	/**
-    	 * 心跳事件
-    	 */
-    	beiMiClient.setTime(System.currentTimeMillis());
-    	NettyClients.getInstance().putClient(beiMiClient.getUserid(), beiMiClient);
-    	client.sendEvent("heartbeat");
-    }
-    
   //抢地主事件
     @OnEvent(value = "restart")   
     public void onRestart(SocketIOClient client , String data)  

@@ -74,7 +74,6 @@ public class GameEngine {
 						automic = true ;
 					}
 					ActionTaskUtils.sendEvent("recovery", new RecoveryData(currentPlayer , board.getLasthands() , board.getNextplayer() , 25 , automic , board) , gameEvent.getGameRoom());
-					ActionTaskUtils.sendEvent("ratio", new BoardRatio(board.getRatio()), gameEvent.getGameRoom());
 				}
 			}else{
 				//通知状态
