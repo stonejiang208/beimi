@@ -246,19 +246,19 @@ public class ActionTaskUtils {
 				};break ;
 			case 5 : 
 				switch(max){
-					case 1 : cardtype = BMDataContext.CardsTypeEnum.FIVE.getType() ;break;		//连子
+					case 1 : if(isAva(types ,maxcard)){cardtype = BMDataContext.CardsTypeEnum.FIVE.getType() ;}break;		//连子
 					case 2 : if(cards.length == 10){cardtype = BMDataContext.CardsTypeEnum.SIX.getType() ;}break;		//5连对
 					case 3 : cardtype = BMDataContext.CardsTypeEnum.SEVEN.getType() ;break;		//5飞机
 				};break ;
 			case 6 : 
 				switch(max){
-					case 1 : cardtype = BMDataContext.CardsTypeEnum.FIVE.getType() ;break;		//连子
+					case 1 : if(isAva(types ,maxcard)){cardtype = BMDataContext.CardsTypeEnum.FIVE.getType() ;}break;		//连子
 					case 2 : if(cards.length == 12){cardtype = BMDataContext.CardsTypeEnum.SIX.getType() ;}break;		//6连对
 					case 3 : cardtype = BMDataContext.CardsTypeEnum.SEVEN.getType() ;break;		//6飞机
 				};break ;
 			default: 
 				switch(max){
-					case 1 : cardtype = BMDataContext.CardsTypeEnum.FIVE.getType() ;break;		//连子
+					case 1 : if(isAva(types ,maxcard)){cardtype = BMDataContext.CardsTypeEnum.FIVE.getType() ;}break;		//连子
 					case 2 : cardtype = BMDataContext.CardsTypeEnum.SIX.getType() ;break;		//连对
 				};break ;
 		}
@@ -266,5 +266,15 @@ public class ActionTaskUtils {
 		cardTypeBean.setKing(cardtype == BMDataContext.CardsTypeEnum.ELEVEN.getType());
 		cardTypeBean.setBomb(cardtype == BMDataContext.CardsTypeEnum.TEN.getType());
 		return cardTypeBean ;
+	}
+	
+	private static boolean isAva(Map<Integer,Integer> types , int maxcard){
+		boolean ava = true ;
+		for(int i=maxcard ; i>(maxcard - types.size())  ; i--){
+			if(types.get(i) == null){
+				ava = false  ;
+			}
+		}
+		return ava ;
 	}
 }
