@@ -148,15 +148,19 @@ public class ActionTaskUtils {
 				if(playCardType.getMaxcard() > lastCardType.getMaxcard()){
 					allow = true ;
 				}
+			}else if(lastCardType.isKing()){
+				allow = false ;
 			}else{
 				allow = true ;
 			}
 		}else if(lastCardType.isBomb()){	//最后一手牌是炸弹 ， 当前出牌不是炸弹
-			
-		}else if(playCardType.getMaxcard() > lastCardType.getMaxcard() && playCardType.getCardtype()>0 && lastCardType.getCardtype() > 0){
-			allow = true ;
-		}else if(playCardType.getMaxcardvalue() == 53 && playCardType.getCardtype()>0 && lastCardType.getCardtype() > 0 && playCardType.getCardtype() == lastCardType.getCardtype()){
-			allow = true ;
+			allow = false ;
+		}else if(playCardType.getCardtype() == lastCardType.getCardtype() && playCardType.getCardtype()>0 && lastCardType.getCardtype() > 0){
+			if(playCardType.getMaxcard() > lastCardType.getMaxcard()){
+				allow = true ;
+			}else if(playCardType.getMaxcardvalue() == 53){
+				allow = true ;
+			}
 		}
 		return allow ;
 	}
