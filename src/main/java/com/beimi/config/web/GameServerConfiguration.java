@@ -56,6 +56,7 @@ public class GameServerConfiguration
 //		config.setOrigin("http://im.uckefu.com");
 		config.setExceptionListener(new BeiMiExceptionListener());
 		
+		
 		File sslFile = new File(path , "ssl/https.properties") ;
         if(sslFile.exists()){
         	Properties sslProperties = new Properties();
@@ -73,6 +74,7 @@ public class GameServerConfiguration
 //	    config.setSSLProtocol("https");
 		int workThreads = !StringUtils.isBlank(threads) && threads.matches("[\\d]{1,6}") ? Integer.parseInt(threads) : 100 ;
 		config.setWorkerThreads(workThreads);
+
 //		config.setStoreFactory(new HazelcastStoreFactory());
 		config.setAuthorizationListener(new AuthorizationListener() {
 			public boolean isAuthorized(HandshakeData data) {
@@ -82,6 +84,7 @@ public class GameServerConfiguration
 		/**
 		 * 性能优化
 		 */
+		config.setPingInterval(5000);
 		config.getSocketConfig().setReuseAddress(true);
 		config.getSocketConfig().setSoLinger(0);
 		config.getSocketConfig().setTcpNoDelay(true);

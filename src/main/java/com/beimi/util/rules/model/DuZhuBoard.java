@@ -235,7 +235,7 @@ public class DuZhuBoard extends Board implements java.io.Serializable{
 			/**
 			 * 放到 Board的列表里去，如果是不洗牌玩法，则直接将出牌结果 重新发牌
 			 */
-			if(takeCards.getCards().length > 0){
+			if(takeCards.getCards()!=null && takeCards.getCards().length > 0){
 				for(byte temp : takeCards.getCards()){
 					board.getHistory().add(temp) ;
 				}
