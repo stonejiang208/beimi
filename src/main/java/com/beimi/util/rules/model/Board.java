@@ -1,5 +1,6 @@
 package com.beimi.util.rules.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.beimi.core.engine.game.Message;
@@ -123,6 +124,8 @@ public abstract class Board implements Message,java.io.Serializable {
 	private TakeCards last;
 	
 	private boolean finished ;
+	
+	private List<Byte> history = new ArrayList<Byte>();
 	
 	private String winner ;		//赢的玩家
 	
@@ -311,5 +314,13 @@ public abstract class Board implements Message,java.io.Serializable {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public List<Byte> getHistory() {
+		return history;
+	}
+
+	public void setHistory(List<Byte> history) {
+		this.history = history;
 	}
 }

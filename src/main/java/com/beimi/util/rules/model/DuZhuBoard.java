@@ -232,6 +232,15 @@ public class DuZhuBoard extends Board implements java.io.Serializable{
 				board.setWinner(player.getPlayuser());
 				takeCards.setOver(true);
 			}
+			/**
+			 * 放到 Board的列表里去，如果是不洗牌玩法，则直接将出牌结果 重新发牌
+			 */
+			if(takeCards.getCards().length > 0){
+				for(byte temp : takeCards.getCards()){
+					board.getHistory().add(temp) ;
+				}
+			}
+			
 			CacheHelper.getBoardCacheBean().put(gameRoom.getId(), board, gameRoom.getOrgi());
 			/**
 			 * 判断下当前玩家是不是和最后一手牌 是一伙的，如果是一伙的，手机端提示 就是 不要， 如果不是一伙的，就提示要不起

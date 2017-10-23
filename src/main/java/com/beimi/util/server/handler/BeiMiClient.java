@@ -8,6 +8,8 @@ public class BeiMiClient{
 	private String orgi ;
 	private String room ;
 	
+	private long time ;
+	
 	private String userid ;
 	
 	private String session ;
@@ -73,5 +75,13 @@ public class BeiMiClient{
 	}
 	public void setUserid(String userid) {
 		this.userid = userid;
+	}
+
+	public long getTime() {
+		return time;
+	}
+
+	public void setTime(long time) {
+		this.time = time;
 	}
 }
