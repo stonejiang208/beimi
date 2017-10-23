@@ -340,6 +340,19 @@ cc.Class({
         for(i=0 ; i<2 ; i++){
             this.playerspool.put(cc.instantiate(this.player)); // 创建节点
         }
+
+        /**
+         * 费劲巴拉的收集起来，然后又给销毁了，浪费资源！！！
+         */
+        this.pokerpool.clear();
+        this.minpokerpool.clear();
+
+        for(var inx =0 ; inx<25 ; inx++){
+            this.pokerpool.put(cc.instantiate(this.poker));     //牌-背面
+        }
+        for(var inx=0 ; inx<60 ; inx++){
+            this.minpokerpool.put(cc.instantiate(this.poker_min));     //牌-背面
+        }
     }
 
     // called every frame, uncomment this function to activate update callback

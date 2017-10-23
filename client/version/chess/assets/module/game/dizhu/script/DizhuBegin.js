@@ -678,14 +678,18 @@ cc.Class({
             let pc = this.pokercards[inx] ;
             this.game.pokerpool.put(pc) ;//回收回去
         }
+        this.pokercards.splice(0 , this.pokercards.length ) ;
         for(var i=0 ; i<this.lastcards.length ; i++){
             this.game.minpokerpool.put(this.lastcards[i]);
         }
+
+        this.lastcards.splice( 0 , this.lastcards.length) ;
 
         for(var i = 0 ; i < this.player.length ; i++){
             var player = this.player[i].getComponent("PlayerRender") ;
             player.clean(this.game);
         }
+        this.player.splice(0 , this.player.length) ;
 
         this.game.clean(this);
         this.ratio.string = "15倍" ;
