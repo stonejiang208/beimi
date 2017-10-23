@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alibaba.fastjson.JSON;
 import com.beimi.core.BMDataContext;
+import com.beimi.core.engine.game.ActionTaskUtils;
 import com.beimi.util.UKTools;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.util.client.NettyClients;
+import com.beimi.util.rules.model.GameStatus;
 import com.beimi.web.model.PlayUserClient;
 import com.beimi.web.model.Token;
 import com.beimi.web.service.repository.es.PlayUserClientESRepository;
@@ -34,26 +36,20 @@ public class GameEventHandler
     @OnConnect  
     public void onConnect(SocketIOClient client)  
     {  
+    	BeiMiClient beiMiClient = NettyClients.getInstance().getClient(client.getSessionId().toString()) ;
+		if(beiMiClient!=null && !StringUtils.isBlank(beiMiClient.getUserid())){
+			if(CacheHelper.getRoomMappingCacheBean().getCacheObject(beiMiClient.getUserid(), beiMiClient.getOrgi()) != null){
+				ActionTaskUtils.sendEvent("" , beiMiClient.getUserid(), null);
+			}
+			
+		}
     }  
     
   //添加@OnDisconnect事件，客户端断开连接时调用，刷新客户端信息  
     @OnDisconnect  
     public void onDisconnect(SocketIOClient client)  
     {  
-    	BeiMiClient beiMiClient = NettyClients.getInstance().getClient(client.getSessionId().toString()) ;
-		if(beiMiClient!=null){
-			PlayUserClient playUser = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(beiMiClient.getUserid(), beiMiClient.getOrgi()) ;
-			/**
-			 * 更新当前玩家状态，在线|离线
-			 */
-			if(playUser!=null){
-				playUser.setOnline(false);
-				UKTools.published(playUser,BMDataContext.getContext().getBean(PlayUserClientESRepository.class), BMDataContext.getContext().getBean(PlayUserClientRepository.class));
-				BMDataContext.getGameEngine().leaveRoom(playUser, beiMiClient.getOrgi());
-			}
-			
-			NettyClients.getInstance().removeClient(client.getSessionId().toString());
-		}
+    	
     }  
     
   //抢地主事件
@@ -99,6 +95,29 @@ public class GameEventHandler
 				BMDataContext.getGameEngine().gameRequest(userToken.getUserid(), beiMiClient.getPlayway(), beiMiClient.getRoom(), beiMiClient.getOrgi(), userClient , beiMiClient) ;
 			}
 		}
+    }
+    
+  //抢地主事件
+    @OnEvent(value = "gamestatus")   
+    public void onGameStatus(SocketIOClient client , String data)  
+    {  
+    	BeiMiClient beiMiClient = JSON.parseObject(data , BeiMiClient.class) ;
+    	Token userToken ;
+    	GameStatus gameStatus = new GameStatus() ;
+    	gameStatus.setGamestatus(BMDataContext.GameStatusEnum.NOTREADY.toString());
+		if(beiMiClient!=null && !StringUtils.isBlank(beiMiClient.getToken()) && (userToken = (Token) CacheHelper.getApiUserCacheBean().getCacheObject(beiMiClient.getToken(), beiMiClient.getOrgi()))!=null){
+			//鉴权完毕
+			PlayUserClient userClient = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(userToken.getUserid(), userToken.getOrgi()) ;
+			if(userClient!=null){
+				gameStatus.setGamestatus(BMDataContext.GameStatusEnum.READY.toString());
+				String roomid = (String) CacheHelper.getRoomMappingCacheBean().getCacheObject(userClient.getId(), userClient.getOrgi()) ;
+				if(!StringUtils.isBlank(roomid) && CacheHelper.getBoardCacheBean().getCacheObject(roomid, userClient.getId())!=null){
+					gameStatus.setUserid(userClient.getId());
+					gameStatus.setGamestatus(BMDataContext.GameStatusEnum.PLAYING.toString());
+				}
+			}
+		}
+		client.sendEvent(BMDataContext.BEIMI_GAMESTATUS_EVENT, gameStatus);
     }
       
     //抢地主事件

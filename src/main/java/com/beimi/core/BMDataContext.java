@@ -18,6 +18,8 @@ public class BMDataContext {
 	public static final String BEIMI_MESSAGE_EVENT = "command" ;
 	public static final String BEIMI_PLAYERS_EVENT = "players" ;
 	
+	public static final String BEIMI_GAMESTATUS_EVENT = "gamestatus" ;
+	
 	public static final String BEIMI_SYSTEM_GAME_ACCOUNT_CONFIG = "game_account_config";
 	public static final String BEIMI_GAME_PLAYWAY = "game_playway";
 	
