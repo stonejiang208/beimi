@@ -18,7 +18,6 @@ import com.beimi.util.client.NettyClients;
 import com.beimi.util.rules.model.Action;
 import com.beimi.util.rules.model.ActionEvent;
 import com.beimi.util.rules.model.Board;
-import com.beimi.util.rules.model.BoardRatio;
 import com.beimi.util.rules.model.DuZhuBoard;
 import com.beimi.util.rules.model.Player;
 import com.beimi.util.rules.model.RecoveryData;
