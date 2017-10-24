@@ -27,7 +27,7 @@ public class EnterAction<T,S> implements Action<T, S>{
 		if(!StringUtils.isBlank(room)){
 			GameRoom gameRoom = (GameRoom) CacheHelper.getGameRoomCacheBean().getCacheObject(room, BMDataContext.SYSTEM_ORGI) ; 
 			if(gameRoom!=null){
-//				CacheHelper.getExpireCache().put(gameRoom.getOrgi(), new CreateAITask(5 , gameRoom , gameRoom.getOrgi()));
+				CacheHelper.getExpireCache().put(gameRoom.getOrgi(), new CreateAITask(5 , gameRoom , gameRoom.getOrgi()));
 				
 				/**
 				 * 更新状态
