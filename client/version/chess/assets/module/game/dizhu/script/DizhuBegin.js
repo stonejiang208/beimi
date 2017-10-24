@@ -113,18 +113,7 @@ cc.Class({
             socket.on("ping" , function(){
 
             });
-            /**
-             * 接受传送的 玩家列表（含AI）
-             */
-            socket.on("players" , function(result){
-                if(self.inited == true) {
-                    var data = self.parse(result);
-                    /**
-                     * 处理 Players
-                     */
-                    self.route("players")(data, self);
-                }
-            });
+
             this.inited = true ;
         }
 
@@ -136,21 +125,22 @@ cc.Class({
      */
     joinroom_event:function(data , context){
         //显示 匹配中，并计时间，超过设定的倒计时时间即AI加入，根据当前的 玩家数量 匹配机器人
-        if(data.id && data.id == cc.beimi.user.id){
+        if(data.player.id && data.player.id == cc.beimi.user.id){
             //本人，开始计时
             //console.log("本人") ;
             //self.player[0] = data ;
+            context.index = data.index ;   //当前玩家所在位置
         }else{
             //其他玩家加入，初始化
             var inroom = false ;
             for(var i = 0 ; i < context.player.length ; i++){
                 var player = context.player[i].getComponent("PlayerRender") ;
-                if(player.userid == data.id){
+                if(player.userid == data.player.id){
                     inroom = true ;
                 }
             }
             if(inroom == false){
-                context.newplayer(context.player.length , self , data) ;
+                context.newplayer(context.player.length , context , data.player , context.index + 1 == data.index) ;
             }
         }
     },
@@ -165,17 +155,17 @@ cc.Class({
      */
     players_event:function(data,context){
         var inx = -1 ;
-        for(var i = 0 ; i<data.length ; i++){
-            if(data[i].id == cc.beimi.user.id){
+        for(var i = 0 ; i<data.player.length ; i++){
+            if(data.player[i].id == cc.beimi.user.id){
                 inx = i ; break ;
             }
         }
-        if(data.length > 1 && inx >=0){
+        if(data.player.length > 1 && inx >=0){
             var pos = inx+1 ;
             while(true){
-                if(pos == data.length){pos = 0 ;}
-                if(context.playerexist(data[pos], context) == false){
-                    context.newplayer(context.player.length , context , data[pos]) ;
+                if(pos == data.player.length){pos = 0 ;}
+                if(context.playerexist(data.player[pos], context) == false){
+                    context.newplayer(context.player.length , context , data.player[pos] , context.player.length == 0 && !(pos == 0 && data.player.length < data.maxplayers) ) ;
                 }
                 if(pos == inx){break ;}
                 pos = pos + 1;
@@ -184,9 +174,13 @@ cc.Class({
     },
     playerexist:function(player,context){
         var inroom = false ;
-        for(var j = 0 ; j < context.player.length ; j++){
-            if(context.player[j].id == player.id){
-                inroom = true ; break ;
+        if(player.id == cc.beimi.user.id){
+            inroom = true ;
+        }else{
+            for(var j = 0 ; j < context.player.length ; j++){
+                if(context.player[j].id == player.id){
+                    inroom = true ; break ;
+                }
             }
         }
         return inroom ;
@@ -629,11 +623,7 @@ cc.Class({
             self.pokercards[i].parent = self.poker ;
         }
     },
-    newplayer:function(inx , self , data){
-        var isRight = false ;
-        if(self.player.length == 1){
-            isRight = true ;
-        }
+    newplayer:function(inx , self , data , isRight){
         var pos = cc.v2(520, 100) ;
         if(isRight == false){
             pos = cc.v2(-520,100) ;
@@ -719,6 +709,7 @@ cc.Class({
     },
     restart:function(command){
         this.game.restart();
+        this.statictimer("正在匹配玩家" , 5) ;
         /**
          * 系统资源回收完毕，发送一个 重新开启游戏的 通知
          */
@@ -726,7 +717,6 @@ cc.Class({
             let socket = this.socket();
             socket.emit("restart" , command);
         }
-        this.statictimer("正在匹配玩家" , 5) ;
     },
     statictimer:function(message , time){
         this.waittimer = cc.instantiate(this.waitting);
