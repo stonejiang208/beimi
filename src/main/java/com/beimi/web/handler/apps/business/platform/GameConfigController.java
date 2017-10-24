@@ -93,9 +93,9 @@ public class GameConfigController extends Handler{
 	@RequestMapping({"/config/ai"})
 	@Menu(type="platform", subtype="aiconfig")
 	public ModelAndView ai(ModelMap map , HttpServletRequest request){
-		List<GameConfig> accountList = gameConfigRes.findByOrgi(super.getOrgi(request)) ;
-		if(accountList.size() > 0){
-			map.addAttribute("accountConfig", accountList.get(0)) ;
+		List<AiConfig> aiConfigList = aiConfigRes.findByOrgi(super.getOrgi(request)) ;
+		if(aiConfigList.size() > 0){
+			map.addAttribute("aiConfig", aiConfigList.get(0)) ;
 		}
 		return request(super.createAppsTempletResponse("/apps/business/platform/config/ai"));
 	}

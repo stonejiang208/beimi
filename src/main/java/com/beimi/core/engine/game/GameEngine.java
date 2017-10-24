@@ -19,6 +19,7 @@ import com.beimi.util.rules.model.Action;
 import com.beimi.util.rules.model.ActionEvent;
 import com.beimi.util.rules.model.Board;
 import com.beimi.util.rules.model.DuZhuBoard;
+import com.beimi.util.rules.model.JoinRoom;
 import com.beimi.util.rules.model.Player;
 import com.beimi.util.rules.model.RecoveryData;
 import com.beimi.util.rules.model.SelectColor;
@@ -44,14 +45,13 @@ public class GameEngine {
 			 */
 			if(userClient!=null){
 				userClient.setGamestatus(BMDataContext.GameStatusEnum.READY.toString());
-				CacheHelper.getGamePlayerCacheBean().put(userClient.getId(),userClient, userClient.getOrgi()) ;
 			}
 			/**
 			 * 游戏状态 ， 玩家请求 游戏房间，活动房间状态后，发送事件给 StateMachine，由 StateMachine驱动 游戏状态 ， 此处只负责通知房间内的玩家
 			 * 1、有新的玩家加入
 			 * 2、给当前新加入的玩家发送房间中所有玩家信息（不包含隐私信息，根据业务需求，修改PlayUserClient的字段，剔除掉隐私信息后发送）
 			 */
-			ActionTaskUtils.sendEvent("joinroom", userClient , gameEvent.getGameRoom());
+			ActionTaskUtils.sendEvent("joinroom", new JoinRoom(userClient, gameEvent.getIndex(), gameEvent.getGameRoom().getPlayers()) , gameEvent.getGameRoom());
 			/**
 			 * 发送给单一玩家的消息
 			 */
@@ -93,6 +93,7 @@ public class GameEngine {
 		GameEvent gameEvent = null ;
 		String roomid = (String) CacheHelper.getRoomMappingCacheBean().getCacheObject(userid, orgi) ;
 		GamePlayway gamePlayway = (GamePlayway) CacheHelper.getSystemCacheBean().getCacheObject(playway, orgi) ;
+		boolean needtakequene = false;
 		if(gamePlayway!=null){
 			gameEvent = new GameEvent(gamePlayway.getPlayers() , gamePlayway.getCardsnum() , orgi) ;
 			GameRoom gameRoom = null ;
@@ -108,18 +109,22 @@ public class GameEngine {
 					 * 
 					 */
 					gameRoom = (GameRoom) CacheHelper.getQueneCache().poll(playway , orgi) ;
+					
+					if(gameRoom != null){	
+						/**
+						 * 修正获取gameroom获取的问题，因为删除房间的时候，为了不损失性能，没有将 队列里的房间信息删除，如果有玩家获取到这个垃圾信息
+						 * 则立即进行重新获取房价， 
+						 */
+						while(CacheHelper.getGameRoomCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) == null){
+							gameRoom = (GameRoom) CacheHelper.getQueneCache().poll(playway , orgi) ;
+						}
+					}
+					
 					if(gameRoom==null){	//无房间 ， 需要
 						gameRoom = this.creatGameRoom(gamePlayway, userid , false) ;
 					}else{
-					
-						/**
-						 * 如果当前房间到达了最大玩家数量，则不再加入到 撮合队列
-						 */
-						List<PlayUserClient> playerList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
-						if((playerList.size() + 1) < gamePlayway.getPlayers() && CacheHelper.getExpireCache().get(gameRoom.getId()) != null){
-							CacheHelper.getQueneCache().offer(gameRoom.getPlayway() , gameRoom, orgi);	//未达到最大玩家数量，加入到游戏撮合 队列，继续撮合
-						}
 						playUser.setPlayerindex(System.currentTimeMillis());//从后往前坐，房主进入以后优先坐在 首位
+						needtakequene =  true ;
 					}
 				}
 			}
@@ -141,12 +146,9 @@ public class GameEngine {
 				gameEvent.setGameRoom(gameRoom);
 				gameEvent.setRoomid(gameRoom.getId());
 				
-				NettyClients.getInstance().joinRoom(userid, gameRoom.getId());
-				List<PlayUserClient> userList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), orgi) ;
 				boolean inroom = false ;
-				for(Object user : userList){
-					PlayUserClient tempPlayUser = (PlayUserClient) user ;
-					if(tempPlayUser.getId().equals(userid)){
+				for(PlayUserClient user : playerList){
+					if(user.getId().equals(userid)){
 						inroom = true ; break ;
 					}
 				}
@@ -154,7 +156,20 @@ public class GameEngine {
 					playUser.setPlayerindex(System.currentTimeMillis());
 					playUser.setGamestatus(BMDataContext.GameStatusEnum.READY.toString());
 					playUser.setPlayertype(BMDataContext.PlayerTypeEnum.NORMAL.toString());
+					playerList.add(playUser) ;
+					NettyClients.getInstance().joinRoom(userid, gameRoom.getId());
 					CacheHelper.getGamePlayerCacheBean().put(gameRoom.getId(), playUser, orgi); //将用户加入到 room ， MultiCache
+				}
+				for(PlayUserClient temp : playerList){
+					if(temp.getId().equals(playUser.getId())){
+						gameEvent.setIndex(playerList.indexOf(temp)); break ;
+					}
+				}
+				/**
+				 * 如果当前房间到达了最大玩家数量，则不再加入到 撮合队列
+				 */
+				if(playerList.size() < gamePlayway.getPlayers() && needtakequene == true){
+					CacheHelper.getQueneCache().offer(gameRoom.getPlayway() , gameRoom, orgi);	//未达到最大玩家数量，加入到游戏撮合 队列，继续撮合
 				}
 				/**
 				 *	不管状态如何，玩家一定会加入到这个房间 

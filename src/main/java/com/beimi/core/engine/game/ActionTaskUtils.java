@@ -12,6 +12,7 @@ import com.beimi.util.cache.CacheHelper;
 import com.beimi.util.client.NettyClients;
 import com.beimi.util.rules.model.Board;
 import com.beimi.util.rules.model.DuZhuBoard;
+import com.beimi.util.rules.model.GamePlayers;
 import com.beimi.util.rules.model.Player;
 import com.beimi.util.server.handler.BeiMiClient;
 import com.beimi.web.model.GameRoom;
@@ -54,14 +55,14 @@ public class ActionTaskUtils {
 	 * @param gameRoom
 	 */
 	public static void sendPlayers(BeiMiClient beiMiClient , GameRoom gameRoom){
-		beiMiClient.getClient().sendEvent(BMDataContext.BEIMI_PLAYERS_EVENT, CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), beiMiClient.getOrgi()));
+		beiMiClient.getClient().sendEvent(BMDataContext.BEIMI_MESSAGE_EVENT, new GamePlayers(gameRoom.getPlayers() , CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), beiMiClient.getOrgi()), BMDataContext.BEIMI_PLAYERS_EVENT));
 	}
 	
 	public static void sendPlayers(GameRoom gameRoom , List<PlayUserClient> players){
 		for(PlayUserClient user : players){
 			BeiMiClient client = NettyClients.getInstance().getClient(user.getId()) ;
 			if(client!=null){
-				client.getClient().sendEvent(BMDataContext.BEIMI_PLAYERS_EVENT, players);
+				client.getClient().sendEvent(BMDataContext.BEIMI_MESSAGE_EVENT, new GamePlayers(gameRoom.getPlayers() , CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), client.getOrgi()), BMDataContext.BEIMI_PLAYERS_EVENT));
 			}
 		}
 	}

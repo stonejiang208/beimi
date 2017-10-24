@@ -30,6 +30,9 @@ public class GameEvent implements java.io.Serializable {
 	private int cardsnum ;
 	private GameRoom gameRoom ;
 	
+	
+	private int index ; 	//当前玩家 顺序号
+	
 	private int players ;
 	private long time ;
 	public String getRoomid() {
@@ -77,5 +80,13 @@ public class GameEvent implements java.io.Serializable {
 
 	public void setGameRoom(GameRoom gameRoom) {
 		this.gameRoom = gameRoom;
+	}
+
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
 	}
 }
