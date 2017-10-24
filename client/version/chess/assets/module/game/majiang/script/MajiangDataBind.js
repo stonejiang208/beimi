@@ -227,16 +227,7 @@ cc.Class({
                 var data = self.parse(result) ;
                 self.route(data.command)(data , self);
             });
-            /**
-             * 接受传送的 玩家列表（含AI）
-             */
-            socket.on("players" , function(result){
-                var data = self.parse(result) ;
-                /**
-                 * 处理 Players
-                 */
-                self.route("players")(data, self);
-            });
+
         }
 
 
@@ -312,7 +303,7 @@ cc.Class({
         var playerscript = player.getComponent("MaJiangPlayer");
         //var playerscript = player.getComponent("MaJiangPlayer");
         var inx = null , tablepos = "";
-        if(data.id == cc.beimi.user.id){
+        if(data.player.id == cc.beimi.user.id){
             player.setPosition(-570 , -150);
             tablepos = "current" ;
         }else{
@@ -333,7 +324,7 @@ cc.Class({
         }
 
 
-        playerscript.init(data , inx , tablepos);
+        playerscript.init(data.player , inx , tablepos);
         player.parent = context.root();
         context.playersarray.push(player) ;
         /**
@@ -485,8 +476,8 @@ cc.Class({
     players_event:function(data,context){
         context.collect(context) ;    //先回收资源，然后再初始化
         var inx = 0 ;
-        for(var i=0 ; i<data.length ; i++){
-            let temp = data[i] ;
+        for(var i=0 ; i<data.player.length ; i++){
+            let temp = data.player[i] ;
             if(temp.id != cc.beimi.user.id){
                 var player = context.playerspool.get();
                 var playerscript = player.getComponent("MaJiangPlayer");
