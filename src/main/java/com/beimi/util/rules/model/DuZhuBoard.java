@@ -105,7 +105,7 @@ public class DuZhuBoard extends Board implements java.io.Serializable{
 		if(index == (this.getPlayers().length - 1) && this.getPlayers()[index].isRandomcard()){	//fixed
 			index = 0 ;
 		}
-		for(int i = index + 1 ; i<this.getPlayers().length ; i++){
+		for(int i = index + 1 ; i<this.getPlayers().length ; ){
 			Player player = this.getPlayers()[i] ;
 			if(player.isDocatch() == false){
 				catchPlayer = player ;
@@ -113,8 +113,9 @@ public class DuZhuBoard extends Board implements java.io.Serializable{
 			}else if(player.isRandomcard()){	//重新遍历一遍，发现找到了地主牌的人，终止查找
 				break ;
 			}else if(i == (this.getPlayers().length - 1)){
-				i = 0;
+				i = 0; continue ;
 			}
+			i++ ;
 		}
 		return catchPlayer;
 	}

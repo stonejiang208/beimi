@@ -117,6 +117,9 @@ public class GameEngine {
 						 */
 						while(CacheHelper.getGameRoomCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) == null){
 							gameRoom = (GameRoom) CacheHelper.getQueneCache().poll(playway , orgi) ;
+							if(gameRoom == null){
+								break ;
+							}
 						}
 					}
 					
