@@ -84,7 +84,6 @@ public class GameServerConfiguration
 		/**
 		 * 性能优化
 		 */
-		config.setPingInterval(5000);	//
 		config.getSocketConfig().setReuseAddress(true);
 		config.getSocketConfig().setSoLinger(0);
 		config.getSocketConfig().setTcpNoDelay(true);
