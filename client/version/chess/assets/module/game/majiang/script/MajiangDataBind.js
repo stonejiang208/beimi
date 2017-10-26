@@ -153,53 +153,123 @@ cc.Class({
      * 重构后，只有两个消息类型
      */
     onLoad: function () {
-        this.routes = {} ;
-        /**
-         * 已初始的玩家对象池 ， 牌局结束 或者 有新玩家加入， 老玩家离开 等事件的时候，需要做对象池回收
-         * @type {Array}
-         */
-        this.playersarray = new Array();        //玩家列表
+        if(this.ready()) {
+            let socket = this.socket();
+            this.routes = {};
+            /**
+             * 已初始的玩家对象池 ， 牌局结束 或者 有新玩家加入， 老玩家离开 等事件的时候，需要做对象池回收
+             * @type {Array}
+             */
+            this.playersarray = new Array();        //玩家列表
 
-        this.playercards = new Array();         //手牌对象
+            this.playercards = new Array();         //手牌对象
 
-        this.leftcards = new Array();           //左侧玩家手牌
-        this.rightcards = new Array();          //右侧玩家手牌
-        this.topcards = new Array() ;           //对家手牌
+            this.leftcards = new Array();           //左侧玩家手牌
+            this.rightcards = new Array();          //右侧玩家手牌
+            this.topcards = new Array();           //对家手牌
 
-        this.deskcards = new Array();           //当前玩家和 对家 已出牌
+            this.deskcards = new Array();           //当前玩家和 对家 已出牌
 
-        this.centertimer = null ;
-        /**
-         * 预制的 对象池
-         * @type {cc.NodePool}
-         */
-        this.playerspool = new cc.NodePool();
-        /**
-         * 当前玩家的 麻将牌的 对象池
-         * @type {cc.NodePool}
-         */
-        this.cardpool = new cc.NodePool();
-        /**
-         *
-         * 初始化玩家 的 对象池
-         */
-        for(var i=0 ; i<4 ; i++){
-            this.playerspool.put(cc.instantiate(this.playerprefab));
+            this.inited = false;
+
+            this.centertimer = null;
+            /**
+             * 预制的 对象池
+             * @type {cc.NodePool}
+             */
+            this.playerspool = new cc.NodePool();
+            /**
+             * 当前玩家的 麻将牌的 对象池
+             * @type {cc.NodePool}
+             */
+            this.cardpool = new cc.NodePool();
+            /**
+             *
+             * 初始化玩家 的 对象池
+             */
+            for (var i = 0; i < 4; i++) {
+                this.playerspool.put(cc.instantiate(this.playerprefab));
+            }
+            /**
+             * 初始化当前玩家的麻将牌 对象池
+             */
+            for (var i = 0; i < 14; i++) {
+                this.cardpool.put(cc.instantiate(this.cards_current));
+            }
+
+            this.exchange_state("init", this);
+
+            /**
+             * 发射的事件， 在 出牌双击 / 滑动出牌的时候发射的，此处用于接受后统一处理， 避免高度耦合
+             * 之所以这样设计，是因为在TakeMJCard里需要引用 麻将牌的 对象池 和 出牌的对象池，如果采用对象传入或者 通过find获取的方式处理
+             * 则会导致高度的 组件耦合，不利于系统 未来扩展，也会导致 业务逻辑交叉/混乱
+             * 无论 胡牌/杠/碰/吃，都需要采用这种方式处理
+             */
+            this.node.on('takecard', function (event) {
+                let card = event.target.getComponent("TakeMJCard");
+                if (card != null) {
+                    let card_script = card.target.getComponent("HandCards");
+                    /**
+                     * 提交数据，等待服务器返回
+                     */
+                        //开始匹配
+
+                    socket.emit("doplaycards", card_script.value);
+                }
+                event.stopPropagation();
+            });
+            /**
+             * ActionEvent发射的事件 ， 点击 杠 , 通知服务器端，用户点击了 杠 动作，服务器端进行处理，处理完毕后通知客户端后续动作
+             */
+            this.node.on("gang", function (event) {
+                socket.emit("selectaction", "gang");
+
+                event.stopPropagation();
+            });
+            /**
+             * ActionEvent发射的事件 ， 点击 碰
+             */
+            this.node.on("peng", function (event) {
+                socket.emit("selectaction", "peng");
+                event.stopPropagation();
+            });
+            /**
+             * ActionEvent发射的事件 ， 点击 吃
+             */
+            this.node.on("chi", function (event) {
+                socket.emit("selectaction", "chi");
+                event.stopPropagation();
+            });
+            /**
+             * ActionEvent发射的事件 ， 点击 胡
+             */
+            this.node.on("hu", function (event) {
+                socket.emit("selectaction", "hu");
+                event.stopPropagation();
+            });
+            /**
+             * ActionEvent发射的事件 ， 点击 过
+             */
+            this.node.on("guo", function (event) {
+                socket.emit("selectaction", "guo");
+                event.stopPropagation();
+            });
+
+
+            if (cc.beimi != null && cc.beimi.gamestatus != null && cc.beimi.gamestatus == "playing") {
+                //恢复数据
+                this.recovery();
+            }
         }
-        /**
-         * 初始化当前玩家的麻将牌 对象池
-         */
-        for(var i=0 ; i<14 ; i++){
-            this.cardpool.put(cc.instantiate(this.cards_current));
-        }
-
-        this.exchange_state("init" , this);
+    },
+    initgame:function(){
         let self = this ;
         if(this.ready()){
             let socket = this.socket();
             /**
              * 接受指令
              */
+
             this.map("joinroom" , this.joinroom_event) ;          //加入房价
             this.map("players" , this.players_event) ;            //接受玩家列表
 
@@ -223,75 +293,25 @@ cc.Class({
 
             this.map("allcards" , this.allcards_event) ;                //我出的牌
 
+            this.map("recovery" , this.recovery_event) ;              //恢复牌局数据
+
             socket.on("command" , function(result){
-                var data = self.parse(result) ;
-                self.route(data.command)(data , self);
+                cc.beimi.gamestatus = "playing" ;
+                if(self.inited == true){
+                    var data = self.parse(result) ;
+                    self.route(data.command)(data , self);
+                }
             });
 
+            var param = {
+                token:cc.beimi.authorization,
+                playway:cc.beimi.playway,
+                orgi:cc.beimi.user.orgi
+            } ;
+            socket.emit("joinroom" ,JSON.stringify(param)) ;
+
+            this.inited = true ;
         }
-
-
-        /**
-         * 发射的事件， 在 出牌双击 / 滑动出牌的时候发射的，此处用于接受后统一处理， 避免高度耦合
-         * 之所以这样设计，是因为在TakeMJCard里需要引用 麻将牌的 对象池 和 出牌的对象池，如果采用对象传入或者 通过find获取的方式处理
-         * 则会导致高度的 组件耦合，不利于系统 未来扩展，也会导致 业务逻辑交叉/混乱
-         * 无论 胡牌/杠/碰/吃，都需要采用这种方式处理
-         */
-        this.node.on('takecard', function (event) {
-            let card = event.target.getComponent("TakeMJCard");
-            if(card != null){
-                let card_script = card.target.getComponent("HandCards") ;
-                /**
-                 * 提交数据，等待服务器返回
-                 */
-
-                    //开始匹配
-                let socket = self.socket();
-                socket.emit("doplaycards" , card_script.value) ;
-            }
-            event.stopPropagation();
-        });
-        /**
-         * ActionEvent发射的事件 ， 点击 杠 , 通知服务器端，用户点击了 杠 动作，服务器端进行处理，处理完毕后通知客户端后续动作
-         */
-        this.node.on("gang",function(event){
-            let socket = self.socket();
-            socket.emit("selectaction" , "gang") ;
-
-            event.stopPropagation();
-        });
-        /**
-         * ActionEvent发射的事件 ， 点击 碰
-         */
-        this.node.on("peng",function(event){
-            let socket = self.socket();
-            socket.emit("selectaction" , "peng") ;
-            event.stopPropagation();
-        });
-        /**
-         * ActionEvent发射的事件 ， 点击 吃
-         */
-        this.node.on("chi",function(event){
-            let socket = self.socket();
-            socket.emit("selectaction" , "chi") ;
-            event.stopPropagation();
-        });
-        /**
-         * ActionEvent发射的事件 ， 点击 胡
-         */
-        this.node.on("hu",function(event){
-            let socket = self.socket();
-            socket.emit("selectaction" , "hu") ;
-            event.stopPropagation();
-        });
-        /**
-         * ActionEvent发射的事件 ， 点击 过
-         */
-        this.node.on("guo",function(event){
-            let socket = self.socket();
-            socket.emit("selectaction" , "guo") ;
-            event.stopPropagation();
-        });
     },
     /**
      * 新创建牌局，首个玩家加入，进入等待状态，等待其他玩家加入，服务端会推送 players数据
@@ -306,9 +326,10 @@ cc.Class({
         if(data.player.id == cc.beimi.user.id){
             player.setPosition(-570 , -150);
             tablepos = "current" ;
+            context.index = data.index ;
         }else{
             inx = context.playersarray.length - 1 ;
-            if(inx == 0){
+            if(inx == 2){
                 //var playerscript = player.getComponent("MaJiangPlayer");
                 player.setPosition(570 , 50);
                 tablepos = "right" ;
@@ -316,7 +337,7 @@ cc.Class({
                 //var playerscript = player.getComponent("MaJiangPlayer");
                 player.setPosition(400 , 300);
                 tablepos = "top" ;
-            }else if(inx == 2){
+            }else if(inx == 0){
                 //var playerscript = player.getComponent("MaJiangPlayer");
                 player.setPosition(-570 , 50);
                 tablepos = "left" ;
@@ -458,6 +479,7 @@ cc.Class({
         context.exchange_state("nextplayer" , context);
     },
     allcards_event:function(data , context){
+        cc.beimi.gamestatus = "notready" ;
         //结算界面，
         let temp = cc.instantiate(context.summary) ;
         temp.parent = context.root() ;
@@ -479,29 +501,54 @@ cc.Class({
         for(var i=0 ; i<data.player.length ; i++){
             let temp = data.player[i] ;
             if(temp.id != cc.beimi.user.id){
-                var player = context.playerspool.get();
-                var playerscript = player.getComponent("MaJiangPlayer");
-                var tablepos = "" ;
-                if(inx == 0){
-                    //var playerscript = player.getComponent("MaJiangPlayer");
-                    player.setPosition(570 , 50);
-                    tablepos = "right" ;
-                }else if(inx == 1){
-                    //var playerscript = player.getComponent("MaJiangPlayer");
-                    player.setPosition(400 , 300);
-                    tablepos = "top" ;
-                }else if(inx == 2){
-                    //var playerscript = player.getComponent("MaJiangPlayer");
-                    player.setPosition(-570 , 50);
-                    tablepos = "left" ;
-                }
-
-                playerscript.init(temp , inx , tablepos);
-                player.parent = context.root();
-                context.playersarray.push(player) ;
-                inx++;
+                context.index = i ;break ;
             }
         }
+        if(data.player.length > 1 && inx >=0){
+            var pos = inx+1 ;
+            while(true){
+                if(pos == data.player.length){pos = 0 ;}
+                if(context.playerexist(data.player[pos], context) == false){
+                    var player = context.playerspool.get();
+                    var playerscript = player.getComponent("MaJiangPlayer");
+                    var tablepos = "" ;
+                    if((context.playersarray.length - 1) == 0){
+                        //var playerscript = player.getComponent("MaJiangPlayer");
+                        player.setPosition(570 , 50);
+                        tablepos = "right" ;
+                    }else if((context.playersarray.length - 1) == 1){
+                        //var playerscript = player.getComponent("MaJiangPlayer");
+                        player.setPosition(400 , 300);
+                        tablepos = "top" ;
+                    }else if((context.playersarray.length - 1) == 2){
+                        //var playerscript = player.getComponent("MaJiangPlayer");
+                        player.setPosition(-570 , 50);
+                        tablepos = "left" ;
+                    }
+
+                    playerscript.init(data.player[pos] , inx , tablepos);
+                    player.parent = context.root();
+                    context.playersarray.push(player) ;
+                }
+                if(pos == inx){break ;}
+                pos = pos + 1;
+            }
+        }
+    },
+    playerexist:function(player,context){
+        var inroom = false ;
+        if(player.id == cc.beimi.user.id){
+            inroom = true ;
+        }else{
+            for(var j = 0 ; j < context.playersarray.length ; j++){
+                let temp = context.playersarray[j];
+                var playerscript = temp.getComponent("MaJiangPlayer");
+                if(playerscript.data.id == player.id){
+                    inroom = true ; break ;
+                }
+            }
+        }
+        return inroom ;
     },
     /**
      * 接受新的庄家数据
@@ -518,6 +565,16 @@ cc.Class({
                 temp.banker(); break ;
             }
         }
+    },
+    /**
+     * 接收到服务端的 恢复牌局的数据 恢复牌局
+     * @param data
+     * @param context
+     */
+    recovery_event:function(data,context) {
+        var mycards = context.decode(data.player.cards);
+        //context.exchange_state("begin" , context);  //隐藏 提示状态
+        context.play_event(data.userboard, context) ;
     },
     /**
      * 接受服务端的数据，玩家杠碰、吃胡等动作
@@ -686,6 +743,7 @@ cc.Class({
      * @param context
      */
     play_event:function(data , context){
+        cc.beimi.gamestatus = "playing" ;
         /**
          * 改变状态，开始发牌
          */
@@ -1072,6 +1130,9 @@ cc.Class({
     canceltimer:function(object){
         object.unscheduleAllCallbacks();
         object.mjtimer.string = "00" ;
+    },
+    recovery:function(){
+        this.initgame();
     },
     timer:function(object , times){
         if(times > 9){

@@ -24,16 +24,9 @@ cc.Class({
 
     },
     onClick:function(event){
-        //开始匹配
-        let socket = this.socket();
-        var param = {
-            token:cc.beimi.authorization,
-            playway:cc.beimi.playway,
-            orgi:cc.beimi.user.orgi
-        } ;
         let majiang = this.target.getComponent("MajiangDataBind");
+        majiang.initgame();
         majiang.waittingForPlayers();
-        socket.emit("joinroom" ,JSON.stringify(param)) ;
     }
 
     // called every frame, uncomment this function to activate update callback
