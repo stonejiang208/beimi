@@ -1,6 +1,6 @@
 # 编译调试部署说明
 
-### 服务器编译
+### 1. 服务器编译
 
 #### 安装调试的前提要求
 
@@ -49,7 +49,7 @@ java -Xms1240m -Xmx1240m -Xmn450m -XX:PermSize=512M -XX:MaxPermSize=512m -XX:+Us
 
 
 
-### 客户端编译流程
+### 2. 客户端编译流程
 
 客户端代码位置在： client/version/chess
 
@@ -72,7 +72,7 @@ wsURL : "http://localhost:9081",
 然后用 CocosCreater 运行。
 
 
-### 基于 docker 编译
+### 3. 基于 docker 编译
 
 
 #### 编译 docker 镜像前的准备
