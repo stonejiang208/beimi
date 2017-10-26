@@ -1,6 +1,8 @@
-#beimi
-开源棋牌游戏，包含麻将、德州、斗地主
-首个版本会采用当前最流行的房卡模式
+#beimi 
+
+最新版 0.7.0
+
+开源棋牌游戏，包含麻将、德州、斗地主。首个版本会采用当前最流行的房卡模式。
 
 贝密游戏是一系列棋牌游戏的名称，其中包含麻将、斗地主、德州，目前正在进行UI设计以及后台系统（JAVA）开发，7月中发布0.1.0版本，仅包含前端UI方案，预计8月份发布首个版本，敬请关注！
 
@@ -10,19 +12,8 @@
 1. 服务端框架：Spring Boot + MySQL + JPA + NettySocketIO
 1. 客户端语言：Cocos Creater/JavaScript
 
- **
 
- **特别注意：修改客户端服务的IP地址，位置在/assets/resources/script/lib/HTTP.js中，修改服务端IP地址和服务端的WebSocket服务地址，注意保持服务端防火墙开启9081端口** 
-
-** 
-
-依赖包的安装：
-本项目有两个依赖包，IP2REGION 和 JAVE，通过以下指令加入到本地Mavenue仓库： 
-
-1、mvn install:install-file -Dfile=src/main/resources/WEB-INF/lib/ip2region-1.2.4.jar -DgroupId=org.lionsoul.ip2region -DartifactId=ip2region -Dversion=1.2.4 -Dpackaging=jar
-
-
-2、mvn install:install-file -Dfile=src/main/resources/WEB-INF/lib/jave-1.0.2.jar -DgroupId=lt.jave -DartifactId=jave -Dversion=1.0.2 -Dpackaging=jar
+[安装说明](INSTALL.md)
 
 
 加入QQ群，了解最新开发进度 ，QQ群号： 529311623
