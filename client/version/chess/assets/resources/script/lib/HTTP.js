@@ -16,8 +16,8 @@ var HTTP = cc.Class({
     },
 
     statics: {
-        baseURL:"http://192.168.1.155",
-        wsURL : "http://192.168.1.155:9081" ,
+        baseURL:"http://localhost:8080",
+        wsURL : "http://localhost:9081",
         authorization: null,
         httpGet: function (url , success , error , object) {
             var xhr = cc.loader.getXMLHttpRequest();
