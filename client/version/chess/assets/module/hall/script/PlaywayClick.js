@@ -36,7 +36,6 @@ cc.Class({
             /**
              * 优化交互，预加载场景完毕后再回收资源
              */
-            selectPlayway.collect();
             self.scene(thisplayway.data.code , self) ;
         },200);
     },

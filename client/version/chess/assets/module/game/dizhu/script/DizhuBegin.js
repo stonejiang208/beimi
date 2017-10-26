@@ -79,14 +79,9 @@ cc.Class({
         if(this.ready()) {
             let socket = this.socket();
 
-            var param = {
-                token:cc.beimi.authorization,
-                playway:cc.beimi.playway,
-                orgi:cc.beimi.user.orgi
-            } ;
-            this.game = this.getCommon("DizhuDataBind");
-            socket.emit("joinroom" ,JSON.stringify(param)) ;
 
+
+            this.game = this.getCommon("DizhuDataBind");
 
             this.map("joinroom" , this.joinroom_event) ;          //加入房价
             this.map("players" , this.players_event) ;            //接受玩家列表
@@ -113,6 +108,13 @@ cc.Class({
             socket.on("ping" , function(){
 
             });
+
+            var param = {
+                token:cc.beimi.authorization,
+                playway:cc.beimi.playway,
+                orgi:cc.beimi.user.orgi
+            } ;
+            socket.emit("joinroom" ,JSON.stringify(param)) ;
 
             this.inited = true ;
         }
