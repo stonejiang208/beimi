@@ -21,6 +21,7 @@ public class RecoveryData implements Message{
 	private boolean automic ;	//本轮第一个出牌，不允许出现不出按钮
 	private GameBoard data ;
 	private int ratio ;
+	private byte[] hiscards ;
 	
 	private SelectColor selectcolor ;
 	
@@ -36,6 +37,8 @@ public class RecoveryData implements Message{
 		this.time = time ;
 		this.automic = automic;
 		this.data = new GameBoard(board.getBanker(), board.getRatio()) ;
+		
+		this.hiscards = player.getHistory() ;
 		
 		this.ratio = board.getRatio() ;
 		
@@ -172,5 +175,14 @@ public class RecoveryData implements Message{
 	public void setSelectcolor(SelectColor selectcolor) {
 		this.selectcolor = selectcolor;
 	}
-	
+
+
+	public byte[] getHiscards() {
+		return hiscards;
+	}
+
+
+	public void setHiscards(byte[] hiscards) {
+		this.hiscards = hiscards;
+	}
 }

@@ -191,6 +191,8 @@ public class MaJiangBoard extends Board implements java.io.Serializable{
 				}
 				ActionTaskUtils.sendEvent("takecards", takeCards , gameRoom);	
 				
+				player.setHistory(ArrayUtils.add(player.getHistory(), takeCards.getCard())) ;
+				
 				/**
 				 * 判断是否胡牌 / 杠牌 / 碰 / 吃 ， 如果有，则发送响应的通知给其他玩家，如果没，下一个玩家 抓牌
 				 */

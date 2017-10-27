@@ -114,7 +114,6 @@ public class MaJiangGame implements ChessGame{
 			}
 		}
 		for(Player tempPlayer : players){
-			tempPlayer.setHistory(tempPlayer.getCards());
 			Arrays.sort(tempPlayer.getCards());
 		}
 		board.setDeskcards(temp);	//待打 的麻将 牌
