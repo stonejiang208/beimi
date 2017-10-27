@@ -449,6 +449,44 @@ cc.Class({
             desk_card.parent = deskcardpanel ;
         }
     },
+    recover_desk_cards:function(userid , card , context){
+        if(userid == cc.beimi.user.id) {
+            /**
+             * 放到桌面 ， 需要重构
+             */
+            let desk_card = cc.instantiate(context.takecards_one);
+            let temp = desk_card.getComponent("DeskCards");
+            temp.init(card);
+
+            context.deskcards.push(desk_card);
+            desk_card.parent = context.deskcards_current_panel;
+        }else{
+            //其他玩家出牌
+            let temp = context.player(userid , context) ;
+            let cardpanel  , cardprefab , deskcardpanel;
+            if(temp.tablepos == "right"){
+
+                cardpanel = context.right_panel ;
+                cardprefab = context.takecards_right ;
+                deskcardpanel = context.deskcards_right_panel ;
+
+            }else if(temp.tablepos == "left"){
+
+                cardpanel = context.left_panel ;
+                cardprefab = context.takecards_left ;
+                deskcardpanel = context.deskcards_left_panel ;
+            }else if(temp.tablepos == "top"){
+
+                cardpanel = context.top_panel ;
+                cardprefab = context.takecards_one ;
+                deskcardpanel = context.deskcards_top_panel ;
+            }
+            let desk_card = cc.instantiate(cardprefab);
+            let desk_script = desk_card.getComponent("DeskCards");
+            desk_script.init(card);
+            desk_card.parent = deskcardpanel ;
+        }
+    },
     /**
      * 下一个玩家抓牌的事件， 如果上一个玩家出牌后，没有其他玩家杠、碰、吃、胡等动作，则会同时有一个抓牌的事件，否则，会等待玩家 杠、碰、吃、胡完成
      * @param data
@@ -596,6 +634,17 @@ cc.Class({
         for(var i=0 ; i<data.cardsnum.length ; i++){
             let temp = data.cardsnum[i] ;
             context.selectresult_event(temp.selectcolor , context) ;
+            var hiscards = context.decode(temp.hiscards);
+            for(var j=0 ; j<hiscards.length ; j++){
+                context.recover_desk_cards(temp.userid , hiscards[j] , context);
+            }
+        }
+        /**
+         * 恢复当前玩家 已出的牌
+         */
+        var hiscards = context.decode(data.hiscards);
+        for(var j=0 ; j<hiscards.length ; j++){
+            context.recover_desk_cards(data.userid , hiscards[j] , context);
         }
     },
     /**
