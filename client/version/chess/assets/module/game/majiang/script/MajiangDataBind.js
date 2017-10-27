@@ -574,7 +574,29 @@ cc.Class({
     recovery_event:function(data,context) {
         var mycards = context.decode(data.player.cards);
         //context.exchange_state("begin" , context);  //隐藏 提示状态
+        /**
+         * 恢复玩家数据
+         */
         context.play_event(data.userboard, context) ;
+
+        /**
+         * 恢复庄家数据
+         */
+        context.banker_event(data.banker,context);
+
+        /**
+         *
+         * 恢复定缺数据
+         */
+        context.selectresult_event(data.selectcolor , context);
+
+        /**
+         * 恢复其他玩家定缺数据
+         */
+        for(var i=0 ; i<data.cardsnum.length ; i++){
+            let temp = data.cardsnum[i] ;
+            context.selectresult_event(temp.selectcolor , context) ;
+        }
     },
     /**
      * 接受服务端的数据，玩家杠碰、吃胡等动作
