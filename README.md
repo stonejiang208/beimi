@@ -12,8 +12,11 @@
 1. 服务端框架：Spring Boot + MySQL + JPA + NettySocketIO
 1. 客户端语言：Cocos Creater/JavaScript
 
+ **
 
-[安装说明](INSTALL.md)
+### 
+细安装过程请查阅：[安装说明](INSTALL.md)
+** 
 
 
 加入QQ群，了解最新开发进度 ，QQ群号： 529311623
