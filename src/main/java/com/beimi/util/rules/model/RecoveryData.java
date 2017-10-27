@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.beimi.core.engine.game.GameBoard;
 import com.beimi.core.engine.game.Message;
+import com.beimi.core.engine.game.impl.Banker;
+import com.beimi.core.engine.game.impl.UserBoard;
 
 public class RecoveryData implements Message{
 	private String command ;
@@ -12,13 +14,17 @@ public class RecoveryData implements Message{
 	private Player player ;
 	private byte[] lasthands;
 	private TakeCards last ;
-	private String banker ;
+	private Banker banker ;
 	private String nextplayer ;//正在出牌的玩家
-	private CardsNum[] cardsnum ;
+	private CardsInfo[] cardsnum ;
 	private int time ;		//计时器剩余时间
 	private boolean automic ;	//本轮第一个出牌，不允许出现不出按钮
 	private GameBoard data ;
 	private int ratio ;
+	
+	private SelectColor selectcolor ;
+	
+	private UserBoard userboard ;
 	
 	
 	public RecoveryData(Player player , byte[] lasthands , String nextplayer , int time , boolean automic , Board board){
@@ -26,20 +32,26 @@ public class RecoveryData implements Message{
 		this.userid = player.getPlayuser() ;
 		this.lasthands = lasthands ;
 		this.nextplayer = nextplayer ;
+		this.banker = new Banker(board.getBanker()) ;
 		this.time = time ;
 		this.automic = automic;
 		this.data = new GameBoard(board.getBanker(), board.getRatio()) ;
 		
 		this.ratio = board.getRatio() ;
 		
+		this.userboard = new UserBoard(board, player.getPlayuser(), "play") ;
+		
+		this.selectcolor =  new SelectColor(board.getBanker(), player.getPlayuser()) ;
+		this.selectcolor.setColor(player.getColor());
+		
 		this.last = board.getLast() ;
-		this.banker = board.getBanker();
-		this.cardsnum = new CardsNum[board.getPlayers().length - 1];
-		List<CardsNum> tempList = new ArrayList<CardsNum>();
+		this.cardsnum = new CardsInfo[board.getPlayers().length - 1];
+		List<CardsInfo> tempList = new ArrayList<CardsInfo>();
 		for(Player temp : board.getPlayers()){
 			if(!temp.getPlayuser().equals(player.getPlayuser())){
-				tempList.add(new CardsNum(temp.getPlayuser() , temp.getCards().length)) ;
+				tempList.add(new CardsInfo(temp.getPlayuser() , temp.getCards().length , temp.getHistory() , temp.getActions() , board , temp)) ;
 			}
+			
 		}
 		cardsnum = tempList.toArray(this.cardsnum) ;
 	}
@@ -84,22 +96,20 @@ public class RecoveryData implements Message{
 	}
 
 
-	public CardsNum[] getCardsnum() {
+	public CardsInfo[] getCardsnum() {
 		return cardsnum;
 	}
 
 
-	public void setCardsnum(CardsNum[] cardsnum) {
+	public void setCardsnum(CardsInfo[] cardsnum) {
 		this.cardsnum = cardsnum;
 	}
-
-
-	public String getBanker() {
+	public Banker getBanker() {
 		return banker;
 	}
 
 
-	public void setBanker(String banker) {
+	public void setBanker(Banker banker) {
 		this.banker = banker;
 	}
 
@@ -141,6 +151,26 @@ public class RecoveryData implements Message{
 
 	public void setRatio(int ratio) {
 		this.ratio = ratio;
+	}
+
+
+	public UserBoard getUserboard() {
+		return userboard;
+	}
+
+
+	public void setUserboard(UserBoard userboard) {
+		this.userboard = userboard;
+	}
+
+
+	public SelectColor getSelectcolor() {
+		return selectcolor;
+	}
+
+
+	public void setSelectcolor(SelectColor selectcolor) {
+		this.selectcolor = selectcolor;
 	}
 	
 }

@@ -1,5 +1,7 @@
 package com.beimi.util.rules.model;
 
+import java.util.List;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -8,6 +10,7 @@ import com.beimi.core.engine.game.ActionTaskUtils;
 import com.beimi.core.engine.game.BeiMiGameEvent;
 import com.beimi.core.engine.game.model.MJCardMessage;
 import com.beimi.core.engine.game.model.Summary;
+import com.beimi.core.engine.game.model.SummaryPlayer;
 import com.beimi.util.GameUtils;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.web.model.GamePlayway;
@@ -309,6 +312,33 @@ public class MaJiangBoard extends Board implements java.io.Serializable{
 
 	@Override
 	public Summary summary(Board board, GameRoom gameRoom , GamePlayway playway) {
-		return null;
+		Summary summary = new Summary(gameRoom.getId() , board.getId() , board.getRatio() , board.getRatio() * playway.getScore());
+		List<PlayUserClient> players = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
+		boolean gameRoomOver = false ;	//解散房价
+		
+		for(Player player : board.getPlayers()){
+			PlayUserClient playUser = getPlayerClient(players, player.getPlayuser());
+			SummaryPlayer summaryPlayer = new SummaryPlayer(player.getPlayuser() , playUser.getUsername() , board.getRatio() , board.getRatio() * playway.getScore() , false , player.getPlayuser().equals(board.getBanker())) ;
+			/**
+			 * 遍历Action ， Action类型 ：1、杠（明/暗）、碰、吃、胡（自摸/瞎胡），被自摸，点炮、点杠、被杠
+			 */
+			
+			/**
+			 * 如果庄被查花猪，则赔给三家，其他三家查花猪，赔给庄 ， 其他玩法规则调用 playwy的计算方法
+			 */
+			if(player.getPlayuser().equals(board.getBanker())){
+				
+			}
+			/**
+			 * 查花猪
+			 */
+			summaryPlayer.setCards(player.getCards()); //未出完的牌
+			summary.getPlayers().add(summaryPlayer) ;
+		}
+		summary.setGameRoomOver(gameRoomOver);	//有玩家破产，房间解散
+		/**
+		 * 上面的 Player的 金币变更需要保持 数据库的日志记录 , 机器人的 金币扣完了就出局了
+		 */
+		return summary;
 	}
 }
