@@ -13,8 +13,6 @@
 1. 客户端语言：Cocos Creater/JavaScript
 
  **
-
-### 
 细安装过程请查阅：[安装说明](INSTALL.md)
 ** 
 
