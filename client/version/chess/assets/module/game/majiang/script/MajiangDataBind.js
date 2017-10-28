@@ -1307,6 +1307,14 @@ cc.Class({
         for (var i = 0; i < 14 && this.cardpool.size() < 15; i++) {
             this.cardpool.put(cc.instantiate(this.cards_current));
         }
+
+        /**
+         * 系统资源回收完毕，发送一个 重新开启游戏的 通知
+         */
+        if(this.ready()){
+            let socket = this.socket();
+            socket.emit("restart");
+        }
     },
     onDestroy:function(){
         if(this.ready()) {
