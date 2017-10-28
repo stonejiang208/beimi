@@ -81,6 +81,12 @@ cc.Class({
                 this.animState.stop("majiang_select");
             }
         }
+    },
+    clean:function(){
+        this.creator.active = false ;
+        for(var i = 0 ; i < this.selected.children.length ; i++){
+            this.selected.children[i].active = false ;
+        }
     }
 
     // called every frame, uncomment this function to activate update callback

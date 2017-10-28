@@ -173,6 +173,8 @@ cc.Class({
             this.inited = false;
 
             this.centertimer = null;
+
+            this.summarypage = null ;
             /**
              * 预制的 对象池
              * @type {cc.NodePool}
@@ -447,6 +449,8 @@ cc.Class({
             let desk_script = desk_card.getComponent("DeskCards");
             desk_script.init(data.card);
             desk_card.parent = deskcardpanel ;
+
+            context.deskcards.push(desk_card);
         }
     },
     recover_desk_cards:function(userid , card , context){
@@ -519,8 +523,28 @@ cc.Class({
     allcards_event:function(data , context){
         cc.beimi.gamestatus = "notready" ;
         //结算界面，
-        let temp = cc.instantiate(context.summary) ;
-        temp.parent = context.root() ;
+
+        setTimeout(function(){
+            context.summarypage = cc.instantiate(context.summary) ;
+            context.summarypage.parent = context.root() ;
+            let temp = context.summarypage.getComponent("MaJiangSummary") ;
+            temp.create(context , data);
+
+            if(data.gameRoomOver == true){//房间解散
+                for(var inx = 0 ; inx<context.player.length ; inx++){
+                    context.player[inx].destroy();
+                }
+                context.player.splice(0 , context.player.length) ;//房间解散，释放资源
+                context.player = new Array();
+            }
+            /**
+             * 清理桌面
+             */
+            context.clean();
+        } , 2000);
+        /**
+         */
+        context.exchange_state("allcards" , context);
     },
     /**
      * 恢复牌局数据， 等待服务端推送 Players数据后进行恢复
@@ -788,6 +812,7 @@ cc.Class({
             }
 
             cards_gang.parent = context.gang_current ;
+            context.deskcards.push(cards_gang) ;
 
             context.exchange_state("nextplayer" , context);
         }else{
@@ -813,7 +838,7 @@ cc.Class({
      * @param data
      * @param context
      */
-    play_event:function(data , context){
+    play_event:function(data , context ){
         cc.beimi.gamestatus = "playing" ;
         /**
          * 改变状态，开始发牌
@@ -1187,6 +1212,18 @@ cc.Class({
                  */
                 object.timer(object , 8) ;
                 break   ;
+            case "allcards" :
+                /**
+                 * 都打完了，结束了，回收计时器，回收定缺，回收庄家
+                 * @type {boolean}
+                 */
+                for(var i=0 ; i<object.playersarray.length ; i++){
+                    let player = object.playersarray[i] ;
+                    var playerscript = player.getComponent("MaJiangPlayer");
+                    playerscript.clean();
+                }
+                object.canceltimer(object) ;
+                break   ;
         }
     },
     exchange_searchlight:function(direction , context){
@@ -1227,6 +1264,49 @@ cc.Class({
          * 启动计时器，应该从后台传入 配置数据，控制 等待玩家 的等待时长
          */
         object.schedule(object.callback, 1, times, 0);
+    },
+    clean:function(){
+        /**
+         * 销毁玩家数据
+         */
+        for(var i =0 ; i<this.playercards.length ; i++){
+            this.playercards[i].destroy();
+        }
+        /**
+         * 销毁桌面上已打出的牌
+         */
+        for(var i =0 ; i<this.deskcards.length ; i++){
+            this.deskcards[i].destroy();
+        }
+        /**
+         * 销毁左侧玩家的手牌
+         */
+        for(var i =0 ; i<this.leftcards.length ; i++){
+            this.leftcards[i].destroy();
+        }
+        /**
+         * 销毁右侧玩家的手牌
+         */
+        for(var i =0 ; i<this.rightcards.length ; i++){
+            this.rightcards[i].destroy();
+        }
+        /**
+         * 销毁对家的手牌
+         */
+        for(var i =0 ; i<this.topcards.length ; i++){
+            this.topcards[i].destroy();
+        }
+        /**
+         * 玩家数据销毁条件（房间解散，或者有玩家退出房价的时候，所有玩家数据销毁后冲洗排序）
+         */
+    },
+    restart:function(){
+        /**
+         * 初始化当前玩家的麻将牌 对象池
+         */
+        for (var i = 0; i < 14 && this.cardpool.size() < 15; i++) {
+            this.cardpool.put(cc.instantiate(this.cards_current));
+        }
     },
     onDestroy:function(){
         if(this.ready()) {
