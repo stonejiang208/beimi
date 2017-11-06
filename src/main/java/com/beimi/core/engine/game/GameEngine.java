@@ -363,7 +363,7 @@ public class GameEngine {
 					 * bug，待修复：如果有多个玩家可以碰，则一个碰了，其他玩家就无法操作了
 					 */
 					board.dealRequest(gameRoom, board, orgi , false , null);
-				}else if(!StringUtils.isBlank(action) && action.equals(BMDataContext.PlayerAction.PENG.toString())){
+				}else if(!StringUtils.isBlank(action) && action.equals(BMDataContext.PlayerAction.PENG.toString()) && allowAction(card, player.getActions() , BMDataContext.PlayerAction.PENG.toString())){
 					Action playerAction = new Action(userid , action , card);
 					
 					int color = card / 36 ;
@@ -391,7 +391,7 @@ public class GameEngine {
 					
 					board.playcards(board, gameRoom, player, orgi);
 					
-				}else if(!StringUtils.isBlank(action) && action.equals(BMDataContext.PlayerAction.GANG.toString())){
+				}else if(!StringUtils.isBlank(action) && action.equals(BMDataContext.PlayerAction.GANG.toString()) && allowAction(card, player.getActions() , BMDataContext.PlayerAction.GANG.toString())){
 					if(board.getNextplayer().equals(userid)){
 						card = GameUtils.getGangCard(player.getCards()) ;
 						actionEvent = new ActionEvent(board.getBanker() , userid , card , action);
@@ -439,6 +439,25 @@ public class GameEngine {
 			}
 		}
 		return actionEvent ;
+	}
+	/**
+	 * 为防止同步数据错误，校验是否允许刚碰牌
+	 * @param card
+	 * @param actions
+	 * @return
+	 */
+	public boolean allowAction(byte card , List<Action> actions , String actiontype){
+		int take_color = card / 36 ;
+		int take_value = card%36 / 4 ;
+		boolean allow = true ;
+		for(Action action : actions){
+			int color = action.getCard() / 36 ;
+			int value = action.getCard() % 36 / 4 ;
+			if(take_color == color && take_value == value && action.getAction().equals(actiontype)){
+				allow = false ; break ;
+			}
+		}
+		return allow ;
 	}
 	
 	/**
