@@ -14,6 +14,7 @@ import com.beimi.core.engine.game.task.AbstractTask;
 import com.beimi.util.GameUtils;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.util.rules.model.DuZhuBoard;
+import com.beimi.util.rules.model.NextPlayer;
 import com.beimi.util.rules.model.Player;
 import com.beimi.web.model.GameRoom;
 import com.beimi.web.model.PlayUserClient;
@@ -47,7 +48,7 @@ public class CreateRaiseHandsTask extends AbstractTask implements ValueWithExpir
 				byte[] lastHands = board.pollLastHands() ;
 				board.setLasthands(lastHands);
 				
-				board.setNextplayer(player.getPlayuser());
+				board.setNextplayer(new NextPlayer(player.getPlayuser(), false));
 				player.setCards(ArrayUtils.addAll(player.getCards(), lastHands)) ;//翻底牌 
 				Arrays.sort(player.getCards());									  //重新排序
 				player.setCards(GameUtils.reverseCards(player.getCards()));		  //从大到小 倒序

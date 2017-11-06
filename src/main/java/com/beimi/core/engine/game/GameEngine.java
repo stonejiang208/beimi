@@ -20,6 +20,7 @@ import com.beimi.util.rules.model.ActionEvent;
 import com.beimi.util.rules.model.Board;
 import com.beimi.util.rules.model.DuZhuBoard;
 import com.beimi.util.rules.model.JoinRoom;
+import com.beimi.util.rules.model.NextPlayer;
 import com.beimi.util.rules.model.Player;
 import com.beimi.util.rules.model.RecoveryData;
 import com.beimi.util.rules.model.SelectColor;
@@ -72,7 +73,7 @@ public class GameEngine {
 					if((board.getLast()!=null && board.getLast().getUserid().equals(currentPlayer.getPlayuser())) || (board.getLast() == null && board.getBanker().equals(currentPlayer.getPlayuser()))){
 						automic = true ;
 					}
-					ActionTaskUtils.sendEvent("recovery", new RecoveryData(currentPlayer , board.getLasthands() , board.getNextplayer() , 25 , automic , board) , gameEvent.getGameRoom());
+					ActionTaskUtils.sendEvent("recovery", new RecoveryData(currentPlayer , board.getLasthands() , board.getNextplayer()!=null ? board.getNextplayer().getNextplayer() : null , 25 , automic , board) , gameEvent.getGameRoom());
 				}
 			}else{
 				//通知状态
@@ -222,7 +223,7 @@ public class GameEngine {
 			Board board = (Board) CacheHelper.getBoardCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi());
 			Player player = board.player(playUserClient) ;
 			
-			if(board!=null && player.getPlayuser().equals(board.getNextplayer())){
+			if(board!=null && player.getPlayuser().equals(board.getNextplayer().getNextplayer()) && board.getNextplayer().isTakecard() == false){
 				takeCards = board.takeCardsRequest(gameRoom, board, player, orgi, auto, playCards) ;
 			}
 		}
@@ -381,7 +382,7 @@ public class GameEngine {
 					player.setCards(otherCards);
 					player.getActions().add(playerAction) ;
 					
-					board.setNextplayer(userid);
+					board.setNextplayer(new NextPlayer(userid , false));
 					
 					actionEvent.setTarget(board.getLast().getUserid());
 					ActionTaskUtils.sendEvent("selectaction", actionEvent , gameRoom);

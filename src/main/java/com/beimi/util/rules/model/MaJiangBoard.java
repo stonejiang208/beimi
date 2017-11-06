@@ -184,6 +184,9 @@ public class MaJiangBoard extends Board implements java.io.Serializable{
 				takeCards.setCardsnum(player.getCards().length);
 				
 				board.setLast(takeCards);
+				
+				board.getNextplayer().setTakecard(true);
+				
 				CacheHelper.getBoardCacheBean().put(gameRoom.getId() , board, gameRoom.getOrgi());	//更新缓存数据
 				
 				if(takeCards.getCards().length == 1){
@@ -252,12 +255,12 @@ public class MaJiangBoard extends Board implements java.io.Serializable{
 	 * 
 	 */
 	public void dealRequest(GameRoom gameRoom , Board board , String orgi , boolean reverse , String nextplayer) {
-		Player next = board.nextPlayer(board.index(board.getNextplayer())) ;
+		Player next = board.nextPlayer(board.index(board.getNextplayer().getNextplayer())) ;
 		if(!StringUtils.isBlank(nextplayer)){
 			next = board.player(nextplayer) ;
 		}
 		if(next!=null){
-			board.setNextplayer(next.getPlayuser());
+			board.setNextplayer(new NextPlayer(next.getPlayuser(), false));
 			Byte newCard = null ;
 			if(reverse == true){	//杠牌 ， 从最后一张开始
 				newCard = board.getDeskcards().remove(board.getDeskcards().size() - 1) ;

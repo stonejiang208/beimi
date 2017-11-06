@@ -222,7 +222,7 @@ public class DuZhuBoard extends Board implements java.io.Serializable{
 			Player next = board.nextPlayer(board.index(player.getPlayuser())) ;
 			if(next!=null){
 				takeCards.setNextplayer(next.getPlayuser());
-				board.setNextplayer(next.getPlayuser());
+				board.setNextplayer(new NextPlayer(next.getPlayuser(), false));
 
 				if(board.getLast() != null && board.getLast().getUserid().equals(next.getPlayuser())){	//当前无出牌信息，刚开始出牌，或者出牌无玩家 压
 					automic = true ;

@@ -129,7 +129,7 @@ public abstract class Board implements Message,java.io.Serializable {
 	
 	private String winner ;		//赢的玩家
 	
-	private String nextplayer ;
+	private NextPlayer nextplayer ;
 	
 	private String command ;
 	
@@ -252,11 +252,11 @@ public abstract class Board implements Message,java.io.Serializable {
 		this.last = last;
 	}
 
-	public String getNextplayer() {
+	public NextPlayer getNextplayer() {
 		return nextplayer;
 	}
 
-	public void setNextplayer(String nextplayer) {
+	public void setNextplayer(NextPlayer nextplayer) {
 		this.nextplayer = nextplayer;
 	}
 

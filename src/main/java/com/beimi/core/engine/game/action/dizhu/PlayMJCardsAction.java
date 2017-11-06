@@ -26,8 +26,8 @@ public class PlayMJCardsAction<T,S> implements Action<T, S>{
 				Board board = (Board) CacheHelper.getBoardCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
 				int interval = (int) message.getMessageHeaders().getHeaders().get("interval") ;
 				String nextPlayer = board.getBanker();
-				if(!StringUtils.isBlank(board.getNextplayer())){
-					nextPlayer = board.getNextplayer() ;
+				if(!StringUtils.isBlank(board.getNextplayer().getNextplayer())){
+					nextPlayer = board.getNextplayer().getNextplayer() ;
 				}
 				CacheHelper.getExpireCache().put(gameRoom.getRoomid(), new CreateMJPlayCardsTask(interval , nextPlayer , gameRoom , gameRoom.getOrgi()));
 			}

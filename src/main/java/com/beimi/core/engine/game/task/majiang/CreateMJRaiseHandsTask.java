@@ -11,6 +11,7 @@ import com.beimi.core.engine.game.task.AbstractTask;
 import com.beimi.util.GameUtils;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.util.rules.model.Board;
+import com.beimi.util.rules.model.NextPlayer;
 import com.beimi.util.rules.model.Player;
 import com.beimi.util.rules.model.SelectColor;
 import com.beimi.web.model.GameRoom;
@@ -52,7 +53,7 @@ public class CreateMJRaiseHandsTask extends AbstractTask implements ValueWithExp
 			}
 		}
 		if(banker!=null){
-			board.setNextplayer(board.getBanker());
+			board.setNextplayer(new NextPlayer(board.getBanker(), false));
 			CacheHelper.getBoardCacheBean().put(gameRoom.getId() , board, gameRoom.getOrgi());	//更新缓存数据
 			/**
 			 * 发送一个通知，告诉大家 ， 开始出牌了
