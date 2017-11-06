@@ -220,14 +220,19 @@ public class ActionTaskUtils {
 			case 1 : 
 				switch(max){
 					case 1 : cardtype = BMDataContext.CardsTypeEnum.ONE.getType() ;break;		//单张
-					case 2 : cardtype = BMDataContext.CardsTypeEnum.TWO.getType() ;break;		//一对
+					case 2 : 
+						if(mincard == 13){
+							cardtype = BMDataContext.CardsTypeEnum.ELEVEN.getType();
+						}else{
+							cardtype = BMDataContext.CardsTypeEnum.TWO.getType() ;
+						}
+						break;		//一对
 					case 3 : cardtype = BMDataContext.CardsTypeEnum.THREE.getType() ;break;		//三张
 					case 4 : cardtype = BMDataContext.CardsTypeEnum.TEN.getType() ;break;		//炸弹
 				}
 				;break ;
 			case 2 :
 				switch(max){
-					case 1 : if(mincard > 52){cardtype = BMDataContext.CardsTypeEnum.ELEVEN.getType();} break;	//王炸
 					case 3 : cardtype = BMDataContext.CardsTypeEnum.FOUR.getType() ;break;	//三带一（或一对）
 					case 4 : cardtype = BMDataContext.CardsTypeEnum.NINE.getType() ;break;	//四带一对
 				}

@@ -116,16 +116,16 @@ public class TakeDiZhuCards extends TakeCards implements Message , java.io.Seria
 		if(lastTakeCards!=null && lastTakeCards.getCardType()!=null){
 			switch(lastTakeCards.getCardType().getCardtype()){
 				case 1 : //单张
-					retValue = this.getSingle(player.getCards(), types, lastTakeCards.getCardType().getMincard(), 1) ;
+					retValue = this.getSingle(player.getCards(), types, lastTakeCards.getCardType().getMaxcard(), 1) ;
 					break ;
 				case 2 : //一对儿
-					retValue = this.getPair(player.getCards(), types, lastTakeCards.getCardType().getMincard() ,1) ;
+					retValue = this.getPair(player.getCards(), types, lastTakeCards.getCardType().getMaxcard() ,1) ;
 					break ;
 				case 3 : //三张
-					retValue = this.getThree(player.getCards(), types, lastTakeCards.getCardType().getMincard() ,1) ;
+					retValue = this.getThree(player.getCards(), types, lastTakeCards.getCardType().getMaxcard() ,1) ;
 					break ;
 				case 4 : //三带一
-					retValue = this.getThree(player.getCards(), types, lastTakeCards.getCardType().getMincard() ,1) ;
+					retValue = this.getThree(player.getCards(), types, lastTakeCards.getCardType().getMaxcard() ,1) ;
 					if(retValue!=null && retValue.length == 3){
 						byte[] supplement = null ;
 						if(lastTakeCards.getCards().length == 4){	//三带一
