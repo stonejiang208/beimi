@@ -308,18 +308,24 @@ public class GameUtils {
 		mjCard.setCommand("action");
 		mjCard.setUserid(player.getPlayuser());
 		Map<Integer, Byte> data = new HashMap<Integer, Byte>();
+		boolean que = false ;
 		if(cards.length > 0){
 			for(byte temp : cards){
 				int value = (temp%36) / 4 ;			//牌面值
 				int rote = temp / 36 ;				//花色
 				int key = value + 9 * rote ;		//
-				if(data.get(key) == null){
+				if(rote == player.getColor()){
+					que = true ;
+				}
+				if(data.get(key) == null || rote == player.getColor()){
 					data.put(key , (byte)1) ;
 				}else{
 					data.put(key, (byte)(data.get(key)+1)) ;
 				}
+				
 				if(data.get(key) == 4 && deal == true){	//自己发牌的时候，需要先判断是否有杠牌
 					mjCard.setGang(true);
+					mjCard.setCard(temp);
 				}
 			}
 			/**
@@ -332,16 +338,19 @@ public class GameUtils {
 				if(card ==2 && deal == false){
 					//碰
 					mjCard.setPeng(true);
+					mjCard.setCard(card);
 				}else if(card == 3){
 					//明杠
 					mjCard.setGang(true);
+					mjCard.setCard(card);
 				}
 			}
 			
 			/**
 			 * 检查是否有弯杠 , 碰过 AND 自己抓了一张碰过的牌
 			 */
-			if(deal == true){
+			int rote = takecard  / 36 ;
+			if(deal == true && rote!= player.getColor() ){
 				for(Action action : player.getActions()){
 					if(action.getCard() == takecard && action.getAction().equals(BMDataContext.PlayerAction.PENG.toString())){
 						//
@@ -358,79 +367,82 @@ public class GameUtils {
 				data.put(key, (byte)(data.get(key)+1)) ;
 			}
 		}
-		/**
-		 * 检查是否有 胡 , 胡牌算法，先移除 对子
-		 */
-		List<Byte> pairs = new ArrayList<Byte>();
-		List<Byte> others = new ArrayList<Byte>();
-		List<Byte> kezi = new ArrayList<Byte>();
-		/**
-		 * 处理玩家手牌
-		 */
-		for(byte temp : cards){
-			int key = (((temp%36) / 4) + 9 * (int)(temp / 36)) ;			//字典编码
-			if(data.get(key) == 1 ){
-				others.add(temp) ;
-			}else if(data.get(key) == 2){
-				pairs.add(temp) ;
-			}else if(data.get(key) == 3){
-				kezi.add(temp) ;
-			}
-		}
-		/**
-		 * 处理一个单张
-		 */
-		{
-			int key = (((takecard%36) / 4) + 9 * (int)(takecard / 36)) ;			//字典编码
-			if(data.get(key) == 1 ){
-				others.add(takecard) ;
-			}else if(data.get(key) == 2){
-				pairs.add(takecard) ;
-			}else if(data.get(key) == 3){
-				kezi.add(takecard) ;
-			}
-		}
-		/**
-		 * 是否有胡
-		 */
-		processOther(others);
-		
-		if(others.size() == 0){
-			if(pairs.size() == 2 || pairs.size() == 14){//有一对，胡
-				mjCard.setHu(true);
-			}else{	//然后分别验证 ，只有一种特殊情况，的 3连对，可以组两个顺子，也可以胡 ， 其他情况就呵呵了
-				
-			}
-		}else if(pairs.size() > 2){	//对子的牌大于>张，否则肯定是不能胡的
-			//检查对子里 是否有额外多出来的 牌，如果有，则进行移除
-			for(int i=0 ; i<pairs.size() ; i++){
-				if(i%2==0){
-					others.add(pairs.get(i)) ;
+		if(que == false){
+			/**
+			 * 检查是否有 胡 , 胡牌算法，先移除 对子
+			 */
+			List<Byte> pairs = new ArrayList<Byte>();
+			List<Byte> others = new ArrayList<Byte>();
+			List<Byte> kezi = new ArrayList<Byte>();
+			/**
+			 * 处理玩家手牌
+			 */
+			for(byte temp : cards){
+				int key = (((temp%36) / 4) + 9 * (int)(temp / 36)) ;			//字典编码
+				if(data.get(key) == 1 ){
+					others.add(temp) ;
+				}else if(data.get(key) == 2){
+					pairs.add(temp) ;
+				}else if(data.get(key) == 3){
+					kezi.add(temp) ;
 				}
 			}
-			processOther( others);
-			
-			for(int i=0 ; i<pairs.size() ; i++){
-				if(i%2==1){
-					others.add(pairs.get(i)) ;
+			/**
+			 * 处理一个单张
+			 */
+			{
+				int key = (((takecard%36) / 4) + 9 * (int)(takecard / 36)) ;			//字典编码
+				if(data.get(key) == 1 ){
+					others.add(takecard) ;
+				}else if(data.get(key) == 2){
+					pairs.add(takecard) ;
+				}else if(data.get(key) == 3){
+					kezi.add(takecard) ;
 				}
 			}
-			
+			/**
+			 * 是否有胡
+			 */
 			processOther(others);
 			
-			/**
-			 * 检查 others
-			 */
-			/**
-			 * 最后一次，检查所有的值都是 2，就胡了
-			 */
-			if(others.size() == 2 && getKey(others.get(0)) == getKey(others.get(1))){
-				mjCard.setHu(true);
-			}else{	//还不能胡？
+			if(others.size() == 0){
+				if(pairs.size() == 2 || pairs.size() == 14){//有一对，胡
+					mjCard.setHu(true);
+				}else{	//然后分别验证 ，只有一种特殊情况，的 3连对，可以组两个顺子，也可以胡 ， 其他情况就呵呵了
+					
+				}
+			}else if(pairs.size() > 2){	//对子的牌大于>张，否则肯定是不能胡的
+				//检查对子里 是否有额外多出来的 牌，如果有，则进行移除
+				for(int i=0 ; i<pairs.size() ; i++){
+					if(i%2==0){
+						others.add(pairs.get(i)) ;
+					}
+				}
+				processOther( others);
 				
+				for(int i=0 ; i<pairs.size() ; i++){
+					if(i%2==1){
+						others.add(pairs.get(i)) ;
+					}
+				}
+				
+				processOther(others);
+				
+				/**
+				 * 检查 others
+				 */
+				/**
+				 * 最后一次，检查所有的值都是 2，就胡了
+				 */
+				if(others.size() == 2 && getKey(others.get(0)) == getKey(others.get(1))){
+					mjCard.setHu(true);
+				}else{	//还不能胡？
+					
+				}
 			}
 		}
 		if(mjCard.isHu()){
+			mjCard.setCard(takecard);
 			System.out.println("胡牌了");
 			for(byte temp : cards){
 				System.out.print(temp+",");

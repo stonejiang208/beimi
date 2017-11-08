@@ -44,7 +44,7 @@ public class MaJiangGame implements ChessGame{
 		 * 洗牌次数，参数指定，建议洗牌次数 为1次，多次洗牌的随机效果更好，例如：7次
 		 */
 		for(int i = 0 ; i<playway.getShuffletimes() ; i++){
-			Collections.shuffle(temp);
+			//Collections.shuffle(temp);
 		}
 		byte[] cards = new byte[136] ;
 		for(int i=0 ; i<temp.size() ; i++){

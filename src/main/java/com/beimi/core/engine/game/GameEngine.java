@@ -223,7 +223,7 @@ public class GameEngine {
 			Board board = (Board) CacheHelper.getBoardCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi());
 			Player player = board.player(playUserClient) ;
 			
-			if(board!=null && player.getPlayuser().equals(board.getNextplayer().getNextplayer()) && board.getNextplayer().isTakecard() == false){
+			if(board!=null && board.getNextplayer()!=null && player.getPlayuser().equals(board.getNextplayer().getNextplayer()) && board.getNextplayer().isTakecard() == false){
 				takeCards = board.takeCardsRequest(gameRoom, board, player, orgi, auto, playCards) ;
 			}
 		}
@@ -392,7 +392,7 @@ public class GameEngine {
 					board.playcards(board, gameRoom, player, orgi);
 					
 				}else if(!StringUtils.isBlank(action) && action.equals(BMDataContext.PlayerAction.GANG.toString()) && allowAction(card, player.getActions() , BMDataContext.PlayerAction.GANG.toString())){
-					if(board.getNextplayer().equals(userid)){
+					if(board.getNextplayer().getNextplayer().equals(userid)){
 						card = GameUtils.getGangCard(player.getCards()) ;
 						actionEvent = new ActionEvent(board.getBanker() , userid , card , action);
 						actionEvent.setActype(BMDataContext.PlayerGangAction.AN.toString());

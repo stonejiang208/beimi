@@ -213,7 +213,7 @@ public class MaJiangBoard extends Board implements java.io.Serializable{
 					if(!temp.getPlayuser().equals(player.getPlayuser())){
 						MJCardMessage mjCard = checkMJCard(temp, takeCards.getCard() , false) ;
 						
-						if(mjCard.isGang() || mjCard.isPeng() || mjCard.isChi()){
+						if(mjCard.isGang() || mjCard.isPeng() || mjCard.isChi() || mjCard.isHu()){
 							/**
 							 * 通知客户端 有杠碰吃胡了
 							 */
@@ -246,7 +246,6 @@ public class MaJiangBoard extends Board implements java.io.Serializable{
 	 */
 	public MJCardMessage checkMJCard(Player player , byte card , boolean deal){
 		MJCardMessage mjCard = GameUtils.processMJCard(player,player.getCards(), card , deal) ;
-		mjCard.setCard(card);
 		mjCard.setDeal(deal);
 		mjCard.setTakeuser(player.getPlayuser());
 		return mjCard ;
@@ -270,7 +269,7 @@ public class MaJiangBoard extends Board implements java.io.Serializable{
 			
 			MJCardMessage mjCard = checkMJCard(next, newCard , true) ;
 			boolean hasAction = false ;
-			if(mjCard.isGang() || mjCard.isPeng() || mjCard.isChi()){
+			if(mjCard.isGang() || mjCard.isPeng() || mjCard.isChi() || mjCard.isHu()){
 				/**
 				 * 通知客户端 有杠碰吃胡了
 				 */
