@@ -513,6 +513,11 @@ cc.Class({
             context.initPlayerHandCards(0 , 1 , inx , context , true);
         }
         context.desk_cards.string = data.deskcards ;
+        if(context.action == "deal" && data.userid == cc.beimi.user.id) {
+            //
+        }else{
+            context.exchange_state( "action", context);
+        }
     },
     select_action_searchlight:function(data , context , player){
         context.exchange_searchlight(player.tablepos , context);
@@ -678,6 +683,13 @@ cc.Class({
      */
     action_event:function(data, context){
         if(cc.beimi.user.id == data.userid){
+            /**
+             * 隐藏其他动作
+             */
+            context.exchange_state( "action", context);
+            /**
+             * 
+             */
             let gang , peng , chi , hu , guo;
             if(data.deal == true){  //发牌的动作
                 for(var inx = 0 ; inx < context.actionnode_deal.children.length ; inx++){
@@ -815,10 +827,12 @@ cc.Class({
             context.deskcards.push(cards_gang) ;
 
             context.exchange_state("nextplayer" , context);
-        }else{
 
-        }
-        {
+            /**
+             * 隐藏 动作 按钮
+             */
+            context.exchange_state( "action", context);
+        }else{
             //以下代码是用于找到 杠/碰/吃/胡牌的 目标牌  ， 然后将此牌 从 桌面牌中移除
             let temp = context.player(data.target, context), deskcardpanel;
             if (temp.tablepos == "right") {
@@ -1193,19 +1207,13 @@ cc.Class({
                 banker.active = false;
                 //object.canceltimer(object) ;
                 break   ;
+            case "action" :
+                /**
+                 * 隐藏 杠碰吃胡 等 操作
+                 */
+                object.dealActionProcess(object);
+                break;
             case "nextplayer" :
-                if(object.action ){
-                    if(object.action == "two"){
-                        let ani = object.actionnode_two.getComponent(cc.Animation);
-                        ani.play("majiang_action_end") ;
-                    }else if(object.action == "three") {
-                        let ani = object.actionnode_three.getComponent(cc.Animation);
-                        ani.play("majiang_trhee_action_end") ;
-                    }else if(object.action == "deal") {
-                        object.actionnode_deal.active = false ;
-                    }
-                }
-                object.action = null ;
                 /**
                  * 选择了定缺结果，关闭选择按钮
                  * @type {boolean}
@@ -1234,6 +1242,20 @@ cc.Class({
                 context.searchlight.children[inx].active = false ;
             }
         }
+    },
+    dealActionProcess:function(object){
+        if(object.action != null){
+            if(object.action == "two"){
+                let ani = object.actionnode_two.getComponent(cc.Animation);
+                ani.play("majiang_action_end") ;
+            }else if(object.action == "three") {
+                let ani = object.actionnode_three.getComponent(cc.Animation);
+                ani.play("majiang_trhee_action_end") ;
+            }else if(object.action == "deal") {
+                object.actionnode_deal.active = false ;
+            }
+        }
+        object.action = null ;
     },
     canceltimer:function(object){
         object.unscheduleAllCallbacks();
