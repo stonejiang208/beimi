@@ -218,6 +218,7 @@ public class MaJiangBoard extends Board implements java.io.Serializable{
 							 * 通知客户端 有杠碰吃胡了
 							 */
 							hasAction = true ;
+							System.out.println();
 							ActionTaskUtils.sendEvent(temp.getPlayuser(), mjCard);
 						}
 					}

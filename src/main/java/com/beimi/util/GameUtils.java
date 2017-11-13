@@ -338,11 +338,11 @@ public class GameUtils {
 				if(card ==2 && deal == false){
 					//碰
 					mjCard.setPeng(true);
-					mjCard.setCard(card);
+					mjCard.setCard(takecard);
 				}else if(card == 3){
 					//明杠
 					mjCard.setGang(true);
-					mjCard.setCard(card);
+					mjCard.setCard(takecard);
 				}
 			}
 			
