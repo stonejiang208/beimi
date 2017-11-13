@@ -688,7 +688,7 @@ cc.Class({
              */
             context.exchange_state( "action", context);
             /**
-             * 
+             *
              */
             let gang , peng , chi , hu , guo;
             if(data.deal == true){  //发牌的动作
@@ -901,13 +901,13 @@ cc.Class({
                     maxvalluecard = context.playercards[i] ;
                 }
             }
-            if(temp_player.banker == true){
+            if(temp_player.banker == true && maxvalluecard!=null){
                 maxvalluecard.getComponent("HandCards").lastone() ;
             }
-        } , 1000);
+        } , 100);
         setTimeout(function(){
             context.exchange_state("play" , context);
-        } , 1500)
+        } , 500)
 
         /**
          * 统一处理排序 的动画

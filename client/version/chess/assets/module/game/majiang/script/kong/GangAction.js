@@ -72,9 +72,9 @@ cc.Class({
             }
         }
         if(deskcard == "suo2"){
-            cardframe = this.beimi0.getSpriteFrame('麻将牌-牌面-'+deskcard);
+            cardframe = this.beimi0.getSpriteFrame('牌面-'+deskcard);
         }else{
-            cardframe = this.atlas.getSpriteFrame('麻将牌-牌面-'+deskcard);
+            cardframe = this.atlas.getSpriteFrame('牌面-'+deskcard);
         }
 
         this.card_one.getComponent(cc.Sprite).spriteFrame = cardframe;

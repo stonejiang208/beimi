@@ -246,9 +246,7 @@
     "_fontSize": 32,
     "_lineHeight": 32,
     "_enableWrapText": true,
-    "_N$file": {
-      "__uuid__": "7ab05ddd-d3d1-48f4-9e08-81e3377c0206"
-    },
+    "_N$file": null,
     "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_N$string": "您输入的房间号不存在",
@@ -336,8 +334,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 158,
-      "height": 75
+      "width": 162,
+      "height": 85
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -418,7 +416,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "b1be5588-74cb-4194-9fa4-d41eaf1ccf81"
+      "__uuid__": "d2d9027f-24bc-4527-91f3-10661107ed53"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -434,7 +432,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_atlas": {
-      "__uuid__": "c1a3894d-ecd5-4442-adcb-3363966af0a2"
+      "__uuid__": "1ea3f79b-d0a6-4d37-9856-87a53d9ffe0c"
     }
   },
   {
@@ -457,7 +455,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "241ecd6f-4807-43e4-91a4-23299ad000b7"
+      "__uuid__": "e8b52b8b-212f-42db-a065-d31f545bda5d"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -473,7 +471,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_atlas": {
-      "__uuid__": "c1a3894d-ecd5-4442-adcb-3363966af0a2"
+      "__uuid__": "1ea3f79b-d0a6-4d37-9856-87a53d9ffe0c"
     }
   },
   {
@@ -698,7 +696,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "487d3392-4b44-4ce5-8024-a637aa80fdd7"
+      "__uuid__": "cebcf73d-7e4d-4fea-b675-9e480602ef7b"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -713,7 +711,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "a273b2af-cfaf-4915-94dc-538be1abf176"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",

@@ -77,13 +77,13 @@ cc.Class({
         if(self.card < 52){
             var cardvalue = self.card+1 ;
             if(cardvalue % 4 == 0){
-                frame = this.atlas.getSpriteFrame('牌-方片');
+                frame = this.atlas.getSpriteFrame('方片');
             }else if(cardvalue % 4 == 1){
-                frame = this.atlas.getSpriteFrame('牌-黑桃');
+                frame = this.atlas.getSpriteFrame('黑桃');
             }else if(cardvalue % 4 == 2){
-                frame = this.atlas.getSpriteFrame('牌-红心');
+                frame = this.atlas.getSpriteFrame('红心');
             }else if(cardvalue % 4 == 3){
-                frame = this.atlas.getSpriteFrame('牌-梅花');
+                frame = this.atlas.getSpriteFrame('梅花');
             }
             var src = (self.card  - self.card % 4 ) / 4 + 1 + 2;
             if(src == 14){
@@ -92,9 +92,9 @@ cc.Class({
                 src = 2 ;
             }
             if(self.card % 2 == 0){
-                cardframe = this.atlas.getSpriteFrame('牌-'+src);
+                cardframe = this.atlas.getSpriteFrame(src);
             }else{
-                cardframe = this.atlas.getSpriteFrame('牌-r'+src);
+                cardframe = this.atlas.getSpriteFrame('r'+src);
             }
             this.leftcolor.getComponent(cc.Sprite).spriteFrame = frame;
             this.lefttop.getComponent(cc.Sprite).spriteFrame = cardframe;
@@ -107,14 +107,14 @@ cc.Class({
             this.kingbg.active = false ;
             this.normal.y = 0 ;
         }else if(self.card == 52){
-            frame = this.atlas.getSpriteFrame('牌-小王_大');
+            frame = this.atlas.getSpriteFrame('小王_大');
             this.king.getComponent(cc.Sprite).spriteFrame = frame;
             this.initcard.active = false ;
             this.normal.active = false;
             this.kingbg.active = true ;
             this.kingbg.y = 0 ;
         }else if(self.card == 53){
-            frame = this.atlas.getSpriteFrame('牌-大王_大');
+            frame = this.atlas.getSpriteFrame('大王_大');
             this.king.getComponent(cc.Sprite).spriteFrame = frame;
             this.initcard.active = false ;
             this.normal.active = false;

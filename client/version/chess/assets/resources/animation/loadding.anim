@@ -3,7 +3,7 @@
   "_name": "loadding",
   "_objFlags": 0,
   "_rawFiles": null,
-  "_duration": 1.18,
+  "_duration": 1.1833333333333333,
   "sample": 60,
   "speed": 1,
   "wrapMode": 1,
@@ -16,91 +16,91 @@
               {
                 "frame": 0,
                 "value": {
-                  "__uuid__": "95e39a27-9094-4b31-b265-deb3089b03a9"
+                  "__uuid__": "86ad4867-1aee-4a4c-80eb-3407fb6dea52"
                 }
               },
               {
                 "frame": 0.08333333333333333,
                 "value": {
-                  "__uuid__": "b0b541d5-9a88-43f4-a123-c09ab8f6b0c6"
+                  "__uuid__": "da6fb941-2698-4ccc-9fac-9609b8e73e9f"
                 }
               },
               {
                 "frame": 0.16666666666666666,
                 "value": {
-                  "__uuid__": "196b9a94-1649-4ed2-8cc9-8c9250a13d0c"
+                  "__uuid__": "4593f8fa-9052-4b41-9775-82f7300386d9"
                 }
               },
               {
                 "frame": 0.25,
                 "value": {
-                  "__uuid__": "dca7f708-27fc-434a-b1a3-ec78f2667eb0"
+                  "__uuid__": "7526eff2-2cf3-4bdb-a28a-1e6941c66e54"
                 }
               },
               {
                 "frame": 0.3333333333333333,
                 "value": {
-                  "__uuid__": "3ec3e3dc-ce95-422d-8b54-a011b24b603b"
+                  "__uuid__": "f483f5e7-8aa7-45c8-b55b-ab823168a5ac"
                 }
               },
               {
                 "frame": 0.4166666666666667,
                 "value": {
-                  "__uuid__": "9f7f4984-395f-403d-b41d-f30e71ce77b8"
+                  "__uuid__": "678e92e4-1581-42da-971d-60a31bb72923"
                 }
               },
               {
                 "frame": 0.5,
                 "value": {
-                  "__uuid__": "db1015b4-ebb4-4fd2-a2e3-1279160777de"
+                  "__uuid__": "fb339689-85b9-4fa9-a8d5-a363aac0f84c"
                 }
               },
               {
                 "frame": 0.5833333333333334,
                 "value": {
-                  "__uuid__": "7a6957d7-9800-46d2-84f1-21be78091acc"
+                  "__uuid__": "57f8b9ad-1e98-4ef5-8143-645a170e2741"
                 }
               },
               {
                 "frame": 0.6666666666666666,
                 "value": {
-                  "__uuid__": "f3484177-c7b9-4162-9b82-4713376d74c0"
+                  "__uuid__": "fa148ac8-df75-40fd-ad7a-9c5b67892b2d"
                 }
               },
               {
                 "frame": 0.75,
                 "value": {
-                  "__uuid__": "193523c0-3b2d-49fa-a49d-e4b6a8d2a57d"
+                  "__uuid__": "96609bd7-ab44-4489-ab12-046352bbf771"
                 }
               },
               {
                 "frame": 0.8333333333333334,
                 "value": {
-                  "__uuid__": "37631967-547f-4ab2-916c-3fb3e292a6b4"
+                  "__uuid__": "42f0ebb5-9374-4735-9ec9-1fdeb56cc8b0"
                 }
               },
               {
                 "frame": 0.9166666666666666,
                 "value": {
-                  "__uuid__": "b635b9f6-76bd-4803-9ce4-c3225201cc0d"
+                  "__uuid__": "5ded30f0-27f4-41d6-9ec0-a9194962aca5"
                 }
               },
               {
                 "frame": 1,
                 "value": {
-                  "__uuid__": "df48688d-5c47-4979-ac27-a0e85ed670ab"
+                  "__uuid__": "a8babf5c-f306-4035-9eb2-05333d0aa398"
                 }
               },
               {
                 "frame": 1.0833333333333333,
                 "value": {
-                  "__uuid__": "66156bc8-3ab7-45ea-aed9-38b2577ab121"
+                  "__uuid__": "945e170c-3731-446a-bcdb-f3015e6373ff"
                 }
               },
               {
                 "frame": 1.1666666666666667,
                 "value": {
-                  "__uuid__": "59b8bde3-69e1-417d-bbe8-120b5e10c763"
+                  "__uuid__": "d7d90ec6-525c-4378-ac4f-1af3c733a6b6"
                 }
               }
             ]
@@ -114,7 +114,7 @@
               {
                 "frame": 0,
                 "value": {
-                  "__uuid__": "6fba7c5d-de3c-4e07-9b12-c3b0d78ef510"
+                  "__uuid__": "87df0352-847a-4e13-87a0-c9dbe2ce69ad"
                 }
               }
             ]

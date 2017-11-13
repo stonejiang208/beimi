@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "b1008786-d23c-4d20-8bfa-d4129b1fcda7",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "beimi-other": {
+      "ver": "1.0.3",
+      "uuid": "454a1b79-7dcb-4a0d-b832-01de5cd8c424",
+      "rawTextureUuid": "b1008786-d23c-4d20-8bfa-d4129b1fcda7",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 2018,
+      "height": 1177,
+      "rawWidth": 2018,
+      "rawHeight": 1177,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

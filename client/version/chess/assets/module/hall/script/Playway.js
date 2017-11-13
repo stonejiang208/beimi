@@ -68,7 +68,7 @@ cc.Class({
             if(playway.maxcoins >= 10000){
                 max = parseInt(playway.maxcoins / 10000)+"万" ;
             }
-            this.scorelimit.string = min + " - " + max ;
+            this.scorelimit.string = min + "-" + max ;
 
             this.score.string = playway.score ;
         }

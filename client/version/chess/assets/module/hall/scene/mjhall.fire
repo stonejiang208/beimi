@@ -371,7 +371,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "c2de1d90-e5f8-48e0-9797-809550d1b674"
+      "__uuid__": "44de4e78-dc79-4486-b83b-6c84d13d94bf"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -387,7 +387,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_atlas": {
-      "__uuid__": "c1a3894d-ecd5-4442-adcb-3363966af0a2"
+      "__uuid__": "1ea3f79b-d0a6-4d37-9856-87a53d9ffe0c"
     }
   },
   {
@@ -839,7 +839,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "e35f9d67-16b7-4b9c-9998-40a454f8000d"
+      "__uuid__": "b0d36e98-17c3-4aa3-be0d-fe2c2c5e8c57"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -855,7 +855,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_atlas": {
-      "__uuid__": "26448b36-9591-4cde-a43d-353a50452f2f"
+      "__uuid__": "43b45bf1-27e9-42d1-9c58-62bcad9c0f9f"
     }
   },
   {
@@ -974,7 +974,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "1e0ced5b-e531-4b3c-92d7-4afe5303a914"
+      "__uuid__": "e5d2dabb-ac9d-437b-b596-5ccd0a76ae78"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -989,7 +989,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "a273b2af-cfaf-4915-94dc-538be1abf176"
+    }
   },
   {
     "__type__": "cc.Node",
@@ -1052,7 +1054,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "44b72093-4235-4ece-9438-f6bdf9e142db"
+      "__uuid__": "26a17f49-7e69-48e9-8bc5-a4a041820284"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -1068,7 +1070,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_atlas": {
-      "__uuid__": "26448b36-9591-4cde-a43d-353a50452f2f"
+      "__uuid__": "1ea3f79b-d0a6-4d37-9856-87a53d9ffe0c"
     }
   },
   {
@@ -1135,7 +1137,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "f53f8d17-1f9a-4e8f-949f-96141b04ad5a"
+      "__uuid__": "07a50506-0230-4002-b9ae-06fce7e670a9"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -1151,7 +1153,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_atlas": {
-      "__uuid__": "c1a3894d-ecd5-4442-adcb-3363966af0a2"
+      "__uuid__": "1ea3f79b-d0a6-4d37-9856-87a53d9ffe0c"
     }
   },
   {
@@ -1582,7 +1584,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 411,
-      "height": 175
+      "height": 185
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -1609,7 +1611,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "28d92750-91b3-408f-b717-d7e8c1ce9d88"
+      "__uuid__": "c6fe6d51-9085-4877-bdf3-dd2eb4c1e65a"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -1625,7 +1627,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_atlas": {
-      "__uuid__": "c1a3894d-ecd5-4442-adcb-3363966af0a2"
+      "__uuid__": "1ea3f79b-d0a6-4d37-9856-87a53d9ffe0c"
     }
   },
   {
@@ -1838,8 +1840,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 183,
-      "height": 33
+      "width": 148,
+      "height": 31
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -1866,7 +1868,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "12d031b6-7468-4ac0-8d78-69177350f6f1"
+      "__uuid__": "8dff6012-5ae9-482d-b6d6-654562c795d5"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -1882,7 +1884,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_atlas": {
-      "__uuid__": "c1a3894d-ecd5-4442-adcb-3363966af0a2"
+      "__uuid__": "1ea3f79b-d0a6-4d37-9856-87a53d9ffe0c"
     }
   },
   {
@@ -1918,7 +1920,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 302.22,
+      "width": 301.58,
       "height": 23
     },
     "_rotationX": 0,
@@ -1950,9 +1952,7 @@
     "_fontSize": 23,
     "_lineHeight": 23,
     "_enableWrapText": true,
-    "_N$file": {
-      "__uuid__": "7ab05ddd-d3d1-48f4-9e08-81e3377c0206"
-    },
+    "_N$file": null,
     "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_N$string": "每日最多可以互送10个好友哦",
@@ -2267,7 +2267,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "20f8a6ad-2225-4faa-8888-abfddcf0b8e3"
+      "__uuid__": "7a7c2b73-a1d1-4e41-b26b-41c4bf04f7e1"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -2283,7 +2283,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_atlas": {
-      "__uuid__": "d1d96e5c-707c-4fd6-a0d9-a07ed71d54c1"
+      "__uuid__": "43b45bf1-27e9-42d1-9c58-62bcad9c0f9f"
     }
   },
   {
