@@ -2354,13 +2354,13 @@
             <key>premultiplyAlpha</key>
             <false/>
             <key>realTextureFileName</key>
-            <string>beimi-4.webp</string>
+            <string>beimi-4.png</string>
             <key>size</key>
             <string>{1412,1023}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:5d5cdcbe6a219ea5fe3a3f39b38e3a84:38848722c6d3c68713a2c5b6257ef7f1:5811b9bbb15fe01aab9f1b084fdeca44$</string>
+            <string>$TexturePacker:SmartUpdate:b79b4a818cc45c20f71cf1c30df61162:38848722c6d3c68713a2c5b6257ef7f1:ce297335ebe6913b5554b294d5070350$</string>
             <key>textureFileName</key>
-            <string>beimi-4.webp</string>
+            <string>beimi-4.png</string>
         </dict>
     </dict>
 </plist>

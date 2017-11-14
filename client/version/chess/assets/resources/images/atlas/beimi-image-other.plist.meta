@@ -1,7 +1,7 @@
 {
   "ver": "1.2.4",
   "uuid": "a273b2af-cfaf-4915-94dc-538be1abf176",
-  "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+  "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
   "size": {
     "width": 1021,
     "height": 2001
@@ -11,7 +11,7 @@
     "LOGO2.png": {
       "ver": "1.0.3",
       "uuid": "1e72d114-afa5-4a8c-aa54-302f93c71ee0",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -33,7 +33,7 @@
     "account.png": {
       "ver": "1.0.3",
       "uuid": "26f36deb-13f2-4c70-9505-7cc4d5fbaa63",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -55,7 +55,7 @@
     "alert.png": {
       "ver": "1.0.3",
       "uuid": "cebcf73d-7e4d-4fea-b675-9e480602ef7b",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -77,7 +77,7 @@
     "banker.png": {
       "ver": "1.0.3",
       "uuid": "be987294-95c5-43fc-b6d0-d02e30ba863d",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -99,7 +99,7 @@
     "base.png": {
       "ver": "1.0.3",
       "uuid": "0b08f701-2a04-45e3-a1a6-3b99f4cd6055",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -121,7 +121,7 @@
     "guestbtn.png": {
       "ver": "1.0.3",
       "uuid": "026dec79-6bcd-470b-8d70-8de2a9f2570c",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -143,7 +143,7 @@
     "input_bg.png": {
       "ver": "1.0.3",
       "uuid": "c7f8ed4b-d288-4761-9bc0-00cb389d243e",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -165,7 +165,7 @@
     "login.png": {
       "ver": "1.0.3",
       "uuid": "dfefb0fe-479e-4ee2-a821-2e3b3ee594a2",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -187,7 +187,7 @@
     "loginbtn.png": {
       "ver": "1.0.3",
       "uuid": "b2eca323-e8ee-4a53-9a13-26977162d37f",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -209,7 +209,7 @@
     "logo.png": {
       "ver": "1.0.3",
       "uuid": "0a054fdf-0e9d-41d7-bc7e-db63e6e8cbbc",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -231,7 +231,7 @@
     "myself.png": {
       "ver": "1.0.3",
       "uuid": "fda1d862-8529-4e7d-8b9d-93aaf5df6da7",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -253,7 +253,7 @@
     "number.png": {
       "ver": "1.0.3",
       "uuid": "6a2518c8-dd9c-4b36-be8e-239632494937",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -275,7 +275,7 @@
     "password.png": {
       "ver": "1.0.3",
       "uuid": "f2a87352-72ac-465a-b648-ab626f2b71ec",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -297,7 +297,7 @@
     "roomtip.png": {
       "ver": "1.0.3",
       "uuid": "f0b0adcb-0920-4f75-b645-154bb40bec6f",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -319,7 +319,7 @@
     "summary-你赢了.png": {
       "ver": "1.0.3",
       "uuid": "3b06e8f2-0ad6-49a3-8a5d-9533458a1a92",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -341,7 +341,7 @@
     "summary-你输了.png": {
       "ver": "1.0.3",
       "uuid": "2f420693-5a7d-4cc1-973f-f082c50df751",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -363,7 +363,7 @@
     "summary-其他头像外框50x50.png": {
       "ver": "1.0.3",
       "uuid": "e0b492d3-0056-47bf-b2cb-193677c03903",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -385,7 +385,7 @@
     "summary-其他玩家底框.png": {
       "ver": "1.0.3",
       "uuid": "bd0b1f96-61cf-4465-9e33-248290fe16c4",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -407,7 +407,7 @@
     "summary-加倍小.png": {
       "ver": "1.0.3",
       "uuid": "13fce6ce-64ce-4125-afd3-ed99ad02da56",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -429,7 +429,7 @@
     "summary-失败角色.png": {
       "ver": "1.0.3",
       "uuid": "f472ef4a-674d-4f25-a9d7-b25a809c8197",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -451,7 +451,7 @@
     "summary-自己头像外框74x74.png": {
       "ver": "1.0.3",
       "uuid": "4ce8fae3-402f-47c1-bcc8-b11e68c77ad0",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -473,7 +473,7 @@
     "summary-自己灰色底框.png": {
       "ver": "1.0.3",
       "uuid": "11699a8f-f139-4197-b25e-1db9e9a35193",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -495,7 +495,7 @@
     "summary-自己金色底框.png": {
       "ver": "1.0.3",
       "uuid": "4a51bd0c-788f-4283-9fd6-6eafca73822b",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -517,7 +517,7 @@
     "timer_char.png": {
       "ver": "1.0.3",
       "uuid": "13ed1ff0-7614-4de2-bdce-792fd321a178",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -539,7 +539,7 @@
     "weixinaccount.png": {
       "ver": "1.0.3",
       "uuid": "15ab0c79-6051-4bad-b781-289bcf181b66",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -561,7 +561,7 @@
     "不洗牌.png": {
       "ver": "1.0.3",
       "uuid": "538fef69-ea8b-4bb9-9914-fed7c540ae6e",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -583,7 +583,7 @@
     "不要.png": {
       "ver": "1.0.3",
       "uuid": "db1382cc-098e-4cac-a4cb-501534a6752b",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -605,7 +605,7 @@
     "你赢了.png": {
       "ver": "1.0.3",
       "uuid": "a9c4ae5f-fb3e-4690-aae3-584fe81ef0fb",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -627,7 +627,7 @@
     "你输了.png": {
       "ver": "1.0.3",
       "uuid": "55f8612c-daae-4532-bbdc-a3ad60b68381",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -649,7 +649,7 @@
     "其他头像外框50x50.png": {
       "ver": "1.0.3",
       "uuid": "432f020a-f8a2-4c1b-98f6-eed9845d3c8b",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -671,7 +671,7 @@
     "其他玩家底框.png": {
       "ver": "1.0.3",
       "uuid": "f69d147b-0dfe-4056-8a8b-cee819b6eeb1",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -693,7 +693,7 @@
     "加倍小.png": {
       "ver": "1.0.3",
       "uuid": "42847714-3b66-48d4-a9c0-6cc6cc7a4f94",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -715,7 +715,7 @@
     "动作提示.png": {
       "ver": "1.0.3",
       "uuid": "27ca871c-3122-49ad-a119-735eb82c8802",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -737,7 +737,7 @@
     "失败角色.png": {
       "ver": "1.0.3",
       "uuid": "d4e6c568-ffcb-4438-941b-da26b7c194f4",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -759,7 +759,7 @@
     "底牌.png": {
       "ver": "1.0.3",
       "uuid": "0196a7c4-b238-452d-bea5-b965cef9b3c1",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -781,7 +781,7 @@
     "数字-+.png": {
       "ver": "1.0.3",
       "uuid": "0d9111a5-e2f1-4d24-84ec-ce9715ce671a",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -803,7 +803,7 @@
     "数字--.png": {
       "ver": "1.0.3",
       "uuid": "455b18b0-7331-4c76-8c67-5d2bb2f44ec5",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -825,7 +825,7 @@
     "数字-0.png": {
       "ver": "1.0.3",
       "uuid": "94e78646-6cb1-4588-a616-d64a3c61de88",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -847,7 +847,7 @@
     "数字-1.png": {
       "ver": "1.0.3",
       "uuid": "fef34c1c-eff7-4c73-8aed-5ffa3d9df11d",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -869,7 +869,7 @@
     "数字-2.png": {
       "ver": "1.0.3",
       "uuid": "7c91613a-3091-45d4-89ed-35fd8194d169",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -891,7 +891,7 @@
     "数字-3.png": {
       "ver": "1.0.3",
       "uuid": "20590e35-2cec-4e50-90a3-9faf8daac8b9",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -913,7 +913,7 @@
     "数字-4.png": {
       "ver": "1.0.3",
       "uuid": "982aac8f-9c2c-459b-a8ae-9d965cccca20",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -935,7 +935,7 @@
     "数字-5.png": {
       "ver": "1.0.3",
       "uuid": "d62f0091-e054-431d-963d-5cc75610b78d",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -957,7 +957,7 @@
     "数字-6.png": {
       "ver": "1.0.3",
       "uuid": "21661535-0536-44bc-9c05-de8255c1a51d",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -979,7 +979,7 @@
     "数字-7.png": {
       "ver": "1.0.3",
       "uuid": "9ef243e3-34d2-4183-971a-683e049017a0",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -1001,7 +1001,7 @@
     "数字-8.png": {
       "ver": "1.0.3",
       "uuid": "d87493e0-6acc-4ae2-ab44-a2fb63812893",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -1023,7 +1023,7 @@
     "数字-9.png": {
       "ver": "1.0.3",
       "uuid": "b187230e-61e4-409d-afe2-bb44bd6713b6",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -1045,7 +1045,7 @@
     "数字-dian.png": {
       "ver": "1.0.3",
       "uuid": "b53332f1-e923-4d99-9377-61161accd762",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -1067,7 +1067,7 @@
     "数字-qian.png": {
       "ver": "1.0.3",
       "uuid": "1e12b5c3-ca16-47e9-8290-a9ab81d85fc3",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -1089,7 +1089,7 @@
     "数字-wan.png": {
       "ver": "1.0.3",
       "uuid": "4fcbf707-0123-4873-96cd-cc944268aae4",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -1111,7 +1111,7 @@
     "数字-y_+.png": {
       "ver": "1.0.3",
       "uuid": "75f3899c-fe50-403f-9d92-161d73618b7f",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -1133,7 +1133,7 @@
     "数字-y_-.png": {
       "ver": "1.0.3",
       "uuid": "491e5e5f-0d83-4db1-9a34-2ed40d2575aa",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -1155,7 +1155,7 @@
     "数字-y_0.png": {
       "ver": "1.0.3",
       "uuid": "eb22e003-3fd3-4118-acbe-1209340aaa34",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -1177,7 +1177,7 @@
     "数字-y_1.png": {
       "ver": "1.0.3",
       "uuid": "cd8ab191-e697-48cb-8448-557686dc935c",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -1199,7 +1199,7 @@
     "数字-y_2.png": {
       "ver": "1.0.3",
       "uuid": "76fba00c-9868-418c-9775-467a984f24af",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -1221,7 +1221,7 @@
     "数字-y_3.png": {
       "ver": "1.0.3",
       "uuid": "49964a24-b5f7-4956-a0c1-7e3ddd2bb5ed",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -1243,7 +1243,7 @@
     "数字-y_4.png": {
       "ver": "1.0.3",
       "uuid": "98d3b494-9673-4f1f-b7d1-7b23c3a2af10",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -1265,7 +1265,7 @@
     "数字-y_5.png": {
       "ver": "1.0.3",
       "uuid": "e111009d-8081-415d-baea-72173dc689dc",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -1287,7 +1287,7 @@
     "数字-y_6.png": {
       "ver": "1.0.3",
       "uuid": "cf9a4544-07d0-404e-8fa0-7a07e735d5c7",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -1309,7 +1309,7 @@
     "数字-y_7.png": {
       "ver": "1.0.3",
       "uuid": "affb7606-7c1e-488d-9e56-7bf1a6822f62",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -1331,7 +1331,7 @@
     "数字-y_8.png": {
       "ver": "1.0.3",
       "uuid": "cd87b4b8-55fc-428a-b237-57cfd88d17b8",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -1353,7 +1353,7 @@
     "数字-y_9.png": {
       "ver": "1.0.3",
       "uuid": "f06bb7ca-c96a-419d-950f-63fffda5fc82",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -1375,7 +1375,7 @@
     "数字-y_dian.png": {
       "ver": "1.0.3",
       "uuid": "640aed7f-1ad3-485d-b3fb-f1f6dd3944b6",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -1397,7 +1397,7 @@
     "数字-y_qian.png": {
       "ver": "1.0.3",
       "uuid": "276f58e0-76db-45db-b797-e9c5694125bb",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -1419,7 +1419,7 @@
     "数字-y_wan.png": {
       "ver": "1.0.3",
       "uuid": "d7c480d6-fdf6-44de-9d5a-09334a2e3de7",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -1441,7 +1441,7 @@
     "斗地主-房间模式.png": {
       "ver": "1.0.3",
       "uuid": "72f1eeb5-9773-4146-b89e-5f74fa98c1fe",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -1463,7 +1463,7 @@
     "斗地主-癞子玩法.png": {
       "ver": "1.0.3",
       "uuid": "a1e2b1f7-d99e-48f9-a15f-4dc30c794420",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -1485,7 +1485,7 @@
     "游客.png": {
       "ver": "1.0.3",
       "uuid": "27455ca7-65e2-45b7-aebb-d8135cf696b1",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -1507,7 +1507,7 @@
     "牌-大.png": {
       "ver": "1.0.3",
       "uuid": "4fdfa61a-5522-49ed-b3dd-ba76630d9acc",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -1529,7 +1529,7 @@
     "玩法-经典斗地主.png": {
       "ver": "1.0.3",
       "uuid": "2add3f6a-8c75-41e4-82fa-8569d3bcc328",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -1551,7 +1551,7 @@
     "玩法-金币.png": {
       "ver": "1.0.3",
       "uuid": "195f7de7-968e-45a0-a415-1a7af8c827f7",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -1573,7 +1573,7 @@
     "癞子玩法.png": {
       "ver": "1.0.3",
       "uuid": "242785d1-ad91-4d79-ae75-29cb82edd705",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -1595,7 +1595,7 @@
     "经典斗地主.png": {
       "ver": "1.0.3",
       "uuid": "ebac6936-20de-4683-a94e-71f982cfa048",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -1617,7 +1617,7 @@
     "背-小.png": {
       "ver": "1.0.3",
       "uuid": "b177a081-41c2-4fbb-bbfa-8d084752a390",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -1639,7 +1639,7 @@
     "自己头像外框74x74.png": {
       "ver": "1.0.3",
       "uuid": "44dc7ac0-3a69-43ee-82c6-ec40cf28e5d9",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -1661,7 +1661,7 @@
     "自己灰色底框.png": {
       "ver": "1.0.3",
       "uuid": "0d8595f5-f9a8-48b6-b498-55714a54450a",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -1683,7 +1683,7 @@
     "自己金色底框.png": {
       "ver": "1.0.3",
       "uuid": "4e676971-5f96-4f1d-8e61-41d08661b65c",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -1705,7 +1705,7 @@
     "血战麻将.png": {
       "ver": "1.0.3",
       "uuid": "e5d2dabb-ac9d-437b-b596-5ccd0a76ae78",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -1727,7 +1727,7 @@
     "要不起.png": {
       "ver": "1.0.3",
       "uuid": "d99f21fc-89b4-4ed2-bd38-29fcd9c64727",
-      "rawTextureUuid": "a29cf717-e0ba-4fdf-b377-927a1d39345d",
+      "rawTextureUuid": "fa7309d4-59fd-4157-9be0-a516ddb2b162",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,

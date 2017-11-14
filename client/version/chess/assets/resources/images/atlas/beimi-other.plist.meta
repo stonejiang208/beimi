@@ -1,7 +1,7 @@
 {
   "ver": "1.2.4",
   "uuid": "43b45bf1-27e9-42d1-9c58-62bcad9c0f9f",
-  "rawTextureUuid": "b1008786-d23c-4d20-8bfa-d4129b1fcda7",
+  "rawTextureUuid": "04fcfdb2-cf9b-44d0-a8bd-2f26658c5792",
   "size": {
     "width": 2018,
     "height": 1177
@@ -11,7 +11,7 @@
     "反馈-玩家反馈框.png": {
       "ver": "1.0.3",
       "uuid": "018ce89c-13dc-4657-a939-4913cf267078",
-      "rawTextureUuid": "b1008786-d23c-4d20-8bfa-d4129b1fcda7",
+      "rawTextureUuid": "04fcfdb2-cf9b-44d0-a8bd-2f26658c5792",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -33,7 +33,7 @@
     "反馈-系统回复框.png": {
       "ver": "1.0.3",
       "uuid": "5db2b96b-2ec9-46c6-85bf-1f2fccdc03c5",
-      "rawTextureUuid": "b1008786-d23c-4d20-8bfa-d4129b1fcda7",
+      "rawTextureUuid": "04fcfdb2-cf9b-44d0-a8bd-2f26658c5792",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -55,7 +55,7 @@
     "失败角色.png": {
       "ver": "1.0.3",
       "uuid": "394def69-85cb-4d28-80e9-e798b5c0550d",
-      "rawTextureUuid": "b1008786-d23c-4d20-8bfa-d4129b1fcda7",
+      "rawTextureUuid": "04fcfdb2-cf9b-44d0-a8bd-2f26658c5792",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -77,7 +77,7 @@
     "排行榜-底.png": {
       "ver": "1.0.3",
       "uuid": "7a7c2b73-a1d1-4e41-b26b-41c4bf04f7e1",
-      "rawTextureUuid": "b1008786-d23c-4d20-8bfa-d4129b1fcda7",
+      "rawTextureUuid": "04fcfdb2-cf9b-44d0-a8bd-2f26658c5792",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -99,7 +99,7 @@
     "牌局结束-base_loser.png": {
       "ver": "1.0.3",
       "uuid": "c1a1d655-cb55-42bc-9e74-b86ab36d6229",
-      "rawTextureUuid": "b1008786-d23c-4d20-8bfa-d4129b1fcda7",
+      "rawTextureUuid": "04fcfdb2-cf9b-44d0-a8bd-2f26658c5792",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -121,7 +121,7 @@
     "牌局结束-base_winner.png": {
       "ver": "1.0.3",
       "uuid": "a3d512c9-481c-4c9d-b1e2-0c909bd08b51",
-      "rawTextureUuid": "b1008786-d23c-4d20-8bfa-d4129b1fcda7",
+      "rawTextureUuid": "04fcfdb2-cf9b-44d0-a8bd-2f26658c5792",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -143,7 +143,7 @@
     "玻璃底框.png": {
       "ver": "1.0.3",
       "uuid": "b0d36e98-17c3-4aa3-be0d-fe2c2c5e8c57",
-      "rawTextureUuid": "b1008786-d23c-4d20-8bfa-d4129b1fcda7",
+      "rawTextureUuid": "04fcfdb2-cf9b-44d0-a8bd-2f26658c5792",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -165,7 +165,7 @@
     "聊天-base.png": {
       "ver": "1.0.3",
       "uuid": "0031d579-bde5-4974-b8e6-49c036cc1b9a",
-      "rawTextureUuid": "b1008786-d23c-4d20-8bfa-d4129b1fcda7",
+      "rawTextureUuid": "04fcfdb2-cf9b-44d0-a8bd-2f26658c5792",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -187,7 +187,7 @@
     "背景-龙纹居中.png": {
       "ver": "1.0.3",
       "uuid": "6629ebc5-da8e-4050-8a04-8df86ab4d57e",
-      "rawTextureUuid": "b1008786-d23c-4d20-8bfa-d4129b1fcda7",
+      "rawTextureUuid": "04fcfdb2-cf9b-44d0-a8bd-2f26658c5792",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -209,7 +209,7 @@
     "角色.png": {
       "ver": "1.0.3",
       "uuid": "ea9c6e2c-44a4-4ba6-8e57-f94abd08f2ae",
-      "rawTextureUuid": "b1008786-d23c-4d20-8bfa-d4129b1fcda7",
+      "rawTextureUuid": "04fcfdb2-cf9b-44d0-a8bd-2f26658c5792",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -231,7 +231,7 @@
     "邮件-mail_base.png": {
       "ver": "1.0.3",
       "uuid": "cd55cff5-b9c3-4056-b20a-adfb3200930e",
-      "rawTextureUuid": "b1008786-d23c-4d20-8bfa-d4129b1fcda7",
+      "rawTextureUuid": "04fcfdb2-cf9b-44d0-a8bd-2f26658c5792",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
