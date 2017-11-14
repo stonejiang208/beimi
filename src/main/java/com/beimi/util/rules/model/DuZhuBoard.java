@@ -102,7 +102,7 @@ public class DuZhuBoard extends Board implements java.io.Serializable{
 	 */
 	public Player next(int index){
 		Player catchPlayer = null;
-		if(index == (this.getPlayers().length - 1) && this.getPlayers()[index].isRandomcard()){	//fixed
+		if(index == (this.getPlayers().length - 1)){	//fixed
 			index = 0 ;
 		}
 		for(int i = index + 1 ; i<this.getPlayers().length ; ){

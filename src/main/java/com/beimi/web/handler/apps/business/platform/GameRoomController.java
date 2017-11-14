@@ -59,13 +59,14 @@ public class GameRoomController extends Handler{
 			}
 		}
 		if(playUsersList.size() > 0){
-			for(PlayUser playUser : playUserRes.findAll(playUsersList) ){
-				for(GameRoom gameRoom : gameRoomList.getContent()){
+			for(GameRoom gameRoom : gameRoomList.getContent()){
+				for(PlayUser playUser : playUserRes.findAll(playUsersList) ){
 					if(playUser.getId().equals(gameRoom.getMaster())){
 						gameRoom.setMasterUser(playUser); break ;
 					}
 				}
 			}
+			
 		}
 		map.addAttribute("gameRoomList", gameRoomList) ;
 		
