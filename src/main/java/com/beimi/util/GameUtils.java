@@ -66,14 +66,7 @@ public class GameUtils {
 	 * @param orgi
 	 */
 	public static void removeGameRoom(String roomid,String playway,String orgi){
-		GameRoom tempGameRoom ;
-		while((tempGameRoom = (GameRoom) CacheHelper.getQueneCache().poll(playway,orgi)) != null){
-			if(tempGameRoom.getId().equals(roomid)){
-				break ;		//拿走，不排队了，开始增加AI
-			}else{
-				CacheHelper.getQueneCache().offer(playway,tempGameRoom , orgi) ;	//还回去
-			}
-		}
+		CacheHelper.getQueneCache().delete(roomid);
 	}
 	
 	/**

@@ -1,9 +1,19 @@
 package com.beimi.util.cache.hazelcast.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.beimi.core.BMDataContext;
+import com.beimi.util.cache.CacheHelper;
+import com.beimi.web.model.GameRoom;
+import com.beimi.web.model.PlayUserClient;
 import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.query.PagingPredicate;
+import com.hazelcast.query.SqlPredicate;
 
 /**
  * 主要用于游戏的撮合部分，游戏的玩法配置是系统级别个参数配置，
@@ -24,12 +34,40 @@ public class QueneCache{
 		return this ;
 	}
 	
-	public void offer(String playway,Object value, String orgi){
-		getInstance().getQueue(playway).offer(value) ;
+	public void put(GameRoom value, String orgi){
+		getInstance().getMap(BMDataContext.BEIMI_GAME_PLAYWAY).put(value.getId() , value) ;
 	}
 
-	public Object poll(String playway,String orgi) {
-		//not support 
-		return getInstance().getQueue(playway).poll() ;
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public GameRoom poll(String playway , String orgi) {
+		GameRoom gameRoom = null;
+		/**
+		 * 从Map里获取 
+		 */
+		PagingPredicate<String, GameRoom> pagingPredicate = null ;
+		List gameRoomList = new ArrayList();
+		/**
+		 * 处理游戏房间
+		 */
+		if(!StringUtils.isBlank(playway)){
+			pagingPredicate = new PagingPredicate<String, GameRoom>(  new SqlPredicate( " playway = '" + playway + "'") , 5 );
+			gameRoomList.addAll((getInstance().getMap(BMDataContext.BEIMI_GAME_PLAYWAY)).values(pagingPredicate) ) ;
+			while(gameRoomList!=null && gameRoomList.size() > 0){
+				GameRoom room = (GameRoom) gameRoomList.remove(0) ;
+				
+				getInstance().getMap(BMDataContext.BEIMI_GAME_PLAYWAY).delete(room.getId());
+				
+				List<PlayUserClient> players = CacheHelper.getGamePlayerCacheBean().getCacheObject(room.getId(), room.getOrgi()) ;
+				if(players.size() < room.getPlayers()){
+					gameRoom = room ; break ;
+				}
+			}
+		}
+		return gameRoom;
+	}
+	
+	
+	public void delete(String roomid){
+		getInstance().getMap(BMDataContext.BEIMI_GAME_PLAYWAY).delete(roomid);
 	}
 }

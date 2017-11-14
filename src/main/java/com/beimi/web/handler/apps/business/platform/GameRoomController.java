@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,7 +46,7 @@ public class GameRoomController extends Handler{
 	@RequestMapping({"/gameroom"})
 	@Menu(type="platform", subtype="gameroom")
 	public ModelAndView gameusers(ModelMap map , HttpServletRequest request , @Valid String id){
-		Page<GameRoom> gameRoomList = gameRoomRes.findByOrgi(super.getOrgi(request), new PageRequest(super.getP(request), super.getPs(request))) ;
+		Page<GameRoom> gameRoomList = gameRoomRes.findByOrgi(super.getOrgi(request), new PageRequest(super.getP(request), super.getPs(request) , new Sort(Sort.Direction.DESC, "createtime"))) ;
 		List<String> playUsersList = new ArrayList<String>() ;
 		for(GameRoom gameRoom : gameRoomList.getContent()){
 			List<PlayUserClient> players = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(),gameRoom.getOrgi()) ;
@@ -83,7 +84,7 @@ public class GameRoomController extends Handler{
 				gameRoomRes.delete(gameRoom);
 			}
 			CacheHelper.getExpireCache().remove(gameRoom.getId());
-			GameUtils.removeGameRoom(gameRoom.getPlayway(),gameRoom.getId(), super.getOrgi(request));
+			GameUtils.removeGameRoom(gameRoom.getId(),gameRoom.getPlayway(), super.getOrgi(request));
 			CacheHelper.getGameRoomCacheBean().delete(gameRoom.getId(), super.getOrgi(request)) ;
 			CacheHelper.getBoardCacheBean().delete(gameRoom.getId(), super.getOrgi(request)) ;
 			List<PlayUserClient> playerUsers = CacheHelper.getGamePlayerCacheBean().getCacheObject(id, super.getOrgi(request)) ;

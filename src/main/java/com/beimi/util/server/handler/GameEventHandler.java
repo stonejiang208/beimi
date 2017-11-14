@@ -49,7 +49,17 @@ public class GameEventHandler
     @OnDisconnect  
     public void onDisconnect(SocketIOClient client)  
     {  
-    	
+    	BeiMiClient beiMiClient = NettyClients.getInstance().getClient(client.getSessionId().toString()) ;
+    	if(beiMiClient!=null){
+    		/**
+    		 * 玩家离线
+    		 */
+    		PlayUserClient playUserClient = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(beiMiClient.getUserid(), beiMiClient.getOrgi()) ;
+    		if(playUserClient!=null){
+    			playUserClient.setPlayertype(BMDataContext.PlayerTypeEnum.MANAGED.toString());//托管玩家
+    			CacheHelper.getApiUserCacheBean().put(beiMiClient.getUserid() ,playUserClient , beiMiClient.getOrgi());
+    		}
+    	}
     }  
     
   //抢地主事件

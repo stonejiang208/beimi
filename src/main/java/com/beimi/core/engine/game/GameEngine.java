@@ -173,7 +173,7 @@ public class GameEngine {
 				 * 如果当前房间到达了最大玩家数量，则不再加入到 撮合队列
 				 */
 				if(playerList.size() < gamePlayway.getPlayers() && needtakequene == true){
-					CacheHelper.getQueneCache().offer(gameRoom.getPlayway() , gameRoom, orgi);	//未达到最大玩家数量，加入到游戏撮合 队列，继续撮合
+					CacheHelper.getQueneCache().put(gameRoom, orgi);	//未达到最大玩家数量，加入到游戏撮合 队列，继续撮合
 				}
 				/**
 				 *	不管状态如何，玩家一定会加入到这个房间 
@@ -239,34 +239,38 @@ public class GameEngine {
 	 * @return
 	 */
 	public void restartRequest(String roomid , String userid, String orgi , BeiMiClient beiMiClient){
-		GameRoom gameRoom = (GameRoom) CacheHelper.getGameRoomCacheBean().getCacheObject(roomid, orgi) ;
 		boolean notReady = false ;
-		List<PlayUserClient> playerList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
-		if(playerList!=null && playerList.size() > 0){
-			/**
-			 * 有一个 等待 
-			 */
-			for(int i=0; i<playerList.size() ; ){
-				PlayUserClient player = playerList.get(i) ;
-				if(player.getPlayertype().equals(BMDataContext.PlayerTypeEnum.NORMAL.toString())){
-					//普通玩家，当前玩家修改为READY状态
-					PlayUserClient apiPlayUser = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(player.getId(), player.getOrgi()) ;
-					if(player.getId().equals(userid)){
-						player.setGamestatus(BMDataContext.GameStatusEnum.READY.toString());
-						/**
-						 * 更新状态
-						 */
-						CacheHelper.getApiUserCacheBean().put(player.getId(), apiPlayUser, orgi);
-					}else{//还有未就绪的玩家
-						if(!player.getGamestatus().equals(BMDataContext.GameStatusEnum.READY.toString())){
-							notReady = true ;
+		List<PlayUserClient> playerList = null ;
+		GameRoom gameRoom = null ;
+		if(!StringUtils.isBlank(roomid)){
+			gameRoom = (GameRoom) CacheHelper.getGameRoomCacheBean().getCacheObject(roomid, orgi) ;
+			playerList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
+			if(playerList!=null && playerList.size() > 0){
+				/**
+				 * 有一个 等待 
+				 */
+				for(int i=0; i<playerList.size() ; ){
+					PlayUserClient player = playerList.get(i) ;
+					if(player.getPlayertype().equals(BMDataContext.PlayerTypeEnum.NORMAL.toString())){
+						//普通玩家，当前玩家修改为READY状态
+						PlayUserClient apiPlayUser = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(player.getId(), player.getOrgi()) ;
+						if(player.getId().equals(userid)){
+							player.setGamestatus(BMDataContext.GameStatusEnum.READY.toString());
+							/**
+							 * 更新状态
+							 */
+							CacheHelper.getApiUserCacheBean().put(player.getId(), apiPlayUser, orgi);
+						}else{//还有未就绪的玩家
+							if(!player.getGamestatus().equals(BMDataContext.GameStatusEnum.READY.toString())){
+								notReady = true ;
+							}
 						}
 					}
+					i++ ;
 				}
-				i++ ;
 			}
 		}
-		if(notReady == true){
+		if(notReady == true && gameRoom!=null){
 			/**
 			 * 需要增加一个状态机的触发事件：等待其他人就绪，超过5秒以后未就绪的，直接踢掉，然后等待机器人加入
 			 */
@@ -572,11 +576,13 @@ public class GameEngine {
 		
 		gameRoom.setCurrentnum(0);
 		
+		gameRoom.setCreater(userid);
+		
 		gameRoom.setMaster(userid);
 		gameRoom.setNumofgames(playway.getNumofgames());   //无限制
 		gameRoom.setOrgi(playway.getOrgi());
 		
-		CacheHelper.getQueneCache().offer(playway.getId(),gameRoom, playway.getOrgi());	//未达到最大玩家数量，加入到游戏撮合 队列，继续撮合
+		CacheHelper.getQueneCache().put(gameRoom, playway.getOrgi());	//未达到最大玩家数量，加入到游戏撮合 队列，继续撮合
 		
 		UKTools.published(gameRoom, null, BMDataContext.getContext().getBean(GameRoomRepository.class) , BMDataContext.UserDataEventType.SAVE.toString());
 		

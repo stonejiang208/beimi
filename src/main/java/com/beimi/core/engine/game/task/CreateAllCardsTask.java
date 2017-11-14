@@ -1,7 +1,5 @@
 package com.beimi.core.engine.game.task;
 
-import java.util.List;
-
 import org.cache2k.expiry.ValueWithExpiryTime;
 
 import com.beimi.core.BMDataContext;
@@ -35,6 +33,7 @@ public class CreateAllCardsTask extends AbstractTask implements ValueWithExpiryT
 		Board board = (Board) CacheHelper.getBoardCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi());
 		board.setFinished(true);
 		GamePlayway gamePlayWay = (GamePlayway) CacheHelper.getSystemCacheBean().getCacheObject(gameRoom.getPlayway(), gameRoom.getOrgi()) ;
+		boolean gameOver = false ;
 		if(gamePlayWay!=null){
 			/**
 			 * 结算信息 ， 更新 玩家信息
@@ -42,23 +41,35 @@ public class CreateAllCardsTask extends AbstractTask implements ValueWithExpiryT
 			Summary summary = board.summary(board, gameRoom, gamePlayWay) ;
 			sendEvent("allcards",  summary , gameRoom) ;	//通知所有客户端结束牌局，进入结算
 			if(summary.isGameRoomOver()){
-				CacheHelper.getGamePlayerCacheBean().delete(gameRoom.getId()) ;
-				for(Player player : board.getPlayers()){
-					CacheHelper.getGameRoomCacheBean().delete(player.getPlayuser(), gameRoom.getOrgi()) ;
-				}
+				gameOver = true ;
+			}
+		}
+		for(Player player : board.getPlayers()){
+			PlayUserClient playUserClient = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(player.getPlayuser(), this.orgi) ;
+			if(playUserClient!=null && playUserClient.getPlayertype().equals(BMDataContext.PlayerTypeEnum.NORMAL.toString())){
+				playUserClient.setGamestatus(BMDataContext.GameStatusEnum.NOTREADY.toString());
+				CacheHelper.getGamePlayerCacheBean().put(playUserClient.getId(),playUserClient, gameRoom.getOrgi()) ;
+			}else if(playUserClient == null || !playUserClient.getPlayertype().equals(BMDataContext.PlayerTypeEnum.AI.toString())){
+				//清理已经离线的玩家
+				gameOver = true ;			
+			}
+		}
+		
+		if(gameOver){
+			CacheHelper.getGamePlayerCacheBean().delete(gameRoom.getId()) ;
+			for(Player player : board.getPlayers()){
+				CacheHelper.getGameRoomCacheBean().delete(player.getPlayuser(), gameRoom.getOrgi()) ;
+				CacheHelper.getRoomMappingCacheBean().delete(player.getPlayuser(), this.orgi) ;
+				
+			}
+			if(!gameRoom.isCardroom()){ //房卡模式，清理掉房卡资源
 				/**
 				 * 重新加入房间资源到 队列
 				 */
-				CacheHelper.getQueneCache().offer(gameRoom.getPlayway(),gameRoom, gameRoom.getOrgi());
+				CacheHelper.getQueneCache().put(gameRoom, gameRoom.getOrgi());
 			}
-		}
-
-		List<PlayUserClient> players = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
-		for(PlayUserClient player : players){
-			if(CacheHelper.getApiUserCacheBean().getCacheObject(player.getId(), player.getOrgi())!=null){
-				player.setGamestatus(BMDataContext.GameStatusEnum.NOTREADY.toString());
-				CacheHelper.getGamePlayerCacheBean().put(player.getId(),player, gameRoom.getOrgi()) ;
-			}
+		}else{
+			//状态机的 一个状态， 等待所有玩家 点击继续游戏按钮
 		}
 		
 		BMDataContext.getGameEngine().finished(gameRoom.getId(), orgi);

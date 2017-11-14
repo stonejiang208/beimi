@@ -33,7 +33,7 @@ public class CreateAITask extends AbstractTask implements ValueWithExpiryTime  ,
 	
 	public void execute(){
 		//执行生成AI
-		GameUtils.removeGameRoom(gameRoom.getPlayway(), gameRoom.getId(), orgi);
+		GameUtils.removeGameRoom(gameRoom.getId(), gameRoom.getPlayway(), orgi);
 		List<PlayUserClient> playerList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
 		/**
 		 * 清理 未就绪玩家
