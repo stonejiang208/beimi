@@ -92,6 +92,9 @@ cc.Class({
                 self.closeloadding(self.loaddingDialog);
             }
             cc.director.loadScene(name);
+            let win = cc.director.getWinSize() ;
+            cc.view.setDesignResolutionSize(win.width, win.height, cc.ResolutionPolicy.EXACT_FIT);
+
         });
     },
     root:function(){

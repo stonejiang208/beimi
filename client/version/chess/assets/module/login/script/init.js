@@ -32,6 +32,9 @@ cc.Class({
             canvas.fitHeight = true;
             canvas.fitWidth = true;
         }
+        let win = cc.director.getWinSize() ;
+
+        cc.view.setDesignResolutionSize(win.width, win.height, cc.ResolutionPolicy.EXACT_FIT);
         this.initMgr();
 
     },
@@ -56,6 +59,9 @@ cc.Class({
             cc.beimi.http = require("HTTP");
             cc.beimi.seckey = "beimi";
             cc.beimi.gamestatus = "none" ;
+
+
+
 
             cc.beimi.dialog = null ;
 
