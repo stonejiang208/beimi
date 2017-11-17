@@ -17,7 +17,7 @@ import com.beimi.util.event.UserEvent;
 @Entity
 @Table(name = "bm_game_room")
 @org.hibernate.annotations.Proxy(lazy = false)
-public class GameRoom implements UserEvent, java.io.Serializable{
+public class GameRoom implements UserEvent, java.io.Serializable, Comparable<GameRoom>{
 	
 	
 	/**
@@ -253,5 +253,10 @@ public class GameRoom implements UserEvent, java.io.Serializable{
 	}
 	public void setLastwinner(String lastwinner) {
 		this.lastwinner = lastwinner;
+	}
+	@Override
+	public int compareTo(GameRoom o) {
+		// TODO Auto-generated method stub
+		return this.currentnum - o.getCurpalyers();
 	}
 }
