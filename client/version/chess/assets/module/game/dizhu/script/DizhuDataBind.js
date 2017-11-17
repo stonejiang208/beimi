@@ -206,14 +206,14 @@ cc.Class({
         this.cardslist.splice(0,this.cardslist.length) ;//删除数组里的所有内容
         if (data.donot == false) {    //选择出牌或默认出牌
             for(var i=0 ; i<lastcards.length ; i++){
-                this.playcards(self , i , lastcards[i]) ;
+                this.playcards(self , i , lastcards[i] , lastcards) ;
             }
         }else{
             this.doOperatorResult("lasttakecards" , true , data.sameside) ;
         }
     },
 
-    playcards:function(self , index , card){
+    playcards:function(self , index , card , lastcards){
         var cacheCard ;
         for(var inx = 0 ; inx<self.pokercards.length ; inx++){
             let pc = self.pokercards[inx] ;
@@ -225,7 +225,7 @@ cc.Class({
             cacheCard.x = index * 30 - 30 ;
             cacheCard.y = 0;
 
-            cacheCard.zIndex = 100 - i ;
+            cacheCard.zIndex = 4 - this.countcard(card , lastcards) ;
 
             cacheCard.setScale(0.5,0.5);
 
@@ -234,6 +234,23 @@ cc.Class({
 
             this.cardslist[this.cardslist.length] = cacheCard ;
         }
+    },
+    /**
+     * 按照张数最大的牌排序
+     * @param card
+     * @param lastcards
+     * @returns {number}
+     */
+    countcard:function(card , lastcards){
+        let value = parseInt(card / 4);
+        let count = 0 ;
+        for(var i = 0 ;i<lastcards.length ; i++){
+            let temp = parseInt(lastcards[i] / 4) ;
+            if(value == temp){
+                count = count + 1 ;
+            }
+        }
+        return count ;
     },
     /**
      *

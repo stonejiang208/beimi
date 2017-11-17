@@ -246,7 +246,7 @@ cc.Class({
             this.resetcards(cardsnum);
 
             for (var i = 0; i < lastcards.length; i++) {
-                this.playcards(game, i, lastcards[i]);
+                this.playcards(game, i, lastcards[i] , lastcards);
             }
         }else{
             if(data.sameside == "1"){
@@ -278,20 +278,39 @@ cc.Class({
             this.donot.active = true ;
         }
     },
-    playcards:function(game , index, card){
+    playcards:function(game , index, card , cards){
         let currpoker = game.minpokerpool.get() ;
 
         currpoker.x = index * 30 - 30 ;
-        if(this.isRight == true){
-            currpoker.zIndex = 100 - index;
-        }else{
-            currpoker.zIndex = index;
-        }
+        // if(this.isRight == true){
+        //     currpoker.zIndex = 100 - index;
+        // }else{
+        //     currpoker.zIndex = index;
+        // }
+        currpoker.zIndex = 4 - this.countcard(card , cards) ;
+
         currpoker.parent = this.lastcards ;
         this.cardslist.push(currpoker) ;
         let beiMiCard = currpoker.getComponent("BeiMiCard");
         beiMiCard.setCard(card) ;
         beiMiCard.order();
+    },
+    /**
+     * 按照张数最大的牌排序
+     * @param card
+     * @param lastcards
+     * @returns {number}
+     */
+    countcard:function(card , lastcards){
+        let value = parseInt(card / 4);
+        let count = 0 ;
+        for(var i = 0 ;i<lastcards.length ; i++){
+            let temp = parseInt(lastcards[i] / 4) ;
+            if(value == temp){
+                count = count + 1 ;
+            }
+        }
+        return count ;
     },
     playtimer:function(game , times){
         if(this.result){
