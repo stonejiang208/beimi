@@ -225,7 +225,7 @@ cc.Class({
             cacheCard.x = index * 30 - 30 ;
             cacheCard.y = 0;
 
-            cacheCard.zIndex = 4 - this.countcard(card , lastcards) ;
+            cacheCard.zIndex = 100 - this.countcard(card , lastcards) ;
 
             cacheCard.setScale(0.5,0.5);
 

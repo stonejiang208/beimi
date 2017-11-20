@@ -287,7 +287,7 @@ cc.Class({
         // }else{
         //     currpoker.zIndex = index;
         // }
-        currpoker.zIndex = 4 - this.countcard(card , cards) ;
+        currpoker.zIndex = 100 - this.countcard(card , cards) ;
 
         currpoker.parent = this.lastcards ;
         this.cardslist.push(currpoker) ;
