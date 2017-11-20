@@ -1335,7 +1335,7 @@ cc.Class({
          */
         if(this.ready()){
             let socket = this.socket();
-            socket.emit("restart");
+            socket.emit("restart","restart");
         }
     },
     onDestroy:function(){

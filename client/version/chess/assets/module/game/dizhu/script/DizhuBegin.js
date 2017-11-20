@@ -649,7 +649,7 @@ cc.Class({
     givup:function(){
         if(this.ready()){
             let socket = this.socket();
-            socket.emit("giveup");
+            socket.emit("giveup","giveup");
         }
     },
     /**
@@ -658,7 +658,7 @@ cc.Class({
     docatch:function(){
         if(this.ready()){
             let socket = this.socket();
-            socket.emit("docatch");
+            socket.emit("docatch","docatch");
         }
     },
     /**
@@ -685,7 +685,7 @@ cc.Class({
     noCards:function(){
         if(this.ready()){
             let socket = this.socket();
-            socket.emit("nocards");
+            socket.emit("nocards","nocards");
         }
     },
     clean:function(){
