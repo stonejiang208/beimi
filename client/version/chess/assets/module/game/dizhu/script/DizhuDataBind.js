@@ -225,7 +225,13 @@ cc.Class({
             cacheCard.x = index * 30 - 30 ;
             cacheCard.y = 0;
 
-            cacheCard.zIndex = 100 - this.countcard(card , lastcards) ;
+            var zIndex = this.countcard(card , lastcards) ;
+
+            cacheCard.zIndex = 4-zIndex ;
+            cacheCard.siblingIndex = card;
+            // cacheCard.zIndex =  zIndex;
+
+            console.log(card + "  " + zIndex) ;
 
             cacheCard.setScale(0.5,0.5);
 

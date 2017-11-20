@@ -287,10 +287,15 @@ cc.Class({
         // }else{
         //     currpoker.zIndex = index;
         // }
-        currpoker.zIndex = 100 - this.countcard(card , cards) ;
+        let zIndex = this.countcard(card , cards) ;
+        currpoker.zIndex = 4-zIndex ;
+        currpoker.siblingIndex = card;
+
+        console.log(card + "  " + zIndex) ;
 
         currpoker.parent = this.lastcards ;
         this.cardslist.push(currpoker) ;
+
         let beiMiCard = currpoker.getComponent("BeiMiCard");
         beiMiCard.setCard(card) ;
         beiMiCard.order();
