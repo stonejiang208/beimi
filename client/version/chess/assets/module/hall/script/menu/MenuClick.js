@@ -16,6 +16,22 @@ cc.Class({
         setting: {
             default: null,
             type: cc.Prefab
+        },
+        message: {
+            default: null,
+            type: cc.Prefab
+        },
+        share: {
+            default: null,
+            type: cc.Prefab
+        },
+        playway: {
+            default: null,
+            type: cc.Prefab
+        },
+        feedback: {
+            default: null,
+            type: cc.Prefab
         }
     },
 
@@ -26,6 +42,26 @@ cc.Class({
     },
     onSettingClick:function(){
         cc.beimi.dialog = cc.instantiate(this.setting) ;
+        cc.beimi.dialog.parent = this.root();
+    },
+    onMessageClick:function(){
+        cc.beimi.dialog = cc.instantiate(this.message) ;
+        cc.beimi.dialog.parent = this.root();
+    },
+    onShareClick:function(){
+        cc.beimi.dialog = cc.instantiate(this.share) ;
+        cc.beimi.dialog.parent = this.root();
+    },
+    onPlaywayClick:function(){
+        cc.beimi.dialog = cc.instantiate(this.playway) ;
+        cc.beimi.dialog.parent = this.root();
+    },
+    onRecordClick:function(){
+        cc.beimi.dialog = cc.instantiate(this.playway) ;
+        cc.beimi.dialog.parent = this.root();
+    },
+    onFeedBackClick:function(){
+        cc.beimi.dialog = cc.instantiate(this.feedback) ;
         cc.beimi.dialog.parent = this.root();
     }
 
