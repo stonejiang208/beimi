@@ -45,7 +45,8 @@ cc.Class({
         cc.beimi.socket.emit("gamestatus" , JSON.stringify(param));
         cc.beimi.socket.on("gamestatus" , function(result){
             if(result!=null) {
-                cc.beimi.gamestatus = result.gamestatus;
+                var data = self.parse(result) ;
+                cc.beimi.gamestatus = data.gamestatus;
             }
         });
         /**
@@ -107,6 +108,10 @@ cc.Class({
             cc.beimi.openwin = null ;
         }
     },
+    resize:function(){
+        let win = cc.director.getWinSize() ;
+        cc.view.setDesignResolutionSize(win.width, win.height, cc.ResolutionPolicy.EXACT_FIT);
+    },
     closealert:function(){
         if(cc.find("Canvas/alert")){
             cc.beimi.dialog.put(cc.find("Canvas/alert"));
@@ -118,9 +123,6 @@ cc.Class({
                 self.closeloadding(self.loaddingDialog);
             }
             cc.director.loadScene(name);
-            let win = cc.director.getWinSize() ;
-            cc.view.setDesignResolutionSize(win.width, win.height, cc.ResolutionPolicy.EXACT_FIT);
-
         });
     },
     root:function(){

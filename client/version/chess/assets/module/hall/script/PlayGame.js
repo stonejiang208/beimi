@@ -17,7 +17,10 @@ cc.Class({
 
     // use this for initialization
     onLoad: function () {
-
+        /**
+         * 适配屏幕尺寸
+         */
+        this.resize();
     },
     onClickDizhu:function(){
         this.loadding();

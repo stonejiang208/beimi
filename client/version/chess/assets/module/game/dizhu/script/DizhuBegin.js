@@ -45,6 +45,11 @@ cc.Class({
 
     // use this for initialization
     onLoad: function () {
+        /**
+         * 适配屏幕尺寸
+         */
+        this.resize();
+
         this.player = new Array() ;     //存放玩家数据
         this.pokercards = new Array();
         this.lastcards = new Array();

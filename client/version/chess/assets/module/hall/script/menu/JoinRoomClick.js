@@ -59,10 +59,11 @@ cc.Class({
         }
     },
     roomCallBack:function(result , self){
-        if(result.result == "ok"){
-            cc.beimi.playway = result.id ;
-            self.scene(result.code , self) ;
-        }else if(result.result == "notexist"){
+        var data = self.parse(result) ;
+        if(data.result == "ok"){
+            cc.beimi.playway = data.id ;
+            self.scene(data.code , self) ;
+        }else if(data.result == "notexist"){
             self.alert("房间号不存在。");
         }
     },

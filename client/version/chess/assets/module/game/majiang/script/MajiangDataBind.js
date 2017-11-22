@@ -153,6 +153,11 @@ cc.Class({
      * 重构后，只有两个消息类型
      */
     onLoad: function () {
+        /**
+         * 适配屏幕尺寸
+         */
+        this.resize();
+        
         if(this.ready()) {
             let socket = this.socket();
             this.routes = {};
