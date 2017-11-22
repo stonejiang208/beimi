@@ -21,7 +21,7 @@ cc.Class({
             default: null,
             type: cc.Node
         },
-        third: {
+        gamepoint:{
             default: null,
             type: cc.Node
         },
@@ -51,6 +51,27 @@ cc.Class({
             this.playwaypool.put(cc.instantiate(this.playway));
         }
         this.playwayarray = new Array();
+        if(this.gamepoint && cc.beimi!=null && cc.beimi.games !=null){
+            for(var inx=0 ; inx < this.gamepoint.children.length ; inx++){
+                let name = this.gamepoint.children[inx].name ;
+                var gameenable = false ;
+                for(var i=0 ; i<cc.beimi.games.length ; i++){
+                    var gamemodel = cc.beimi.games[i] ;
+                    for(var j=0 ; j<gamemodel.types.length ; j++){
+                        let gametype = gamemodel.types[j] ;
+                        if(gametype.code == name){
+                            gameenable = true ; break ;
+                        }
+                    }
+                    if(gameenable == true){break ;}
+                }
+                if(gameenable == true){
+                    this.gamepoint.children[inx].active = true ;
+                }else{
+                    this.gamepoint.children[inx].active = false ;
+                }
+            }
+        }
     },
     onClick:function(event, data){
         this.disMenu("second") ;

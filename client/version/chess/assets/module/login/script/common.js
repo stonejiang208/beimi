@@ -4,31 +4,7 @@ cc.Class({
 
     // use this for initialization
     onLoad: function () {
-        /**
-         * 游客登录，无需弹出注册对话框，先从本地获取是否有过期的对话数据，如果有过期的对话数据，则使用过期的对话数据续期
-         * 如果没有对话数据，则重新使用游客注册接口
-         */
-        // this.loginFormPool = new cc.NodePool();
-        // this.loginFormPool.put(cc.instantiate(this.prefab)); // 创建节点
-        cc.beimi.game = {
-            model : null ,
-            playway : null,
-            type:function(name){
-                var temp ;
-                if(cc.beimi.games !=null){
-                    for(var i=0 ; i<cc.beimi.games.length ; i++){
-                        var gamemodel = cc.beimi.games[i] ;
-                        for(var inx = 0 ; inx < gamemodel.types.length ; inx++){
-                            var  type = gamemodel.types[inx] ;
-                            if(type.code == name){
-                                temp = type ;
-                            }
-                        }
-                    }
-                }
-                return temp ;
-            }
-        };
+
     },
     login:function(){
         this.io = require("IOUtils");
