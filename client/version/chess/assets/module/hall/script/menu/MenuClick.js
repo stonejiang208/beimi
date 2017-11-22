@@ -41,28 +41,28 @@ cc.Class({
 
     },
     onSettingClick:function(){
-        cc.beimi.dialog = cc.instantiate(this.setting) ;
-        cc.beimi.dialog.parent = this.root();
+        cc.beimi.openwin = cc.instantiate(this.setting) ;
+        cc.beimi.openwin.parent = this.root();
     },
     onMessageClick:function(){
-        cc.beimi.dialog = cc.instantiate(this.message) ;
-        cc.beimi.dialog.parent = this.root();
+        cc.beimi.openwin = cc.instantiate(this.message) ;
+        cc.beimi.openwin.parent = this.root();
     },
     onShareClick:function(){
-        cc.beimi.dialog = cc.instantiate(this.share) ;
-        cc.beimi.dialog.parent = this.root();
+        cc.beimi.openwin = cc.instantiate(this.share) ;
+        cc.beimi.openwin.parent = this.root();
     },
     onPlaywayClick:function(){
-        cc.beimi.dialog = cc.instantiate(this.playway) ;
-        cc.beimi.dialog.parent = this.root();
+        cc.beimi.openwin = cc.instantiate(this.playway) ;
+        cc.beimi.openwin.parent = this.root();
     },
     onRecordClick:function(){
-        cc.beimi.dialog = cc.instantiate(this.playway) ;
-        cc.beimi.dialog.parent = this.root();
+        cc.beimi.openwin = cc.instantiate(this.playway) ;
+        cc.beimi.openwin.parent = this.root();
     },
     onFeedBackClick:function(){
-        cc.beimi.dialog = cc.instantiate(this.feedback) ;
-        cc.beimi.dialog.parent = this.root();
+        cc.beimi.openwin = cc.instantiate(this.feedback) ;
+        cc.beimi.openwin.parent = this.root();
     }
 
     // called every frame, uncomment this function to activate update callback

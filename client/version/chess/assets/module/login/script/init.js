@@ -63,7 +63,9 @@ cc.Class({
 
 
 
-            cc.beimi.dialog = null ;
+            cc.beimi.dialog = null ;   //弹出的提示对话框，  alert
+
+            cc.beimi.openwin = null ;  //弹出的对话窗口，    设置、玩法、战绩等等
 
             cc.beimi.loadding = new cc.NodePool();
             cc.beimi.loadding.put(cc.instantiate(this.loaddingPrefab)); // 创建节点

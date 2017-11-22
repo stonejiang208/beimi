@@ -23,7 +23,7 @@ cc.Class({
         this.loadding();
         let self = this ;
         setTimeout(function(){
-            self.scene("dizhuhall" , self);
+            self.scene(cc.beimi.gametype , self);
         } , 500)
 
     }

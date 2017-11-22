@@ -17,7 +17,7 @@ cc.Class({
 
     // use this for initialization
     onLoad: function () {
-
+        cc.beimi.room_callback = null ;  //加入房间回调函数
     },
     ready:function(){
         var check = false ;
@@ -41,11 +41,20 @@ cc.Class({
             token:cc.beimi.authorization,
             orgi:cc.beimi.user.orgi
         } ;
+        let self = this ;
         cc.beimi.socket.emit("gamestatus" , JSON.stringify(param));
         cc.beimi.socket.on("gamestatus" , function(result){
             if(result!=null) {
                 cc.beimi.gamestatus = result.gamestatus;
-                console.log(result);
+            }
+        });
+        /**
+         * 加入房卡模式的游戏类型 ， 需要校验是否是服务端发送的消息
+         */
+        cc.beimi.socket.on("searchroom" , function(result){
+            //result 是 GamePlayway数据，如果找到了 房间数据，则进入房间，如果未找到房间数据，则提示房间不存在
+            if(result!=null && cc.beimi.room_callback!=null) {
+                cc.beimi.room_callback(result , self);
             }
         });
         return cc.beimi.socket ;
@@ -55,6 +64,12 @@ cc.Class({
             cc.beimi.socket.disconnect();
             cc.beimi.socket = null ;
         }
+    },
+    registercallback:function(callback){
+        cc.beimi.room_callback = callback ;
+    },
+    cleancallback:function(){
+        cc.beimi.room_callback = null ;
     },
     getCommon:function(common){
         var object = cc.find("Canvas/script/"+common) ;
@@ -79,12 +94,23 @@ cc.Class({
                 node.getComponent(cc.Label).string = message ;
             }
         }
+        this.closeloadding();
     },
     closeloadding:function(){
-        cc.beimi.loadding.put(cc.find("Canvas/loadding"));
+        if(cc.find("Canvas/loadding")){
+            cc.beimi.loadding.put(cc.find("Canvas/loadding"));
+        }
+    },
+    closeOpenWin:function(){
+        if(cc.beimi.openwin != null){
+            cc.beimi.openwin.destroy();
+            cc.beimi.openwin = null ;
+        }
     },
     closealert:function(){
-        cc.beimi.dialog.put(cc.find("Canvas/alert"));
+        if(cc.find("Canvas/alert")){
+            cc.beimi.dialog.put(cc.find("Canvas/alert"));
+        }
     },
     scene:function(name , self){
         cc.director.preloadScene(name, function () {
@@ -135,6 +161,7 @@ cc.Class({
         cc.beimi.authorization = data.token.id ;
         cc.beimi.user = data.data ;
         cc.beimi.games = data.games ;
+        cc.beimi.gametype = data.gametype ;
 
         cc.beimi.playway = null ;
         this.io.put("userinfo" ,result );

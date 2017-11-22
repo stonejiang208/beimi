@@ -20,7 +20,7 @@ cc.Class({
 
     },
     onBackClick:function(){
-        this.scene("mjhall" , this);
+        this.scene(cc.beimi.gametype , this);
     }
 
     // called every frame, uncomment this function to activate update callback

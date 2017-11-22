@@ -13,6 +13,10 @@ cc.Class({
         //    readonly: false,    // optional, default is false
         // },
         // ...
+        roomidDialog: {
+            default: null,
+            type: cc.Prefab
+        }
     },
 
     // use this for initialization
@@ -25,6 +29,12 @@ cc.Class({
         setTimeout(function(){
             object.scene(data , object) ;
         } , 200);
+    },
+    onClickJoinRoom:function(){
+        if(this.roomidDialog){
+            cc.beimi.openwin = cc.instantiate(this.roomidDialog) ;
+            cc.beimi.openwin.parent = this.root();
+        }
     }
 
     // called every frame, uncomment this function to activate update callback

@@ -1,5 +1,7 @@
+var beiMiCommon = require("BeiMiCommon");
+
 cc.Class({
-    extends: cc.Component,
+    extends: beiMiCommon,
 
     properties: {
         // foo: {
@@ -22,8 +24,7 @@ cc.Class({
         event.stopPropagation();
     },
     onCloseClick:function(){
-        cc.beimi.dialog.destroy();
-        cc.beimi.dialog = null ;
+        this.closeOpenWin();
     }
 
     // called every frame, uncomment this function to activate update callback

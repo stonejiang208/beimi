@@ -15,11 +15,14 @@ cc.Class({
             playway : null,
             type:function(name){
                 var temp ;
-                if(cc.beimi.game.model !=null){
-                    for(var i=0 ; i<cc.beimi.game.model.types.length ; i++){
-                        var type = cc.beimi.game.model.types[i] ;
-                        if(type.code == name){
-                            temp = type ;
+                if(cc.beimi.games !=null){
+                    for(var i=0 ; i<cc.beimi.games.length ; i++){
+                        var gamemodel = cc.beimi.games[i] ;
+                        for(var inx = 0 ; inx < gamemodel.types.length ; inx++){
+                            var  type = gamemodel.types[inx] ;
+                            if(type.code == name){
+                                temp = type ;
+                            }
                         }
                     }
                 }
@@ -52,12 +55,8 @@ cc.Class({
              */
             object.connect();
             //预加载场景
-            if(cc.beimi.games && cc.beimi.games.length == 1){//只定义了单一游戏类型 ，否则 进入游戏大厅
-                object.scene(cc.beimi.games[0].code , object) ;
-                /**
-                 * 传递全局参数，当前进入的游戏类型，另外全局参数是 选场
-                 */
-                cc.beimi.game.model = cc.beimi.games[0];
+            if(cc.beimi.gametype!=null && cc.beimi.gametype != ""){//只定义了单一游戏类型 ，否则 进入游戏大厅
+                object.scene(cc.beimi.gametype , object) ;
             }else{
                 /**
                  * 暂未实现功能
