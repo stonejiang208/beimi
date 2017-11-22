@@ -23,6 +23,7 @@ import com.beimi.util.UKTools;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.web.handler.Handler;
 import com.beimi.web.model.AccountConfig;
+import com.beimi.web.model.GameConfig;
 import com.beimi.web.model.PlayUser;
 import com.beimi.web.model.PlayUserClient;
 import com.beimi.web.model.ResultData;
@@ -99,15 +100,16 @@ public class GuestRegisterController extends Handler{
 		CacheHelper.getApiUserCacheBean().put(userToken.getId(),userToken, userToken.getOrgi());
 		CacheHelper.getApiUserCacheBean().put(playUserClient.getId(),playUserClient, userToken.getOrgi());
 		ResultData playerResultData = new ResultData( playUserClient!=null , playUserClient != null ? MessageEnum.USER_REGISTER_SUCCESS: MessageEnum.USER_REGISTER_FAILD_USERNAME , playUserClient , userToken) ;
-		playerResultData.setGametype(GameUtils.gameConfig(userToken.getOrgi()).getGametype());
-		/**
-		 * 封装 游戏对象，发送到客户端
-		 */
-		if(!StringUtils.isBlank(playerResultData.getGametype())){
+		GameConfig gameConfig = GameUtils.gameConfig(userToken.getOrgi()) ;
+		if(gameConfig!=null){
+			playerResultData.setGametype(gameConfig.getGamemodel());
+			/**
+			 * 封装 游戏对象，发送到客户端
+			 */
 			/**
 			 * 找到游戏配置的 模式 和玩法，如果多选，则默认进入的是 大厅模式，如果是单选，则进入的是选场模式
 			 */
-			playerResultData.setGames(GameUtils.games(playerResultData.getGametype()));
+			playerResultData.setGames(GameUtils.games(gameConfig.getGametype()));
 		}
 		/**
 		 * 根据游戏配置 ， 选择 返回的 玩法列表

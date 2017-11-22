@@ -1,6 +1,8 @@
 
 package com.beimi.util.server.handler;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -11,9 +13,14 @@ import com.beimi.util.UKTools;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.util.client.NettyClients;
 import com.beimi.util.rules.model.GameStatus;
+import com.beimi.util.rules.model.SearchRoom;
+import com.beimi.util.rules.model.SearchRoomResult;
+import com.beimi.web.model.GamePlayway;
+import com.beimi.web.model.GameRoom;
 import com.beimi.web.model.PlayUserClient;
 import com.beimi.web.model.Token;
 import com.beimi.web.service.repository.es.PlayUserClientESRepository;
+import com.beimi.web.service.repository.jpa.GameRoomRepository;
 import com.beimi.web.service.repository.jpa.PlayUserClientRepository;
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
@@ -248,7 +255,7 @@ public class GameEventHandler
 		}
     }
     
-  //抢地主事件
+    //抢地主事件
     @OnEvent(value = "recovery")   
     public void onRecovery(SocketIOClient client , String data)  
     {  
@@ -261,5 +268,58 @@ public class GameEventHandler
 				BMDataContext.getGameEngine().gameRequest(playUser.getId(), beiMiClient.getPlayway(), beiMiClient.getRoom(), beiMiClient.getOrgi(), playUser , beiMiClient) ;
 			}
 		}
+    }
+    
+  //抢地主事件
+    @OnEvent(value = "searchroom")   
+    public void onSearchRoom(SocketIOClient client , String data)  
+    {  
+    	SearchRoom searchRoom = JSON.parseObject(data , SearchRoom.class) ;
+    	GamePlayway gamePlayway = null ;
+    	SearchRoomResult searchRoomResult = null ;
+    	boolean joinRoom = false;
+    	if(searchRoom!=null && !StringUtils.isBlank(searchRoom.getUserid())){
+    		GameRoomRepository gameRoomRepository = BMDataContext.getContext().getBean(GameRoomRepository.class);
+    		PlayUserClient playUser = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(searchRoom.getUserid(), searchRoom.getOrgi()) ;
+			if(playUser!=null){
+				GameRoom gameRoom = null ;
+				String roomid = (String) CacheHelper.getRoomMappingCacheBean().getCacheObject(playUser.getId(), playUser.getOrgi()) ;
+				if(!StringUtils.isBlank(roomid)){
+					gameRoom = (GameRoom) CacheHelper.getGamePlayerCacheBean().getCacheObject(roomid, playUser.getOrgi()) ;
+				}else{
+					List<GameRoom> gameRoomList = gameRoomRepository.findByRoomidAndOrgi(searchRoom.getRoomid(), playUser.getOrgi()) ;
+					if(gameRoomList!=null && gameRoomList.size() > 0){
+						GameRoom tempGameRoom = gameRoomList.get(0) ;
+						gameRoom = (GameRoom) CacheHelper.getGamePlayerCacheBean().getCacheObject(tempGameRoom.getId(), playUser.getOrgi()) ;
+					}
+				}
+				if(gameRoom!=null){
+					/**
+					 * 将玩家加入到 房间 中来 ， 加入的时候需要处理当前的 房间 已满员或未满员，如果满员，需要检查是否允许围观
+					 */
+					gamePlayway = gameRoom.getGamePlayway() ;
+					List<PlayUserClient> playerList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
+					if(playerList.size() < gamePlayway.getPlayers()){
+						BMDataContext.getGameEngine().joinRoom(gameRoom, playUser, playerList);
+						joinRoom = true ;
+					}
+					/**
+					 * 获取的玩法，将玩法数据发送给当前请求的玩家
+					 */
+				}
+			}
+    	}
+    	if(gamePlayway!=null){
+    		//通知客户端
+    		if(joinRoom == true){		//加入成功 ， 是否需要输入加入密码？
+    			searchRoomResult = new SearchRoomResult(gamePlayway.getId() , gamePlayway.getCode() , BMDataContext.SearchRoomResultType.OK.toString());
+    		}else{						//加入失败
+    			searchRoomResult = new SearchRoomResult(BMDataContext.SearchRoomResultType.FULL.toString());
+    		}
+    	}else{ //房间不存在
+    		searchRoomResult = new SearchRoomResult(BMDataContext.SearchRoomResultType.NOTEXIST.toString());
+    	}
+		
+		client.sendEvent(BMDataContext.BEIMI_SEARCHROOM_EVENT, searchRoomResult);
     }
 }  

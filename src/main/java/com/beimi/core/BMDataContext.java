@@ -20,6 +20,8 @@ public class BMDataContext {
 	
 	public static final String BEIMI_GAMESTATUS_EVENT = "gamestatus" ;
 	
+	public static final String BEIMI_SEARCHROOM_EVENT = "searchroom" ;
+	
 	public static final String BEIMI_SYSTEM_GAME_ACCOUNT_CONFIG = "game_account_config";
 	public static final String BEIMI_GAME_PLAYWAY = "game_playway";
 	
@@ -209,6 +211,18 @@ public class BMDataContext {
 		MESSAGE, 
 		END,
 		TRANS, STATUS , AGENTSTATUS , SERVICE, WRITING;
+		
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+	public enum SearchRoomResultType{
+		NOTEXIST,  //房间不存在
+		FULL, 		//房间已满员
+		OK,			//加入成功
+		DISABLE,	//房间启用了 禁止非邀请加入
+		INVALID;	//房主已离开房间
 		
 		public String toString(){
 			return super.toString().toLowerCase() ;

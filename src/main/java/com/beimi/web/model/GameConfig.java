@@ -25,7 +25,11 @@ public class GameConfig implements java.io.Serializable{
 	private String username ;
 	private String name ;
 	
-	private String gametype ;	//玩家默认进入的游戏类型
+	private String gamemodel = "hall";	//游戏模式  ： 大厅 （默认）： 房卡
+	
+	private String gametype ;	//玩家默认进入的游戏类型 ， 大厅模式下启用的游戏类型
+	
+	private String hallgametype ;//房卡模式下启用的游戏类型
 	
 	private int maxuser = 10 ;	
 	
@@ -203,5 +207,17 @@ public class GameConfig implements java.io.Serializable{
 	}
 	public void setGametype(String gametype) {
 		this.gametype = gametype;
+	}
+	public String getGamemodel() {
+		return gamemodel;
+	}
+	public void setGamemodel(String gamemodel) {
+		this.gamemodel = gamemodel;
+	}
+	public String getHallgametype() {
+		return hallgametype;
+	}
+	public void setHallgametype(String hallgametype) {
+		this.hallgametype = hallgametype;
 	}
 }

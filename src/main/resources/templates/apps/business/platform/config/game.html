@@ -22,11 +22,41 @@
 									<div class="row">
 										<div class="col-lg-8">
 											<div class="ukefu-webim-prop">
-												<div class="ukefu-webim-tl" style="clear:both;">1、玩家登录后默认接入的游戏类型</div>
+												<div class="ukefu-webim-tl" style="clear:both;">1、玩家登录后默认接入的游戏模式</div>
 												<div class="box-item">
 													<div class="row">
 														<div class="col-lg-12">
-															<p style="color:#888888;font-size:13px;margin-top:10px;">选择默认的游戏类型，游戏类型决定了登录以后的玩法列表</p>
+															<p style="color:#888888;font-size:13px;margin-top:10px;">选择默认的游戏模式，游戏模式决定了登录以后的默认游戏界面</p>
+														</div>
+													</div>
+												</div>
+												<div class="box-item">
+													<input type="hidden" id="gamemodel" name="gamemodel" value="<#if gameConfig??>${gameConfig.gamemodel!''}</#if>"/>
+													<div class="row">
+														<div class="col-lg-4" style="text-align: center;">
+															<div data-type="hall" class="game_model <#if gameConfig.gamemodel?? && gameConfig.gamemodel == 'hall'>selected</#if>" title="大厅">
+																<#if gameConfig.gametype?? && gameConfig.gamemodel == "hall"><i class="layui-icon">&#xe618;</i></#if>
+																<img src="/images/hall.jpg"/>
+															</div>
+															<div style="text-align:center;color:#1E9FFF;">大厅模式</div>
+														</div>
+														<div class="col-lg-4" style="text-align: center;">
+															<div data-type="room" class="game_model <#if gameConfig.gamemodel?? && gameConfig.gamemodel == 'room'>selected</#if>" title="房卡">
+																<#if gameConfig.gametype?? && gameConfig.gamemodel == "room"><i class="layui-icon">&#xe618;</i></#if>
+																<img src="/images/room.jpg"/>
+															</div>
+															<div style="text-align:center;color:#1E9FFF;">房卡模式</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											
+											<div class="ukefu-webim-prop">
+												<div class="ukefu-webim-tl" style="clear:both;">2、启用的游戏类型</div>
+												<div class="box-item">
+													<div class="row">
+														<div class="col-lg-12">
+															<p style="color:#888888;font-size:13px;margin-top:10px;">选择启用的游戏类型，启用后，游戏类型列表中才会出现此类游戏</p>
 														</div>
 													</div>
 												</div>
@@ -34,11 +64,12 @@
 													<input type="hidden" id="gametype" name="gametype" value="<#if gameConfig??>${gameConfig.gametype!''}</#if>"/>
 													<div class="row">
 														<#list gameModelList as gameModel>
-														<div class="col-lg-4">
-															<div data-type="${gameModel.id!''}" class="game_type <#if gameConfig.gametype?? && gameConfig.gametype == gameModel.id>selected</#if>" title="${gameModel.name!''}">
-																<#if gameConfig.gametype?? && gameConfig.gametype == gameModel.id><i class="layui-icon">&#xe618;</i></#if>
+														<div class="col-lg-3" style="text-align: center;">
+															<div data-type="${gameModel.id!''}" class="game_type <#if gameConfig.gametype?? && gameConfig.gametype?index_of(gameModel.id) gte 0>selected</#if>" title="${gameModel.name!''}">
+																<#if gameConfig.gametype?? && gameConfig.gametype?index_of(gameModel.id) gte 0><i class="layui-icon">&#xe618;</i></#if>
 																<img src="${gameModel.iconstr!''}"/>
 															</div>
+															<div style="text-align:center;color:#1E9FFF;">${gameModel.name!''}</div>
 														</div>
 														</#list>
 													</div>
@@ -69,12 +100,33 @@
 </div>
 
 <script language="javascript"> 		
-	$('.game_type').on("click" , function(){
-		$('.game_type').removeClass("selected");
-		$('.game_type').find("i").remove();
+	$('.game_model').on("click" , function(){
+		$('.game_model').removeClass("selected");
+		$('.game_model').find("i").remove();
 		$(this).addClass("selected");	
 		$(this).prepend("<i class='layui-icon'>&#xe618;</i>");
-		$('#gametype').val($(this).data("type"));
+		$('#gamemodel').val($(this).data("type"));
+	});
+	$('.game_type').on("click" , function(){
+		if($(this).hasClass("selected")){
+			if($('.game_type.selected').length == 1){
+				top.layer.alert("只有最后一个选项了，请选择其他游戏后再取消！");
+			}else{
+				$(this).removeClass("selected");
+				$(this).find("i").remove();
+			}
+		}else{
+			$(this).addClass("selected");	
+			$(this).prepend("<i class='layui-icon'>&#xe618;</i>");
+		}
+		var selgame = "" ;
+		$('.game_type.selected').each(function(){
+			if(selgame != ""){
+				selgame = selgame + ',';
+			}
+			selgame = selgame + $(this).data("type");
+			$('#gametype').val(selgame);
+		});
 	});
 	layui.use('form', function(){
 		var form = layui.form;

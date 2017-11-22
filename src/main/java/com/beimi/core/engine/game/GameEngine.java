@@ -150,20 +150,11 @@ public class GameEngine {
 				gameEvent.setGameRoom(gameRoom);
 				gameEvent.setRoomid(gameRoom.getId());
 				
-				boolean inroom = false ;
-				for(PlayUserClient user : playerList){
-					if(user.getId().equals(userid)){
-						inroom = true ; break ;
-					}
-				}
-				if(inroom == false){
-					playUser.setPlayerindex(System.currentTimeMillis());
-					playUser.setGamestatus(BMDataContext.GameStatusEnum.READY.toString());
-					playUser.setPlayertype(BMDataContext.PlayerTypeEnum.NORMAL.toString());
-					playerList.add(playUser) ;
-					NettyClients.getInstance().joinRoom(userid, gameRoom.getId());
-					CacheHelper.getGamePlayerCacheBean().put(gameRoom.getId(), playUser, orgi); //将用户加入到 room ， MultiCache
-				}
+				/**
+				 * 无条件加入房间
+				 */
+				this.joinRoom(gameRoom, playUser, playerList);
+				
 				for(PlayUserClient temp : playerList){
 					if(temp.getId().equals(playUser.getId())){
 						gameEvent.setIndex(playerList.indexOf(temp)); break ;
@@ -175,13 +166,38 @@ public class GameEngine {
 				if(playerList.size() < gamePlayway.getPlayers() && needtakequene == true){
 					CacheHelper.getQueneCache().put(gameRoom, orgi);	//未达到最大玩家数量，加入到游戏撮合 队列，继续撮合
 				}
-				/**
-				 *	不管状态如何，玩家一定会加入到这个房间 
-				 */
-				CacheHelper.getRoomMappingCacheBean().put(userid, gameRoom.getId(), orgi);
+				
 			}
 		}
 		return gameEvent;
+	}
+	/**
+	 * 
+	 * 玩家加入房间
+	 * @param gameRoom
+	 * @param playUser
+	 * @param playerList
+	 */
+	public void joinRoom(GameRoom gameRoom , PlayUserClient playUser , List<PlayUserClient> playerList){
+		boolean inroom = false ;
+		for(PlayUserClient user : playerList){
+			if(user.getId().equals(playUser.getId())){
+				inroom = true ; break ;
+			}
+		}
+		if(inroom == false){
+			playUser.setPlayerindex(System.currentTimeMillis());
+			playUser.setGamestatus(BMDataContext.GameStatusEnum.READY.toString());
+			playUser.setPlayertype(BMDataContext.PlayerTypeEnum.NORMAL.toString());
+			playerList.add(playUser) ;
+			NettyClients.getInstance().joinRoom(playUser.getId(), gameRoom.getId());
+			CacheHelper.getGamePlayerCacheBean().put(gameRoom.getId(), playUser, playUser.getOrgi()); //将用户加入到 room ， MultiCache
+		}
+		
+		/**
+		 *	不管状态如何，玩家一定会加入到这个房间 
+		 */
+		CacheHelper.getRoomMappingCacheBean().put(playUser.getId(), gameRoom.getId(), playUser.getOrgi());
 	}
 	
 	/**

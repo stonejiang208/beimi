@@ -18,7 +18,7 @@ public class ResultData implements java.io.Serializable{
 	private String msg ;
 	private Object data ;
 	
-	private String gametype ;
+	private String gametype ;			// game model : 大厅 | 房卡
 	
 	private Token token ;
 	private List<BeiMiGame> games ;		//游戏配置里选择的游戏类型
