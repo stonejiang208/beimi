@@ -1,6 +1,7 @@
 package com.beimi.core.engine.game;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -204,9 +205,6 @@ public class ActionTaskUtils {
 				max = types.get(card) ;
 				maxcard = card ;
 			}
-			if(types.get(card) < min){
-				min = types.get(card) ;
-			}
 			if(cards[i] > cardTypeBean.getMaxcardvalue()){
 				cardTypeBean.setMaxcardvalue(cards[i]);
 			}
@@ -214,6 +212,15 @@ public class ActionTaskUtils {
 				mincard = card ;
 			}
 		}
+		
+		Iterator<Integer> iterator = types.keySet().iterator() ;
+		while(iterator.hasNext()){
+			Integer key = iterator.next() ;
+			if(types.get(key) < min){
+				min = types.get(key) ;
+			}
+		}
+		
 		cardTypeBean.setCardnum(max);
 		cardTypeBean.setMincard(mincard);
 		cardTypeBean.setTypesize(types.size());

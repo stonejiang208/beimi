@@ -137,6 +137,8 @@ public class TakeDiZhuCards extends TakeCards implements Message , java.io.Seria
 						}
 						if(supplement!=null){
 							retValue = ArrayUtils.addAll(retValue, supplement) ;
+						}else{
+							retValue = null ;
 						}
 					}
 					break ;
