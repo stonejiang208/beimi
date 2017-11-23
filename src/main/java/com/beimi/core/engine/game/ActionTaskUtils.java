@@ -103,7 +103,8 @@ public class ActionTaskUtils {
 		return UKTools.json(data) ;
 	}
 	/**
-	 * 临时放这里，重构的时候 放到 游戏类型的 实现类里
+	 * 临时放这里，重构的时候 放到 游戏类型的 实现类里 
+	 * 抢地主的时候，首个抢地主 不翻倍
 	 * @param board
 	 * @param player
 	 * @return
