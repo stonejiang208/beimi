@@ -288,10 +288,8 @@ cc.Class({
         //     currpoker.zIndex = index;
         // }
         let zIndex = this.countcard(card , cards) ;
-        currpoker.zIndex = 4-zIndex ;
+        currpoker.zIndex = zIndex ;
         currpoker.siblingIndex = card;
-
-        console.log(card + "  " + zIndex) ;
 
         currpoker.parent = this.lastcards ;
         this.cardslist.push(currpoker) ;

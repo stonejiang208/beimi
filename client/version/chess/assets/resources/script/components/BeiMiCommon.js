@@ -195,6 +195,29 @@ cc.Class({
     },
     route:function(command){
         return cc.routes[command] || function(){};
+    },
+    /**
+     * 解决Layout的渲染顺序和显示顺序不一致的问题
+     * @param target
+     * @param func
+     */
+    layout:function(target , func){
+        if(target != null){
+            let temp = new Array() ;
+            let children = target.children ;
+            for(var inx = 0 ; inx < children.length ; inx++){
+                temp.push(children[inx]) ;
+            }
+            for(var inx = 0 ; inx < temp.length ; inx++){
+                target.removeChild(temp[inx]) ;
+            }
+
+            temp.sort(func) ;
+            for(var inx =0 ; inx<temp.length ; inx++){
+                temp[inx].parent = target ;
+            }
+            temp.splice(0 , temp.length) ;
+        }
     }
 
     // called every frame, uncomment this function to activate update callback

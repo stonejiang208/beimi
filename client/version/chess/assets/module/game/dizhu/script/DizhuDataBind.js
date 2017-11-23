@@ -227,11 +227,9 @@ cc.Class({
 
             var zIndex = this.countcard(card , lastcards) ;
 
-            cacheCard.zIndex = 4-zIndex ;
+            cacheCard.zIndex = zIndex ;
             cacheCard.siblingIndex = card;
             // cacheCard.zIndex =  zIndex;
-
-            console.log(card + "  " + zIndex) ;
 
             cacheCard.setScale(0.5,0.5);
 

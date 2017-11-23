@@ -261,10 +261,10 @@ cc.Class({
             /**
              * 设置地主标志
              */
-            if(data.banker == cc.beimi.user.id){
+            if(data.banker.userid == cc.beimi.user.id){
                 context.game.lasthands(context , context.game , data.data ) ;
             }else{
-                context.getPlayer(data.banker).setDizhuFlag(data.data);
+                context.getPlayer(data.banker.userid).setDizhuFlag(data.data);
             }
         }
         /**
@@ -358,11 +358,22 @@ cc.Class({
             }
 
             for(var i=0 ; i<lasthands.length ; i++){
-                let pc = context.playcards(context.game , context ,2 * 300 + (6 + i) * 50-300, lasthands[i]) ;
+                let func = null ;
+                if(i == (lasthands.length - 1)){
+                    func = cc.callFunc(function (target , data) {
+                        if(data.tempcontext){
+                            data.tempcontext.layout(data.tempcontext.poker , function(fir , sec){
+                                return fir.zIndex - sec.zIndex ;
+                            });
+                        }
+                    }, this , {tempcontext: context});
+                }
+                let pc = context.current(context.game , context ,2 * 300 + (6 + i) * 50-300, lasthands[i] , func) ;
                 var beiMiCard = pc.getComponent("BeiMiCard") ;
                 beiMiCard.order();
                 context.registerProxy(pc);
             }
+
             context.game.playtimer(context.game,25 , true);
         }else{
             context.game.hideresult();
@@ -453,7 +464,6 @@ cc.Class({
                 }
 
                 data.self.lastCardsPanel.active = true ;
-
             }
         }, this , {game : context.game  , self: context, left :left , right : right , current : center});
 
@@ -542,12 +552,7 @@ cc.Class({
          * 处理当前玩家的 牌， 发牌 ，  17张牌， 分三次动作处理完成
          */
         for(var i=0 ; i<num ; i++){
-            var myCards ;
-            if(finished == null){
-                myCards = self.playcards(game , self ,times * 300 + i * 50-300, cards[times * 6 + i] ) ;
-            }else{
-                myCards = self.current(game , self ,times * 300 + i * 50-300, cards[times * 6 + i] , finished) ;
-            }
+            var myCards = self.current(game , self ,times * 300 + i * 50-300, cards[times * 6 + i] , finished) ;
             this.registerProxy(myCards);
         }
         self.otherplayer(left  , 0 , num ,game , self) ;
@@ -572,23 +577,6 @@ cc.Class({
             render.countcards(1);
         }
     },
-    playcards:function(game , self , posx , card){
-        let currpoker = game.pokerpool.get() ;
-        var beiMiCard = currpoker.getComponent("BeiMiCard") ;
-        beiMiCard.setCard(card) ;
-        currpoker.card = card ;
-
-        currpoker.parent = self.poker ;
-        currpoker.setPosition(0,200);
-
-        self.pokercards[self.pokercards.length] = currpoker ;
-        let action = cc.moveTo(0.2, posx, -180) ;
-
-        currpoker.setScale(1,1);
-
-        currpoker.runAction(action);
-        return currpoker;
-    },
     doLastCards:function(game , self , num , card){//发三张底牌
         for(var i=0 ; i<num ; i++){
             var width = i * 80 - 80;
@@ -607,6 +595,9 @@ cc.Class({
             beiMiCard.proxy(this.game);
         }
     },
+    playcards:function(game , self , posx , card){
+        return self.current(game ,self , posx , card , null);
+    },
     current:function(game , self , posx , card , func){
         let currpoker = game.pokerpool.get() ;
         var beiMiCard = currpoker.getComponent("BeiMiCard") ;
@@ -616,13 +607,17 @@ cc.Class({
         currpoker.setPosition(0,200);
 
         currpoker.setScale(1,1);
+        currpoker.zIndex = 100 - card ;
 
+        self.pokercards.push(currpoker);
 
-
-        self.pokercards[self.pokercards.length] = currpoker ;
-        let seq = cc.sequence(cc.moveTo(0.2, posx, -180) , func);
-
-        currpoker.runAction(seq);
+        if(func!=null){
+            let seq = cc.sequence(cc.moveTo(0.2, posx, -180) , func);
+            currpoker.runAction(seq);
+        }else{
+            let action = cc.moveTo(0.2, posx, -180) ;
+            currpoker.runAction(action);
+        }
         return currpoker;
     },
     reordering:function(self){

@@ -157,7 +157,7 @@ cc.Class({
          * 适配屏幕尺寸
          */
         this.resize();
-        
+
         if(this.ready()) {
             let socket = this.socket();
             this.routes = {};
