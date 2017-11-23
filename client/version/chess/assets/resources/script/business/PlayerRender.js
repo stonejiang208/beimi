@@ -1,6 +1,6 @@
+var beiMiCommon = require("BeiMiCommon");
 cc.Class({
-    extends: cc.Component,
-
+    extends: beiMiCommon,
     properties: {
         // foo: {
         //    default: null,      // The default value will be used only when the component attaching
@@ -217,7 +217,7 @@ cc.Class({
             this.dizhu.active = false ;
         }
     },
-    lasttakecards:function(game , self , cardsnum ,lastcards ,data) {
+    lasttakecards:function(game , self , cardsnum ,cards ,data) {
         if (this.beimitimer && this.timesrc) {
             this.beimitimer.stoptimer(this, this.jsq, this.timesrc);
         }
@@ -245,9 +245,12 @@ cc.Class({
         if (data.donot == false || data.finished == true) {
             this.resetcards(cardsnum);
 
-            for (var i = 0; i < lastcards.length; i++) {
-                this.playcards(game, i, lastcards[i] , lastcards);
+            for (var i = 0; i < cards.length; i++) {
+                this.playcards(game, i, cards[i] , cards);
             }
+            this.layout(this.lastcards , function(fir , sec){
+                return fir.zIndex - sec.zIndex ;
+            });
         }else{
             if(data.sameside == "1"){
                 self.getPlayer(data.userid).tipdonot();
@@ -288,8 +291,7 @@ cc.Class({
         //     currpoker.zIndex = index;
         // }
         let zIndex = this.countcard(card , cards) ;
-        currpoker.zIndex = zIndex ;
-        currpoker.siblingIndex = card;
+        currpoker.zIndex = 4 - zIndex ;
 
         currpoker.parent = this.lastcards ;
         this.cardslist.push(currpoker) ;

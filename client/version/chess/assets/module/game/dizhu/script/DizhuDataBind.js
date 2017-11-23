@@ -208,6 +208,9 @@ cc.Class({
             for(var i=0 ; i<lastcards.length ; i++){
                 this.playcards(self , i , lastcards[i] , lastcards) ;
             }
+            this.layout(this.lastcards , function(fir , sec){
+                return fir.zIndex - sec.zIndex ;
+            });
         }else{
             this.doOperatorResult("lasttakecards" , true , data.sameside) ;
         }
@@ -227,8 +230,7 @@ cc.Class({
 
             var zIndex = this.countcard(card , lastcards) ;
 
-            cacheCard.zIndex = zIndex ;
-            cacheCard.siblingIndex = card;
+            cacheCard.zIndex = 4 - zIndex ;
             // cacheCard.zIndex =  zIndex;
 
             cacheCard.setScale(0.5,0.5);
@@ -236,7 +238,7 @@ cc.Class({
             cacheCard.parent = this.lastcards ;
 
 
-            this.cardslist[this.cardslist.length] = cacheCard ;
+            this.cardslist.push(cacheCard) ;
         }
     },
     /**
