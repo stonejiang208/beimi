@@ -398,7 +398,6 @@ cc.Class({
                     context.deskcards.push(desk_card);
                     desk_card.parent = context.deskcards_current_panel;
                 }else{
-
                     handcards.relastone();
                     if(handcards.selectcolor == true){
                         context.playercards[inx].zIndex = 1000 + handcards.value ;
@@ -412,6 +411,12 @@ cc.Class({
                     inx = inx + 1 ;     //遍历 ++,不处理移除的 牌
                 }
             }
+            /**
+             * 重新排序
+             */
+            context.layout(context.cards_panel,function(fir ,sec){
+                return fir.zIndex - sec.zIndex ;
+            });
             context.exchange_state("takecard" , context);  //隐藏 提示状态
         }else{
             //其他玩家出牌
