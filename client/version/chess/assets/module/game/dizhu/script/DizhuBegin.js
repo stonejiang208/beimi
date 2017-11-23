@@ -526,6 +526,12 @@ cc.Class({
                 let temp = context.summarypage.getComponent("SummaryDetail") ;
                 temp.create(context , data);
             }
+            /**
+             * 隐藏顶部的 底牌 显示区域
+             * @type {boolean}
+             */
+            context.lastCardsPanel.active = false ;
+
             if(data.gameRoomOver == true){//房间解散
                 for(var inx = 0 ; inx<context.player.length ; inx++){
                     context.player[inx].destroy();
