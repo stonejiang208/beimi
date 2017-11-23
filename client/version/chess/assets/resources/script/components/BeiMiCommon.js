@@ -169,10 +169,7 @@ cc.Class({
         this.io.put("userinfo" ,result );
     },
     logout:function(){
-        if(cc.beimi.dialog != null){
-            cc.beimi.dialog.destroy();
-            cc.beimi.dialog = null ;
-        }
+        this.closeOpenWin();
         cc.beimi.authorization = null ;
         cc.beimi.user = null ;
         cc.beimi.games = null ;
