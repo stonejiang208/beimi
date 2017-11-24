@@ -458,7 +458,7 @@
     },
     "component": "SelectPlayway",
     "handler": "onClick",
-    "customEventData": "create"
+    "customEventData": "createroom"
   },
   {
     "__type__": "cc.Node",
