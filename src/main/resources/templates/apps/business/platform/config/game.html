@@ -64,8 +64,8 @@
 													<input type="hidden" id="gametype" name="gametype" value="<#if gameConfig??>${gameConfig.gametype!''}</#if>"/>
 													<div class="row">
 														<#list gameModelList as gameModel>
-														<div class="col-lg-3" style="text-align: center;">
-															<div data-type="${gameModel.id!''}" class="game_type <#if gameConfig.gametype?? && gameConfig.gametype?index_of(gameModel.id) gte 0>selected</#if>" title="${gameModel.name!''}">
+														<div class="col-lg-3 game_model_type model_${gameModel.ctype!''}" style="text-align: center;<#if gameConfig.gametype?? && gameConfig.gamemodel != gameModel.ctype>display:none;</#if>" data-type="${gameModel.ctype!''}">
+															<div data-type="${gameModel.id!''}" class="game_type game_type_${gameModel.ctype!''} <#if gameConfig.gametype?? && gameConfig.gametype?index_of(gameModel.id) gte 0>selected</#if>" title="${gameModel.name!''}">
 																<#if gameConfig.gametype?? && gameConfig.gametype?index_of(gameModel.id) gte 0><i class="layui-icon">&#xe618;</i></#if>
 																<img src="${gameModel.iconstr!''}"/>
 															</div>
@@ -106,6 +106,22 @@
 		$(this).addClass("selected");	
 		$(this).prepend("<i class='layui-icon'>&#xe618;</i>");
 		$('#gamemodel').val($(this).data("type"));
+		$(".game_model_type").hide();
+		$(".model_"+$(this).data("type")).show();
+		$("#gametype").val("");
+		
+		$('.game_type').removeClass("selected");
+		$('.game_type').find("i").remove();
+		var selgame = "" ;
+		$(".game_type_"+$(this).data("type")+":first").each(function(){
+			$(this).addClass("selected");
+			$(this).prepend("<i class='layui-icon'>&#xe618;</i>");
+			if(selgame != ""){
+				
+			}
+			selgame = selgame + $(this).data("type");
+			$('#gametype').val(selgame);
+		});
 	});
 	$('.game_type').on("click" , function(){
 		if($(this).hasClass("selected")){

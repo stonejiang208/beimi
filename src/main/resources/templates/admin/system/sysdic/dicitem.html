@@ -20,7 +20,7 @@
 						<col width="10%">
 						<col width="10%">
 						<col width="10%">
-						<col width="35%">
+						<col width="10%">
 						<col width="10%">
 					<col>
 				  </colgroup>
@@ -91,10 +91,12 @@
 						  			</#if>
 						  			${dic.name!''}
 						  		</small>
+						  	  <#else>
+						  	  	${dic.iconstr?no_esc}
 						  	  </#if>
 						  </td>
 						  <td><#if dic.discode><i class="layui-icon" style="color:#19a55d;">&#xe618;</i></#if></td>
-						  <td><#if dic.createtime??>${dic.createtime?string("yyyy-MM-dd HH:mm:ss")}</#if></td>
+						  <td nowrap="nowrap"><#if dic.createtime??>${dic.createtime?string("yyyy-MM-dd HH:mm:ss")}</#if></td>
 						  <td style="white-space:nowrap;" nowrap="nowrap">
 								<a href="/admin/sysdic/dicitem/edit.html?id=${dic.id!''}&p=${sysDicList.number+1}" data-width="550" data-height="450" data-toggle="ajax" title="编辑${dic.name!''}">
 									<i class="layui-icon">&#xe642;</i>
