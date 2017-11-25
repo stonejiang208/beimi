@@ -103,6 +103,9 @@ cc.Class({
                  */
                 var playway = this.playwaypool.get();
                 var script = playway.getComponent("Playway") ;
+                if(script == null){
+                    script = playway.getComponent("RoomPlayway") ;
+                }
                 script.init(gametype.playways[inx]);
                 playway.parent = this.content ;
                 this.playwayarray.push(playway) ;

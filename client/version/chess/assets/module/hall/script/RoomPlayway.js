@@ -15,6 +15,10 @@ cc.Class({
         atlas: {
             default: null,
             type: cc.SpriteAtlas
+        },
+        gametype:{
+            default:null ,
+            type : cc.Node
         }
     },
 
@@ -27,9 +31,14 @@ cc.Class({
          * 需要预先请求 在线人数
          */
         if(playway){
-
             this.data = playway ;
-
+        }
+        if(playway.code == "dizhu"){
+            this.gametype.getComponent(cc.Sprite).spriteFrame = this.atlas.getSpriteFrame("斗地主");
+        }else if(playway.code == "majiang"){
+            this.gametype.getComponent(cc.Sprite).spriteFrame = this.atlas.getSpriteFrame("广东麻将");
+        }else if(playway.code == "poker"){
+            this.gametype.getComponent(cc.Sprite).spriteFrame = this.atlas.getSpriteFrame("德州扑克");
         }
     }
     // called every frame, uncomment this function to activate update callback
