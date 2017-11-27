@@ -65,6 +65,15 @@ public class TakeDiZhuCards extends TakeCards implements Message , java.io.Seria
 	 * @param last
 	 */
 	public TakeDiZhuCards(Player player , TakeCards last){
+		this(player, last, true) ;
+	}
+	
+	/**
+	 * 最小出牌 ， 管住 last
+	 * @param player
+	 * @param last
+	 */
+	public TakeDiZhuCards(Player player , TakeCards last , boolean take){
 		this.userid = player.getPlayuser() ;
 		if(last != null){
 			this.cards = this.search(player, last) ;
@@ -72,7 +81,9 @@ public class TakeDiZhuCards extends TakeCards implements Message , java.io.Seria
 			this.cards = getAIMostSmall(player, 0) ;
 		}
 		if(cards!=null){
-			player.setCards(this.removeCards(player.getCards() , cards));
+			if(take == true){
+				player.setCards(this.removeCards(player.getCards() , cards));
+			}
 			this.allow = true ;
 			this.cardType =  ActionTaskUtils.identification(cards);
 			this.type = cardType.getCardtype() ;

@@ -169,6 +169,22 @@ public class GameEventHandler
 		}
     }
     
+  //不抢/叫地主事件
+    @OnEvent(value = "cardtips")   
+    public void onCardTips(SocketIOClient client , String data)  
+    {  
+    	BeiMiClient beiMiClient = NettyClients.getInstance().getClient(client.getSessionId().toString()) ;
+    	String token = beiMiClient.getToken();
+		if(!StringUtils.isBlank(token)){
+			Token userToken = (Token) CacheHelper.getApiUserCacheBean().getCacheObject(token, BMDataContext.SYSTEM_ORGI) ;
+			if(userToken!=null){
+				PlayUserClient playUser = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(userToken.getUserid(), userToken.getOrgi()) ;
+				String roomid = (String) CacheHelper.getRoomMappingCacheBean().getCacheObject(playUser.getId(), playUser.getOrgi()) ;
+				BMDataContext.getGameEngine().cardTips(roomid, playUser, playUser.getOrgi(), data);
+			}
+		}
+    }
+    
     
     //出牌
     @OnEvent(value = "doplaycards")   

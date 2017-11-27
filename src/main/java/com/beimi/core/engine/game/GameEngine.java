@@ -224,6 +224,32 @@ public class GameEngine {
 	}
 	
 	/**
+	 * 抢地主，斗地主
+	 * @param roomid
+	 * @param userid
+	 * @param orgi
+	 * @return
+	 */
+	public void cardTips(String roomid, PlayUserClient playUser, String orgi , String cardtips){
+		GameRoom gameRoom = (GameRoom) CacheHelper.getGameRoomCacheBean().getCacheObject(roomid, orgi) ;
+		if(gameRoom!=null){
+			DuZhuBoard board = (DuZhuBoard) CacheHelper.getBoardCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi());
+			Player player = board.player(playUser.getId()) ;
+			
+			TakeCards takeCards = null ;
+			if(board.getLast() != null && !board.getLast().getUserid().equals(player.getPlayuser())){	//当前无出牌信息，刚开始出牌，或者出牌无玩家 压
+				takeCards = board.cardtip(player, board.getLast()) ;
+			}else{
+				takeCards = board.cardtip(player, null) ;
+			}
+			if(takeCards.getCards() == null){
+				takeCards.setAllow(false);	//没有 管的起的牌
+			}
+			ActionTaskUtils.sendEvent("cardtips", takeCards ,gameRoom) ;
+		}
+	}
+	
+	/**
 	 * 出牌，并校验出牌是否合规
 	 * @param roomid
 	 * 

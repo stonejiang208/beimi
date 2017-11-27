@@ -158,6 +158,16 @@ public class DuZhuBoard extends Board implements java.io.Serializable{
 	public TakeCards takecard(Player player , TakeCards last) {
 		return new TakeDiZhuCards(player, last);
 	}
+	
+	/**
+	 * 当前玩家随机出牌，能管住当前出牌的 最小牌
+	 * @param player
+	 * @param current
+	 * @return
+	 */
+	public TakeCards cardtip(Player player , TakeCards last) {
+		return new TakeDiZhuCards(player, last , false);
+	}
 
 	@Override
 	public boolean isWin() {
