@@ -56,6 +56,7 @@ cc.Class({
         this.lastCardsPanel.active = false ;
         this.summarypage = null ;
         this.inited = false ;
+        this.lasttip = null ;
 
         if(cc.beimi!=null && cc.beimi.gamestatus!=null && cc.beimi.gamestatus == "playing"){
             //恢复数据
@@ -397,6 +398,7 @@ cc.Class({
      */
     takecards_event:function(data,context){
         context.game.unselected(context , context.game) ;
+        context.lasttip = null ;
         if(data.allow == true) {
             var lastcards ;
             if(data.donot == false){
@@ -433,6 +435,7 @@ cc.Class({
         context.game.unselected(context , context.game) ;
         if(data.allow == true) {
             var tipcards = context.decode(data.cards);        //解析牌型
+            context.lasttip = tipcards.join(",") ;
             for(var inx = 0 ; inx < tipcards.length ; inx++){
                 context.game.cardtips(context , tipcards[inx] , tipcards) ;
             }
@@ -683,7 +686,13 @@ cc.Class({
     cardtips:function(){
         if(this.ready()){
             let socket = this.socket();
-            socket.emit("cardtips","cardtips");
+
+            if(this.lasttip!=null){
+                socket.emit("cardtips",this.lasttip);
+            }else{
+                socket.emit("cardtips","");
+            }
+            this.lasttip = null ;
         }
     },
     /**
@@ -711,6 +720,7 @@ cc.Class({
             }
             socket.emit("doplaycards" , this.game.selectedcards.join());
         }
+        this.lasttip = null ;
     },
     /**
      * 不出牌
@@ -720,6 +730,7 @@ cc.Class({
             let socket = this.socket();
             socket.emit("nocards","nocards");
         }
+        this.lasttip = null ;
     },
     clean:function(){
         for(var inx = 0 ; inx<this.pokercards.length ; inx++){
