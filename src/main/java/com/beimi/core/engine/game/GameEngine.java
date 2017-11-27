@@ -245,7 +245,8 @@ public class GameEngine {
 					tipCards[i] = Byte.parseByte(cards[i]) ;
 				}
 				takeCards = board.cardtip(player, board.getCardTips(player, tipCards)) ;
-			}else{
+			}
+			if(takeCards == null || takeCards.getCards() == null){
 				if(board.getLast() != null && !board.getLast().getUserid().equals(player.getPlayuser())){	//当前无出牌信息，刚开始出牌，或者出牌无玩家 压
 					takeCards = board.cardtip(player, board.getLast()) ;
 				}else{
