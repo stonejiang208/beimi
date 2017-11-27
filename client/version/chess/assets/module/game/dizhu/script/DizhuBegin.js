@@ -396,6 +396,7 @@ cc.Class({
      * @param context
      */
     takecards_event:function(data,context){
+        context.game.unselected(context , context.game) ;
         if(data.allow == true) {
             var lastcards ;
             if(data.donot == false){
@@ -429,6 +430,7 @@ cc.Class({
      * @param context
      */
     cardtips_event:function(data,context){
+        context.game.unselected(context , context.game) ;
         if(data.allow == true) {
             var tipcards = context.decode(data.cards);        //解析牌型
             for(var inx = 0 ; inx < tipcards.length ; inx++){
