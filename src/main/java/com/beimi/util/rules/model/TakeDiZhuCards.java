@@ -115,6 +115,26 @@ public class TakeDiZhuCards extends TakeCards implements Message , java.io.Seria
 		this.allow = true;
 	}
 	
+
+	/**
+	 * 
+	 * 玩家出牌，不做校验，传入之前的校验结果
+	 * @param player
+	 * @param last
+	 * @param cards
+	 */
+	public TakeDiZhuCards(Player player , byte[] tipcards){
+		this.userid = player.getPlayuser() ;
+		this.cards = tipcards ;
+		if(this.cards!=null){
+			this.cardType =  ActionTaskUtils.identification(cards);
+			this.type = cardType.getCardtype() ;
+		}
+		this.cardsnum = player.getCards().length ;
+		this.allow = true;
+	}
+	
+	
 	/**
 	 * 搜索符合条件的当前最小 牌型 , 机器人出牌 ， 只处理到 三带一，其他以后在扩展
 	 * @param player

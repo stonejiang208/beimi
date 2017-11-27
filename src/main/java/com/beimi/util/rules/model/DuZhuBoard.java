@@ -168,6 +168,15 @@ public class DuZhuBoard extends Board implements java.io.Serializable{
 	public TakeCards cardtip(Player player , TakeCards last) {
 		return new TakeDiZhuCards(player, last , false);
 	}
+	/**
+	 * 顺序提示玩家出牌
+	 * @param player
+	 * @param tipcards
+	 * @return
+	 */
+	public TakeCards getCardTips(Player player , byte[] tipcards) {
+		return new TakeDiZhuCards(player , tipcards);
+	}
 
 	@Override
 	public boolean isWin() {
@@ -380,5 +389,4 @@ public class DuZhuBoard extends Board implements java.io.Serializable{
 		 */
 		return summary;
 	}
-	
 }

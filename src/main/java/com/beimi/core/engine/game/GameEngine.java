@@ -237,11 +237,22 @@ public class GameEngine {
 			Player player = board.player(playUser.getId()) ;
 			
 			TakeCards takeCards = null ;
-			if(board.getLast() != null && !board.getLast().getUserid().equals(player.getPlayuser())){	//当前无出牌信息，刚开始出牌，或者出牌无玩家 压
-				takeCards = board.cardtip(player, board.getLast()) ;
+			
+			if(!StringUtils.isBlank(cardtips)){
+				String[] cards = cardtips.split(",") ;
+				byte[] tipCards = new byte[cards.length] ;
+				for(int i= 0 ; i<cards.length ; i++){
+					tipCards[i] = Byte.parseByte(cards[i]) ;
+				}
+				takeCards = board.cardtip(player, board.getCardTips(player, tipCards)) ;
 			}else{
-				takeCards = board.cardtip(player, null) ;
+				if(board.getLast() != null && !board.getLast().getUserid().equals(player.getPlayuser())){	//当前无出牌信息，刚开始出牌，或者出牌无玩家 压
+					takeCards = board.cardtip(player, board.getLast()) ;
+				}else{
+					takeCards = board.cardtip(player, null) ;
+				}
 			}
+			
 			if(takeCards.getCards() == null){
 				takeCards.setAllow(false);	//没有 管的起的牌
 			}
