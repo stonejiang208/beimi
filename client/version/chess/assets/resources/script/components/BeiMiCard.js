@@ -59,21 +59,32 @@ cc.Class({
         this.initcard.active = true ;
         this.normal.active = false;
         this.selected = false ;
+        this.kingbg.active = false ;
     },
     setCard:function(card){
         this.card = card ;
         this.normal.y = 0;
         this.normal.active = false;
+        this.kingbg.y = 0 ;
+        this.kingbg.active = false ;
     },
     unselected:function(){
         if(this.selected){
-            this.normal.y = this.normal.y - 30;
+            if(this.card >= 52){
+                this.kingbg.y = 0;
+            }else{
+                this.normal.y = 0;
+            }
         }
         this.selected = false ;
     },
     doselect:function(){
         if(this.selected == false){
-            this.normal.y = this.normal.y + 30;
+            if(this.card >= 52) {
+                this.kingbg.y = this.kingbg.y + 30;
+            }else{
+                this.normal.y = this.normal.y + 30;
+            }
             this.selected = true ;
         }else{
             this.unselected();
@@ -132,7 +143,9 @@ cc.Class({
     },
     reset:function(){
         this.normal.y = 0;
+        this.kingbg.y = 0;
         this.normal.active = false;
+        this.kingbg.active = false;
     }
 
 

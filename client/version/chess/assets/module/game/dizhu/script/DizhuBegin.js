@@ -397,7 +397,6 @@ cc.Class({
      * @param context
      */
     takecards_event:function(data,context){
-        context.game.unselected(context , context.game) ;
         context.lasttip = null ;
         if(data.allow == true) {
             var lastcards ;
@@ -405,6 +404,7 @@ cc.Class({
                 lastcards = context.decode(data.cards);        //解析牌型
             }
             if (data.userid == cc.beimi.user.id) {
+                context.game.unselected(context , context.game) ;
                 context.game.lasttakecards(context.game, context, data.cardsnum, lastcards , data);
             } else {
                 context.getPlayer(data.userid).lasttakecards(context.game, context, data.cardsnum, lastcards , data);
