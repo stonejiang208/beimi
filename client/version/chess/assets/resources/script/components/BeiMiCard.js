@@ -71,6 +71,14 @@ cc.Class({
         }
         this.selected = false ;
     },
+    doselect:function(){
+        if(this.selected == false){
+            this.normal.y = this.normal.y + 30;
+            this.selected = true ;
+        }else{
+            this.unselected();
+        }
+    },
     order:function(){
         let self = this ;
         var frame , cardframe ;

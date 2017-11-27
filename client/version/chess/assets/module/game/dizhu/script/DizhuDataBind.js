@@ -72,6 +72,10 @@ cc.Class({
         donottake:{
             default: null,
             type: cc.Node
+        },
+        cardtipmsg:{
+            default: null,
+            type: cc.Node
         }
     },
 
@@ -92,6 +96,10 @@ cc.Class({
         if(this.operesult){
             this.operesult.active = false ;
         }
+        if(this.cardtipmsg){
+            this.cardtipmsg.active = false ;
+        }
+
 
         this.playerspool = new cc.NodePool();
         this.myselfpool = new cc.NodePool();
@@ -215,7 +223,31 @@ cc.Class({
             this.doOperatorResult("lasttakecards" , true , data.sameside) ;
         }
     },
-
+    cardtips:function(self , card , tipcards){
+        var cacheCard ;
+        for(var inx = 0 ; inx<self.pokercards.length ; inx++){
+            let pc = self.pokercards[inx] ;
+            if(pc.getComponent("BeiMiCard").card == card){
+                cacheCard = pc ; break ;
+            }
+        }
+        if(cacheCard != null){
+            cacheCard.getComponent("BeiMiCard").doselect();
+        }
+    },
+    cardtipsfornot:function(self , game){
+        game.cardtipmsg.active = true ;
+        setTimeout(function(){
+            game.cardtipmsg.active = false ;
+        } , 1000);
+        game.unselected(self , game) ;
+    },
+    unselected:function( self , game){
+        for(var inx = 0 ; inx<self.pokercards.length ; inx++){
+            let pc = self.pokercards[inx] ;
+            pc.getComponent("BeiMiCard").unselected();
+        }
+    },
     playcards:function(self , index , card , lastcards){
         var cacheCard ;
         for(var inx = 0 ; inx<self.pokercards.length ; inx++){
@@ -225,6 +257,7 @@ cc.Class({
             }
         }
         if(cacheCard != null){
+            cacheCard.getComponent("BeiMiCard").unselected();
             cacheCard.x = index * 30 - 30 ;
             cacheCard.y = 0;
 

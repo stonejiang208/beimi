@@ -66,7 +66,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 129
+        "__id__": 134
       }
     ],
     "_prefab": null,
@@ -173,7 +173,7 @@
         "__id__": 7
       },
       {
-        "__id__": 124
+        "__id__": 129
       },
       {
         "__id__": 18
@@ -188,13 +188,13 @@
         "__id__": 73
       },
       {
-        "__id__": 104
+        "__id__": 109
       },
       {
         "__id__": 45
       },
       {
-        "__id__": 106
+        "__id__": 111
       }
     ],
     "_tag": -1,
@@ -329,10 +329,10 @@
         "__id__": 8
       },
       {
-        "__id__": 118
+        "__id__": 123
       },
       {
-        "__id__": 121
+        "__id__": 126
       }
     ],
     "_tag": -1,
@@ -533,7 +533,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 117
+        "__id__": 122
       }
     ],
     "_prefab": null,
@@ -720,19 +720,22 @@
       "__id__": 48
     },
     "lastcards": {
-      "__id__": 104
+      "__id__": 109
     },
     "playbtn": {
       "__id__": 51
     },
     "notallow": {
-      "__id__": 88
+      "__id__": 90
     },
     "operesult": {
-      "__id__": 106
+      "__id__": 111
     },
     "donottake": {
       "__id__": 78
+    },
+    "cardtipmsg": {
+      "__id__": 93
     }
   },
   {
@@ -1931,7 +1934,7 @@
     },
     "_children": [
       {
-        "__id__": 91
+        "__id__": 96
       }
     ],
     "_tag": -1,
@@ -2204,7 +2207,10 @@
         "__id__": 51
       },
       {
-        "__id__": 88
+        "__id__": 90
+      },
+      {
+        "__id__": 93
       }
     ],
     "_tag": -1,
@@ -3594,6 +3600,9 @@
     "_components": [
       {
         "__id__": 87
+      },
+      {
+        "__id__": 88
       }
     ],
     "_prefab": null,
@@ -3742,6 +3751,69 @@
     }
   },
   {
+    "__type__": "cc.Button",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 84
+    },
+    "_enabled": true,
+    "transition": 3,
+    "pressedColor": {
+      "__type__": "cc.Color",
+      "r": 211,
+      "g": 211,
+      "b": 211,
+      "a": 255
+    },
+    "hoverColor": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "duration": 0.1,
+    "zoomScale": 1.2,
+    "pressedSprite": null,
+    "hoverSprite": null,
+    "clickEvents": [
+      {
+        "__id__": 89
+      }
+    ],
+    "_N$interactable": true,
+    "_N$enableAutoGrayEffect": false,
+    "_N$normalColor": {
+      "__type__": "cc.Color",
+      "r": 214,
+      "g": 214,
+      "b": 214,
+      "a": 255
+    },
+    "_N$disabledColor": {
+      "__type__": "cc.Color",
+      "r": 124,
+      "g": 124,
+      "b": 124,
+      "a": 255
+    },
+    "_N$normalSprite": null,
+    "_N$disabledSprite": null,
+    "_N$target": {
+      "__id__": 84
+    }
+  },
+  {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 58
+    },
+    "component": "DizhuBegin",
+    "handler": "cardtips",
+    "customEventData": ""
+  },
+  {
     "__type__": "cc.Node",
     "_name": "notallow",
     "_objFlags": 0,
@@ -3750,7 +3822,7 @@
     },
     "_children": [
       {
-        "__id__": 89
+        "__id__": 91
       }
     ],
     "_tag": -1,
@@ -3798,14 +3870,14 @@
     "_name": "message",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 88
+      "__id__": 90
     },
     "_children": [],
     "_tag": -1,
     "_active": true,
     "_components": [
       {
-        "__id__": 90
+        "__id__": 92
       }
     ],
     "_prefab": null,
@@ -3850,7 +3922,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 89
+      "__id__": 91
     },
     "_enabled": true,
     "_useOriginalSize": false,
@@ -3871,6 +3943,134 @@
   },
   {
     "__type__": "cc.Node",
+    "_name": "cardtips",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 50
+    },
+    "_children": [
+      {
+        "__id__": 94
+      }
+    ],
+    "_tag": -1,
+    "_active": true,
+    "_components": [],
+    "_prefab": null,
+    "_id": "a7YQKHkzZCXbtQ1lAD64OK",
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_cascadeOpacityEnabled": true,
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 0,
+      "height": 0
+    },
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_scaleX": 1,
+    "_scaleY": 1,
+    "_position": {
+      "__type__": "cc.Vec2",
+      "x": 1.1368683772161603e-13,
+      "y": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_localZOrder": 0,
+    "_globalZOrder": 0,
+    "_opacityModifyRGB": false,
+    "groupIndex": 0
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "message",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 93
+    },
+    "_children": [],
+    "_tag": -1,
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 95
+      }
+    ],
+    "_prefab": null,
+    "_id": "93ycGDuCpB2ok4ALgU16E1",
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_cascadeOpacityEnabled": true,
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 176,
+      "height": 22
+    },
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_scaleX": 1,
+    "_scaleY": 1,
+    "_position": {
+      "__type__": "cc.Vec2",
+      "x": 58,
+      "y": -140
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_localZOrder": 0,
+    "_globalZOrder": 0,
+    "_opacityModifyRGB": false,
+    "groupIndex": 0
+  },
+  {
+    "__type__": "cc.Label",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 94
+    },
+    "_enabled": true,
+    "_useOriginalSize": false,
+    "_actualFontSize": 22,
+    "_fontSize": 22,
+    "_lineHeight": 22,
+    "_enableWrapText": true,
+    "_N$file": {
+      "__uuid__": "ecd0dce0-5fb5-452d-9a80-03a1e292d67b"
+    },
+    "_isSystemFontUsed": false,
+    "_spacingX": 0,
+    "_N$string": "您没有牌打过上家",
+    "_N$horizontalAlign": 1,
+    "_N$verticalAlign": 1,
+    "_N$fontFamily": "Arial",
+    "_N$overflow": 0
+  },
+  {
+    "__type__": "cc.Node",
     "_name": "docatch",
     "_objFlags": 0,
     "_parent": {
@@ -3878,10 +4078,10 @@
     },
     "_children": [
       {
-        "__id__": 92
+        "__id__": 97
       },
       {
-        "__id__": 98
+        "__id__": 103
       }
     ],
     "_tag": -1,
@@ -3929,21 +4129,21 @@
     "_name": "按钮_绿色_长",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 91
+      "__id__": 96
     },
     "_children": [
       {
-        "__id__": 93
+        "__id__": 98
       }
     ],
     "_tag": -1,
     "_active": true,
     "_components": [
       {
-        "__id__": 95
+        "__id__": 100
       },
       {
-        "__id__": 96
+        "__id__": 101
       }
     ],
     "_prefab": null,
@@ -3988,14 +4188,14 @@
     "_name": "按钮_不抢",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 92
+      "__id__": 97
     },
     "_children": [],
     "_tag": -1,
     "_active": true,
     "_components": [
       {
-        "__id__": 94
+        "__id__": 99
       }
     ],
     "_prefab": null,
@@ -4040,7 +4240,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 93
+      "__id__": 98
     },
     "_enabled": true,
     "_spriteFrame": {
@@ -4068,7 +4268,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 92
+      "__id__": 97
     },
     "_enabled": true,
     "_spriteFrame": {
@@ -4096,7 +4296,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 92
+      "__id__": 97
     },
     "_enabled": true,
     "transition": 3,
@@ -4120,7 +4320,7 @@
     "hoverSprite": null,
     "clickEvents": [
       {
-        "__id__": 97
+        "__id__": 102
       }
     ],
     "_N$interactable": true,
@@ -4142,7 +4342,7 @@
     "_N$normalSprite": null,
     "_N$disabledSprite": null,
     "_N$target": {
-      "__id__": 92
+      "__id__": 97
     }
   },
   {
@@ -4159,21 +4359,21 @@
     "_name": "按钮_橙色_长",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 91
+      "__id__": 96
     },
     "_children": [
       {
-        "__id__": 99
+        "__id__": 104
       }
     ],
     "_tag": -1,
     "_active": true,
     "_components": [
       {
-        "__id__": 101
+        "__id__": 106
       },
       {
-        "__id__": 102
+        "__id__": 107
       }
     ],
     "_prefab": null,
@@ -4218,14 +4418,14 @@
     "_name": "按钮_抢地主",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 98
+      "__id__": 103
     },
     "_children": [],
     "_tag": -1,
     "_active": true,
     "_components": [
       {
-        "__id__": 100
+        "__id__": 105
       }
     ],
     "_prefab": null,
@@ -4270,7 +4470,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 99
+      "__id__": 104
     },
     "_enabled": true,
     "_spriteFrame": {
@@ -4298,7 +4498,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 98
+      "__id__": 103
     },
     "_enabled": true,
     "_spriteFrame": {
@@ -4326,7 +4526,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 98
+      "__id__": 103
     },
     "_enabled": true,
     "transition": 3,
@@ -4350,7 +4550,7 @@
     "hoverSprite": null,
     "clickEvents": [
       {
-        "__id__": 103
+        "__id__": 108
       }
     ],
     "_N$interactable": true,
@@ -4372,7 +4572,7 @@
     "_N$normalSprite": null,
     "_N$disabledSprite": null,
     "_N$target": {
-      "__id__": 98
+      "__id__": 103
     }
   },
   {
@@ -4396,7 +4596,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 105
+        "__id__": 110
       }
     ],
     "_prefab": null,
@@ -4441,7 +4641,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 104
+      "__id__": 109
     },
     "_enabled": true,
     "_layoutSize": {
@@ -4476,19 +4676,19 @@
     },
     "_children": [
       {
-        "__id__": 107
+        "__id__": 112
       },
       {
-        "__id__": 109
+        "__id__": 114
       },
       {
-        "__id__": 111
+        "__id__": 116
       },
       {
-        "__id__": 113
+        "__id__": 118
       },
       {
-        "__id__": 115
+        "__id__": 120
       }
     ],
     "_tag": -1,
@@ -4536,14 +4736,14 @@
     "_name": "提示_叫地主",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 106
+      "__id__": 111
     },
     "_children": [],
     "_tag": -1,
     "_active": true,
     "_components": [
       {
-        "__id__": 108
+        "__id__": 113
       }
     ],
     "_prefab": null,
@@ -4588,7 +4788,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 107
+      "__id__": 112
     },
     "_enabled": true,
     "_spriteFrame": {
@@ -4616,14 +4816,14 @@
     "_name": "提示_抢地主",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 106
+      "__id__": 111
     },
     "_children": [],
     "_tag": -1,
     "_active": true,
     "_components": [
       {
-        "__id__": 110
+        "__id__": 115
       }
     ],
     "_prefab": null,
@@ -4668,7 +4868,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 109
+      "__id__": 114
     },
     "_enabled": true,
     "_spriteFrame": {
@@ -4696,14 +4896,14 @@
     "_name": "提示_不抢",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 106
+      "__id__": 111
     },
     "_children": [],
     "_tag": -1,
     "_active": true,
     "_components": [
       {
-        "__id__": 112
+        "__id__": 117
       }
     ],
     "_prefab": null,
@@ -4748,7 +4948,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 111
+      "__id__": 116
     },
     "_enabled": true,
     "_spriteFrame": {
@@ -4776,14 +4976,14 @@
     "_name": "要不起",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 106
+      "__id__": 111
     },
     "_children": [],
     "_tag": -1,
     "_active": true,
     "_components": [
       {
-        "__id__": 114
+        "__id__": 119
       }
     ],
     "_prefab": null,
@@ -4828,7 +5028,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 113
+      "__id__": 118
     },
     "_enabled": true,
     "_spriteFrame": {
@@ -4856,14 +5056,14 @@
     "_name": "不要",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 106
+      "__id__": 111
     },
     "_children": [],
     "_tag": -1,
     "_active": true,
     "_components": [
       {
-        "__id__": 116
+        "__id__": 121
       }
     ],
     "_prefab": null,
@@ -4908,7 +5108,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 115
+      "__id__": 120
     },
     "_enabled": true,
     "_spriteFrame": {
@@ -4952,10 +5152,10 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 119
+        "__id__": 124
       },
       {
-        "__id__": 120
+        "__id__": 125
       }
     ],
     "_prefab": null,
@@ -5000,7 +5200,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 118
+      "__id__": 123
     },
     "_enabled": true,
     "_spriteFrame": {
@@ -5028,7 +5228,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 118
+      "__id__": 123
     },
     "_enabled": true,
     "transition": 3,
@@ -5070,7 +5270,7 @@
     "_N$normalSprite": null,
     "_N$disabledSprite": null,
     "_N$target": {
-      "__id__": 118
+      "__id__": 123
     }
   },
   {
@@ -5085,10 +5285,10 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 122
+        "__id__": 127
       },
       {
-        "__id__": 123
+        "__id__": 128
       }
     ],
     "_prefab": null,
@@ -5133,7 +5333,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 121
+      "__id__": 126
     },
     "_enabled": true,
     "_spriteFrame": {
@@ -5161,7 +5361,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 121
+      "__id__": 126
     },
     "_enabled": true,
     "transition": 3,
@@ -5203,7 +5403,7 @@
     "_N$normalSprite": null,
     "_N$disabledSprite": null,
     "_N$target": {
-      "__id__": 121
+      "__id__": 126
     }
   },
   {
@@ -5215,10 +5415,10 @@
     },
     "_children": [
       {
-        "__id__": 125
+        "__id__": 130
       },
       {
-        "__id__": 127
+        "__id__": 132
       }
     ],
     "_tag": -1,
@@ -5266,14 +5466,14 @@
     "_name": "right",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 124
+      "__id__": 129
     },
     "_children": [],
     "_tag": -1,
     "_active": true,
     "_components": [
       {
-        "__id__": 126
+        "__id__": 131
       }
     ],
     "_prefab": null,
@@ -5318,7 +5518,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 125
+      "__id__": 130
     },
     "_enabled": true,
     "_spriteFrame": {
@@ -5346,14 +5546,14 @@
     "_name": "left",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 124
+      "__id__": 129
     },
     "_children": [],
     "_tag": -1,
     "_active": true,
     "_components": [
       {
-        "__id__": 128
+        "__id__": 133
       }
     ],
     "_prefab": null,
@@ -5398,7 +5598,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 127
+      "__id__": 132
     },
     "_enabled": true,
     "_spriteFrame": {

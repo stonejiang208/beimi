@@ -97,6 +97,7 @@ cc.Class({
             this.map("ratio" , this.ratio_event) ;                      //有炸
             this.map("play" , this.play_event) ;                      //接受玩家列表
             this.map("allcards" , this.allcards_event) ;              //我出的牌
+            this.map("cardtips" , this.cardtips_event) ;              //提示
 
             this.map("recovery" , this.recovery_event) ;              //恢复牌局数据
 
@@ -419,6 +420,22 @@ cc.Class({
             setTimeout(function(){
                 context.game.notallow.active = false ;
             } , 2000);
+            context.game.unselected(context , context.game);
+        }
+    },
+    /**
+     * 接收到服务端的 出牌提示信息
+     * @param data
+     * @param context
+     */
+    cardtips_event:function(data,context){
+        if(data.allow == true) {
+            var tipcards = context.decode(data.cards);        //解析牌型
+            for(var inx = 0 ; inx < tipcards.length ; inx++){
+                context.game.cardtips(context , tipcards[inx] , tipcards) ;
+            }
+        }else{//出牌不符合规则，需要进行提示
+            context.game.cardtipsfornot(context , context.game);
         }
     },
     /**
@@ -659,6 +676,15 @@ cc.Class({
         }
     },
     /**
+     * 不抢/叫地主
+     */
+    cardtips:function(){
+        if(this.ready()){
+            let socket = this.socket();
+            socket.emit("cardtips","cardtips");
+        }
+    },
+    /**
      * 抢/叫地主触发事件
      */
     docatch:function(){
@@ -680,7 +706,6 @@ cc.Class({
                 if(temp.selected == true){
                     this.game.selectedcards.push(temp.card) ;
                 }
-                temp.unselected();
             }
             socket.emit("doplaycards" , this.game.selectedcards.join());
         }
