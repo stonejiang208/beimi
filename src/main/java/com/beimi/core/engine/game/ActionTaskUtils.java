@@ -204,12 +204,13 @@ public class ActionTaskUtils {
 			if(types.get(card) > max){
 				max = types.get(card) ;
 				maxcard = card ;
+				
+				if(mincard < 0 || mincard > card){
+					mincard = card ;
+				}
 			}
 			if(cards[i] > cardTypeBean.getMaxcardvalue()){
 				cardTypeBean.setMaxcardvalue(cards[i]);
-			}
-			if(mincard < 0 || mincard > card){
-				mincard = card ;
 			}
 		}
 		
@@ -249,6 +250,8 @@ public class ActionTaskUtils {
 							cardtype = BMDataContext.CardsTypeEnum.FOUR.getType() ;
 						}else if(min == 2){//三带一对
 							cardtype = BMDataContext.CardsTypeEnum.FORMTWO.getType() ;
+						}else if(min == 3){//飞机不带
+							cardtype = BMDataContext.CardsTypeEnum.SEVEN.getType() ;
 						}
 						break;	
 					case 4 : cardtype = BMDataContext.CardsTypeEnum.NINE.getType() ;break;	//四带一对
@@ -257,17 +260,26 @@ public class ActionTaskUtils {
 			case 3 : 
 				switch(max){
 					case 1 : ;break;	//无牌型
-					case 2 : if(cards.length == 6 && isAva(types, mincard)){cardtype = BMDataContext.CardsTypeEnum.SIX.getType() ;}break;		//双顺 ， 3连对
+					case 2 : if(cards.length == 6 && isAva(types, mincard)){cardtype = BMDataContext.CardsTypeEnum.SIX.getType() ;}break;		//3连对
 					case 3 : if(isAva(types, mincard) && min == max){cardtype = BMDataContext.CardsTypeEnum.SEVEN.getType() ;}break;		//三顺
-					case 4 : cardtype = BMDataContext.CardsTypeEnum.SEVEN.getType() ;break;		//四带二
+					case 4 : if(cards.length == 6 || cards.length == 8) {cardtype = BMDataContext.CardsTypeEnum.NINE.getType() ;}break;		//四带二
 				}
 				break;
 			case 4 : 
 				switch(max){
 					case 1 : ;break;		//无牌型
-					case 2 : if(cards.length == 8 && isAva(types, mincard)){cardtype = BMDataContext.CardsTypeEnum.SIX.getType() ;}break;		//双顺 ， 4连对
-					case 3 : if((cards.length == 8 || cards.length == 10) && isAva(types, mincard)){cardtype = BMDataContext.CardsTypeEnum.SEVEN.getType() ;}break;		//双顺 ， 4连对
-				};break ;
+					case 2 : if(cards.length == 8 && isAva(types, mincard)){cardtype = BMDataContext.CardsTypeEnum.SIX.getType() ;}break;		//4连对
+					case 3 : 
+						if(isAva(types, mincard)){
+							if(cards.length == 8){
+								cardtype = BMDataContext.CardsTypeEnum.EIGHT.getType() ;
+							}else if(cards.length == 10){
+								cardtype = BMDataContext.CardsTypeEnum.EIGHTONE.getType() ;
+							}
+						}
+						break;		//飞机
+				};
+				break ;
 			case 5 : 
 				switch(max){
 					case 1 : if(isAva(types ,mincard) && max == min){cardtype = BMDataContext.CardsTypeEnum.FIVE.getType() ;}break;		//连子

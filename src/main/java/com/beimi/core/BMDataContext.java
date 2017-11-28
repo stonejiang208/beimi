@@ -185,6 +185,7 @@ public class BMDataContext {
 		SIX(6),		//双顺	连对		JJQQKK
 		SEVEN(7),	//三顺	飞机		JJJQQQ
 		EIGHT(8),	//飞机	带翅膀	JJJ+QQQ+K+A
+		EIGHTONE(81),	//飞机	带翅膀	JJJ+QQQ+KK+AA
 		NINE(9),	//四带二			JJJJ+Q+K
 		TEN(10),	//炸弹			JJJJ
 		ELEVEN(11);	//王炸			0+0
