@@ -204,11 +204,13 @@ public class ActionTaskUtils {
 			if(types.get(card) > max){
 				max = types.get(card) ;
 				maxcard = card ;
-				
+			}
+			if(types.get(card) == max){
 				if(mincard < 0 || mincard > card){
 					mincard = card ;
 				}
 			}
+			
 			if(cards[i] > cardTypeBean.getMaxcardvalue()){
 				cardTypeBean.setMaxcardvalue(cards[i]);
 			}
