@@ -326,7 +326,7 @@ public class TakeDiZhuCards extends TakeCards implements Message , java.io.Seria
 			if(types.get(i) != null){
 				if(includebang){
 					value = i ;
-				}else if(types.get(i) != 4 && i != 13){	//对王和炸弹 不优先出
+				}else if(types.get(i) != 4 && i != 13){	//对王和炸弹 不优先出牌
 					value = i ;
 				}
 				break ;
