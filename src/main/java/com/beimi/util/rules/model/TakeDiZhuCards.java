@@ -293,42 +293,64 @@ public class TakeDiZhuCards extends TakeCards implements Message , java.io.Seria
 	 * @return
 	 */
 	public byte[] getAIMostSmall(Player player , int start){
-		Integer card = null;
-		int index = 0 ;
-		byte[] takeCards = null;
-		for(int i = player.getCards().length - 1 - start; i>=0; i--){
-			byte temp = player.getCards()[i] ;
-			if(card == null){
-				card = temp/4 ;
-				index = i ;
-				if(player.getCards().length - 1 - start == 0){
-					takeCards = ArrayUtils.subarray(player.getCards(), i, i+1) ;
-				}
-			}else{
-				if(card == temp/4 && i>0){
-					continue ;
-				}else if((i - index) == 4 && (i+1) < player.getCards().length){	//炸弹，AI先不出，往下重新继续
-					index = i ;
-					card = null ;
-					continue ;
-				}else{
-					takeCards = ArrayUtils.subarray(player.getCards(), i+1, player.getCards().length - start) ;
-					break ;
-				}
-			}
+		Map<Integer,Integer> types = ActionTaskUtils.type(player.getCards()) ;
+		int value = getMinCards(types , false) ;
+		/**
+		 * 可以增加机器人 出 4带二 / 连串 / 飞机 / 顺子 等牌型的功能 
+		 */
+		if(value < 0 ){	//炸弹或对王也行
+			value = getMinCards(types , true) ;
 		}
+		int num = types.get(value) ;
+		byte[] takeCards = getSubCards(player.getCards(), value, num);
 		
 		if(takeCards!=null && takeCards.length == 3){
-			Map<Integer,Integer> types = ActionTaskUtils.type(player.getCards()) ;
 			byte[] supplement = this.getSingle(player.getCards(), types, -1 , 1) ;
 			if(supplement == null){
-				this.getPair(player.getCards(), types, -1 , 1) ;
+				this.getPair(player.getCards(), types, -1 , 2) ;
 			}
 			if(supplement!=null){
 				takeCards = ArrayUtils.addAll(takeCards, supplement) ;
 			}
 		}
 		return takeCards;
+	}
+	/**
+	 * 
+	 * @param types
+	 * @return
+	 */
+	private int getMinCards(Map<Integer,Integer> types , boolean includebang){
+		int value = -1 ;
+		for(int i=0 ; i<14 ; i++){
+			if(types.get(i) != null){
+				if(includebang){
+					value = i ;
+				}else if(types.get(i) != 4 && i != 13){	//对王和炸弹 不优先出
+					value = i ;
+				}
+				break ;
+			}
+		}
+		return value ;
+	}
+	
+	/**
+	 * 找到匹配的牌
+	 * @param cards
+	 * @param value
+	 * @param num
+	 * @return
+	 */
+	private byte[] getSubCards(byte[] cards,int value,int num){
+		byte[] takeCards = new byte[num];
+		int index = 0 ;
+		for(int i=0 ; i<cards.length ; i++){
+			if(cards[i]/4 == value){
+				takeCards[index++] = cards[i] ;
+			}
+		}
+		return takeCards ;
 	}
 	
 	/**
