@@ -7,7 +7,9 @@ import com.beimi.core.engine.game.task.CreateAITask;
 import com.beimi.core.statemachine.action.Action;
 import com.beimi.core.statemachine.impl.BeiMiExtentionTransitionConfigurer;
 import com.beimi.core.statemachine.message.Message;
+import com.beimi.util.CacheConfigTools;
 import com.beimi.util.cache.CacheHelper;
+import com.beimi.web.model.AiConfig;
 import com.beimi.web.model.GameRoom;
 
 /**
@@ -27,8 +29,10 @@ public class EnterAction<T,S> implements Action<T, S>{
 		if(!StringUtils.isBlank(room)){
 			GameRoom gameRoom = (GameRoom) CacheHelper.getGameRoomCacheBean().getCacheObject(room, BMDataContext.SYSTEM_ORGI) ; 
 			if(gameRoom!=null){
-				CacheHelper.getExpireCache().put(gameRoom.getOrgi(), new CreateAITask(5 , gameRoom , gameRoom.getOrgi()));
-				
+				AiConfig aiConfig = CacheConfigTools.getAiConfig(gameRoom.getOrgi()) ;
+				if(aiConfig.isEnableai()){
+					CacheHelper.getExpireCache().put(gameRoom.getOrgi(), new CreateAITask(5 , gameRoom , gameRoom.getOrgi()));
+				}
 				/**
 				 * 更新状态
 				 */

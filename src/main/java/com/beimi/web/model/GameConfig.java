@@ -46,10 +46,6 @@ public class GameConfig implements java.io.Serializable{
 	private String retimeoutmsg ;	
 	private boolean satisfaction ;	
 	
-	private boolean agentreplaytimeout ;	
-	private int agenttimeout;
-	private String agenttimeoutmsg ;
-	
 	private boolean hourcheck ;		
 	private String workinghours ;	
 	private String notinwhmsg ;		
@@ -153,24 +149,6 @@ public class GameConfig implements java.io.Serializable{
 	}
 	public void setSatisfaction(boolean satisfaction) {
 		this.satisfaction = satisfaction;
-	}
-	public boolean isAgentreplaytimeout() {
-		return agentreplaytimeout;
-	}
-	public void setAgentreplaytimeout(boolean agentreplaytimeout) {
-		this.agentreplaytimeout = agentreplaytimeout;
-	}
-	public int getAgenttimeout() {
-		return agenttimeout;
-	}
-	public void setAgenttimeout(int agenttimeout) {
-		this.agenttimeout = agenttimeout;
-	}
-	public String getAgenttimeoutmsg() {
-		return agenttimeoutmsg;
-	}
-	public void setAgenttimeoutmsg(String agenttimeoutmsg) {
-		this.agenttimeoutmsg = agenttimeoutmsg;
 	}
 	public int getMaxuser() {
 		return maxuser;

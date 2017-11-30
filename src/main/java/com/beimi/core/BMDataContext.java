@@ -22,7 +22,6 @@ public class BMDataContext {
 	
 	public static final String BEIMI_SEARCHROOM_EVENT = "searchroom" ;
 	
-	public static final String BEIMI_SYSTEM_GAME_ACCOUNT_CONFIG = "game_account_config";
 	public static final String BEIMI_GAME_PLAYWAY = "game_playway";
 	
 	public static final String BEIMI_SYSTEM_AUTH_DIC = "com.dic.auth.resource";
@@ -61,8 +60,27 @@ public class BMDataContext {
 	 * @return
 	 */
 	public static String getGameAccountConfig(String orgi){
-		return BEIMI_SYSTEM_GAME_ACCOUNT_CONFIG+"_"+orgi ;
+		return BMDataContext.ConfigNames.ACCOUNTCONFIG.toString()+"_"+orgi ;
 	}
+	
+	/**
+	 * 根据ORGI找到对应 游戏配置
+	 * @param orgi
+	 * @return
+	 */
+	public static String getGameConfig(String orgi){
+		return BMDataContext.ConfigNames.GAMECONFIG.toString()+"_"+orgi ;
+	}
+	
+	/**
+	 * 根据ORGI找到对应 游戏配置
+	 * @param orgi
+	 * @return
+	 */
+	public static String getGameAiConfig(String orgi){
+		return BMDataContext.ConfigNames.AICONFIG.toString()+"_"+orgi ;
+	}
+	
 	
 	public static ApplicationContext getContext(){
 		return applicationContext ;

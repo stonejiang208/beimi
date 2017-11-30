@@ -100,7 +100,7 @@ public class GuestRegisterController extends Handler{
 		CacheHelper.getApiUserCacheBean().put(userToken.getId(),userToken, userToken.getOrgi());
 		CacheHelper.getApiUserCacheBean().put(playUserClient.getId(),playUserClient, userToken.getOrgi());
 		ResultData playerResultData = new ResultData( playUserClient!=null , playUserClient != null ? MessageEnum.USER_REGISTER_SUCCESS: MessageEnum.USER_REGISTER_FAILD_USERNAME , playUserClient , userToken) ;
-		GameConfig gameConfig = GameUtils.gameConfig(userToken.getOrgi()) ;
+		GameConfig gameConfig = CacheConfigTools.getGameConfig(userToken.getOrgi()) ;
 		if(gameConfig!=null){
 			playerResultData.setGametype(gameConfig.getGamemodel());
 			/**

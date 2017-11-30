@@ -28,14 +28,13 @@ import com.beimi.util.rules.model.Action;
 import com.beimi.util.rules.model.Board;
 import com.beimi.util.rules.model.Player;
 import com.beimi.web.model.AccountConfig;
+import com.beimi.web.model.AiConfig;
 import com.beimi.web.model.BeiMiDic;
-import com.beimi.web.model.GameConfig;
 import com.beimi.web.model.GamePlayway;
 import com.beimi.web.model.GameRoom;
 import com.beimi.web.model.PlayUser;
 import com.beimi.web.model.PlayUserClient;
 import com.beimi.web.model.SysDic;
-import com.beimi.web.service.repository.jpa.GameConfigRepository;
 import com.beimi.web.service.repository.jpa.GamePlaywayRepository;
 
 public class GameUtils {
@@ -161,13 +160,20 @@ public class GameUtils {
 			
     		
     		player.setOrgi(BMDataContext.SYSTEM_ORGI);
+    		AiConfig aiConfig = CacheConfigTools.getAiConfig(player.getOrgi()) ;
     		
-    		AccountConfig config = CacheConfigTools.getGameAccountConfig(BMDataContext.SYSTEM_ORGI) ;
-    		if(config!=null){
-    			player.setGoldcoins(config.getInitcoins());
-    			player.setCards(config.getInitcards());
-    			player.setDiamonds(config.getInitdiamonds());
-    		}
+			if(BMDataContext.PlayerTypeEnum.AI.toString().equals(playertype) && aiConfig != null){
+				player.setGoldcoins(aiConfig.getInitcoins());
+    			player.setCards(aiConfig.getInitcards());
+    			player.setDiamonds(aiConfig.getInitdiamonds());
+			}else{
+	    		AccountConfig config = CacheConfigTools.getGameAccountConfig(BMDataContext.SYSTEM_ORGI) ;
+	    		if(config!=null){
+	    			player.setGoldcoins(config.getInitcoins());
+	    			player.setCards(config.getInitcards());
+	    			player.setDiamonds(config.getInitdiamonds());
+	    		}
+			}
     		
     		if(!StringUtils.isBlank(player.getId())){
     			playUserClient  = new PlayUserClient() ;
@@ -179,23 +185,6 @@ public class GameUtils {
     		}
     	}
 		return playUserClient ;
-	}
-	/**
-	 * 获取游戏全局配置，后台管理界面上的配置功能
-	 * @param orgi
-	 * @return
-	 */
-	public static GameConfig gameConfig(String orgi){
-		GameConfig gameConfig = (GameConfig) CacheHelper.getSystemCacheBean().getCacheObject(BMDataContext.ConfigNames.GAMECONFIG.toString()+"."+orgi, orgi) ;
-		if(gameConfig == null){
-			List<GameConfig> gameConfigList = BMDataContext.getContext().getBean(GameConfigRepository.class).findByOrgi(orgi) ;
-			if(gameConfigList.size() > 0){
-				gameConfig = gameConfigList.get(0) ;
-			}else{
-				gameConfig = new GameConfig() ;
-			}
-		}
-		return gameConfig ;
 	}
 	
 	/**

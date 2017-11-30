@@ -59,6 +59,7 @@ public class GameConfigController extends Handler{
 		account.setCreater(super.getUser(request).getId());
 		account.setCreatetime(new Date());
 		accountRes.save(account) ;
+		CacheHelper.getSystemCacheBean().put(BMDataContext.getGameAccountConfig(super.getOrgi(request)), account, super.getOrgi(request));
 		return request(super.createRequestPageTempletResponse("redirect:/apps/platform/config/account.html"));
 	}
 	
@@ -86,7 +87,7 @@ public class GameConfigController extends Handler{
 		game.setCreater(super.getUser(request).getId());
 		game.setCreatetime(new Date());
 		gameConfigRes.save(game) ;
-		CacheHelper.getSystemCacheBean().put(BMDataContext.ConfigNames.GAMECONFIG.toString()+"."+super.getOrgi(request), game, super.getOrgi(request));
+		CacheHelper.getSystemCacheBean().put(BMDataContext.getGameConfig(super.getOrgi(request)), game, super.getOrgi(request));
 		return request(super.createRequestPageTempletResponse("redirect:/apps/platform/config/game.html"));
 	}
 	
@@ -112,6 +113,7 @@ public class GameConfigController extends Handler{
 		ai.setCreater(super.getUser(request).getId());
 		ai.setCreatetime(new Date());
 		aiConfigRes.save(ai) ;
+		CacheHelper.getSystemCacheBean().put(BMDataContext.getGameAiConfig(super.getOrgi(request)), ai, super.getOrgi(request));
 		return request(super.createRequestPageTempletResponse("redirect:/apps/platform/config/ai.html"));
 	}
 	

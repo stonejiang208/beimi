@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "bm_gameconfig")
+@Table(name = "bm_game_ai")
 @org.hibernate.annotations.Proxy(lazy = false)
 public class AiConfig implements java.io.Serializable{
 	/**
@@ -25,28 +25,19 @@ public class AiConfig implements java.io.Serializable{
 	private String username ;
 	private String name ;
 	
-	private int maxuser = 10 ;	
+	private boolean enableai ;//启用AI
+	private int waittime = 5; //玩家等待时长
 	
-	private int initmaxuser = 10 ;	
+	private int initcoins ;			//初始 金币数量
+	private int initcards ;			//初始房卡数量
+	private int initdiamonds;		//初始钻石数量
 	
-	private String sessionmsg ;	
-	private String distribution ;
-	private boolean lastagent;	
-	private boolean sessiontimeout;	
-	private int timeout = 120;		
-	private String timeoutmsg ;		
-	private boolean resessiontimeout;
-	private int retimeout = 120;	
-	private String retimeoutmsg ;	
-	private boolean satisfaction ;	
+	private String exitcon ;		//机器人退出条件
+	private int maxai ;				//最大AI数量
 	
-	private boolean agentreplaytimeout ;	
-	private int agenttimeout;
-	private String agenttimeoutmsg ;
+	private boolean dicinfo ;		//从字典获取 AI的用户昵称、头像信息
+	private boolean aichat	;		//启用 AI自动聊天功能
 	
-	private boolean hourcheck ;		
-	private String workinghours ;	
-	private String notinwhmsg ;		
 	
 	@Id
 	@Column(length = 32)
@@ -88,112 +79,59 @@ public class AiConfig implements java.io.Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getSessionmsg() {
-		return sessionmsg;
+	public boolean isEnableai() {
+		return enableai;
 	}
-	public void setSessionmsg(String sessionmsg) {
-		this.sessionmsg = sessionmsg;
+	public void setEnableai(boolean enableai) {
+		this.enableai = enableai;
 	}
-	public String getDistribution() {
-		return distribution;
+	public int getWaittime() {
+		return waittime;
 	}
-	public void setDistribution(String distribution) {
-		this.distribution = distribution;
+	public void setWaittime(int waittime) {
+		this.waittime = waittime;
 	}
-	public boolean isLastagent() {
-		return lastagent;
+	public int getInitcoins() {
+		return initcoins;
 	}
-	public void setLastagent(boolean lastagent) {
-		this.lastagent = lastagent;
+	public void setInitcoins(int initcoins) {
+		this.initcoins = initcoins;
 	}
-	public boolean isSessiontimeout() {
-		return sessiontimeout;
+	public int getInitcards() {
+		return initcards;
 	}
-	public void setSessiontimeout(boolean sessiontimeout) {
-		this.sessiontimeout = sessiontimeout;
+	public void setInitcards(int initcards) {
+		this.initcards = initcards;
 	}
-	public int getTimeout() {
-		return timeout;
+	public int getInitdiamonds() {
+		return initdiamonds;
 	}
-	public void setTimeout(int timeout) {
-		this.timeout = timeout;
+	public void setInitdiamonds(int initdiamonds) {
+		this.initdiamonds = initdiamonds;
 	}
-	public String getTimeoutmsg() {
-		return timeoutmsg;
+	public String getExitcon() {
+		return exitcon;
 	}
-	public void setTimeoutmsg(String timeoutmsg) {
-		this.timeoutmsg = timeoutmsg;
+	public void setExitcon(String exitcon) {
+		this.exitcon = exitcon;
 	}
-	public boolean isResessiontimeout() {
-		return resessiontimeout;
+	public int getMaxai() {
+		return maxai;
 	}
-	public void setResessiontimeout(boolean resessiontimeout) {
-		this.resessiontimeout = resessiontimeout;
+	public void setMaxai(int maxai) {
+		this.maxai = maxai;
 	}
-	public int getRetimeout() {
-		return retimeout;
+	public boolean isDicinfo() {
+		return dicinfo;
 	}
-	public void setRetimeout(int retimeout) {
-		this.retimeout = retimeout;
+	public void setDicinfo(boolean dicinfo) {
+		this.dicinfo = dicinfo;
 	}
-	public String getRetimeoutmsg() {
-		return retimeoutmsg;
+	public boolean isAichat() {
+		return aichat;
 	}
-	public void setRetimeoutmsg(String retimeoutmsg) {
-		this.retimeoutmsg = retimeoutmsg;
+	public void setAichat(boolean aichat) {
+		this.aichat = aichat;
 	}
-	public boolean isSatisfaction() {
-		return satisfaction;
-	}
-	public void setSatisfaction(boolean satisfaction) {
-		this.satisfaction = satisfaction;
-	}
-	public boolean isAgentreplaytimeout() {
-		return agentreplaytimeout;
-	}
-	public void setAgentreplaytimeout(boolean agentreplaytimeout) {
-		this.agentreplaytimeout = agentreplaytimeout;
-	}
-	public int getAgenttimeout() {
-		return agenttimeout;
-	}
-	public void setAgenttimeout(int agenttimeout) {
-		this.agenttimeout = agenttimeout;
-	}
-	public String getAgenttimeoutmsg() {
-		return agenttimeoutmsg;
-	}
-	public void setAgenttimeoutmsg(String agenttimeoutmsg) {
-		this.agenttimeoutmsg = agenttimeoutmsg;
-	}
-	public int getMaxuser() {
-		return maxuser;
-	}
-	public void setMaxuser(int maxuser) {
-		this.maxuser = maxuser;
-	}
-	public int getInitmaxuser() {
-		return initmaxuser;
-	}
-	public void setInitmaxuser(int initmaxuser) {
-		this.initmaxuser = initmaxuser;
-	}
-	public String getWorkinghours() {
-		return workinghours;
-	}
-	public void setWorkinghours(String workinghours) {
-		this.workinghours = workinghours;
-	}
-	public String getNotinwhmsg() {
-		return notinwhmsg;
-	}
-	public void setNotinwhmsg(String notinwhmsg) {
-		this.notinwhmsg = notinwhmsg;
-	}
-	public boolean isHourcheck() {
-		return hourcheck;
-	}
-	public void setHourcheck(boolean hourcheck) {
-		this.hourcheck = hourcheck;
-	}
+	
 }
