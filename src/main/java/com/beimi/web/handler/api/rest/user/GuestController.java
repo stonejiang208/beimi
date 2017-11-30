@@ -23,6 +23,7 @@ import com.beimi.util.UKTools;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.web.handler.Handler;
 import com.beimi.web.model.AccountConfig;
+import com.beimi.web.model.AiConfig;
 import com.beimi.web.model.GameConfig;
 import com.beimi.web.model.PlayUser;
 import com.beimi.web.model.PlayUserClient;
@@ -35,7 +36,7 @@ import com.beimi.web.service.repository.jpa.PlayUserRepository;
 
 @RestController
 @RequestMapping("/api/guest")
-public class GuestRegisterController extends Handler{
+public class GuestController extends Handler{
 
 	@Autowired
 	private PlayUserESRepository playUserESRes;
@@ -110,6 +111,11 @@ public class GuestRegisterController extends Handler{
 			 * 找到游戏配置的 模式 和玩法，如果多选，则默认进入的是 大厅模式，如果是单选，则进入的是选场模式
 			 */
 			playerResultData.setGames(GameUtils.games(gameConfig.getGametype()));
+		}
+		AiConfig aiConfig = CacheConfigTools.getAiConfig(userToken.getOrgi()) ;
+		if(aiConfig!=null){
+			playerResultData.setEnableai(aiConfig.isEnableai());
+			playerResultData.setWaittime(aiConfig.getWaittime());
 		}
 		/**
 		 * 根据游戏配置 ， 选择 返回的 玩法列表

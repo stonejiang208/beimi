@@ -20,6 +20,9 @@ public class ResultData implements java.io.Serializable{
 	
 	private String gametype ;			// game model : 大厅 | 房卡
 	
+	private boolean enableai ;			//是否启用AI
+	private int waittime ;				//AI等待时长
+	
 	private Token token ;
 	private List<BeiMiGame> games ;		//游戏配置里选择的游戏类型
 	
@@ -85,5 +88,21 @@ public class ResultData implements java.io.Serializable{
 
 	public void setGames(List<BeiMiGame> games) {
 		this.games = games;
+	}
+
+	public boolean isEnableai() {
+		return enableai;
+	}
+
+	public void setEnableai(boolean enableai) {
+		this.enableai = enableai;
+	}
+
+	public int getWaittime() {
+		return waittime;
+	}
+
+	public void setWaittime(int waittime) {
+		this.waittime = waittime;
 	}
 }
