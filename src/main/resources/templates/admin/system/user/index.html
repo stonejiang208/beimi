@@ -83,10 +83,10 @@
 <script>
 	layui.use('laypage', function(){
 		  var laypage = layui.laypage;
-		  
 		  laypage.render({
 				elem: 'page'
-				,pages: <#if userList??>${userList.totalPages}<#else>0</#if> //总页数
+				,count: <#if userList??>${userList.totalElements}<#else>0</#if> //总记录
+				,limit: <#if userList??>${userList.size}<#else>0</#if> //总记录
 				,curr:<#if userList??>${userList.number+1}<#else>0</#if>
 				,groups: 5 //连续显示分页数
 				,jump:function(data , first){

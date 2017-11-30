@@ -95,8 +95,9 @@
 		  top.layer.msg('${msg}');
 		  </#if>
 		  laypage.render({
-				cont: 'page'
-				,pages: <#if metadataList??>${metadataList.totalPages}<#else>0</#if> //总页数
+				elem: 'page'
+				,count: <#if metadataList??>${metadataList.totalElements}<#else>0</#if> //总记录
+				,limit: <#if metadataList??>${metadataList.size}<#else>0</#if> //总记录
 				,curr:<#if metadataList??>${metadataList.number+1}<#else>0</#if>
 				,groups: 5 //连续显示分页数
 				,jump:function(data , first){

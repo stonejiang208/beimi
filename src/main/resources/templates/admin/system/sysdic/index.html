@@ -69,15 +69,15 @@
 	</div>	
 </div>
 <script>
-	layui.use(['laypage', 'layer'], function(){
-		  var laypage = layui.laypage
-		  ,layer = layui.layer;
+	layui.use('laypage', function(){
+		  var laypage = layui.laypage ;
 		  <#if msg??>
 		  top.layer.msg('${msg}');
 		  </#if>
 		  laypage.render({
-				cont: 'page'
-				,pages: <#if sysDicList??>${sysDicList.totalPages}<#else>0</#if> //总页数
+				elem: 'page'
+				,count: <#if sysDicList??>${sysDicList.totalElements}<#else>0</#if> //总记录
+				,limit: <#if sysDicList??>${sysDicList.size}<#else>0</#if> //总记录
 				,curr:<#if sysDicList??>${sysDicList.number+1}<#else>0</#if>
 				,groups: 5 //连续显示分页数
 				,jump:function(data , first){

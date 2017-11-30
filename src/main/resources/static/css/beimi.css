@@ -469,6 +469,10 @@ body .layui-layout-admin .footer-ukefu{height: auto; padding: 15px 0; line-heigh
   100% {transform: scale(1);}
 }
 
+h1, h2, h3 {
+    font-size: 14px;
+    font-weight: 400;
+}
 .layui-anim-scaleSpring{-webkit-animation-name: layui-scale-spring; animation-name: layui-scale-spring}
 .site-zfj-anim i{-webkit-animation-name: site-zfj; animation-name: site-zfj; -webkit-animation-duration: 5s; animation-duration: 5s;  -webkit-animation-timing-function: linear; animation-timing-function: linear;}
 
