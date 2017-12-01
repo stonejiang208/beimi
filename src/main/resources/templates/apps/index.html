@@ -70,9 +70,27 @@
 						<div class="ukefu-last-msg" data-num="0" id="ukefu-last-msg">
 							<small class="ukefu-msg-tip bg-red" id="msgnum">0</small>
 						</div>
-						<a href="javascript:void(0)" id="agentdesktop" onclick="return false;"  data-title="运营" data-href="/apps/platform/index.html" class="iframe_btn" data-id="platform" data-type="tabAdd">
+						<a href="javascript:void(0)" id="agentdesktop" onclick="return false;"  data-title="运营" data-href="/apps/platform/index.html" class="iframe_btn" data-id="operate" data-type="tabAdd">
 							<i class="kfont" style="position: relative;">&#xe6bc;</i>
 							运营
+						</a>
+					</li>
+					<li class="layui-nav-item " style="position: relative;">
+						<div class="ukefu-last-msg" data-num="0" id="ukefu-last-msg">
+							<small class="ukefu-msg-tip bg-red" id="msgnum">0</small>
+						</div>
+						<a href="javascript:void(0)" id="agentdesktop" onclick="return false;"  data-title="业务" data-href="/apps/platform/index.html" class="iframe_btn" data-id="business" data-type="tabAdd">
+							<i class="layui-icon" style="position: relative;">&#xe857;</i>
+							业务
+						</a>
+					</li>
+					<li class="layui-nav-item " style="position: relative;">
+						<div class="ukefu-last-msg" data-num="0" id="ukefu-last-msg">
+							<small class="ukefu-msg-tip bg-red" id="msgnum">0</small>
+						</div>
+						<a href="javascript:void(0)" id="agentdesktop" onclick="return false;"  data-title="数据" data-href="/apps/platform/index.html" class="iframe_btn" data-id="bi" data-type="tabAdd">
+							<i class="layui-icon" style="position: relative;">&#xe629;</i>
+							数据
 						</a>
 					</li>
 					<#if user?? && user.usertype == "0">
@@ -109,15 +127,31 @@
 							</dd>
 							
 							<dd class="ukefu-left-menu" data-tooltip="账号设置">
-								<a href="javascript:void(0)" data-title="账号设置" data-href="/apps/platform/config/account.html" class="iframe_btn" data-id="maincontent" data-type="tabChange"> <i class="layui-icon"
-									style="position: relative;">&#xe614;</i>
+								<a href="javascript:void(0)" data-title="账号设置" data-href="/apps/platform/config/account.html" class="iframe_btn" data-id="maincontent" data-type="tabChange">
+									<i class="layui-icon" style="position: relative;">&#xe620;</i>
+								</a>
+							</dd>
+							<dd class="ukefu-left-menu" data-tooltip="玩法设置">
+								<a href="javascript:void(0)" data-title="玩法设置" data-href="/apps/platform/config/game.html" class="iframe_btn" data-id="maincontent" data-type="tabChange">
+									<i class="layui-icon" style="position: relative;">&#xe614;</i>
+								</a>
+							</dd>
+							<dd class="ukefu-left-menu" data-tooltip="AI设置">
+								<a href="javascript:void(0)" data-title="AI设置" data-href="/apps/platform/config/ai.html" class="iframe_btn" data-id="maincontent" data-type="tabChange">
+									<i class="kfont" style="position: relative;">&#xe63a;</i>
 								</a>
 							</dd>
 							<dd class="ukefu-left-menu" data-tooltip="在线玩家">
-								<a href="javascript:void(0)" data-title="在线玩家" data-href="/apps/platform/online/gameusers.html" class="iframe_btn" data-id="maincontent" data-type="tabChange"> <i class="kfont"
-									style="position: relative;">&#xe7eb;</i>
+								<a href="javascript:void(0)" data-title="在线玩家" data-href="/apps/platform/online/gameusers.html" class="iframe_btn" data-id="maincontent" data-type="tabChange">
+									<i class="kfont" style="position: relative;">&#xe60b;</i>
 								</a>
 							</dd>
+							<dd class="ukefu-left-menu" data-tooltip="游戏房间">
+								<a href="javascript:void(0)" data-title="游戏房间" data-href="/apps/platform/gameroom.html" class="iframe_btn" data-id="maincontent" data-type="tabChange">
+									<i class="layui-icon" style="position: relative;">&#xe735;</i>
+								</a>
+							</dd>
+
 						</dl>
 					</li>
 					<li class="layui-nav-item" style="height: 30px; text-align: center"></li>
