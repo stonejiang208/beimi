@@ -1155,7 +1155,11 @@ cc.Class({
                 break;
             case "ready" :
                 waitting.active = true ;
-                object.timer(object , 5) ;
+                if(cc.beimi.data!=null && cc.beimi.data.enableai == true) {
+                    object.timer(object, cc.beimi.data.waittime);
+                }else{
+                    object.timer(object, cc.beimi.data.noaiwaitime);
+                }
                 break;
             case "begin" :
                 waitting.active = false ;
