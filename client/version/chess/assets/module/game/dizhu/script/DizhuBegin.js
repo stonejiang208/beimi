@@ -65,19 +65,23 @@ cc.Class({
     },
     begin:function(){
         this.initgame(false);
-
-        this.statictimer("正在匹配玩家" , 5) ;
+        if(cc.beimi.data!=null && cc.beimi.data.enableai == true){
+            this.statictimer("正在匹配玩家" , cc.beimi.data.waittime) ;
+        }else{
+            this.statictimer("正在匹配玩家，请稍候" , cc.beimi.data.noaiwaitime) ;
+        }
     },
     opendeal:function(){
         this.initgame(false);
-
-        this.statictimer("正在匹配玩家" , 5) ;
-
+        if(cc.beimi.data!=null && cc.beimi.data.enableai == true){
+            this.statictimer("正在匹配玩家" , cc.beimi.data.waittime) ;
+        }else{
+            this.statictimer("正在匹配玩家，请稍候" , cc.beimi.data.noaiwaitime) ;
+        }
     },
     recovery:function(){
         this.initgame(false);
-
-        this.statictimer("正在恢复数据，请稍候" , 5) ;
+        this.statictimer("正在恢复数据，请稍候" , cc.beimi.data.waittime) ;
     },
     initgame:function(opendeal){
         let self = this ;

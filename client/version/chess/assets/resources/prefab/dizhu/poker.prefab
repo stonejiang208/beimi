@@ -567,7 +567,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -49,
+      "x": -45,
       "y": 61.5
     },
     "_skewX": 0,
@@ -616,7 +616,7 @@
     "isAlignOnce": true,
     "_target": null,
     "_alignFlags": 9,
-    "_left": -7,
+    "_left": -3,
     "_right": 0,
     "_top": 2,
     "_bottom": 0,
@@ -689,7 +689,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -48,
+      "x": -45,
       "y": 18
     },
     "_skewX": 0,
@@ -738,7 +738,7 @@
     "isAlignOnce": true,
     "_target": null,
     "_alignFlags": 9,
-    "_left": 7,
+    "_left": 10,
     "_right": 0,
     "_top": 59,
     "_bottom": 0,
@@ -811,7 +811,7 @@
     "_scaleY": -1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 49,
+      "x": 45,
       "y": -61.5
     },
     "_skewX": 0,
@@ -861,7 +861,7 @@
     "_target": null,
     "_alignFlags": 36,
     "_left": 5,
-    "_right": -7,
+    "_right": -3,
     "_top": 5,
     "_bottom": 2,
     "_verticalCenter": 0,
@@ -933,7 +933,7 @@
     "_scaleY": -1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 48,
+      "x": 45,
       "y": -18
     },
     "_skewX": 0,
@@ -983,7 +983,7 @@
     "_target": null,
     "_alignFlags": 36,
     "_left": 5,
-    "_right": 7,
+    "_right": 10,
     "_top": 55,
     "_bottom": 59,
     "_verticalCenter": 0,

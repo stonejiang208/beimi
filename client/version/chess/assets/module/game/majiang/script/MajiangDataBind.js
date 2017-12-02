@@ -1349,10 +1349,10 @@ cc.Class({
         }
     },
     onDestroy:function(){
-        if(this.ready()) {
-            let socket = this.socket();
-            socket.disconnect();
-        }
+        // if(this.ready()) {
+        //     let socket = this.socket();
+        //     socket.disconnect();
+        // }
     },
     // called every frame, uncomment this function to activate update callback
     // update: function (dt) {

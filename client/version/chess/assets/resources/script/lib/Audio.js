@@ -49,7 +49,7 @@ cc.Class({
         return cc.url.raw("resources/sounds/" + url);
     },
     
-    playBGM(url){
+    playBGM:function(url){
         var audioUrl = this.getUrl(url);
         if(this.bgAudioID >= 0){
             cc.audioEngine.stop(this.bgAudioID);
@@ -57,7 +57,7 @@ cc.Class({
         this.bgAudioID = cc.audioEngine.play(audioUrl,true,this.bgVolume);
     },
     
-    playSFX(url){
+    playSFX:function(url){
         var audioUrl = this.getUrl(url);
         if(this.sfxVolume > 0){
             var audioId = cc.audioEngine.play(audioUrl,false,this.deskVolume);    

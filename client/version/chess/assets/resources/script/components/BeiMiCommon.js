@@ -29,6 +29,7 @@ cc.Class({
         return check ;
     },
     connect:function(){
+        let self = this ;
         /**
          * 登录成功后，创建 Socket链接，
          */
@@ -36,12 +37,32 @@ cc.Class({
             cc.beimi.socket.disconnect();
             cc.beimi.socket = null ;
         }
-        cc.beimi.socket = window.io.connect(cc.beimi.http.wsURL + '/bm/game');
+        cc.beimi.socket = window.io.connect(cc.beimi.http.wsURL + '/bm/game',{"reconnection":true});
         var param = {
             token:cc.beimi.authorization,
             orgi:cc.beimi.user.orgi
         } ;
-        let self = this ;
+
+        cc.game.on(cc.game.EVENT_HIDE, function(event) {
+            //self.alert("HIDE TRUE");
+        });
+        cc.game.on(cc.game.EVENT_SHOW, function(event) {
+            console.log("SHOW TRUE");
+            //self.alert("SHOW TRUE");
+        });
+
+        cc.beimi.socket.on('connect', function (data) {
+            console.log("connected to server");
+            //self.alert("connected to server");
+        });
+
+        cc.beimi.socket.on('disconnect', function (data) {
+            console.log("disconnected from server");
+            //self.alert("disconnected from server");
+
+        });
+
+
         cc.beimi.socket.emit("gamestatus" , JSON.stringify(param));
         cc.beimi.socket.on("gamestatus" , function(result){
             if(result!=null) {
@@ -49,6 +70,8 @@ cc.Class({
                 cc.beimi.gamestatus = data.gamestatus;
             }
         });
+
+
         /**
          * 加入房卡模式的游戏类型 ， 需要校验是否是服务端发送的消息
          */
@@ -149,7 +172,7 @@ cc.Class({
 
         return cards ;
     },
-    parse(result){
+    parse:function(result){
         var data ;
         if(!cc.sys.isNative){
             data = result;
@@ -165,6 +188,7 @@ cc.Class({
         cc.beimi.games = data.games ;
         cc.beimi.gametype = data.gametype ;
 
+        cc.beimi.data = data ;
         cc.beimi.playway = null ;
         this.io.put("userinfo" ,result );
     },
