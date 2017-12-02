@@ -3,11 +3,11 @@
 		<h1 class="site-h1" style="background-color:#FFFFFF;">
 			系统模板
 			<span style="float:right;">
-				<button class="layui-btn layui-btn-small green" href="/admin/template/imp.html" data-toggle="ajax" data-width="750" data-height="220" data-title="导入系统模板">
+				<button class="layui-btn layui-btn-sm green" href="/admin/template/imp.html" data-toggle="ajax" data-width="750" data-height="220" data-title="导入系统模板">
 					<i class="kfont">&#xe641;</i>
 					导入系统模板
 				</button>
-				<a class="layui-btn layui-btn-small green" href="/admin/template/expall.html" target="_blank">
+				<a class="layui-btn layui-btn-sm green" href="/admin/template/expall.html" target="_blank">
 					<i class="kfont">&#xe672;</i>
 					导出系统模板
 				</a>

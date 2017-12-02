@@ -3,10 +3,10 @@
 		<h1 class="site-h1" style="background-color:#FFFFFF;">
 			元数据列表<#if sysDicList??>（${metadataList.totalElements!''}）</#if>
 			<span style="float:right;">
-				<button class="layui-btn layui-btn-small green" href="/admin/metadata/imptb.html" data-toggle="ajax" data-width="550" data-title="创建新字典项">
+				<button class="layui-btn layui-btn-sm green" href="/admin/metadata/imptb.html" data-toggle="ajax" data-width="550" data-title="创建新字典项">
 					导入元数据
 				</button>
-				<a class="layui-btn layui-btn-small layui-btn-danger" href="javascript:void(0)" id="batdel" data-toggle="tip" data-title="删除数据表项同时会删除数据表元数据下的所有内容，请确认是否继续操作”？" title="删除数据表">
+				<a class="layui-btn layui-btn-sm layui-btn-danger" href="javascript:void(0)" id="batdel" data-toggle="tip" data-title="删除数据表项同时会删除数据表元数据下的所有内容，请确认是否继续操作”？" title="删除数据表">
 					批量删除
 				</a>
 			</span>

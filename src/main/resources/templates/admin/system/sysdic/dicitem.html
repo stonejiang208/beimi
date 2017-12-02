@@ -3,11 +3,11 @@
 		<h1 class="site-h1" style="background-color:#FFFFFF;">
 			${sysDic.name} 字典项<#if sysDicList??>（${sysDicList.totalElements!''}）</#if>
 			<span style="float:right;">
-				<button class="layui-btn layui-btn-small green" href="/admin/sysdic/dicitem/add.html?id=${sysDic.id!''}" data-toggle="ajax" data-width="550" data-height="450" data-title="创建新字典项">
+				<button class="layui-btn layui-btn-sm green" href="/admin/sysdic/dicitem/add.html?id=${sysDic.id!''}" data-toggle="ajax" data-width="550" data-height="450" data-title="创建新字典项">
 					创建新字典项
 				</button>
 				
-				<button class="layui-btn layui-btn-small green" href="/admin/sysdic/dicitem/batadd.html?id=${sysDic.id!''}" data-toggle="ajax" data-width="750" data-title="创建新字典项">
+				<button class="layui-btn layui-btn-sm green" href="/admin/sysdic/dicitem/batadd.html?id=${sysDic.id!''}" data-toggle="ajax" data-width="750" data-title="创建新字典项">
 					批量创建字典项
 				</button>
 			</span>

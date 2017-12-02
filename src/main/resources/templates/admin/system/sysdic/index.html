@@ -3,7 +3,7 @@
 		<h1 class="site-h1" style="background-color:#FFFFFF;">
 			系统数据字典列表<#if sysDicList??>（${sysDicList.totalElements!''}）</#if>
 			<span style="float:right;">
-				<button class="layui-btn layui-btn-small green" href="/admin/sysdic/add.html" data-toggle="ajax" data-width="550" data-title="创建新字典项">
+				<button class="layui-btn layui-btn-sm green" href="/admin/sysdic/add.html" data-toggle="ajax" data-width="550" data-title="创建新字典项">
 					创建新字典项
 				</button>
 			</span>

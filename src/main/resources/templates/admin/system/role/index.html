@@ -3,7 +3,7 @@
 		<h1 class="site-h1" style="background-color:#FFFFFF;">
 			角色列表
 			<span style="float:right;">
-				<button class="layui-btn layui-btn-small green" href="/admin/role/add.html" data-toggle="ajax" data-height="200" data-width="550" data-title="创建新用户">
+				<button class="layui-btn layui-btn-sm green" href="/admin/role/add.html" data-toggle="ajax" data-height="200" data-width="550" data-title="创建新用户">
 					新建角色
 				</button>
 			</span>
@@ -30,16 +30,16 @@
 			<#if roleData??>${roleData.name!''}<#else>角色</#if><#if userList??>（${userList?size!''}）</#if>
 			<span style="float:right;">
 				<#if roleData??>
-				<button class="layui-btn layui-btn-small green" href="/admin/role/seluser.html?role=${roleData.id!''}" data-toggle="ajax" data-width="750" data-title="添加用户到角色">
+				<button class="layui-btn layui-btn-sm green" href="/admin/role/seluser.html?role=${roleData.id!''}" data-toggle="ajax" data-width="750" data-title="添加用户到角色">
 					添加用户到角色
 				</button>
-				<button class="layui-btn layui-btn-primary layui-btn-small" href="/admin/role/edit.html?id=${roleData.id}" data-toggle="ajax" data-width="550" data-height="200" data-title="修改角色">
+				<button class="layui-btn layui-btn-primary layui-btn-sm" href="/admin/role/edit.html?id=${roleData.id}" data-toggle="ajax" data-width="550" data-height="200" data-title="修改角色">
 					修改角色
 				</button>
-				<button class="layui-btn layui-btn-primary layui-btn-small" href="/admin/role/delete.html?id=${roleData.id!''}" data-toggle="tip" data-title="请确认是否删除角色？">
+				<button class="layui-btn layui-btn-primary layui-btn-sm" href="/admin/role/delete.html?id=${roleData.id!''}" data-toggle="tip" data-title="请确认是否删除角色？">
 					删除角色
 				</button>
-				<button class="layui-btn layui-btn-danger layui-btn-small" href="/admin/role/auth.html?id=${roleData.id}" data-toggle="ajax" title="角色授权" data-width="400" data-height="500">
+				<button class="layui-btn layui-btn-danger layui-btn-sm" href="/admin/role/auth.html?id=${roleData.id}" data-toggle="ajax" title="角色授权" data-width="400" data-height="500">
 					角色授权
 				</button>
 				</#if>

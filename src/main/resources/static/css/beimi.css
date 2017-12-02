@@ -386,7 +386,7 @@ a{
     margin: 0px auto;
     padding-top: 10px;
     padding-bottom: 10px;
-    background-color: #e6e6e6;
+    background-color: #f0f2f5;
 }
 .header .layui-nav{position: absolute; right: 0; top: 0; padding: 0; background: none;}
 .header .layui-nav .layui-nav-item{margin: 0 20px; line-height: 66px;}
@@ -544,7 +544,7 @@ body .layui-layer-dir .layui-layer-content{padding: 10px; max-height: 280px; ove
 .site-title fieldset legend{margin-left: 20px;  padding: 0 10px; font-size: 22px; font-weight: 300;}
 
 .site-text a{color: #01AAED;}
-.site-h1{margin-bottom: 5px; line-height: 30px; padding-bottom: 5px; padding-left:5px;padding-top:5px;background-color:#f5f5f5;color: #393D49;padding-right: 5px; border-bottom: 1px solid #eee;  font-size: 16px; font-weight: 500;margin-top:0px;}
+.site-h1{margin-bottom: 5px; line-height: 30px; padding-bottom: 5px; padding-left:5px;padding-top:5px;background-color:#f0f2f5;color: #393D49;padding-right: 5px; border-bottom: 1px solid #eee;  font-size: 16px; font-weight: 500;margin-top:0px;}
 .site-h1 .layui-icon{position: relative; top: 2px; font-size: 50px; margin-right: 5px;}
 .site-text{position:relative;}
 .site-text p{margin-bottom: 10px;  line-height:22px;}
@@ -713,7 +713,7 @@ body .site-ukefu-nav .layui-nav-item{line-height: 40px}
 	width: 100%;
     height: calc(100% - 38px);
     margin-top:0px;
-    background-color: #e6e6e6;
+    background-color: #f0f2f5;
     padding-left:0px;
 }
 .layui-tab{
@@ -724,7 +724,7 @@ body .site-ukefu-nav .layui-nav-item{line-height: 40px}
 }
 .product-tab .layui-tab-title .layui-this{
 	color:#1E9FFF  !important;;
-    background-color: #E6E6E6;	
+    background-color: #f0f2f5;
 }
 .layui-layout-content{
 	height:100%;
@@ -766,7 +766,7 @@ body .site-ukefu-nav .layui-nav-item{line-height: 40px}
     background-color:#FFFFFF;
 }
 .layui-layout-content .layui-nav-itemed>a, .layui-nav-tree .layui-nav-title a, .layui-nav-tree .layui-nav-title a:hover {
-    background-color: #f5f5f5 !important;
+    background-color: #ffffff !important;
     color: #000!important;
     font-weight:600;
 }
@@ -794,7 +794,7 @@ body .site-ukefu-nav .layui-nav-item{line-height: 40px}
     color: #fff;
 }
 .layui-layout-content .layui-nav-tree .layui-nav-item .layui-nav-title{
-    background-color:#f5f5f5;
+    background-color:#ffffff;
     font-weight:bold;
     height:40px;
     line-height:40px;
@@ -1176,7 +1176,7 @@ body .site-ukefu-nav .layui-nav-item{line-height: 40px}
 	padding:5px;
 }
 .ukefu-im-theme .ukefu-im-theme-submit-btn{
-	background: #e6e6e6;
+	background: #f0f2f5;
     padding: 2px 10px 2px 10px;
     font-size: 12px;
     color: #FFFFFF;
@@ -1290,7 +1290,7 @@ body .site-ukefu-nav .layui-nav-item{line-height: 40px}
 }
 .box.default-box .box-header {
     color: #222d32;
-    background-color: #f5f5f5;
+    background-color: #ffffff;
     height: 40px;
     line-height: 40px;
     padding: 0 5px;
@@ -1323,7 +1323,7 @@ body .site-ukefu-nav .layui-nav-item{line-height: 40px}
     height: 200px;
     width: 160px;
     margin: 5px 48px;
-    background-color: #e6e6e6;
+    background-color: #f0f2f5;
     position: relative;    
 }
 .ukefu-im-position .ukefu-pos{
@@ -1428,7 +1428,7 @@ body .site-ukefu-nav .layui-nav-item{line-height: 40px}
 	height:41px;
 }
 .ukewo-btn-group li:not(:last-child){
-    border-bottom: 1px solid #e6e6e6;	
+    border-bottom: 1px solid #f0f2f5;	
 }
 .ukewo-btn-group li:hover{
 	background-color:#eff4f5;
@@ -1495,7 +1495,7 @@ ul.dialog-list li {
   padding: 8px 5px 10px 5px;
 }
 ul.dialog-list li.active {
-  background-color: #e6e6e6;
+  background-color: #f0f2f5;
 }
 ul.dialog-list li img {
   position: absolute;
@@ -1871,7 +1871,7 @@ ul.dialog-list li .dialog-info .news .badge {
 .ukefu-chat-agent{
 	padding-right:0px !important;
 	overflow-y: hidden;
-	background-color:#e6e6e6 !important;
+	background-color:#f0f2f5 !important;
 }
 .main-agentuser{
 	position: absolute;
@@ -2045,7 +2045,7 @@ ul.dialog-list li .dialog-info .news .badge {
 	margin-right:0px;
 }
 .layui-layout-admin .layui-tab-title .layui-this:after{
-	border-bottom-color: #E6E6E6;
+	border-bottom-color: #f0f2f5;
 }
 .ukefu-empty{
 	margin:0 auto;
@@ -2187,7 +2187,7 @@ ul.dialog-list li .dialog-info .news .badge {
 }
 .ukefu-console{
 	position: relative;
-	border-bottom: 1px solid #E6E6E6;
+	border-bottom: 1px solid #f0f2f5;
 	padding-top:10px !important;
 	padding-bottom:10px !important;
 }
@@ -2236,7 +2236,7 @@ ul.dialog-list li .dialog-info .news .badge {
     height:280px;
     line-height: 38px;
     line-height: 36px\9;
-    border: 1px solid #e6e6e6;
+    border: 1px solid #f0f2f5;
     background-color: #fff;
     border-radius: 2px;
     width: 730px;
@@ -2259,7 +2259,7 @@ ul.dialog-list li .dialog-info .news .badge {
     line-height: 48px; 
 }
 .ukefu-current-agentservice{
-	background-color:#e6e6e6;
+	background-color:#f0f2f5;
 }
 .ukefu-badge {
     display: inline-block;
@@ -2287,7 +2287,7 @@ ul.dialog-list li .dialog-info .news .badge {
 }
 .ukefu-tab-title .layui-tab-title .layui-this::after{
     border: 1px solid #1E9FFF  !important;;
-    border-bottom-color: #f5f5f5;    	
+    border-bottom-color: #ffffff;    	
 }
 .ukefu-tab {
 	border-bottom: 0px solid #eee;
@@ -2320,7 +2320,7 @@ select{
 	height: 38px;
     line-height: 38px;
     line-height: 36px\9;
-    border: 1px solid #e6e6e6;
+    border: 1px solid #f0f2f5;
     background-color: #fff;
     border-radius: 2px;
     color:#666666;
@@ -2379,7 +2379,7 @@ select{
     border-top: 1px solid #1E9FFF  !important;;
     border-left: 1px solid #1E9FFF  !important;;
     border-right: 1px solid #1E9FFF  !important;;
-    border-bottom-color: #f5f5f5;
+    border-bottom-color: #ffffff;
 }
 .ukefu-tab-title .tab-title .layui-this:after {
     height: 31px;
@@ -2555,7 +2555,7 @@ select{
 .ukefu-col-left{
 	width: 320px;
     height: 100%;
-    border-right: 1px solid #e6e6e6;
+    border-right: 1px solid #f0f2f5;
     position: absolute;
     background-color: #FFFFFF;    
     left: 0;
@@ -2812,7 +2812,7 @@ select{
 	min-width:50px;
 }
 .ukefu-im-preview-top .layui-this{
-	background-color: #e6e6e6;
+	background-color: #f0f2f5;
 }
 .ukefu-im-preview-left{
     position: absolute;
@@ -3360,7 +3360,7 @@ select{
 	display: block;
     width: 100%;
     padding-left: 10px;
-    border: 1px solid #e6e6e6;
+    border: 1px solid #f0f2f5;
     background-color: #fff;
     border-radius: 2px;
 }
