@@ -33,14 +33,14 @@ public class GameConfig implements java.io.Serializable{
 	
 	private int maxuser = 10 ;	
 	
-	private int initmaxuser = 10 ;	
+	private int initmaxuser = 10 ;
 	
 	private String sessionmsg ;	
 	private String distribution ;
 	private boolean lastagent;	
-	private boolean sessiontimeout;	
-	private int timeout = 120;		
-	private String timeoutmsg ;		
+	private boolean sessiontimeout;			//匹配玩家等到超时后 是否 解散房间
+	private int timeout = 30;				//匹配玩家的超时时长
+	private String timeoutmsg ;				//配牌玩家超时后的 提示消息
 	private boolean resessiontimeout;
 	private int retimeout = 120;	
 	private String retimeoutmsg ;	

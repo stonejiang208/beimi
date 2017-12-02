@@ -22,6 +22,9 @@ public class ResultData implements java.io.Serializable{
 	
 	private boolean enableai ;			//是否启用AI
 	private int waittime ;				//AI等待时长
+
+	private int noaiwaitime ;			//没有AI接入的时候的最大等待时长
+	private String noaimsg ;			//没有AI接入的时候达到最大等待时长的 提示消息
 	
 	private Token token ;
 	private List<BeiMiGame> games ;		//游戏配置里选择的游戏类型
@@ -104,5 +107,21 @@ public class ResultData implements java.io.Serializable{
 
 	public void setWaittime(int waittime) {
 		this.waittime = waittime;
+	}
+
+	public int getNoaiwaitime() {
+		return noaiwaitime;
+	}
+
+	public void setNoaiwaitime(int noaiwaitime) {
+		this.noaiwaitime = noaiwaitime;
+	}
+
+	public String getNoaimsg() {
+		return noaimsg;
+	}
+
+	public void setNoaimsg(String noaimsg) {
+		this.noaimsg = noaimsg;
 	}
 }

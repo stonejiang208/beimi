@@ -75,6 +75,51 @@
 													</div>
 												</div>
 											</div>
+											<div class="ukefu-webim-prop">
+												<div class="ukefu-webim-tl" style="clear:both;">3、无AI参与时匹配玩家的最大时长（秒）</div>
+												<div class="box-item">
+													<div class="row">
+														<div class="col-lg-8">
+															<p>如果未启用AI功能，系统会等待玩家加入游戏，此处设置最大等待时长</p>
+															<p style="color:#888888;font-size:13px;margin-top:10px;">默认等待时长是30秒，超过等待时长后，大厅房间会被解散，玩家重新进入匹配模式</p>
+														</div>
+														<div class="col-lg-4" style="text-align:right;">
+															<input type="text" lay-verify="number" name="timeout" maxlength="8" value="<#if gameConfig && gameConfig.timeout?? && gameConfig.timeout gt 0>${gameConfig.timeout}<#else>30</#if>" autocomplete="off" class="layui-input" style="width:80px;display:inline;">
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="ukefu-webim-prop">
+												<div class="ukefu-webim-tl" style="clear:both;">4、无AI参与等待匹配超时后自动解散房间</div>
+												<div class="box-item">
+													<div class="row">
+														<div class="col-lg-8">
+															<p>无AI参与时，达到最大等待时长后，是否自动解散房间</p>
+															<p style="color:#888888;font-size:13px;margin-top:10px;">默认策略是大厅房间会被解散，玩家重新进入匹配模式</p>
+														</div>
+														<div class="col-lg-4" style="text-align:right;">
+															<input type="checkbox" id="sessiontimeout" name="sessiontimeout" title="启用" <#if gameConfig?? && gameConfig.sessiontimeout == true>checked="checked"</#if>>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<div class="ukefu-webim-prop">
+												<div class="ukefu-webim-tl" style="clear:both;">5、无AI参与超时后的提示消息</div>
+												<div class="box-item">
+													<div class="row">
+														<div class="col-lg-12">
+															<p>无AI参与时，达到最大等待时长后，游戏界面上的提示消息</p>
+															<p style="color:#888888;font-size:13px;margin-top:10px;">提示消息后，玩家重新进入匹配模式</p>
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-lg-12" style="text-align:right;margin-top:20px;">
+															<textarea name="timeoutmsg" autocomplete="off" class="layui-input" resize="false" style="height:90px;line-height:22px;resize: none;"><#if gameConfig && gameConfig.timeoutmsg??>${gameConfig.timeoutmsg}<#else>未匹配到玩家，房间已解散</#if></textarea>
+														</div>
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>

@@ -104,6 +104,8 @@ public class GuestController extends Handler{
 		GameConfig gameConfig = CacheConfigTools.getGameConfig(userToken.getOrgi()) ;
 		if(gameConfig!=null){
 			playerResultData.setGametype(gameConfig.getGamemodel());
+			playerResultData.setNoaiwaitime(gameConfig.getTimeout());	//无AI的时候 等待时长
+			playerResultData.setNoaimsg(gameConfig.getTimeoutmsg());    //无AI的时候，到达最大时长以后的 提示消息，提示完毕后，解散房间
 			/**
 			 * 封装 游戏对象，发送到客户端
 			 */
