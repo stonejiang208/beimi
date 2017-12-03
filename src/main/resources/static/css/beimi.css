@@ -544,7 +544,7 @@ body .layui-layer-dir .layui-layer-content{padding: 10px; max-height: 280px; ove
 .site-title fieldset legend{margin-left: 20px;  padding: 0 10px; font-size: 22px; font-weight: 300;}
 
 .site-text a{color: #01AAED;}
-.site-h1{margin-bottom: 5px; line-height: 30px; padding-bottom: 5px; padding-left:5px;padding-top:5px;background-color:#f0f2f5;color: #393D49;padding-right: 5px; border-bottom: 1px solid #eee;  font-size: 16px; font-weight: 500;margin-top:0px;}
+.site-h1{margin-bottom: 0px; line-height: 30px; padding-bottom: 5px; padding-left:5px;padding-top:5px;background-color:#f0f2f5;color: #393D49;padding-right: 5px; border-bottom: 1px solid #eee;  font-size: 16px; font-weight: 500;margin-top:0px;}
 .site-h1 .layui-icon{position: relative; top: 2px; font-size: 50px; margin-right: 5px;}
 .site-text{position:relative;}
 .site-text p{margin-bottom: 10px;  line-height:22px;}
@@ -2215,8 +2215,8 @@ ul.dialog-list li .dialog-info .news .badge {
 .ukefu-relation-item {
     font-size: 16px;
     display: inline-block;
-    margin-left: 15px;
-    margin-right:15px;
+    margin-left: 10px;
+    margin-right:10px;
     text-align: left;
     color: #666;
     width:20%;
@@ -3766,4 +3766,63 @@ select{
 }
 .game_type .game_type_name{
 	margin:0 auto;
+}
+
+.console-welcome{
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.85);
+    margin-bottom: 12px;
+}
+
+.ukefu-console-text-content {
+    color: #aaaaaa;
+    font-size: 12px;
+    margin-top: 3px;
+}
+.ukefu-console-text-content {
+    font-weight: 400;
+    font-size: 19px;
+    color: #444444;
+    margin-top:8px;
+}
+.ukefu-console-text-title {;
+    color: #aaaaaa;
+    font-size: 14px;
+    margin-top: 3px;
+}
+.ukefu-measure-console{
+    width: 16px;
+    height: 16px;
+    font-size: 13px;
+    line-height: 18px;
+    text-align: center;
+}
+.ukefu-console-view{
+    border-radius: 0;
+    border: 0;
+    -webkit-box-shadow: 1px 0 0 0 #e8e8e8, 0 1px 0 0 #e8e8e8, 1px 1px 0 0 #e8e8e8, 1px 0 0 0 #e8e8e8 inset, 0 1px 0 0 #e8e8e8 inset;
+    box-shadow: 1px 0 0 0 #e8e8e8, 0 1px 0 0 #e8e8e8, 1px 1px 0 0 #e8e8e8, 1px 0 0 0 #e8e8e8 inset, 0 1px 0 0 #e8e8e8 inset;
+    padding: 24px;
+    -webkit-transition: all .3s;
+    -o-transition: all .3s;
+    transition: all .3s;
+    padding:25px 25px 10px 25px;
+    height:108px;
+}
+.ukefu-console-view:hover {
+    position: relative;
+    z-index: 1;
+    -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+.ukefu-bg-color-red {
+    background-color: #df3434 !important;
+}
+.ukefu-bg-color-purple {
+    background-color: #DA70D6 !important;
+}
+.ukefu-console-new{
+    border:
 }

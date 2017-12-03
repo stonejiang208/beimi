@@ -94,6 +94,17 @@
 						</a>
 					</li>
 					<#if user?? && user.usertype == "0">
+					<#if models?? && models["dev"]!=null>
+					<li class="layui-nav-item " style="position: relative;">
+						<div class="ukefu-last-msg" data-num="0" id="ukefu-last-msg">
+							<small class="ukefu-msg-tip bg-red" id="msgnum">0</small>
+						</div>
+						<a href="javascript:void(0)" id="agentdesktop" onclick="return false;"  data-title="开发平台" data-href="/apps/dev/index.html" class="iframe_btn" data-id="bi" data-type="tabAdd">
+							<i class="layui-icon" style="position: relative;">&#xe62d;</i>
+							开发平台
+						</a>
+					</li>
+					</#if>
 					<li class="layui-nav-item ">
 						<a href="javascript:void(0)" onclick="return false;"  data-title="系统" data-href="/admin/content.html" class="iframe_btn" data-id="admin" data-type="tabAdd">
 							<i class="layui-icon" style="position: relative;">&#xe631;</i>

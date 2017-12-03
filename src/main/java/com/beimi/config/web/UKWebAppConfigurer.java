@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import com.beimi.web.handler.interceptor.CrossInterceptorHandler;
+import com.beimi.web.interceptor.CrossInterceptorHandler;
 import com.beimi.web.interceptor.UserInterceptorHandler;
 
 @Configuration

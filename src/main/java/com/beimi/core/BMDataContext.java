@@ -1,7 +1,7 @@
 package com.beimi.core;
 
 import org.springframework.context.ApplicationContext;
-
+import java.util.*;
 import com.beimi.core.engine.game.GameEngine;
 
 public class BMDataContext {
@@ -34,6 +34,8 @@ public class BMDataContext {
 	private static boolean imServerRunning = false ;			//IM服务状态
 	
 	private static ApplicationContext applicationContext ;
+
+	public static Map<String , Boolean> model = new HashMap<String,Boolean>();
 	
 	
 	private static GameEngine gameEngine ;
