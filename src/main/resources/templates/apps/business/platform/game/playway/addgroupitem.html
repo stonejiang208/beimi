@@ -4,7 +4,7 @@
 		<input type="hidden" name="game" value="${game.id!''}">
 		<input type="hidden" name="groupid" value="${group.id!''}">
 		<input type="hidden" name="playwayid" value="${playway.id!''}">
-		<div class="layui-row" style="width: 400px;margin: 0 auto;padding-top: 150px;">
+		<div class="layui-row" style="width: 400px;margin: 0 auto;padding-top: 50px;">
 			<div class="layui-col-md12">
 				<div class="layui-form-item">
 					<label class="layui-form-label">子项名称：</label>
@@ -17,7 +17,7 @@
 					<label class="layui-form-label">子项代码：</label>
 					<div class="layui-input-block">
 						<input type="text" name="code" required lay-verify="required"
-							   placeholder="子项名称" autocomplete="off" class="layui-input">
+							   placeholder="子项代码" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
@@ -25,6 +25,13 @@
 					<div class="layui-input-block">
 						<input type="radio" name="type" value="radio" title="单选">
 						<input type="radio" name="type" value="checkbox" title="多选" checked>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">默认选中：</label>
+					<div class="layui-input-block">
+						<input type="radio" name="defaultvalue" value="1" title="是">
+						<input type="radio" name="defaultvalue" value="0" title="否" checked>
 					</div>
 				</div>
 			</div>
