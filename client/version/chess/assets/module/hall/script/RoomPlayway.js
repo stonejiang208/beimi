@@ -19,6 +19,10 @@ cc.Class({
         gametype:{
             default:null ,
             type : cc.Node
+        },
+        roomoption:{
+            default:null ,
+            type : cc.Prefab
         }
     },
 
