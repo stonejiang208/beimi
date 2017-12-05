@@ -326,9 +326,6 @@ a{
 .ke-dialog{
 	z-index:1000000000 !important;
 }
-.layui-form-label{
-	width:100px;
-}
 .layui-nav *{
 	font-size:15px;
 }
@@ -823,17 +820,7 @@ body .site-ukefu-nav .layui-nav-item{line-height: 40px}
 	padding:10px 5px 10px 5px;
 	
 }
-.layui-form-label {
-	padding: 9px 5px 5px 15px;
-}
-.layui-input-block{
-    padding: 9px 15px 5px 0px;
-    margin-left: 0px;
-    min-height:20px;	
-}
-.layui-form-item {
-    margin-bottom: 5px;
-}
+
 .layui-layout-content .layui-body .layui-side-scroll{
 	width:100%;
 }
@@ -882,8 +869,9 @@ body .site-ukefu-nav .layui-nav-item{line-height: 40px}
 }
 .uk-layui-form{
 	height: calc(100% - 60px);
-	padding-top:0px;
+	padding-top:10px;
 	overflow-y: auto;
+    padding-right: 10px;
 }
 .layui-layer-page .layui-layer-content{
     overflow: hidden;	
@@ -2310,8 +2298,10 @@ ul.dialog-list li .dialog-info .news .badge {
 	font-weight:400;
 	font-size:15px;
 }
-.layui-form-radio{
-	margin-top:0px;
+.layui-form-item {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    clear: both;
 }
 .uckefu-inline{
 	margin-left:140px;
@@ -3825,4 +3815,77 @@ select{
 }
 .ukefu-console-new{
     border:
+}
+.layui-form-radio i {
+    font-size: 18px;
+}
+
+.playway-left{
+    background-image: url("/images/playway/bg_tab.png");
+    padding-top:5px;
+    height:100%;
+    padding-right:5px;
+}
+.playway-right{
+    background-image: url("/images/playway/right-bg.png");
+    height:100%;
+    padding-top:5px;
+    padding-right:5px;
+    border:1px solid #dedede;
+    border-left:0px;
+    border-radius: 3px;
+    border-top-left-radius:0px;
+    border-bottom-left-radius:0px;
+    padding-left:5px;
+}
+.playway-current{
+    background-image: url("/images/playway/tab_selected.png");
+    height: 92px;
+    width: 191px;
+    margin: 12px auto;
+    line-height: 82px;
+    text-align: center;
+}
+.playway-desc-pic{
+    position: absolute;
+    left: 50px;
+    bottom: 150px;
+}
+.playway-desc{
+    position: absolute;
+    left: 10px;
+    top: 300px;
+    font-size:20px;
+    color:rgba(169 , 104 , 56 , 0.90);
+    width:220px;
+}
+.playway-options{
+    border:1px solid #dedede;
+    background-color:#ffffff;
+    width:690px;
+    min-height:60px;
+    margin: 10px auto;
+    border-radius:5px;
+}
+.playway-options .layui-form-checkbox span{
+    width:105px;
+}
+.playway-options-bottom{
+    position: absolute;
+    bottom:-10px;
+    border:1px dashed #1890ff;
+    background-color:#ffffff;
+    width:690px;
+    height:35px;
+    text-align: center;
+    margin: 0px auto;
+    border-radius:5px;
+}
+.playway-group-add{
+    height: auto!important;
+    line-height: normal!important;
+    border: none!important;
+    margin-right: 0;
+    padding-right: 0;
+    background: 0 0;
 }

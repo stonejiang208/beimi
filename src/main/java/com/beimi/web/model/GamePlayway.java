@@ -66,6 +66,10 @@ public class GamePlayway implements java.io.Serializable{
 	
 	
 	private String roomtype ;	//房间类型， 房卡：大厅
+	private String memo ;		//备注信息，不超过30个字
+	private boolean free ;		//开启房卡限免
+	private String roomtitle ; 	//玩法标题
+	private boolean extpro ;	//启用扩展属性配置（房卡游戏中的自定义规则）
 	
 	@Id
 	@Column(length = 32)
@@ -238,5 +242,37 @@ public class GamePlayway implements java.io.Serializable{
 	}
 	public void setWind(boolean wind) {
 		this.wind = wind;
+	}
+
+	public String getMemo() {
+		return memo;
+	}
+
+	public void setMemo(String memo) {
+		this.memo = memo;
+	}
+
+	public boolean isFree() {
+		return free;
+	}
+
+	public void setFree(boolean free) {
+		this.free = free;
+	}
+
+	public String getRoomtitle() {
+		return roomtitle;
+	}
+
+	public void setRoomtitle(String roomtitle) {
+		this.roomtitle = roomtitle;
+	}
+
+	public boolean isExtpro() {
+		return extpro;
+	}
+
+	public void setExtpro(boolean extpro) {
+		this.extpro = extpro;
 	}
 }

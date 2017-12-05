@@ -10,7 +10,7 @@
 					<h1 class="site-h1" style="background-color:#FFFFFF;">
 						“${game.name!''}” 玩法列表<#if playwayList??>（${playwayList?size}）</#if>
 						<span style="float:right;">
-							<button class="layui-btn layui-btn-sm green" href="/apps/platform/playway/add.html?id=${game.id!''}" data-toggle="ajax" data-width="750" data-height="450" data-title="创建新玩法">
+							<button class="layui-btn layui-btn-sm green" href="/apps/platform/playway/add.html?id=${game.id!''}" data-toggle="ajax" data-width="950" data-height="550" data-title="创建新玩法">
 								创建新玩法
 							</button>
 						</span>
@@ -31,11 +31,11 @@
 													<th>玩家数量</th>
 													<th>底分</th>
 													<th>金币要求</th>
-													<th>是否换牌</th>
 													<th>排序位置</th>
 													<th>是否洗牌</th>
 													<th>最大局数</th>
 													<th>发牌数量</th>
+													<th>开启限免</th>
 													<th style="white-space:nowrap;width:1%;" nowrap="nowrap">操作</th>
 												</tr>
 											</thead>
@@ -49,11 +49,6 @@
 													<td>${playway.players!''}</td>
 													<td>${playway.score!''}</td>
 													<td>${playway.mincoins}~${playway.maxcoins}</td>
-													<td>
-														<#if playway.changecard?? && playway.changecard> 
-														<i class="layui-icon" style="color:#19a55d;">&#xe618;</i>
-														</#if>
-													</td>
 													<td>${playway.sortindex!''}</td>
 													<td>
 														<#if playway.shuffle?? && playway.shuffle> 
@@ -62,12 +57,26 @@
 													</td>
 													<td>${playway.numofgames!''}</td>
 													<td>${playway.cardsnum!''}</td>
+													<td>
+														<#if playway.free?? && playway.free == true>
+															<i class="layui-icon" style="color:#19a55d;">&#xe618;</i>
+														</#if>
+													</td>
 													<td style="white-space:nowrap;width:1%;" nowrap="nowrap"><a
 														href="/apps/platform/playway/edit.html?id=${playway.id!''}&game=${game.id!''}"
-														data-toggle="ajax" data-width="750" data-height="450"
+														data-toggle="ajax" data-width="950" data-height="550"
 														data-title="编辑游戏玩法配置"> <i class="layui-icon">&#xe642;</i>
 															编辑
-													</a> <#if !(playway.playwaytype?? && playway.playwaytype == "0") &&
+													</a>
+														<#if playway.extpro?? && playway.extpro == true>
+														<a href="/apps/platform/playway/extpro.html?id=${playway.id!''}&game=${game.id!''}"
+														   data-toggle="ajax" data-width="950" data-height="550"
+														   data-title="设置游戏自定义玩法" style="margin-left:10px;" title="房卡游戏自定义规则设置">
+															<i class="layui-icon">&#xe631;</i>
+															设置
+														</a>
+														</#if>
+														<#if !(playway.playwaytype?? && playway.playwaytype == "0") &&
 														playway.datastatus != true > <a
 														href="/apps/platform/playway/delete.html?id=${playway.id!''}&game=${game.id!''}"
 														style="margin-left:10px;" data-toggle="tip"

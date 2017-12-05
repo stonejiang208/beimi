@@ -238,6 +238,10 @@ public class GameUtils {
 								Playway playway = new Playway(gamePlayway.getId(), gamePlayway.getName() , gamePlayway.getCode(), gamePlayway.getScore() , gamePlayway.getMincoins(), gamePlayway.getMaxcoins(), gamePlayway.isChangecard() , gamePlayway.isShuffle()) ;
 								playway.setLevel(gamePlayway.getTypelevel());
 								playway.setSkin(gamePlayway.getTypecolor());
+								playway.setMemo(gamePlayway.getMemo());
+                                playway.setRoomtitle(gamePlayway.getRoomtitle());
+								playway.setFree(gamePlayway.isFree());
+								playway.setExtpro(gamePlayway.isExtpro());
 								type.getPlayways().add(playway) ;
 							}
 						}

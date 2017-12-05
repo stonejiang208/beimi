@@ -1,124 +1,193 @@
 <div class="uk-layui-form">
-	<form class="layui-form uk-form"
+	<form class="layui-form"
 		action="/apps/platform/playway/update.html">
 		<input type="hidden" name="game" value="${game.id!''}">
 		<input type="hidden" name="id" value="${playway.id!''}">
+		<div class="layui-row">
+			<div class="layui-col-md4">
+				<div class="layui-form-item">
+					<label class="layui-form-label">玩法名称：</label>
+					<div class="layui-input-block">
+						<input type="text" name="name" value="${playway.name!''}" required lay-verify="required"
+							placeholder="玩法名称" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md4">
+				<div class="layui-form-item">
+					<label class="layui-form-label">场景代码：</label>
+					<div class="layui-input-block">
+						<select name="code" lay-verify="required">
+							<#if sceneList??>
+							<#list sceneList as scene>
+							<option value="${scene.code!''}" <#if scene.code == playway.code>selected="selected"</#if>>${scene.name!''}</option>
+							</#list>
+							</#if>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md4">
+				<div class="layui-form-item">
+					<label class="layui-form-label">游戏模式：</label>
+					<div class="layui-input-block">
+						<select name="typeid" lay-verify="required">
+							<#if gameModelList??>
+							<#list gameModelList as gameModel>
+							<option value="${gameModel.id!''}" <#if playway?? && playway.typeid == gameModel.id>selected="selected"</#if>>${gameModel.name!''}</option>
+							</#list>
+							</#if>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="layui-row">
+			<div class="layui-col-md4">
+				<div class="layui-form-item">
+					<label class="layui-form-label">玩法级别：</label>
+					<div class="layui-input-block">
+						<select name="typelevel" lay-verify="required">
+							<option value="1" <#if playway?? && playway.typelevel == "1">selected="selected"</#if>>初级场</option>
+							<option value="2" <#if playway?? && playway.typelevel == "2">selected="selected"</#if>>高级场</option>
+							<option value="3" <#if playway?? && playway.typelevel == "3">selected="selected"</#if>>房卡</option>
+							<option value="4" <#if playway?? && playway.typelevel == "4">selected="selected"</#if>>比赛</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md4">
+				<div class="layui-form-item">
+					<label class="layui-form-label">图标颜色：</label>
+					<div class="layui-input-block">
+						<select name="typecolor" lay-verify="required">
+							<option value="1" <#if playway?? && playway.typecolor == "1">selected="selected"</#if>>配色一</option>
+							<option value="2" <#if playway?? && playway.typecolor == "2">selected="selected"</#if>>配色二</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md4">
+				<div class="layui-form-item">
+					<label class="layui-form-label">排序位置：</label>
+					<div class="layui-input-block">
+						<select name="sortindex" lay-verify="required">
+							<#list 1..20 as inx>
+							<option value="${inx}" <#if playway?? && playway.sortindex == inx>selected="selected"</#if>>${inx}</option>
+							</#list>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="layui-row">
+			<div class="layui-col-md4">
 
-		<div class="layui-form-item">
-			<label class="layui-form-label">玩法名称：</label>
-			<div class="layui-input-inline">
-				<input type="text" name="name" value="${playway.name!''}" required lay-verify="required"
-					placeholder="玩法名称" autocomplete="off" class="layui-input">
+				<div class="layui-form-item">
+					<label class="layui-form-label">玩家数量：</label>
+					<div class="layui-input-block">
+						<select name="players" lay-verify="required">
+							<#list 2..4 as num>
+							<option value="${num}" <#if playway?? && playway.players == num>selected="selected"</#if>>${num}</option>
+							</#list>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md4">
+				<div class="layui-form-item">
+					<label class="layui-form-label">发牌数量：</label>
+					<div class="layui-input-block">
+						<select name="cardsnum" lay-verify="required">
+							<#list 1..64 as cardsnum>
+							<option value="${cardsnum}" <#if playway?? && playway.cardsnum == cardsnum>selected="selected"</#if>>${cardsnum}</option>
+							</#list>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md4">
+				<div class="layui-form-item">
+					<label class="layui-form-label">底分：</label>
+					<div class="layui-input-block">
+						<input type="text" name="score" value="${playway.score!''}" required lay-verify="required|number"
+							placeholder="底分" autocomplete="off" class="layui-input">
+					</div>
+				</div>
 			</div>
 		</div>
-		
-		<div class="layui-form-item">
-			<label class="layui-form-label">场景代码：</label>
-			<div class="layui-input-inline">
-				<select name="code" lay-verify="required">
-					<#if sceneList??>
-					<#list sceneList as scene>
-					<option value="${scene.code!''}" <#if scene.code == playway.code>selected="selected"</#if>>${scene.name!''}</option>
-					</#list>
-					</#if>
-				</select>
+		<div class="layui-row">
+			<div class="layui-col-md4">
+				<div class="layui-form-item">
+					<div class="layui-inline">
+						<label class="layui-form-label">金币要求：</label>
+						<div class="layui-input-inline" style="width: 80px;">
+							<input type="text" name="mincoins" required value="${playway.mincoins!''}"
+								lay-verify="required|number" placeholder="最小金币要求"
+								autocomplete="off" class="layui-input">
+						</div>
+						<div class="layui-form-mid">-</div>
+						<div class="layui-input-inline" style="width: 80px;margin-right:0px;">
+							<input type="text" name="maxcoins" required value="${playway.maxcoins!''}"
+								lay-verify="required|number" placeholder="最大金币要求"
+								autocomplete="off" class="layui-input">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md4">
+				<div class="layui-form-item">
+					<label class="layui-form-label">限免</label>
+					<div class="layui-input-block">
+						<input type="radio" name="free" title="开启" value="1" <#if playway?? && playway.free == true>checked="checked"</#if>>
+						<input type="radio" name="free" title="关闭" value="0" <#if playway?? && playway.free == false>checked="checked"</#if>>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md4">
+				<div class="layui-form-item">
+					<label class="layui-form-label">显示标题：</label>
+					<div class="layui-input-block">
+						<select name="roomtitle" lay-verify="required">
+							<#if dicList??>
+							<#list dicList as roomtitle>
+							<option value="${roomtitle.name!''}" <#if playway?? && playway.roomtitle?? && playway.roomtitle == roomtitle.name>selected="selected"</#if>>${roomtitle.name!''}</option>
+						</#list>
+						</#if>
+						</select>
+					</div>
+				</div>
 			</div>
 		</div>
-		
-		<div class="layui-form-item">
-			<label class="layui-form-label">游戏模式：</label>
-			<div class="layui-input-inline">
-				<select name="typeid" lay-verify="required">
-					<#if gameModelList??>
-					<#list gameModelList as gameModel>
-					<option value="${gameModel.id!''}" <#if playway?? && playway.typeid == gameModel.id>selected="selected"</#if>>${gameModel.name!''}</option>
-					</#list>
-					</#if>
-				</select>
+
+		<div class="layui-row">
+			<div class="layui-col-md4">
+				<div class="layui-form-item">
+					<label class="layui-form-label">扩展属性</label>
+					<div class="layui-input-block">
+						<input type="radio" name="extpro" title="开启" value="1" <#if playway?? && playway.extpro == true>checked="checked"</#if>>
+						<input type="radio" name="extpro" title="关闭" value="0" <#if playway?? && playway.extpro == false>checked="checked"</#if>>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md8">
+				<div class="layui-form-item">
+					<label class="layui-form-label">游戏选项：</label>
+					<div class="layui-input-block">
+						<input type="checkbox" name="changecard" title="换三张" value="1" <#if playway?? && playway.changecard>checked="checked"</#if>>
+						<input type="checkbox" name="shuffle" title="洗牌" value="1" <#if playway?? && playway.shuffle>checked="checked"</#if>>
+					</div>
+				</div>
 			</div>
 		</div>
-		
-		<div class="layui-form-item">
-			<label class="layui-form-label">玩法级别：</label>
-			<div class="layui-input-inline">
-				<select name="typelevel" lay-verify="required">
-					<option value="1" <#if playway?? && playway.typelevel == "1">selected="selected"</#if>>初级场</option>
-					<option value="2" <#if playway?? && playway.typelevel == "2">selected="selected"</#if>>高级场</option>
-					<option value="3" <#if playway?? && playway.typelevel == "3">selected="selected"</#if>>房卡</option>
-					<option value="4" <#if playway?? && playway.typelevel == "4">selected="selected"</#if>>比赛</option>
-				</select>
-			</div>
-		</div>
-		
-		<div class="layui-form-item">
-			<label class="layui-form-label">图标颜色：</label>
-			<div class="layui-input-inline">
-				<select name="typecolor" lay-verify="required">
-					<option value="1" <#if playway?? && playway.typecolor == "1">selected="selected"</#if>>配色一</option>
-					<option value="2" <#if playway?? && playway.typecolor == "2">selected="selected"</#if>>配色二</option>
-				</select>
-			</div>
-		</div>
-		
-		<div class="layui-form-item">
-			<label class="layui-form-label">排序位置：</label>
-			<div class="layui-input-inline">
-				<select name="sortindex" lay-verify="required">
-					<#list 1..20 as inx>
-					<option value="${inx}" <#if playway?? && playway.sortindex == inx>selected="selected"</#if>>${inx}</option>
-					</#list>
-				</select>
-			</div>
-		</div>
-		
-		<div class="layui-form-item">
-			<label class="layui-form-label">玩家数量：</label>
-			<div class="layui-input-inline">
-				<select name="players" lay-verify="required">
-					<#list 2..4 as num>
-					<option value="${num}" <#if playway?? && playway.players == num>selected="selected"</#if>>${num}</option>
-					</#list>
-				</select>
-			</div>
-		</div>
-		
-		<div class="layui-form-item">
-			<label class="layui-form-label">发牌数量：</label>
-			<div class="layui-input-inline">
-				<select name="cardsnum" lay-verify="required">
-					<#list 1..64 as cardsnum>
-					<option value="${cardsnum}" <#if playway?? && playway.cardsnum == cardsnum>selected="selected"</#if>>${cardsnum}</option>
-					</#list>
-				</select>
-			</div>
-		</div>
-		
-		
-		<div class="layui-form-item">
-			<label class="layui-form-label">底分：</label>
-			<div class="layui-input-inline">
-				<input type="text" name="score" value="${playway.score!''}" required lay-verify="required|number"
-					placeholder="底分" autocomplete="off" class="layui-input">
-			</div>
-		</div>
-		<div class="layui-form-item">
-			<label class="layui-form-label">金币要求：</label>
-			<div class="layui-input-inline">
-				<input type="text" name="mincoins" required value="${playway.mincoins!''}"
-					lay-verify="required|number" placeholder="最小金币要求"
-					autocomplete="off" class="layui-input">
-			</div>
-			<div class="layui-input-inline">
-				<input type="text" name="maxcoins" required value="${playway.maxcoins!''}"
-					lay-verify="required|number" placeholder="最大金币要求"
-					autocomplete="off" class="layui-input">
-			</div>
-		</div>
-		<div class="layui-form-item">
-			<label class="layui-form-label">选项：</label>
-			<div class="layui-input-inline">
-				<input type="checkbox" name="changecard" title="换三张" value="1" <#if playway?? && playway.changecard>checked="checked"</#if>>
-				<input type="checkbox" name="shuffle" title="洗牌" value="1" <#if playway?? && playway.shuffle>checked="checked"</#if>>
+		<div class="layui-row">
+			<div class="layui-col-md12">
+				<div class="layui-form-item">
+					<label class="layui-form-label">简介：</label>
+					<div class="layui-input-block">
+						<textarea name="memo" placeholder="玩法简介，不超过30个字" id="memo" lay-verify="memo" maxlength="30" class="layui-textarea">${playway.memo!''}</textarea>
+					</div>
+				</div>
 			</div>
 		</div>
 
@@ -130,11 +199,16 @@
 		</div>
 	</form>
 </div>
-
 <script>
-//Demo
-layui.use('form', function(){
-  var form = layui.form;
-  form.render(); //更新全部
-});
+    //Demo
+    layui.use('form', function(){
+        var form = layui.form;
+        form.render(); //更新全部
+        form.verify({
+            memo:[
+                /^[\S\s]{0,30}$/
+                ,'玩法简介长度不能不能超过30个字符'
+            ]
+        });
+    });
 </script>

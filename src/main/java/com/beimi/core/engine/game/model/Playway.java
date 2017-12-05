@@ -33,6 +33,12 @@ public class Playway implements java.io.Serializable{
 	private boolean shuffle ;	//是否洗牌
 	private String level ;		//级别
 	private String skin ;		//图标颜色
+	private String memo ;		//备注
+
+	private boolean free ; 		//开启房卡限免
+
+	private String roomtitle ; 	//玩法标题
+	private boolean extpro ;	//启用扩展属性配置（房卡游戏中的自定义规则）
 	
 	public String getName() {
 		return name;
@@ -100,4 +106,36 @@ public class Playway implements java.io.Serializable{
 	public void setCode(String code) {
 		this.code = code;
 	}
-}	
+
+	public String getMemo() {
+		return memo;
+	}
+
+	public void setMemo(String memo) {
+		this.memo = memo;
+	}
+
+	public boolean isFree() {
+		return free;
+	}
+
+	public void setFree(boolean free) {
+		this.free = free;
+	}
+
+	public String getRoomtitle() {
+		return roomtitle;
+	}
+
+	public void setRoomtitle(String roomtitle) {
+		this.roomtitle = roomtitle;
+	}
+
+	public boolean isExtpro() {
+		return extpro;
+	}
+
+	public void setExtpro(boolean extpro) {
+		this.extpro = extpro;
+	}
+}

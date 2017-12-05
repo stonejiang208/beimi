@@ -14,6 +14,8 @@ public class BMDataContext {
 	public static final String BEIMI_SYSTEM_DIC = "com.dic.system.template";
 	public static final String BEIMI_SYSTEM_GAME_TYPE_DIC = "com.dic.game.type";
 	public static final String BEIMI_SYSTEM_GAME_SCENE_DIC = "com.dic.scene.item";
+
+	public static final String BEIMI_SYSTEM_GAME_ROOMTITLE_DIC = "com.dic.game.room.title";
 	
 	public static final String BEIMI_MESSAGE_EVENT = "command" ;
 	public static final String BEIMI_PLAYERS_EVENT = "players" ;

@@ -5,6 +5,10 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.beimi.web.model.GamePlaywayGroup;
+import com.beimi.web.model.GamePlaywayGroupItem;
+import com.beimi.web.service.repository.jpa.GamePlaywayGroupItemRepository;
+import com.beimi.web.service.repository.jpa.GamePlaywayGroupRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -32,6 +36,12 @@ public class GamePlaywayController extends Handler{
 	
 	@Autowired
 	private GamePlaywayRepository playwayRes ;
+
+	@Autowired
+	private GamePlaywayGroupRepository gamePlaywayGroupRes ;
+
+	@Autowired
+	private GamePlaywayGroupItemRepository gamePlaywayGroupItemRes;
 	
 	@RequestMapping({"/playway"})
 	@Menu(type="platform", subtype="playway")
@@ -51,6 +61,8 @@ public class GamePlaywayController extends Handler{
 		map.addAttribute("game", BeiMiDic.getInstance().getDicItem(id)) ;
 		map.addAttribute("gameModelList", BeiMiDic.getInstance().getDic(BMDataContext.BEIMI_SYSTEM_GAME_TYPE_DIC, id)) ;
 		map.addAttribute("sceneList", BeiMiDic.getInstance().getDic(BMDataContext.BEIMI_SYSTEM_GAME_SCENE_DIC)) ;
+
+		map.addAttribute("dicList", BeiMiDic.getInstance().getDic(BMDataContext.BEIMI_SYSTEM_GAME_ROOMTITLE_DIC)) ;
 		
 		return request(super.createRequestPageTempletResponse("/apps/business/platform/game/playway/add"));
 	}
@@ -86,6 +98,8 @@ public class GamePlaywayController extends Handler{
 		map.addAttribute("gameModelList", BeiMiDic.getInstance().getDic(BMDataContext.BEIMI_SYSTEM_GAME_TYPE_DIC, game)) ;
 		
 		map.addAttribute("sceneList", BeiMiDic.getInstance().getDic(BMDataContext.BEIMI_SYSTEM_GAME_SCENE_DIC)) ;
+
+		map.addAttribute("dicList", BeiMiDic.getInstance().getDic(BMDataContext.BEIMI_SYSTEM_GAME_ROOMTITLE_DIC)) ;
 		
 		return request(super.createRequestPageTempletResponse("/apps/business/platform/game/playway/edit"));
 	}
@@ -115,6 +129,64 @@ public class GamePlaywayController extends Handler{
 		}
     	return request(super.createRequestPageTempletResponse("redirect:/apps/platform/playway.html?id="+playway.getGame()));
     }
+
+	@RequestMapping({"/playway/extpro"})
+	@Menu(type="platform", subtype="playway")
+	public ModelAndView extpro(ModelMap map , HttpServletRequest request , @Valid String id , @Valid String game){
+		map.addAttribute("playway", playwayRes.findByIdAndOrgi(id, super.getOrgi(request))) ;
+		map.addAttribute("game", BeiMiDic.getInstance().getDicItem(game)) ;
+		map.addAttribute("groupList" , gamePlaywayGroupRes.findByOrgiAndPlaywayid( super.getOrgi(request), id));
+		return request(super.createRequestPageTempletResponse("/apps/business/platform/game/playway/extpro"));
+	}
+
+	@RequestMapping({"/playway/addgroup"})
+	@Menu(type="platform", subtype="playway")
+	public ModelAndView addgroup(ModelMap map , HttpServletRequest request , @Valid String playwayid , @Valid String game){
+		map.addAttribute("playway", playwayRes.findByIdAndOrgi(playwayid, super.getOrgi(request))) ;
+		map.addAttribute("game", BeiMiDic.getInstance().getDicItem(game)) ;
+		return request(super.createRequestPageTempletResponse("/apps/business/platform/game/playway/addgroup"));
+	}
+
+	@RequestMapping({"/playway/savegroup"})
+	@Menu(type="platform", subtype="playway")
+	public ModelAndView savegroup(ModelMap map , HttpServletRequest request , @Valid GamePlaywayGroup gamePlaywayGroup){
+		if(gamePlaywayGroup!=null && !StringUtils.isBlank(gamePlaywayGroup.getName())){
+			int count = gamePlaywayGroupRes.countByNameAndPlaywayidAndOrgi(gamePlaywayGroup.getName(), gamePlaywayGroup.getPlaywayid() , super.getOrgi(request)) ;
+			if(count == 0){
+				gamePlaywayGroup.setOrgi(super.getOrgi(request));
+				gamePlaywayGroup.setCreater(super.getUser(request).getId());
+				gamePlaywayGroupRes.save(gamePlaywayGroup) ;
+			}
+		}
+		return request(super.createRequestPageTempletResponse("redirect:/apps/platform/playway/extpro.html?id="+gamePlaywayGroup.getPlaywayid()+"&game="+gamePlaywayGroup.getGame()));
+	}
+
+
+	@RequestMapping({"/playway/additem"})
+	@Menu(type="platform", subtype="playway")
+	public ModelAndView addgroupitem(ModelMap map , HttpServletRequest request , @Valid String playwayid , @Valid String game , @Valid String groupid){
+		map.addAttribute("playway", playwayRes.findByIdAndOrgi(playwayid, super.getOrgi(request))) ;
+		map.addAttribute("game", BeiMiDic.getInstance().getDicItem(game)) ;
+		map.addAttribute("group", gamePlaywayGroupRes.findByIdAndOrgi(groupid , super.getOrgi(request))) ;
+		return request(super.createRequestPageTempletResponse("/apps/business/platform/game/playway/addgroupitem"));
+	}
+
+	@RequestMapping({"/playway/savegroupitem"})
+	@Menu(type="platform", subtype="playway")
+	public ModelAndView savegroupitem(ModelMap map , HttpServletRequest request , @Valid GamePlaywayGroupItem gamePlaywayGroupItem){
+		if(gamePlaywayGroupItem!=null && !StringUtils.isBlank(gamePlaywayGroupItem.getName())){
+			int nameCount = gamePlaywayGroupItemRes.countByNameAndPlaywayidAndOrgi(gamePlaywayGroupItem.getName(), gamePlaywayGroupItem.getPlaywayid() , super.getOrgi(request)) ;
+			/**
+			 * 不能重复
+			 */
+			if(nameCount == 0){
+				gamePlaywayGroupItem.setOrgi(super.getOrgi(request));
+				gamePlaywayGroupItem.setCreater(super.getUser(request).getId());
+				gamePlaywayGroupItemRes.save(gamePlaywayGroupItem) ;
+			}
+		}
+		return request(super.createRequestPageTempletResponse("redirect:/apps/platform/playway/extpro.html?id="+gamePlaywayGroupItem.getPlaywayid()+"&game="+gamePlaywayGroupItem.getGame()));
+	}
 	
 
 	@RequestMapping({"/playway/delete"})
