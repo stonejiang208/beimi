@@ -30,6 +30,7 @@ public class GamePlaywayGroupItem implements java.io.Serializable {
 	private String creater ;
 	private Date createtime = new Date();
 	private Date updatetime = new Date();
+	private int sortindex ;
 
 	@Id
 	@Column(length = 32)
@@ -161,4 +162,12 @@ public class GamePlaywayGroupItem implements java.io.Serializable {
 	public void setValue(String value) {
 		this.value = value;
 	}
+
+    public int getSortindex() {
+        return sortindex;
+    }
+
+    public void setSortindex(int sortindex) {
+        this.sortindex = sortindex;
+    }
 }

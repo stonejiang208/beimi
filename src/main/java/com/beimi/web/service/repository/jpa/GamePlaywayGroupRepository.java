@@ -4,6 +4,7 @@ import com.beimi.web.model.DataDic;
 import com.beimi.web.model.GamePlaywayGroup;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -16,5 +17,5 @@ public interface GamePlaywayGroupRepository extends JpaRepository<GamePlaywayGro
 
   public abstract int countByNameAndPlaywayidAndOrgiNotAndId(String name , String playwayid, String orgi , String id);
 
-  public abstract List<GamePlaywayGroup> findByOrgiAndPlaywayid(String orgi, String playwayid);
+  public abstract List<GamePlaywayGroup> findByOrgiAndPlaywayid(String orgi, String playwayid , Sort sort);
 }

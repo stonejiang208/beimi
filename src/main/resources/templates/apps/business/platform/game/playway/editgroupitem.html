@@ -5,7 +5,7 @@
 		<input type="hidden" name="game" value="${game.id!''}">
 		<input type="hidden" name="groupid" value="${group.id!''}">
 		<input type="hidden" name="playwayid" value="${playway.id!''}">
-		<div class="layui-row" style="width: 400px;margin: 0 auto;padding-top: 50px;">
+		<div class="layui-row" style="width: 400px;margin: 0 auto;padding-top: 20px;">
 			<div class="layui-col-md12">
 				<div class="layui-form-item">
 					<label class="layui-form-label">子项名称：</label>
@@ -36,6 +36,16 @@
 						<input type="radio" name="defaultvalue" value="0" title="否"  <#if groupItem.defaultvalue?? && groupItem.defaultvalue == false>checked="checked"</#if>>
 					</div>
 				</div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">排序位置：</label>
+                    <div class="layui-input-block">
+                        <select name="sortindex" lay-verify="required">
+                        <#list 0..20 as inx>
+                                <option value="${inx}" <#if group.sortindex?? && group.sortindex == inx>selected="selected"</#if>>${inx+1}</option>
+                        </#list>
+                        </select>
+                    </div>
+                </div>
 			</div>
 
         </div>

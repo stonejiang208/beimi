@@ -24,6 +24,7 @@ public class GamePlaywayGroup implements java.io.Serializable {
 	private String game ;
 	private String orgi ;
 	private String type ;
+	private int sortindex ;
 	private String status ;
 	private String creater ;
 	private Date createtime = new Date();
@@ -142,5 +143,13 @@ public class GamePlaywayGroup implements java.io.Serializable {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public int getSortindex() {
+		return sortindex;
+	}
+
+	public void setSortindex(int sortindex) {
+		this.sortindex = sortindex;
 	}
 }

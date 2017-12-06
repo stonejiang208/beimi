@@ -135,8 +135,8 @@ public class GamePlaywayController extends Handler{
 	public ModelAndView extpro(ModelMap map , HttpServletRequest request , @Valid String id , @Valid String game){
 		map.addAttribute("playway", playwayRes.findByIdAndOrgi(id, super.getOrgi(request))) ;
 		map.addAttribute("game", BeiMiDic.getInstance().getDicItem(game)) ;
-		map.addAttribute("groupList" , gamePlaywayGroupRes.findByOrgiAndPlaywayid( super.getOrgi(request), id));
-		map.addAttribute("groupItemList" , gamePlaywayGroupItemRes.findByOrgiAndPlaywayid( super.getOrgi(request), id));
+		map.addAttribute("groupList" , gamePlaywayGroupRes.findByOrgiAndPlaywayid( super.getOrgi(request), id , new Sort(Sort.Direction.ASC, "sortindex")));
+		map.addAttribute("groupItemList" , gamePlaywayGroupItemRes.findByOrgiAndPlaywayid( super.getOrgi(request), id , new Sort(Sort.Direction.ASC, "sortindex")));
 		return request(super.createRequestPageTempletResponse("/apps/business/platform/game/playway/extpro"));
 	}
 
