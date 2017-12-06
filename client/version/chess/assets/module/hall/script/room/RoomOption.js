@@ -20,11 +20,19 @@ cc.Class({
             default:null ,
             type : cc.Label
         },
+        optionsnode:{
+            default:null ,
+            type : cc.Node
+        },
         roomtitle:{
             default:null ,
             type : cc.Node
         },
-        optionitem:{
+        optiongroup:{
+            default:null ,
+            type : cc.Prefab
+        },
+        optiongroupitem:{
             default:null ,
             type : cc.Prefab
         },
@@ -65,6 +73,15 @@ cc.Class({
             let frame = this.atlas.getSpriteFrame(playway.roomtitle);
             if(frame!=null){
                 this.roomtitle.getComponent(cc.Sprite).spriteFrame = frame ;
+            }
+        }
+        if(this.optiongroup!=null && playway.groups!=null){
+            for(var inx = 0 ; inx < playway.groups.length ; inx++){
+                let group = cc.instantiate(this.optiongroup) ;
+                group.parent = this.optionsnode ;
+
+                let playWayGroup = group.getComponent("PlaywayGroup") ;
+                playWayGroup.init(playway.groups[inx] , this.optiongroupitem , playway.items) ;
             }
         }
     }
