@@ -43,6 +43,13 @@ var HTTP = cc.Class({
             if (cc.sys.isNative) {
                 xhr.setRequestHeader("Accept-Encoding", "gzip,deflate");
             }
+            //超时回调
+            xhr.ontimeout = function(event){
+                error(object);
+            };
+            xhr.onerror = function(event){
+                error(object);
+            };
     
             // note: In Internet Explorer, the timeout property may be set only after calling the open()
             // method and before calling the send() method.
