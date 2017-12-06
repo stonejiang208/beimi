@@ -23,6 +23,7 @@ public class GamePlaywayGroup implements java.io.Serializable {
 	private String playwayid ;
 	private String game ;
 	private String orgi ;
+	private String type ;
 	private String status ;
 	private String creater ;
 	private Date createtime = new Date();
@@ -133,5 +134,13 @@ public class GamePlaywayGroup implements java.io.Serializable {
 
 	public void setGame(String game) {
 		this.game = game;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }

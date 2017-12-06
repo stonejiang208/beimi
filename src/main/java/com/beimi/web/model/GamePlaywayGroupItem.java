@@ -24,6 +24,9 @@ public class GamePlaywayGroupItem implements java.io.Serializable {
 	private String game ;
 	private String orgi ;
 	private String status ;
+	private String type ;
+	private boolean defaultvalue ;
+	private String value ;
 	private String creater ;
 	private Date createtime = new Date();
 	private Date updatetime = new Date();
@@ -133,5 +136,29 @@ public class GamePlaywayGroupItem implements java.io.Serializable {
 
 	public void setGame(String game) {
 		this.game = game;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public boolean isDefaultvalue() {
+		return defaultvalue;
+	}
+
+	public void setDefaultvalue(boolean defaultvalue) {
+		this.defaultvalue = defaultvalue;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
 	}
 }

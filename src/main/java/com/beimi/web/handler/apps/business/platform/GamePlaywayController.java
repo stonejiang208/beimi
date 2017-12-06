@@ -42,7 +42,7 @@ public class GamePlaywayController extends Handler{
 
 	@Autowired
 	private GamePlaywayGroupItemRepository gamePlaywayGroupItemRes;
-	
+
 	@RequestMapping({"/playway"})
 	@Menu(type="platform", subtype="playway")
 	public ModelAndView playway(ModelMap map , HttpServletRequest request , @Valid String id){
@@ -136,6 +136,7 @@ public class GamePlaywayController extends Handler{
 		map.addAttribute("playway", playwayRes.findByIdAndOrgi(id, super.getOrgi(request))) ;
 		map.addAttribute("game", BeiMiDic.getInstance().getDicItem(game)) ;
 		map.addAttribute("groupList" , gamePlaywayGroupRes.findByOrgiAndPlaywayid( super.getOrgi(request), id));
+		map.addAttribute("groupItemList" , gamePlaywayGroupItemRes.findByOrgiAndPlaywayid( super.getOrgi(request), id));
 		return request(super.createRequestPageTempletResponse("/apps/business/platform/game/playway/extpro"));
 	}
 
@@ -160,6 +161,39 @@ public class GamePlaywayController extends Handler{
 		}
 		return request(super.createRequestPageTempletResponse("redirect:/apps/platform/playway/extpro.html?id="+gamePlaywayGroup.getPlaywayid()+"&game="+gamePlaywayGroup.getGame()));
 	}
+
+	@RequestMapping({"/playway/editgroup"})
+	@Menu(type="platform", subtype="playway")
+	public ModelAndView editgroup(ModelMap map , HttpServletRequest request , @Valid String id , @Valid String playwayid, @Valid String game){
+		map.addAttribute("playway", playwayRes.findByIdAndOrgi(playwayid, super.getOrgi(request))) ;
+		map.addAttribute("game", BeiMiDic.getInstance().getDicItem(game)) ;
+		map.addAttribute("group", gamePlaywayGroupRes.findByIdAndOrgi(id, super.getOrgi(request))) ;
+		return request(super.createRequestPageTempletResponse("/apps/business/platform/game/playway/editgroup"));
+	}
+
+	@RequestMapping({"/playway/updategroup"})
+	@Menu(type="platform", subtype="playway")
+	public ModelAndView updategroup(ModelMap map , HttpServletRequest request , @Valid GamePlaywayGroup gamePlaywayGroup){
+		if(gamePlaywayGroup!=null && !StringUtils.isBlank(gamePlaywayGroup.getId())){
+			int count = gamePlaywayGroupRes.countByNameAndPlaywayidAndOrgiNotAndId(gamePlaywayGroup.getName(), gamePlaywayGroup.getPlaywayid() , super.getOrgi(request) , gamePlaywayGroup.getId()) ;
+			if(count == 0){
+				gamePlaywayGroup.setOrgi(super.getOrgi(request));
+				gamePlaywayGroup.setCreater(super.getUser(request).getId());
+				gamePlaywayGroupRes.save(gamePlaywayGroup) ;
+			}
+		}
+		return request(super.createRequestPageTempletResponse("redirect:/apps/platform/playway/extpro.html?id="+gamePlaywayGroup.getPlaywayid()+"&game="+gamePlaywayGroup.getGame()));
+	}
+
+    @RequestMapping({"/playway/deletegroup"})
+    @Menu(type="platform", subtype="playway")
+    public ModelAndView deletegroup(ModelMap map , HttpServletRequest request , @Valid GamePlaywayGroup gamePlaywayGroup){
+        if(gamePlaywayGroup!=null && !StringUtils.isBlank(gamePlaywayGroup.getId())){
+            gamePlaywayGroupRes.delete(gamePlaywayGroup);
+            gamePlaywayGroupItemRes.deleteByPlaywayidAndOrgi(gamePlaywayGroup.getId() , super.getOrgi(request));
+        }
+        return request(super.createRequestPageTempletResponse("redirect:/apps/platform/playway/extpro.html?id="+gamePlaywayGroup.getPlaywayid()+"&game="+gamePlaywayGroup.getGame()));
+    }
 
 
 	@RequestMapping({"/playway/additem"})
@@ -187,6 +221,42 @@ public class GamePlaywayController extends Handler{
 		}
 		return request(super.createRequestPageTempletResponse("redirect:/apps/platform/playway/extpro.html?id="+gamePlaywayGroupItem.getPlaywayid()+"&game="+gamePlaywayGroupItem.getGame()));
 	}
+
+    @RequestMapping({"/playway/edititem"})
+    @Menu(type="platform", subtype="playway")
+    public ModelAndView addgroupitem(ModelMap map , HttpServletRequest request , @Valid String playwayid , @Valid String game , @Valid String groupid , @Valid String id){
+        map.addAttribute("playway", playwayRes.findByIdAndOrgi(playwayid, super.getOrgi(request))) ;
+        map.addAttribute("game", BeiMiDic.getInstance().getDicItem(game)) ;
+        map.addAttribute("group", gamePlaywayGroupRes.findByIdAndOrgi(groupid , super.getOrgi(request))) ;
+        map.addAttribute("groupItem", gamePlaywayGroupItemRes.findByIdAndOrgi(id , super.getOrgi(request))) ;
+        return request(super.createRequestPageTempletResponse("/apps/business/platform/game/playway/editgroupitem"));
+    }
+
+    @RequestMapping({"/playway/updategroupitem"})
+    @Menu(type="platform", subtype="playway")
+    public ModelAndView updategroupitem(ModelMap map , HttpServletRequest request , @Valid GamePlaywayGroupItem gamePlaywayGroupItem){
+        if(gamePlaywayGroupItem!=null && !StringUtils.isBlank(gamePlaywayGroupItem.getName())){
+            int nameCount = gamePlaywayGroupItemRes.countByNameAndPlaywayidAndOrgiNotAndId(gamePlaywayGroupItem.getName(), gamePlaywayGroupItem.getPlaywayid() , super.getOrgi(request) , gamePlaywayGroupItem.getId()) ;
+            /**
+             * 不能重复
+             */
+            if(nameCount == 0){
+                gamePlaywayGroupItem.setOrgi(super.getOrgi(request));
+                gamePlaywayGroupItem.setCreater(super.getUser(request).getId());
+                gamePlaywayGroupItemRes.save(gamePlaywayGroupItem) ;
+            }
+        }
+        return request(super.createRequestPageTempletResponse("redirect:/apps/platform/playway/extpro.html?id="+gamePlaywayGroupItem.getPlaywayid()+"&game="+gamePlaywayGroupItem.getGame()));
+    }
+
+    @RequestMapping({"/playway/deleteitem"})
+    @Menu(type="platform", subtype="playway")
+    public ModelAndView deletegroupitem(ModelMap map , HttpServletRequest request , @Valid GamePlaywayGroupItem gamePlaywayGroupItem){
+        if(gamePlaywayGroupItem!=null && !StringUtils.isBlank(gamePlaywayGroupItem.getId())){
+            gamePlaywayGroupItemRes.delete(gamePlaywayGroupItem); ;
+        }
+        return request(super.createRequestPageTempletResponse("redirect:/apps/platform/playway/extpro.html?id="+gamePlaywayGroupItem.getPlaywayid()+"&game="+gamePlaywayGroupItem.getGame()));
+    }
 	
 
 	@RequestMapping({"/playway/delete"})

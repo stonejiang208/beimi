@@ -1,6 +1,7 @@
 <div class="uk-layui-form">
 	<form class="layui-form" data-toggle="ajax-form" data-target="#mainajaxwin" method="post" data-close="false"
-		action="/apps/platform/playway/savegroup.html">
+		action="/apps/platform/playway/updategroup.html">
+		<input type="hidden" name="id" value="${group.id!''}">
 		<input type="hidden" name="game" value="${game.id!''}">
 		<input type="hidden" name="playwayid" value="${playway.id!''}">
 		<div class="layui-row" style="width: 400px;margin: 0 auto;padding-top: 150px;">
@@ -8,21 +9,21 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">分组名称：</label>
 					<div class="layui-input-block">
-						<input type="text" name="name" required lay-verify="required"
+						<input type="text" name="name" required lay-verify="required" value="${group.name!''}"
 							placeholder="分组名称" autocomplete="off" class="layui-input">
 					</div>
 				</div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">选项类型：</label>
                     <div class="layui-input-block">
-                        <input type="radio" name="type" value="radio" title="单选">
-                        <input type="radio" name="type" value="checkbox" title="多选" checked>
+                        <input type="radio" name="type" value="radio" title="单选" <#if group.type?? && group.type == "radio">checked="checked"</#if>>
+						<input type="radio" name="type" value="checkbox" title="多选" <#if group.type?? && group.type == "checkbox">checked="checked"</#if>>
                     </div>
                 </div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">分组代码：</label>
 					<div class="layui-input-block">
-						<input type="text" name="code" required lay-verify="required|code"
+						<input type="text" name="code" required lay-verify="required|code" value="${group.code!''}"
 							   placeholder="分组代码" autocomplete="off" class="layui-input">
 					</div>
 				</div>
@@ -32,7 +33,8 @@
 		<div class="layui-form-button">
 			<div class="layui-button-block">
 				<button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
-				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+				<a href="/apps/platform/playway/extpro.html?id=${playway.id!''}&game=${game.id!''}" class="layui-btn layui-btn-primary" data-toggle="load" data-target="#mainajaxwin">返回</a>
+				<a href="/apps/platform/playway/deletegroup.html?playwayid=${playway.id!''}&game=${game.id!''}&id=${group.id!''}" class="layui-btn layui-btn-danger" data-toggle="load" data-target="#mainajaxwin">删除</a>
 			</div>
 		</div>
 	</form>
