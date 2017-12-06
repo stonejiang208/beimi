@@ -29,6 +29,7 @@ public class GamePlaywayGroup implements java.io.Serializable {
 	private String creater ;
 	private Date createtime = new Date();
 	private Date updatetime = new Date();
+	private String style ;				//用于控制 前端显示的 方式 ： 三列显示还是四列显示
 
 	@Id
 	@Column(length = 32)
@@ -151,5 +152,13 @@ public class GamePlaywayGroup implements java.io.Serializable {
 
 	public void setSortindex(int sortindex) {
 		this.sortindex = sortindex;
+	}
+
+	public String getStyle() {
+		return style;
+	}
+
+	public void setStyle(String style) {
+		this.style = style;
 	}
 }

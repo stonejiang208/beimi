@@ -18,4 +18,6 @@ public interface GamePlaywayGroupItemRepository extends JpaRepository<GamePlaywa
   public abstract int countByNameAndPlaywayidAndOrgiNotAndId(String name, String playwayid, String orgi , String id);
 
   public abstract List<GamePlaywayGroupItem> findByOrgiAndPlaywayid(String orgi, String playwayid , Sort sort);
+
+  public abstract List<GamePlaywayGroupItem> findByOrgi(String orgi, Sort sort);
 }

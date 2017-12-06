@@ -24,6 +24,7 @@ public class GamePlaywayGroupItem implements java.io.Serializable {
 	private String game ;
 	private String orgi ;
 	private String status ;
+
 	private String type ;
 	private boolean defaultvalue ;
 	private String value ;
@@ -170,4 +171,5 @@ public class GamePlaywayGroupItem implements java.io.Serializable {
     public void setSortindex(int sortindex) {
         this.sortindex = sortindex;
     }
+
 }

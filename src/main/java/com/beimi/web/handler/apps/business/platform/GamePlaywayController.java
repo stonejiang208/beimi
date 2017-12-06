@@ -157,6 +157,8 @@ public class GamePlaywayController extends Handler{
 				gamePlaywayGroup.setOrgi(super.getOrgi(request));
 				gamePlaywayGroup.setCreater(super.getUser(request).getId());
 				gamePlaywayGroupRes.save(gamePlaywayGroup) ;
+
+                CacheHelper.getSystemCacheBean().delete(BMDataContext.ConfigNames.PLAYWAYGROUP.toString(), super.getOrgi(request)) ;
 			}
 		}
 		return request(super.createRequestPageTempletResponse("redirect:/apps/platform/playway/extpro.html?id="+gamePlaywayGroup.getPlaywayid()+"&game="+gamePlaywayGroup.getGame()));
@@ -179,7 +181,12 @@ public class GamePlaywayController extends Handler{
 			if(count == 0){
 				gamePlaywayGroup.setOrgi(super.getOrgi(request));
 				gamePlaywayGroup.setCreater(super.getUser(request).getId());
+                gamePlaywayGroup.setUpdatetime(new Date());
 				gamePlaywayGroupRes.save(gamePlaywayGroup) ;
+                /***
+                 *
+                 */
+                CacheHelper.getSystemCacheBean().delete(BMDataContext.ConfigNames.PLAYWAYGROUP.toString(), super.getOrgi(request)) ;
 			}
 		}
 		return request(super.createRequestPageTempletResponse("redirect:/apps/platform/playway/extpro.html?id="+gamePlaywayGroup.getPlaywayid()+"&game="+gamePlaywayGroup.getGame()));
@@ -191,6 +198,9 @@ public class GamePlaywayController extends Handler{
         if(gamePlaywayGroup!=null && !StringUtils.isBlank(gamePlaywayGroup.getId())){
             gamePlaywayGroupRes.delete(gamePlaywayGroup);
             gamePlaywayGroupItemRes.deleteByPlaywayidAndOrgi(gamePlaywayGroup.getId() , super.getOrgi(request));
+
+            CacheHelper.getSystemCacheBean().delete(BMDataContext.ConfigNames.PLAYWAYGROUP.toString(), super.getOrgi(request)) ;
+            CacheHelper.getSystemCacheBean().delete(BMDataContext.ConfigNames.PLAYWAYGROUPITEM.toString(), super.getOrgi(request)) ;
         }
         return request(super.createRequestPageTempletResponse("redirect:/apps/platform/playway/extpro.html?id="+gamePlaywayGroup.getPlaywayid()+"&game="+gamePlaywayGroup.getGame()));
     }
@@ -217,6 +227,7 @@ public class GamePlaywayController extends Handler{
 				gamePlaywayGroupItem.setOrgi(super.getOrgi(request));
 				gamePlaywayGroupItem.setCreater(super.getUser(request).getId());
 				gamePlaywayGroupItemRes.save(gamePlaywayGroupItem) ;
+                CacheHelper.getSystemCacheBean().delete(BMDataContext.ConfigNames.PLAYWAYGROUPITEM.toString(), super.getOrgi(request)) ;
 			}
 		}
 		return request(super.createRequestPageTempletResponse("redirect:/apps/platform/playway/extpro.html?id="+gamePlaywayGroupItem.getPlaywayid()+"&game="+gamePlaywayGroupItem.getGame()));
@@ -241,9 +252,14 @@ public class GamePlaywayController extends Handler{
              * 不能重复
              */
             if(nameCount == 0){
+                gamePlaywayGroupItem.setUpdatetime(new Date());
                 gamePlaywayGroupItem.setOrgi(super.getOrgi(request));
                 gamePlaywayGroupItem.setCreater(super.getUser(request).getId());
                 gamePlaywayGroupItemRes.save(gamePlaywayGroupItem) ;
+                /**
+                 *
+                 */
+                CacheHelper.getSystemCacheBean().delete(BMDataContext.ConfigNames.PLAYWAYGROUPITEM.toString(), super.getOrgi(request)) ;
             }
         }
         return request(super.createRequestPageTempletResponse("redirect:/apps/platform/playway/extpro.html?id="+gamePlaywayGroupItem.getPlaywayid()+"&game="+gamePlaywayGroupItem.getGame()));
@@ -253,7 +269,9 @@ public class GamePlaywayController extends Handler{
     @Menu(type="platform", subtype="playway")
     public ModelAndView deletegroupitem(ModelMap map , HttpServletRequest request , @Valid GamePlaywayGroupItem gamePlaywayGroupItem){
         if(gamePlaywayGroupItem!=null && !StringUtils.isBlank(gamePlaywayGroupItem.getId())){
-            gamePlaywayGroupItemRes.delete(gamePlaywayGroupItem); ;
+            gamePlaywayGroupItemRes.delete(gamePlaywayGroupItem);
+
+            CacheHelper.getSystemCacheBean().delete(BMDataContext.ConfigNames.PLAYWAYGROUPITEM.toString(), super.getOrgi(request)) ;
         }
         return request(super.createRequestPageTempletResponse("redirect:/apps/platform/playway/extpro.html?id="+gamePlaywayGroupItem.getPlaywayid()+"&game="+gamePlaywayGroupItem.getGame()));
     }

@@ -3892,3 +3892,6 @@ select{
     padding-right: 0;
     background: 0 0;
 }
+.playway-options .playway-four-col .layui-form-radio span {
+    width: 65px !important;
+}

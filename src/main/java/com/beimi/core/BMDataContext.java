@@ -136,7 +136,9 @@ public class BMDataContext {
 		GAMECONFIG,
 		AICONFIG,
 		ACCOUNTCONFIG,
-		PLAYWAYCONFIG;
+		PLAYWAYCONFIG,
+		PLAYWAYGROUP,
+		PLAYWAYGROUPITEM;
 		public String toString(){
 			return super.toString().toLowerCase() ;
 		}

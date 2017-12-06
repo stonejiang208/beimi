@@ -10,6 +10,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.beimi.web.model.*;
+import com.beimi.web.service.repository.jpa.GamePlaywayGroupItemRepository;
+import com.beimi.web.service.repository.jpa.GamePlaywayGroupRepository;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.data.domain.Sort;
@@ -27,14 +30,6 @@ import com.beimi.util.cache.CacheHelper;
 import com.beimi.util.rules.model.Action;
 import com.beimi.util.rules.model.Board;
 import com.beimi.util.rules.model.Player;
-import com.beimi.web.model.AccountConfig;
-import com.beimi.web.model.AiConfig;
-import com.beimi.web.model.BeiMiDic;
-import com.beimi.web.model.GamePlayway;
-import com.beimi.web.model.GameRoom;
-import com.beimi.web.model.PlayUser;
-import com.beimi.web.model.PlayUserClient;
-import com.beimi.web.model.SysDic;
 import com.beimi.web.service.repository.jpa.GamePlaywayRepository;
 
 public class GameUtils {
@@ -202,6 +197,38 @@ public class GameUtils {
 		return gamePlayList ;
 	}
 	/**
+	 * 获取房卡游戏的自定义配置，后台管理界面上的配置功能
+	 * @param orgi
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<GamePlaywayGroup> playwayGroupsConfig(String orgi){
+		List<GamePlaywayGroup> gamePlaywayGroupsList = (List<GamePlaywayGroup>) CacheHelper.getSystemCacheBean().getCacheObject(BMDataContext.ConfigNames.PLAYWAYGROUP.toString(), orgi) ;
+		if(gamePlaywayGroupsList == null){
+			gamePlaywayGroupsList = BMDataContext.getContext().getBean(GamePlaywayGroupRepository.class).findByOrgi(orgi, new Sort(Sort.Direction.ASC, "sortindex")) ;
+			CacheHelper.getSystemCacheBean().put(BMDataContext.ConfigNames.PLAYWAYGROUP.toString() , gamePlaywayGroupsList , orgi) ;
+		}
+		return gamePlaywayGroupsList ;
+	}
+
+	/**
+	 * 获取房卡游戏的自定义配置，后台管理界面上的配置功能
+	 * @param orgi
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<GamePlaywayGroupItem> playwayGroupItemConfig(String orgi){
+		List<GamePlaywayGroupItem> gamePlaywayGroupsList = (List<GamePlaywayGroupItem>) CacheHelper.getSystemCacheBean().getCacheObject(BMDataContext.ConfigNames.PLAYWAYGROUPITEM.toString(), orgi) ;
+		if(gamePlaywayGroupsList == null){
+			gamePlaywayGroupsList = BMDataContext.getContext().getBean(GamePlaywayGroupItemRepository.class).findByOrgi(orgi, new Sort(Sort.Direction.ASC, "sortindex")) ;
+			CacheHelper.getSystemCacheBean().put(BMDataContext.ConfigNames.PLAYWAYGROUPITEM.toString() , gamePlaywayGroupsList , orgi) ;
+		}
+		return gamePlaywayGroupsList ;
+	}
+
+
+
+	/**
 	 * 
 	 * @param gametype
 	 * @param orgi
@@ -234,9 +261,30 @@ public class GameUtils {
 							Type type = new Type(gameModel.getId(), gameModel.getName() , gameModel.getCode()) ;
 							beiMiGame.getTypes().add(type) ;
 							List<GamePlayway> gamePlaywayList = playwayConfig(gameModel.getId(), gameModel.getOrgi()) ;
+
+							List<GamePlaywayGroup> gamePlaywayGroups = playwayGroupsConfig(gameModel.getOrgi()) ;
+							List<GamePlaywayGroupItem> gamePlaywayGroupItems = playwayGroupItemConfig(gameModel.getOrgi()) ;
+
+
 							for(GamePlayway gamePlayway : gamePlaywayList){
 								Playway playway = new Playway(gamePlayway.getId(), gamePlayway.getName() , gamePlayway.getCode(), gamePlayway.getScore() , gamePlayway.getMincoins(), gamePlayway.getMaxcoins(), gamePlayway.isChangecard() , gamePlayway.isShuffle()) ;
 								playway.setLevel(gamePlayway.getTypelevel());
+
+								playway.setGroups(new ArrayList<GamePlaywayGroup>());
+								playway.setItems(new ArrayList<GamePlaywayGroupItem>());
+
+								for(GamePlaywayGroup group : gamePlaywayGroups){
+									if(group.getPlaywayid().equals(gamePlayway.getId())){
+										playway.getGroups().add(group) ;
+									}
+								}
+
+								for(GamePlaywayGroupItem item : gamePlaywayGroupItems){
+									if(item.getPlaywayid().equals(gamePlayway.getId())){
+										playway.getItems().add(item) ;
+									}
+								}
+
 								playway.setSkin(gamePlayway.getTypecolor());
 								playway.setMemo(gamePlayway.getMemo());
                                 playway.setRoomtitle(gamePlayway.getRoomtitle());

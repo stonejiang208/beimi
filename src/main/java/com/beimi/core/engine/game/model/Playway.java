@@ -1,5 +1,10 @@
 package com.beimi.core.engine.game.model;
 
+import com.beimi.web.model.GamePlaywayGroup;
+import com.beimi.web.model.GamePlaywayGroupItem;
+
+import java.util.List;
+
 public class Playway implements java.io.Serializable{
 
 	/**
@@ -36,6 +41,10 @@ public class Playway implements java.io.Serializable{
 	private String memo ;		//备注
 
 	private boolean free ; 		//开启房卡限免
+
+	private List<GamePlaywayGroup> groups ;
+
+	private List<GamePlaywayGroupItem> items ;
 
 	private String roomtitle ; 	//玩法标题
 	private boolean extpro ;	//启用扩展属性配置（房卡游戏中的自定义规则）
@@ -137,5 +146,21 @@ public class Playway implements java.io.Serializable{
 
 	public void setExtpro(boolean extpro) {
 		this.extpro = extpro;
+	}
+
+	public List<GamePlaywayGroup> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(List<GamePlaywayGroup> groups) {
+		this.groups = groups;
+	}
+
+	public List<GamePlaywayGroupItem> getItems() {
+		return items;
+	}
+
+	public void setItems(List<GamePlaywayGroupItem> items) {
+		this.items = items;
 	}
 }
