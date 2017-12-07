@@ -264,7 +264,7 @@
     "target": {
       "__id__": 7
     },
-    "component": "GroupItemClick",
+    "component": "RoomClick",
     "handler": "onClick",
     "customEventData": ""
   },
@@ -659,7 +659,7 @@
     "target": {
       "__id__": 7
     },
-    "component": "GroupItemClick",
+    "component": "RoomClick",
     "handler": "onClick",
     "customEventData": ""
   },
