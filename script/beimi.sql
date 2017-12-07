@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-12-07 16:12:54
+Date: 2017-12-07 21:46:21
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -179,13 +179,21 @@ CREATE TABLE `bm_gameconfig` (
   `gamemodel` varchar(32) DEFAULT NULL,
   `hallgametype` text,
   `waittime` int(11) DEFAULT NULL,
+  `anysdk` tinyint(4) DEFAULT '0',
+  `anysdkpay` tinyint(4) DEFAULT '0',
+  `anysdkshare` tinyint(4) DEFAULT '0',
+  `anysdklogin` tinyint(4) DEFAULT '0',
+  `oauthserver` varchar(255) DEFAULT NULL,
+  `appkey` varchar(150) DEFAULT NULL,
+  `appsecret` varchar(200) DEFAULT NULL,
+  `privatekey` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of bm_gameconfig
 -- ----------------------------
-INSERT INTO `bm_gameconfig` VALUES ('402888815e663eca015e6640058e0001', 'beimi', '297e8c7b455798280145579c73e501c1', null, null, null, null, '未匹配到玩家，房间已解散', null, '0', '2017-12-04 17:23:17', '0', '1', '0', '120', '120', '10', '10', null, null, '0', '402888815fe3f44a015feba097ce0000', 'room', null, null);
+INSERT INTO `bm_gameconfig` VALUES ('402888815e663eca015e6640058e0001', 'beimi', '297e8c7b455798280145579c73e501c1', null, null, null, null, '未匹配到玩家，房间已解散', null, '0', '2017-12-07 21:45:14', '0', '1', '0', '120', '120', '10', '10', null, null, '0', '402888815fe3f44a015feba097ce0000', 'room', null, null, '0', '0', '0', '0', '', '', '', '');
 
 -- ----------------------------
 -- Table structure for `bm_game_ai`
@@ -411,8 +419,8 @@ INSERT INTO `bm_game_playway` VALUES ('402888815e6f0177015e7159b5120005', '初�
 INSERT INTO `bm_game_playway` VALUES ('402888815e6f0177015e715a32980006', '初级场（换三张）', 'majiang', '2017-09-11 22:31:30', '297e8c7b455798280145579c73e501c1', '2017-09-11 22:33:35', 'beimi', null, null, null, '402888815e14abfb015e14b5f6840001', null, '402888815e0521d8015e052341f70001', '4', null, null, '2000', '2000', '100000', '1', '0', '0', '13', '1', '2', '2', null, '1', '0', null, '0', null, '0', null, null);
 INSERT INTO `bm_game_playway` VALUES ('402888815e6f0177015e715bd3d40007', '高级场', 'majiang', '2017-09-11 22:33:17', '297e8c7b455798280145579c73e501c1', '2017-09-11 22:33:29', 'beimi', null, null, null, '402888815e14abfb015e14b5f6840001', null, '402888815e0521d8015e052341f70001', '4', null, null, '5000', '5000', '200000', '0', '0', '0', '13', '2', '1', '3', null, '1', '0', null, '0', null, '0', null, null);
 INSERT INTO `bm_game_playway` VALUES ('402888815e6f0177015e715ce4300008', '高级场（换三张）', 'majiang', '2017-09-11 22:34:27', '297e8c7b455798280145579c73e501c1', '2017-09-11 22:34:27', 'beimi', null, null, null, '402888815e14abfb015e14b5f6840001', null, '402888815e0521d8015e052341f70001', '0', null, null, '5000', '5000', '200000', '1', '0', '0', '13', '2', '2', '4', null, '1', '0', null, '0', null, '0', null, null);
-INSERT INTO `bm_game_playway` VALUES ('402888815fe3f44a015feba5fe7d0002', '经典斗地主', 'dizhu', '2017-11-24 09:30:45', '297e8c7b455798280145579c73e501c1', '2017-12-07 16:04:50', 'beimi', null, null, null, '402888815fe3f44a015feba50c940001', null, '402888815fe3f44a015feba097ce0000', '3', null, null, '2', '0', '0', '0', '1', '0', '17', '3', '1', '1', null, '0', '0', '斗地主玩法简介，测试一下简介信息是否能够正常显示在界面上。', '1', '房间-经典斗地主', '1', null, null);
-INSERT INTO `bm_game_playway` VALUES ('402888815fe3f44a015feba86a330003', '广东麻将', 'majiang', '2017-11-24 09:33:24', '297e8c7b455798280145579c73e501c1', '2017-12-05 15:56:54', 'beimi', null, null, null, '402888815fe3f44a015feba50c940001', null, '402888815fe3f44a015feba097ce0000', '2', null, null, '2', '0', '0', '0', '0', '0', '1', '3', '1', '1', null, '0', '0', '麻将玩法简介，测试一下是否能够正常显示玩法信息，看下游戏显示', '1', '房间-广东麻将', '1', null, null);
+INSERT INTO `bm_game_playway` VALUES ('402888815fe3f44a015feba5fe7d0002', '经典斗地主', 'dizhu', '2017-11-24 09:30:45', '297e8c7b455798280145579c73e501c1', '2017-12-07 18:45:00', 'beimi', null, null, null, '402888815fe3f44a015feba50c940001', null, '402888815fe3f44a015feba097ce0000', '3', null, null, '2', '0', '0', '0', '1', '0', '17', '3', '1', '1', null, '0', '0', '斗地主玩法简介，测试一下简介信息是否能够正常显示在界面上。', '1', '房间-经典斗地主', '1', null, null);
+INSERT INTO `bm_game_playway` VALUES ('402888815fe3f44a015feba86a330003', '广东麻将', 'majiang', '2017-11-24 09:33:24', '297e8c7b455798280145579c73e501c1', '2017-12-07 18:43:50', 'beimi', null, null, null, '402888815fe3f44a015feba50c940001', null, '402888815fe3f44a015feba097ce0000', '2', null, null, '2', '0', '0', '0', '0', '0', '1', '3', '1', '1', null, '0', '0', '麻将玩法简介，测试一下是否能够正常显示玩法信息，看下游戏显示', '0', '房间-广东麻将', '1', null, null);
 
 -- ----------------------------
 -- Table structure for `bm_game_room`
@@ -4289,7 +4297,6 @@ INSERT INTO `bm_sysdic` VALUES ('402888815e0521d8015e052342080002', '斗地主',
 INSERT INTO `bm_sysdic` VALUES ('402888815e14abfb015e14b5f6570000', '血战到底', 'pub', 'end', 'beimi', null, '402888815e0521d8015e052341f70001', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-08-24 22:47:03', '2017-08-24 22:47:03', '0', '1', '402888815e0521d8015e0522f03b0000', '0', '0', null, null, null, null, null);
 INSERT INTO `bm_sysdic` VALUES ('402888815e14abfb015e14b5f6840001', '血流成河', 'pub', 'river', 'beimi', null, '402888815e0521d8015e052341f70001', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-08-24 22:47:03', '2017-08-24 22:47:03', '0', '2', '402888815e0521d8015e0522f03b0000', '0', '0', null, null, null, null, null);
 INSERT INTO `bm_sysdic` VALUES ('402888815e14abfb015e14b6e2080002', '经典玩法', 'pub', 'basic', 'beimi', 'layui-icon', '402888815e0521d8015e052342080002', '', null, '', '', null, '297e8c7b455798280145579c73e501c1', '2017-08-24 22:48:03', '2017-08-24 22:48:03', '0', '1', '402888815e0521d8015e0522f03b0000', '0', '0', null, null, null, null, null);
-INSERT INTO `bm_sysdic` VALUES ('402888815e14abfb015e14b6e21d0003', '房间模式', 'pub', 'room', 'beimi', 'layui-icon', '402888815e0521d8015e052342080002', '', null, '', '', null, '297e8c7b455798280145579c73e501c1', '2017-08-24 22:48:03', '2017-08-24 22:48:03', '0', '2', '402888815e0521d8015e0522f03b0000', '0', '0', null, null, null, null, null);
 INSERT INTO `bm_sysdic` VALUES ('402888815e695788015e697647d80000', '游戏场景', 'pub', 'com.dic.scene.item', null, 'data', '0', '', null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-09-10 09:45:13', null, '1', '0', null, '0', '0', null, null, null, null, null);
 INSERT INTO `bm_sysdic` VALUES ('402888815e695788015e69766fe90001', '斗地主', 'pub', 'dizhu', 'beimi', null, '402888815e695788015e697647d80000', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-09-10 09:45:23', '2017-09-10 09:45:23', '0', '1', '402888815e695788015e697647d80000', '0', '0', null, null, null, null, null);
 INSERT INTO `bm_sysdic` VALUES ('402888815e6f0177015e7151ccd60000', '麻将', 'pub', 'majiang', 'beimi', 'layui-icon', '402888815e695788015e697647d80000', '', null, '', '', null, '297e8c7b455798280145579c73e501c1', '2017-09-11 22:22:20', null, '1', '0', '402888815e695788015e697647d80000', '0', '0', null, null, null, null, null);
@@ -4626,7 +4633,7 @@ CREATE TABLE `bm_user` (
 -- ----------------------------
 -- Records of bm_user
 -- ----------------------------
-INSERT INTO `bm_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@beixi.me', null, null, null, null, null, '0', null, null, '0', null, null, 'beimi', null, '2017-03-16 13:56:34', '北京', '2017-08-06 18:25:12', '40288881601a365301601a3b79560000', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-12-07 15:58:08', null, null, null, '0', '0', '1');
+INSERT INTO `bm_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@beixi.me', null, null, null, null, null, '0', null, null, '0', null, null, 'beimi', null, '2017-03-16 13:56:34', '北京', '2017-08-06 18:25:12', '40288881601a365301601a3b79560000', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-12-07 21:41:20', null, null, null, '0', '0', '1');
 INSERT INTO `bm_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'test', '14e1b600b1fd579f47433b88e8d85291', '5', 'test@beixi.me', null, null, null, null, null, null, null, null, null, null, null, 'beimi', null, '2017-05-19 08:19:01', null, '2017-08-06 18:25:25', '40288881601a365301601a3b79560000', '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '0', null, null, null, '0', '0', '0', '2017-07-26 17:02:18', null, null, null, '0', '0', '0');
 
 -- ----------------------------
