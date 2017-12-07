@@ -120,11 +120,60 @@
 													</div>
 												</div>
 											</div>
+											<div class="ukefu-webim-prop">
+												<div class="ukefu-webim-tl" style="clear:both;">6、启用AnySDK接口集成功能</div>
+												<div class="box-item">
+													<div class="row">
+														<div class="col-lg-8">
+															<p>使用AnySDK的登录、分享、支付接口</p>
+															<p style="color:#888888;font-size:13px;margin-top:10px;">启用后需要配置AnySDK的相关参数</p>
+														</div>
+														<div class="col-lg-4" style="text-align:right;">
+															<input type="checkbox" title="启用" name="anysdk" lay-filter="anysdk" value="1" <#if gameConfig?? && gameConfig.anysdk>checked="checked"</#if>>
+														</div>
+													</div>
+												</div>
+												<div class="row anysdk" style="margin-top:20px;<#if gameConfig?? && gameConfig.anysdk><#else>display:none;</#if>">
+													<div class="col-lg-8">
+														<p>AnySDK的授权验证服务器</p>
+														<p style="color:#888888;font-size:13px;margin-top:10px;">填写AnySDK的验证服务器地址（注意：免费版本的AnySDK没有私有部署的服务器地址）</p>
+													</div>
+													<div class="col-lg-4" style="text-align:right;">
+														<input type="text" name="oauthserver" id="oauthserver" value="${gameConfig.oauthserver!''}" autocomplete="off" class="layui-input">
+													</div>
+												</div>
+												<div class="row anysdk" style="margin-top:20px;<#if gameConfig?? && gameConfig.anysdk><#else>display:none;</#if>">
+													<div class="col-lg-8">
+														<p>AnySDK的AppKey</p>
+														<p style="color:#888888;font-size:13px;margin-top:10px;">请填写AnySDK分配的AppKey</p>
+													</div>
+													<div class="col-lg-4" style="text-align:right;">
+														<input type="text" name="appkey" id="appkey" value="${gameConfig.appkey!''}" autocomplete="off" class="layui-input">
+													</div>
+												</div>
+												<div class="row anysdk" style="margin-top:20px;<#if gameConfig?? && gameConfig.anysdk><#else>display:none;</#if>">
+													<div class="col-lg-8">
+														<p>AppKey对应的AppSecret</p>
+														<p style="color:#888888;font-size:13px;margin-top:10px;"><b style="color:red;font-weight:bold;">请输入AppSecret信息</b></p>
+													</div>
+													<div class="col-lg-4" style="text-align:right;">
+														<input type="text" name="appsecret" id="appsecret" value="${gameConfig.appsecret!''}" autocomplete="off" class="layui-input">
+													</div>
+												</div>
+												<div class="row anysdk" style="margin-top:20px;<#if gameConfig?? && gameConfig.anysdk><#else>display:none;</#if>">
+													<div class="col-lg-8">
+														<p>私钥信息（PrivateKey）</p>
+														<p style="color:#888888;font-size:13px;margin-top:10px;"><b style="color:red;font-weight:bold;">请输入私钥信息</b></p>
+													</div>
+													<div class="col-lg-4" style="text-align:right;">
+														<input type="text" name="privatekey" id="privatekey" value="${gameConfig.privatekey!''}" autocomplete="off" class="layui-input">
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-							
 						</div>
 					</div>
 				</div>
@@ -199,5 +248,12 @@
 				$('#initaccount').hide();
 			}
 		});
+        form.on("checkbox(anysdk)" , function(data){
+            if(data.elem.checked == true){
+                $('.anysdk').show();
+            }else{
+                $('.anysdk').hide();
+            }
+        })
 	});
 </script>

@@ -48,7 +48,17 @@ public class GameConfig implements java.io.Serializable{
 	
 	private boolean hourcheck ;		
 	private String workinghours ;	
-	private String notinwhmsg ;		
+	private String notinwhmsg ;
+
+	private boolean anysdk ;	//启用 AnySDK配置
+	private String oauthserver; //AnySDK 服务器地址
+	private String appkey ; 	//APPKEY
+	private String appsecret ;	//
+	private String privatekey ;	//
+
+	private boolean anysdkpay ;	//启用 AnySDK支付
+	private boolean anysdkshare ;	//启用 AnySDK分享
+	private boolean anysdklogin ;	//启用 AnySDK登录验证
 	
 	@Id
 	@Column(length = 32)
@@ -197,5 +207,69 @@ public class GameConfig implements java.io.Serializable{
 	}
 	public void setHallgametype(String hallgametype) {
 		this.hallgametype = hallgametype;
+	}
+
+	public boolean isAnysdk() {
+		return anysdk;
+	}
+
+	public void setAnysdk(boolean anysdk) {
+		this.anysdk = anysdk;
+	}
+
+	public String getOauthserver() {
+		return oauthserver;
+	}
+
+	public void setOauthserver(String oauthserver) {
+		this.oauthserver = oauthserver;
+	}
+
+	public String getAppkey() {
+		return appkey;
+	}
+
+	public void setAppkey(String appkey) {
+		this.appkey = appkey;
+	}
+
+	public String getAppsecret() {
+		return appsecret;
+	}
+
+	public void setAppsecret(String appsecret) {
+		this.appsecret = appsecret;
+	}
+
+	public String getPrivatekey() {
+		return privatekey;
+	}
+
+	public void setPrivatekey(String privatekey) {
+		this.privatekey = privatekey;
+	}
+
+	public boolean isAnysdkpay() {
+		return anysdkpay;
+	}
+
+	public void setAnysdkpay(boolean anysdkpay) {
+		this.anysdkpay = anysdkpay;
+	}
+
+	public boolean isAnysdkshare() {
+		return anysdkshare;
+	}
+
+	public void setAnysdkshare(boolean anysdkshare) {
+		this.anysdkshare = anysdkshare;
+	}
+
+	public boolean isAnysdklogin() {
+		return anysdklogin;
+	}
+
+	public void setAnysdklogin(boolean anysdklogin) {
+		this.anysdklogin = anysdklogin;
 	}
 }
