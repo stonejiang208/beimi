@@ -52,7 +52,6 @@ cc.Class({
 
     // use this for initialization
     onLoad: function () {
-
     },
     init:function(playway){
         this.data = playway ;

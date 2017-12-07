@@ -40,20 +40,37 @@ cc.Class({
 
     // use this for initialization
     onLoad: function () {
+        this.groupoptions = new Array();
         let self = this ;
         this.checked = false ;
         this.node.on('checkbox', function (event) {
             if(self.checkbox!=null){
                 if(self.checked == false){
+                    if(self.data.type == "radio"){
+                        for(var inx = 0 ; inx < self.options.length ; inx++){
+                            let script = self.options[inx] ;
+                            script.doUnChecked() ;
+                        }
+                    }
                     self.doChecked();
                 }else{
-                    self.doUnChecked();
+                    if(self.data.type == "radio"){
+                        for(var inx = 0 ; inx < self.options.length ; inx++){
+                            let script = self.options[inx] ;
+                            script.doUnChecked() ;
+                        }
+                        self.doChecked();
+                    }else{
+                        self.doUnChecked();
+                    }
                 }
             }
             event.stopPropagation() ;
         });
     },
-    init:function(group , itempre , items){
+    init:function(group , itempre , items , parentoptions){
+        this.data = group ;
+        this.options = parentoptions ;
         this.grouptitle.string = group.name ;
         if(this.groupbox!=null && itempre!=null){
             for(var inx=0 ; inx<items.length ; inx++){
@@ -69,17 +86,21 @@ cc.Class({
                         this.groupbox.active = false;
                     }
                     let script = newitem.getComponent("PlaywayGroup") ;
-                    script.inititem(items[inx] , group);
+                    this.groupoptions.push(script);
+                    script.inititem(items[inx] , group , this.groupoptions);
+
                 }
             }
         }
     },
-    inititem:function(item , group){
+    inititem:function(item , group , parentoptions){
+        this.data = group ;
+        this.options = parentoptions;
         this.itemname.string = item.name ;
         if(item.defaultvalue == true){
-            this.checkbox.active = true ;
+            this.doChecked();
         }else{
-            this.checkbox.active = false ;
+            this.doUnChecked();
         }
         if(group!=null && group.style!=null && group.style == "three"){
             this.checkboxnode.x = -83 ;
