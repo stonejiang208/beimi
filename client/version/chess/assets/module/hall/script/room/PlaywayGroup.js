@@ -97,6 +97,16 @@ cc.Class({
         this.data = group ;
         this.options = parentoptions;
         this.itemname.string = item.name ;
+        /**
+         * 以下代码修正 OPTION超出宽度导致 点击错误的 问题
+         */
+        if(group.style == "three"){
+            this.itemname.node.width = 160 ;
+            this.itemname.node.x = 107 ;
+        }else{
+            this.itemname.node.width = 100 ;
+            this.itemname.node.x = 77 ;
+        }
         if(item.defaultvalue == true){
             this.doChecked();
         }else{
