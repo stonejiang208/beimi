@@ -28,8 +28,10 @@ cc.Class({
         //     }
         // },
     },
-
     onClick:function(){
         this.node.dispatchEvent( new cc.Event.EventCustom("checkbox", true) );
+    },
+    onCreateRoom:function(){
+        this.node.dispatchEvent( new cc.Event.EventCustom("createroom", true) );
     }
 });
