@@ -79,6 +79,7 @@ public class SysDicController extends Handler{
     		sysDic.setIconskin(dic.getIconskin());
     		sysDic.setIconstr(dic.getIconstr());
     		sysDic.setDescription(dic.getDescription());
+			sysDic.setDefaultvalue(dic.isDefaultvalue());
     		sysDicRes.save(sysDic) ;
     		
     		reloadSysDicItem(sysDic, request);
@@ -204,6 +205,7 @@ public class SysDicController extends Handler{
     		sysDic.setIconstr(dic.getIconstr());
     		sysDic.setDiscode(dic.isDiscode());
     		sysDic.setDescription(dic.getDescription());
+			sysDic.setDefaultvalue(dic.isDefaultvalue());
     		sysDicRes.save(sysDic) ;
     		
     		reloadSysDicItem(sysDic, request);

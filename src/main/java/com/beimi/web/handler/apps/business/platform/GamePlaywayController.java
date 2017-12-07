@@ -62,6 +62,8 @@ public class GamePlaywayController extends Handler{
 		map.addAttribute("gameModelList", BeiMiDic.getInstance().getDic(BMDataContext.BEIMI_SYSTEM_GAME_TYPE_DIC, id)) ;
 		map.addAttribute("sceneList", BeiMiDic.getInstance().getDic(BMDataContext.BEIMI_SYSTEM_GAME_SCENE_DIC)) ;
 
+        map.addAttribute("cardTypeList", BeiMiDic.getInstance().getDic(BMDataContext.BEIMI_SYSTEM_GAME_CARDTYPE_DIC)) ;
+
 		map.addAttribute("dicList", BeiMiDic.getInstance().getDic(BMDataContext.BEIMI_SYSTEM_GAME_ROOMTITLE_DIC)) ;
 		
 		return request(super.createRequestPageTempletResponse("/apps/business/platform/game/playway/add"));
@@ -96,6 +98,8 @@ public class GamePlaywayController extends Handler{
 		
 		map.addAttribute("game", BeiMiDic.getInstance().getDicItem(game)) ;
 		map.addAttribute("gameModelList", BeiMiDic.getInstance().getDic(BMDataContext.BEIMI_SYSTEM_GAME_TYPE_DIC, game)) ;
+
+		map.addAttribute("cardTypeList", BeiMiDic.getInstance().getDic(BMDataContext.BEIMI_SYSTEM_GAME_CARDTYPE_DIC)) ;
 		
 		map.addAttribute("sceneList", BeiMiDic.getInstance().getDic(BMDataContext.BEIMI_SYSTEM_GAME_SCENE_DIC)) ;
 
@@ -270,8 +274,6 @@ public class GamePlaywayController extends Handler{
     public ModelAndView deletegroupitem(ModelMap map , HttpServletRequest request , @Valid GamePlaywayGroupItem gamePlaywayGroupItem){
         if(gamePlaywayGroupItem!=null && !StringUtils.isBlank(gamePlaywayGroupItem.getId())){
             gamePlaywayGroupItemRes.delete(gamePlaywayGroupItem);
-
-            CacheHelper.getSystemCacheBean().delete(BMDataContext.ConfigNames.PLAYWAYGROUPITEM.toString(), super.getOrgi(request)) ;
         }
         return request(super.createRequestPageTempletResponse("redirect:/apps/platform/playway/extpro.html?id="+gamePlaywayGroupItem.getPlaywayid()+"&game="+gamePlaywayGroupItem.getGame()));
     }

@@ -16,7 +16,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">场景代码：</label>
 					<div class="layui-input-block">
-						<select name="code" lay-verify="required">
+						<select name="code" lay-verify="required" lay-filter="gametype">
 							<#if sceneList??>
 							<#list sceneList as scene>
 							<option value="${scene.code!''}">${scene.name!''}</option>
@@ -177,6 +177,20 @@
 				</div>
 			</div>
 		</div>
+		<div class="layui-row" id="cardtype">
+			<div class="layui-col-md12">
+				<div class="layui-form-item">
+					<label class="layui-form-label">禁用牌型：</label>
+					<div class="layui-input-block">
+						<#if cardTypeList??>
+						<#list cardTypeList as cardType>
+						<input type="checkbox" name="cardsrules" title="${cardType.name!''}" lay-skin="primary"  value="${cardType.code!''}">
+						</#list>
+						</#if>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div class="layui-row">
 			<div class="layui-col-md12">
 				<div class="layui-form-item">
@@ -207,6 +221,13 @@ layui.use('form', function(){
            /^[\S\s]{0,30}$/
            ,'玩法简介长度不能不能超过30个字符'
       ]
+  });
+  form.on("select(gametype)" , function(data){
+      if(data.value == "dizhu"){
+          $('#gametype').show();
+	  }else{
+          $('#gametype').hide();
+	  }
   });
 });
 </script>

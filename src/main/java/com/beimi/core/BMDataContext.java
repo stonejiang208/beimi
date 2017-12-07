@@ -15,6 +15,8 @@ public class BMDataContext {
 	public static final String BEIMI_SYSTEM_GAME_TYPE_DIC = "com.dic.game.type";
 	public static final String BEIMI_SYSTEM_GAME_SCENE_DIC = "com.dic.scene.item";
 
+	public static final String BEIMI_SYSTEM_GAME_CARDTYPE_DIC = "com.dic.game.dizhu.cardtype";
+
 	public static final String BEIMI_SYSTEM_GAME_ROOMTITLE_DIC = "com.dic.game.room.title";
 	
 	public static final String BEIMI_MESSAGE_EVENT = "command" ;
@@ -211,6 +213,7 @@ public class BMDataContext {
 		EIGHT(8),	//飞机	带翅膀	JJJ+QQQ+K+A
 		EIGHTONE(81),	//飞机	带翅膀	JJJ+QQQ+KK+AA
 		NINE(9),	//四带二			JJJJ+Q+K
+		NINEONE(91),	//四带二对			JJJJ+QQ+KK
 		TEN(10),	//炸弹			JJJJ
 		ELEVEN(11);	//王炸			0+0
 		

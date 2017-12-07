@@ -70,6 +70,8 @@ public class GamePlayway implements java.io.Serializable{
 	private boolean free ;		//开启房卡限免
 	private String roomtitle ; 	//玩法标题
 	private boolean extpro ;	//启用扩展属性配置（房卡游戏中的自定义规则）
+
+	private String cardsrules ;	//定义允许的出牌规则
 	
 	@Id
 	@Column(length = 32)
@@ -274,5 +276,13 @@ public class GamePlayway implements java.io.Serializable{
 
 	public void setExtpro(boolean extpro) {
 		this.extpro = extpro;
+	}
+
+	public String getCardsrules() {
+		return cardsrules;
+	}
+
+	public void setCardsrules(String cardsrules) {
+		this.cardsrules = cardsrules;
 	}
 }
