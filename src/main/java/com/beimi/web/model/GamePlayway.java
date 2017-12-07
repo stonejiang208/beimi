@@ -72,6 +72,7 @@ public class GamePlayway implements java.io.Serializable{
 	private boolean extpro ;	//启用扩展属性配置（房卡游戏中的自定义规则）
 
 	private String cardsrules ;	//定义允许的出牌规则
+    private String mjwinrules ; //麻将允许的胡牌规则
 	
 	@Id
 	@Column(length = 32)
@@ -285,4 +286,12 @@ public class GamePlayway implements java.io.Serializable{
 	public void setCardsrules(String cardsrules) {
 		this.cardsrules = cardsrules;
 	}
+
+    public String getMjwinrules() {
+        return mjwinrules;
+    }
+
+    public void setMjwinrules(String mjwinrules) {
+        this.mjwinrules = mjwinrules;
+    }
 }
