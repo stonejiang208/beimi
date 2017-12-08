@@ -1,6 +1,7 @@
 package com.beimi.web.model;
 
 import java.util.Date;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -67,6 +68,8 @@ public class GameRoom implements UserEvent, java.io.Serializable, Comparable<Gam
 	
 	private PlayUser masterUser ;	//房间的创建人
 	private GamePlayway gamePlayway ;	//房间玩法
+
+	private Map<String,String> extparams ;//房卡模式下的自定义参数
 	
 	@Id
 	@Column(length = 32)
@@ -254,6 +257,16 @@ public class GameRoom implements UserEvent, java.io.Serializable, Comparable<Gam
 	public void setLastwinner(String lastwinner) {
 		this.lastwinner = lastwinner;
 	}
+
+	@Transient
+	public Map<String, String> getExtparams() {
+		return extparams;
+	}
+
+	public void setExtparams(Map<String, String> extparams) {
+		this.extparams = extparams;
+	}
+
 	@Override
 	public int compareTo(GameRoom o) {
 		// TODO Auto-generated method stub

@@ -5,6 +5,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.kie.api.KieServices;
+import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,14 +35,19 @@ import com.beimi.web.model.PlayUserClient;
 import com.beimi.web.service.repository.jpa.GameRoomRepository;
 import com.corundumstudio.socketio.SocketIOServer;
 
+import javax.annotation.Resource;
+
 @Service(value="beimiGameEngine")
 public class GameEngine {
 	
 	@Autowired
 	protected SocketIOServer server;
+
+	@Resource
+	private KieSession kieSession;
 	
 	public void gameRequest(String userid ,String playway , String room , String orgi , PlayUserClient userClient , BeiMiClient beiMiClient ){
-		GameEvent gameEvent = gameRequest(userClient.getId(), beiMiClient.getPlayway(), beiMiClient.getRoom(), beiMiClient.getOrgi(), userClient) ;
+		GameEvent gameEvent = gameRequest(userClient.getId(), beiMiClient.getPlayway(), beiMiClient, beiMiClient.getOrgi(), userClient) ;
 		if(gameEvent != null){
 			/**
 			 * 举手了，表示游戏可以开始了
@@ -47,6 +55,7 @@ public class GameEngine {
 			if(userClient!=null){
 				userClient.setGamestatus(BMDataContext.GameStatusEnum.READY.toString());
 			}
+
 			/**
 			 * 游戏状态 ， 玩家请求 游戏房间，活动房间状态后，发送事件给 StateMachine，由 StateMachine驱动 游戏状态 ， 此处只负责通知房间内的玩家
 			 * 1、有新的玩家加入
@@ -86,11 +95,10 @@ public class GameEngine {
 	 * 玩家房间选择， 新请求，游戏撮合， 如果当前玩家是断线重连， 或者是 退出后进入的，则第一步检查是否已在房间
 	 * 如果已在房间，直接返回
 	 * @param userid
-	 * @param room
 	 * @param orgi
 	 * @return
 	 */
-	public GameEvent gameRequest(String userid ,String playway , String room , String orgi , PlayUserClient playUser){
+	public GameEvent gameRequest(String userid ,String playway , BeiMiClient beiMiClient , String orgi , PlayUserClient playUser){
 		GameEvent gameEvent = null ;
 		String roomid = (String) CacheHelper.getRoomMappingCacheBean().getCacheObject(userid, orgi) ;
 		GamePlayway gamePlayway = (GamePlayway) CacheHelper.getSystemCacheBean().getCacheObject(playway, orgi) ;
@@ -101,8 +109,8 @@ public class GameEngine {
 			if(!StringUtils.isBlank(roomid) && CacheHelper.getGameRoomCacheBean().getCacheObject(roomid, orgi)!=null){//
 				gameRoom = (GameRoom) CacheHelper.getGameRoomCacheBean().getCacheObject(roomid, orgi) ;		//直接加入到 系统缓存 （只有一个地方对GameRoom进行二次写入，避免分布式锁）
 			}else{
-				if(!StringUtils.isBlank(room)){	//房卡游戏 , 创建ROOM
-					gameRoom = this.creatGameRoom(gamePlayway, userid , true) ;
+				if(beiMiClient.getExtparams()!=null && BMDataContext.BEIMI_SYSTEM_ROOM.equals(beiMiClient.getExtparams().get("gamemodel"))){	//房卡游戏 , 创建ROOM
+					gameRoom = this.creatGameRoom(gamePlayway, userid , true , beiMiClient) ;
 				}else{	//
 					/**
 					 * 大厅游戏 ， 撮合游戏 , 发送异步消息，通知RingBuffer进行游戏撮合，撮合算法描述如下：
@@ -125,7 +133,7 @@ public class GameEngine {
 					}
 					
 					if(gameRoom==null){	//无房间 ， 需要
-						gameRoom = this.creatGameRoom(gamePlayway, userid , false) ;
+						gameRoom = this.creatGameRoom(gamePlayway, userid , false , beiMiClient) ;
 					}else{
 						playUser.setPlayerindex(System.currentTimeMillis());//从后往前坐，房主进入以后优先坐在 首位
 						needtakequene =  true ;
@@ -203,7 +211,7 @@ public class GameEngine {
 	/**
 	 * 抢地主，斗地主
 	 * @param roomid
-	 * @param userid
+
 	 * @param orgi
 	 * @return
 	 */
@@ -226,7 +234,7 @@ public class GameEngine {
 	/**
 	 * 抢地主，斗地主
 	 * @param roomid
-	 * @param userid
+
 	 * @param orgi
 	 * @return
 	 */
@@ -266,7 +274,7 @@ public class GameEngine {
 	 * @param roomid
 	 * 
 	 * @param auto 是否自动出牌，超时/托管/AI会调用 = true
-	 * @param userid
+
 	 * @param orgi
 	 * @return
 	 */
@@ -338,8 +346,7 @@ public class GameEngine {
 	/**
 	 * 出牌，并校验出牌是否合规
 	 * @param roomid
-	 * 
-	 * @param auto 是否自动出牌，超时/托管/AI会调用 = true
+	 *
 	 * @param userid
 	 * @param orgi
 	 * @return
@@ -521,7 +528,7 @@ public class GameEngine {
 	/**
 	 * 出牌，不出牌
 	 * @param roomid
-	 * @param userid
+
 	 * @param orgi
 	 * @return
 	 */
@@ -532,7 +539,7 @@ public class GameEngine {
 	/**
 	 * 加入房间，房卡游戏
 	 * @param roomid
-	 * @param userid
+
 	 * @param orgi
 	 * @return
 	 */
@@ -548,8 +555,6 @@ public class GameEngine {
 	 * 退出房间
 	 * 1、房卡模式，userid是房主，则解散房间
 	 * 2、大厅模式，如果游戏未开始并且房间仅有一人，则解散房间
-	 * @param roomid
-	 * @param userid
 	 * @param orgi
 	 * @return
 	 */
@@ -589,7 +594,7 @@ public class GameEngine {
 	
 	/**
 	 * 结束 当前牌局
-	 * @param userid
+
 	 * @param orgi
 	 * @return
 	 */
@@ -605,7 +610,7 @@ public class GameEngine {
 	 * @param userid
 	 * @return
 	 */
-	private  GameRoom creatGameRoom(GamePlayway playway , String userid , boolean cardroom){
+	private  GameRoom creatGameRoom(GamePlayway playway , String userid , boolean cardroom , BeiMiClient beiMiClient){
 		GameRoom gameRoom = new GameRoom() ;
 		gameRoom.setCreatetime(new Date());
 		gameRoom.setRoomid(UKTools.getUUID());
@@ -616,8 +621,6 @@ public class GameEngine {
 			gameRoom.setRoomtype(playway.getRoomtype());
 			gameRoom.setPlayers(playway.getPlayers());
 		}
-		
-
 		gameRoom.setPlayers(playway.getPlayers());
 		gameRoom.setCardsnum(playway.getCardsnum());
 		
@@ -635,6 +638,22 @@ public class GameEngine {
 		gameRoom.setMaster(userid);
 		gameRoom.setNumofgames(playway.getNumofgames());   //无限制
 		gameRoom.setOrgi(playway.getOrgi());
+
+		/**
+		 * 房卡模式启动游戏
+		 */
+		if(beiMiClient.getExtparams()!=null && BMDataContext.BEIMI_SYSTEM_ROOM.equals(beiMiClient.getExtparams().get("gamemodel"))){
+			gameRoom.setRoomtype(BMDataContext.ModelType.ROOM.toString());
+			gameRoom.setCardroom(true);
+			gameRoom.setExtparams(beiMiClient.getExtparams());
+			/**
+			 * 分配房间号码 ， 并且，启用 规则引擎，对房间信息进行赋值
+			 */
+			kieSession.insert(gameRoom) ;
+			kieSession.fireAllRules() ;
+		}else{
+			gameRoom.setRoomtype(BMDataContext.ModelType.HALL.toString());
+		}
 		
 		CacheHelper.getQueneCache().put(gameRoom, playway.getOrgi());	//未达到最大玩家数量，加入到游戏撮合 队列，继续撮合
 		

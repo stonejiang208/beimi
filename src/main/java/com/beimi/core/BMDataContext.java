@@ -29,6 +29,8 @@ public class BMDataContext {
 	public static final String BEIMI_GAME_PLAYWAY = "game_playway";
 	
 	public static final String BEIMI_SYSTEM_AUTH_DIC = "com.dic.auth.resource";
+
+	public static final String BEIMI_SYSTEM_ROOM = "room" ;
 	
 	
 	public static String SYSTEM_ORGI = "beimi" ;
@@ -128,7 +130,8 @@ public class BMDataContext {
 	}
 	
 	public enum ModelType{
-		ROOM;
+		ROOM,
+		HALL;
 		public String toString(){
 			return super.toString().toLowerCase() ;
 		}
