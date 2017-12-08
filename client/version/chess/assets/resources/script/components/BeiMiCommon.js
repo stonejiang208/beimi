@@ -67,6 +67,13 @@ cc.Class({
         cc.beimi.socket.on("gamestatus" , function(result){
             if(result!=null) {
                 var data = self.parse(result) ;
+                if(cc.beimi.extparams !=null){
+                    if(data.gamestatus == "playing" && data.gametype != null){
+                        self.scene(data.gametype , self) ;
+                    }else{
+                        self.scene(cc.beimi.extparams.gametype , self) ;
+                    }
+                }
                 cc.beimi.gamestatus = data.gamestatus;
             }
         });
@@ -147,6 +154,21 @@ cc.Class({
             }
             cc.director.loadScene(name);
         });
+    },
+    preload:function(extparams , self){
+        this.loadding();
+        /**
+         *切换游戏场景之前，需要先检查是否 是在游戏中，如果是在游戏中，则直接进入该游戏，如果不在游戏中，则执行 新场景游戏
+         */
+        cc.beimi.extparams = extparams ;
+        /**
+         * 发送状态查询请求，如果玩家当前在游戏中，则直接进入游戏回复状态，如果玩家不在游戏中，则创建新游戏场景
+         */
+        var param = {
+            token:cc.beimi.authorization,
+            orgi:cc.beimi.user.orgi
+        } ;
+        cc.beimi.socket.emit("gamestatus" , JSON.stringify(param));
     },
     root:function(){
         return cc.find("Canvas");

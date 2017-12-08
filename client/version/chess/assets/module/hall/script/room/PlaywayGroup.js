@@ -95,6 +95,7 @@ cc.Class({
     },
     inititem:function(item , group , parentoptions){
         this.data = group ;
+        this.item = item ;
         this.options = parentoptions;
         this.itemname.string = item.name ;
         /**

@@ -122,8 +122,9 @@ cc.Class({
 
             var param = {
                 token:cc.beimi.authorization,
-                playway:cc.beimi.playway,
-                orgi:cc.beimi.user.orgi
+                playway:cc.beimi.extparams.playway,
+                orgi:cc.beimi.user.orgi,
+                extparams:cc.beimi.extparams
             } ;
             socket.emit("joinroom" ,JSON.stringify(param)) ;
 

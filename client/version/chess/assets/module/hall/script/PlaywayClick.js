@@ -25,19 +25,16 @@ cc.Class({
     },
     onClick:function(){
         let self = this ;
-        this.loadding();
+
         var selectPlayway = this.getCommon("SelectPlayway");
 
         let thisplayway = this.playway.getComponent("Playway");
 
-        cc.beimi.playway = thisplayway.data.id ;
-
-        setTimeout(function(){
-            /**
-             * 优化交互，预加载场景完毕后再回收资源
-             */
-            self.scene(thisplayway.data.code , self) ;
-        },200);
+        let extparams = {
+            gametype : thisplayway.data.code ,
+            playway  : thisplayway.data.id
+        } ;
+        this.preload(extparams , self);
     },
     createRoom:function(event,data){
         let self = this ;

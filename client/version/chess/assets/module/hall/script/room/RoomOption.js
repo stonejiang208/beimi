@@ -52,6 +52,41 @@ cc.Class({
 
     // use this for initialization
     onLoad: function () {
+        let self = this ;
+        this.group = new Array();
+        this.node.on('createroom', function (event) {
+            /**
+             * 把参数 汇总一下， 然后转JSON以后序列化成字符串，发送 创建房间的请求
+             */
+            var extparams = {} ;
+            let values = new Array();
+            for(var inx=0 ; inx<self.group.length ; inx++){
+                let groupitem = self.group[inx] ;
+                let value = "" ;
+                for(var j=0 ; j<groupitem.groupoptions.length ; j++){
+                    let option = groupitem.groupoptions[j] ;
+                    if(option.checked == true){
+                        if(value != ""){
+                            value = value + "," ;
+                        }
+                        value = value + option.item.value ;
+                    }
+                }
+                extparams[groupitem.data.code] = value ;
+            }
+            /**
+             * 藏到全局变量里去，进入场景后使用，然后把这个参数置空
+             * @type {{}}
+             */
+            extparams.gametype = self.data.code ;
+            extparams.playway = self.data.id;
+            extparams.gamemodel = "room" ;
+            /**
+             * 发送创建房间开始游戏的请求
+             */
+            event.stopPropagation() ;
+            self.preload(extparams , self) ;
+        });
     },
     init:function(playway){
         this.data = playway ;
@@ -81,6 +116,7 @@ cc.Class({
 
                 let playWayGroup = group.getComponent("PlaywayGroup") ;
                 playWayGroup.init(playway.groups[inx] , this.optiongroupitem , playway.items) ;
+                this.group.push(playWayGroup);
             }
         }
     }
