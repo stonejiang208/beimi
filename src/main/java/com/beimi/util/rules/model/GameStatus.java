@@ -7,6 +7,9 @@ public class GameStatus implements Message{
 	private String gamestatus ;
 	
 	private String userid ;
+	private String orgi ;
+	private String gametype ;
+	private String playway ;
 	
 	public String getCommand() {
 		return command;
@@ -27,5 +30,29 @@ public class GameStatus implements Message{
 
 	public void setUserid(String userid) {
 		this.userid = userid;
+	}
+
+	public String getOrgi() {
+		return orgi;
+	}
+
+	public void setOrgi(String orgi) {
+		this.orgi = orgi;
+	}
+
+	public String getGametype() {
+		return gametype;
+	}
+
+	public void setGametype(String gametype) {
+		this.gametype = gametype;
+	}
+
+	public String getPlayway() {
+		return playway;
+	}
+
+	public void setPlayway(String playway) {
+		this.playway = playway;
 	}
 }

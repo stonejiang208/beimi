@@ -2,6 +2,8 @@ package com.beimi.util.server.handler;
 
 import com.corundumstudio.socketio.SocketIOClient;
 
+import java.util.Map;
+
 public class BeiMiClient{
 	private String token ;
 	private String playway ;
@@ -16,6 +18,8 @@ public class BeiMiClient{
 	
 	
 	private SocketIOClient client;
+
+	private Map<String,  String> extparams ;
 	
 	public BeiMiClient(){
 		
@@ -83,5 +87,13 @@ public class BeiMiClient{
 
 	public void setTime(long time) {
 		this.time = time;
+	}
+
+	public Map<String, String> getExtparams() {
+		return extparams;
+	}
+
+	public void setExtparams(Map<String, String> extparams) {
+		this.extparams = extparams;
 	}
 }

@@ -130,6 +130,11 @@ public class GameEventHandler
 				String roomid = (String) CacheHelper.getRoomMappingCacheBean().getCacheObject(userClient.getId(), userClient.getOrgi()) ;
 				if(!StringUtils.isBlank(roomid) && CacheHelper.getBoardCacheBean().getCacheObject(roomid, userClient.getId())!=null){
 					gameStatus.setUserid(userClient.getId());
+					gameStatus.setOrgi(userClient.getOrgi());
+
+					GameRoom gameRoom = (GameRoom)CacheHelper.getGameRoomCacheBean().getCacheObject(roomid , userClient.getOrgi()) ;
+                    GamePlayway gamePlayway = (GamePlayway) CacheHelper.getSystemCacheBean().getCacheObject(gameRoom.getPlayway(), userClient.getOrgi()) ;
+					gameStatus.setGametype(gamePlayway.getCode());
 					gameStatus.setGamestatus(BMDataContext.GameStatusEnum.PLAYING.toString());
 				}
 			}
