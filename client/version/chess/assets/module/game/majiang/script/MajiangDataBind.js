@@ -145,6 +145,10 @@ cc.Class({
         summary:{
             default:null ,
             type : cc.Prefab
+        },
+        inviteplayer:{
+            default:null ,
+            type : cc.Prefab
         }
     },
 
@@ -266,6 +270,18 @@ cc.Class({
             if (cc.beimi != null && cc.beimi.gamestatus != null && cc.beimi.gamestatus == "playing") {
                 //恢复数据
                 this.recovery();
+            }else if(cc.beimi!=null && cc.beimi.extparams!=null && cc.beimi.extparams.gamemodel == "room"){
+                /**
+                 * 房卡模式，开始启动游戏，当前玩家进入等待游戏的状态，显示邀请好友游戏，并分配 6位数字的房间号码
+                 */
+                /**
+                 * 处理完毕，清理掉全局变量
+                 * @type {null}
+                 */
+                if(this.inviteplayer!=null){
+                    let invite = cc.instantiate(this.inviteplayer) ;
+                    invite.parent = this.root() ;
+                }
             }
         }
     },

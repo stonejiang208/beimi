@@ -9540,6 +9540,9 @@
     },
     "summary": {
       "__uuid__": "8ccc5ce7-ba7c-458c-bf8d-6703059df0d8"
+    },
+    "inviteplayer": {
+      "__uuid__": "0dd046d9-463b-4149-8aea-d12fb4b9b821"
     }
   }
 ]

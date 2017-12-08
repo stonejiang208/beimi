@@ -34,6 +34,7 @@ cc.Class({
             gametype : thisplayway.data.code ,
             playway  : thisplayway.data.id
         } ;
+        this.closeOpenWin();
         this.preload(extparams , self);
     },
     createRoom:function(event,data){
