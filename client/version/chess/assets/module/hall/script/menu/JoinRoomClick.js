@@ -61,8 +61,15 @@ cc.Class({
     roomCallBack:function(result , self){
         var data = self.parse(result) ;
         if(data.result == "ok"){
-            cc.beimi.playway = data.id ;
-            self.scene(data.code , self) ;
+            var extparams = {
+                gametype : data.code ,
+                playway :  data.id ,
+                gamemodel : "room"
+            } ;
+            /**
+             * 发送创建房间开始游戏的请求
+             */
+            self.preload(extparams , self) ;
         }else if(data.result == "notexist"){
             self.alert("房间号不存在。");
         }

@@ -278,10 +278,8 @@ cc.Class({
                  * 处理完毕，清理掉全局变量
                  * @type {null}
                  */
-                if(this.inviteplayer!=null){
-                    let invite = cc.instantiate(this.inviteplayer) ;
-                    invite.parent = this.root() ;
-                }
+                this.invite = cc.instantiate(this.inviteplayer) ;
+                this.initgame();
             }
         }
     },
@@ -318,6 +316,8 @@ cc.Class({
 
             this.map("recovery" , this.recovery_event) ;              //恢复牌局数据
 
+            this.map("roomready" , this.roomready_event) ;              //提示
+
             socket.on("command" , function(result){
                 cc.beimi.gamestatus = "playing" ;
                 if(self.inited == true){
@@ -343,6 +343,12 @@ cc.Class({
      * @param context
      */
     joinroom_event:function(data , context){
+        if(data.cardroom == true && context.inviteplayer!=null){
+            let script = context.invite.getComponent("BeiMiQR")
+            script.init(data.roomid);
+            context.invite.parent = context.root() ;
+        }
+
         var player = context.playerspool.get();
         var playerscript = player.getComponent("MaJiangPlayer");
         //var playerscript = player.getComponent("MaJiangPlayer");
@@ -376,6 +382,16 @@ cc.Class({
          * 初始化状态，首个玩家加入，然后开始等待其他玩家 ， 如果是 恢复数据， 则不会进入
          */
         //this.statusbtn.active = true ;
+    },
+    /**
+     * 房卡模式下，邀请的好友人到齐了
+     * @param data
+     * @param context
+     */
+    roomready_event:function(data , context){
+        if(context.invite!=null){
+            context.invite.destroy();
+        }
     },
     /**
      * 新创建牌局，首个玩家加入，进入等待状态，等待其他玩家加入，服务端会推送 players数据

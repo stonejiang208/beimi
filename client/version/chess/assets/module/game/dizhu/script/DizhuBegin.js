@@ -73,10 +73,8 @@ cc.Class({
              * 处理完毕，清理掉全局变量
              * @type {null}
              */
-            if(this.inviteplayer!=null){
-                let invite = cc.instantiate(this.inviteplayer) ;
-                invite.parent = this.root() ;
-            }
+            this.invite = cc.instantiate(this.inviteplayer) ;
+            this.initgame(false);
         }
     },
     begin:function(){
@@ -119,6 +117,9 @@ cc.Class({
             this.map("play" , this.play_event) ;                      //接受玩家列表
             this.map("allcards" , this.allcards_event) ;              //我出的牌
             this.map("cardtips" , this.cardtips_event) ;              //提示
+            this.map("roomready" , this.roomready_event) ;              //提示
+
+            this.map("cardtips" , this.cardtips_event) ;              //提示
 
             this.map("recovery" , this.recovery_event) ;              //恢复牌局数据
 
@@ -154,6 +155,14 @@ cc.Class({
      * @param context
      */
     joinroom_event:function(data , context){
+
+        if(data.cardroom == true && context.inviteplayer!=null){
+            let script = context.invite.getComponent("BeiMiQR")
+            script.init(data.roomid);
+            context.invite.parent = context.root() ;
+        }
+
+
         //显示 匹配中，并计时间，超过设定的倒计时时间即AI加入，根据当前的 玩家数量 匹配机器人
         if(data.player.id && data.player.id == cc.beimi.user.id){
             //本人，开始计时
@@ -172,6 +181,16 @@ cc.Class({
             if(inroom == false){
                 context.newplayer(context.player.length , context , data.player , context.index + 1 == data.index) ;
             }
+        }
+    },
+    /**
+     * 房卡模式下，邀请的好友人到齐了
+     * @param data
+     * @param context
+     */
+    roomready_event:function(data , context){
+        if(context.invite!=null){
+            context.invite.destroy();
         }
     },
     /**
