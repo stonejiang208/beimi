@@ -1,16 +1,20 @@
 package com.beimi.web.service.repository.jpa;
 
-import com.beimi.web.model.GamePlaywayGroup;
-import com.beimi.web.model.GamePlaywayGroupItem;
+import java.util.List;
+
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
+import com.beimi.web.model.GamePlaywayGroupItem;
 
 public interface GamePlaywayGroupItemRepository extends JpaRepository<GamePlaywayGroupItem, String>{
 
   public abstract GamePlaywayGroupItem findByIdAndOrgi(String id, String orgi);
 
+  @Modifying
+  @Query("delete from GamePlaywayGroupItem item where playwayid=?1 AND orgi = ?2")
   public void deleteByPlaywayidAndOrgi(String playwayid, String orgi) ;
 
   public abstract int countByNameAndPlaywayidAndOrgi(String name, String playwayid, String orgi);
