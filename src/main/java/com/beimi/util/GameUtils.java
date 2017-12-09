@@ -45,9 +45,9 @@ public class GameUtils {
 		Game game = null ;
 		if(gamePlayway!=null){
 			SysDic dic = (SysDic) CacheHelper.getSystemCacheBean().getCacheObject(gamePlayway.getGame(), gamePlayway.getOrgi()) ;
-			if(dic.getCode().equals("dizhu")){
+			if(dic.getCode().equals("dizhu") || gamePlayway.getCode().equals("dizhu")){
 				game = (Game) BMDataContext.getContext().getBean("dizhuGame") ;
-			}else if(dic.getCode().equals("majiang")){
+			}else if(dic.getCode().equals("majiang") || gamePlayway.getCode().equals("majiang")){
 				game = (Game) BMDataContext.getContext().getBean("majiangGame") ;
 			}
 		}

@@ -2,6 +2,9 @@ package com.beimi.core.engine.game.action;
 
 import java.util.List;
 
+import com.beimi.core.engine.game.ActionTaskUtils;
+import com.beimi.core.engine.game.impl.Banker;
+import com.beimi.util.rules.model.RoomReady;
 import org.apache.commons.lang3.StringUtils;
 
 import com.beimi.core.BMDataContext;
@@ -37,6 +40,12 @@ public class JoinAction<T,S> implements Action<T, S>{
 			if(gameRoom!=null){
 				List<PlayUserClient> playerList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
 				if(gameRoom.getPlayers() == playerList.size()){
+					/**
+					 * 房卡模式下执行
+					 */
+					if(gameRoom.isCardroom()) {
+						ActionTaskUtils.sendEvent("roomready", new RoomReady(gameRoom), gameRoom);
+					}
 					//结束撮合，可以开始玩游戏了
 					/**
 					 * 更新状态

@@ -29,11 +29,11 @@ public class EnterAction<T,S> implements Action<T, S>{
 		if(!StringUtils.isBlank(room)){
 			GameRoom gameRoom = (GameRoom) CacheHelper.getGameRoomCacheBean().getCacheObject(room, BMDataContext.SYSTEM_ORGI) ; 
 			if(gameRoom!=null){
-				AiConfig aiConfig = CacheConfigTools.getAiConfig(gameRoom.getOrgi()) ;
-				if(aiConfig.isEnableai()){
-					CacheHelper.getExpireCache().put(gameRoom.getOrgi(), new CreateAITask(aiConfig.getWaittime() , gameRoom , gameRoom.getOrgi()));
-				}else{
-					//超时解散房间，把玩家从这个房间里清理出去，重新进入匹配玩家的流程
+				if(!gameRoom.isCardroom()) {
+					AiConfig aiConfig = CacheConfigTools.getAiConfig(gameRoom.getOrgi());
+					if (aiConfig.isEnableai()) {
+						CacheHelper.getExpireCache().put(gameRoom.getOrgi(), new CreateAITask(aiConfig.getWaittime(), gameRoom, gameRoom.getOrgi()));
+					}
 				}
 				/**
 				 * 更新状态

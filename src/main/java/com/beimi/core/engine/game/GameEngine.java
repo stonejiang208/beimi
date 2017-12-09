@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.beimi.util.RandomCharUtil;
+import com.beimi.util.rules.model.*;
 import org.apache.commons.lang3.StringUtils;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
@@ -18,16 +20,6 @@ import com.beimi.util.GameUtils;
 import com.beimi.util.UKTools;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.util.client.NettyClients;
-import com.beimi.util.rules.model.Action;
-import com.beimi.util.rules.model.ActionEvent;
-import com.beimi.util.rules.model.Board;
-import com.beimi.util.rules.model.DuZhuBoard;
-import com.beimi.util.rules.model.JoinRoom;
-import com.beimi.util.rules.model.NextPlayer;
-import com.beimi.util.rules.model.Player;
-import com.beimi.util.rules.model.RecoveryData;
-import com.beimi.util.rules.model.SelectColor;
-import com.beimi.util.rules.model.TakeCards;
 import com.beimi.util.server.handler.BeiMiClient;
 import com.beimi.web.model.GamePlayway;
 import com.beimi.web.model.GameRoom;
@@ -61,7 +53,7 @@ public class GameEngine {
 			 * 1、有新的玩家加入
 			 * 2、给当前新加入的玩家发送房间中所有玩家信息（不包含隐私信息，根据业务需求，修改PlayUserClient的字段，剔除掉隐私信息后发送）
 			 */
-			ActionTaskUtils.sendEvent("joinroom", new JoinRoom(userClient, gameEvent.getIndex(), gameEvent.getGameRoom().getPlayers()) , gameEvent.getGameRoom());
+			ActionTaskUtils.sendEvent("joinroom", new JoinRoom(userClient, gameEvent.getIndex(), gameEvent.getGameRoom().getPlayers() , gameEvent.getGameRoom()) , gameEvent.getGameRoom());
 			/**
 			 * 发送给单一玩家的消息
 			 */
@@ -118,7 +110,6 @@ public class GameEngine {
 					 * 
 					 */
 					gameRoom = (GameRoom) CacheHelper.getQueneCache().poll(playway , orgi) ;
-					
 					if(gameRoom != null){	
 						/**
 						 * 修正获取gameroom获取的问题，因为删除房间的时候，为了不损失性能，没有将 队列里的房间信息删除，如果有玩家获取到这个垃圾信息
@@ -141,6 +132,9 @@ public class GameEngine {
 				}
 			}
 			if(gameRoom!=null){
+				/**
+				 * 设置游戏当前已经进行的局数
+				 */
 				gameRoom.setCurrentnum(0);
 				/**
 				 * 更新缓存
@@ -646,6 +640,11 @@ public class GameEngine {
 			gameRoom.setRoomtype(BMDataContext.ModelType.ROOM.toString());
 			gameRoom.setCardroom(true);
 			gameRoom.setExtparams(beiMiClient.getExtparams());
+			/**
+			 * 产生 房间 ID ， 麻烦的是需要处理冲突 ，准备采用的算法是 先生成一个号码池子，然后重分布是缓存的 Queue里获取
+			 */
+			gameRoom.setRoomid(RandomCharUtil.getRandomNumberChar(6));
+
 			/**
 			 * 分配房间号码 ， 并且，启用 规则引擎，对房间信息进行赋值
 			 */

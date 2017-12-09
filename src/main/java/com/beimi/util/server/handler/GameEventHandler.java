@@ -311,14 +311,14 @@ public class GameEventHandler
 					List<GameRoom> gameRoomList = gameRoomRepository.findByRoomidAndOrgi(searchRoom.getRoomid(), playUser.getOrgi()) ;
 					if(gameRoomList!=null && gameRoomList.size() > 0){
 						GameRoom tempGameRoom = gameRoomList.get(0) ;
-						gameRoom = (GameRoom) CacheHelper.getGamePlayerCacheBean().getCacheObject(tempGameRoom.getId(), playUser.getOrgi()) ;
+						gameRoom = (GameRoom) CacheHelper.getGameRoomCacheBean().getCacheObject(tempGameRoom.getId(), playUser.getOrgi()) ;
 					}
 				}
 				if(gameRoom!=null){
 					/**
 					 * 将玩家加入到 房间 中来 ， 加入的时候需要处理当前的 房间 已满员或未满员，如果满员，需要检查是否允许围观
 					 */
-					gamePlayway = gameRoom.getGamePlayway() ;
+					gamePlayway = (GamePlayway) CacheHelper.getSystemCacheBean().getCacheObject(gameRoom.getPlayway(), gameRoom.getOrgi()) ;
 					List<PlayUserClient> playerList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
 					if(playerList.size() < gamePlayway.getPlayers()){
 						BMDataContext.getGameEngine().joinRoom(gameRoom, playUser, playerList);
