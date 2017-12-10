@@ -6,7 +6,6 @@ import org.cache2k.expiry.ValueWithExpiryTime;
 
 import com.beimi.core.BMDataContext;
 import com.beimi.core.engine.game.ActionTaskUtils;
-import com.beimi.core.engine.game.BeiMiGameEvent;
 import com.beimi.core.engine.game.BeiMiGameTask;
 import com.beimi.util.GameUtils;
 import com.beimi.util.cache.CacheHelper;
@@ -56,12 +55,13 @@ public class CreateAITask extends AbstractTask implements ValueWithExpiryTime  ,
 				CacheHelper.getGamePlayerCacheBean().put(gameRoom.getId(), playerUser, orgi); //将用户加入到 room ， MultiCache
 				playerList.add(playerUser) ;
 			}
+			
+			ActionTaskUtils.sendPlayers(gameRoom, playerList);
+			
 			/**
 			 * 发送一个 Enough 事件
 			 */
-			ActionTaskUtils.sendPlayers(gameRoom, playerList);
-			
-			super.getGame(gameRoom.getPlayway(), orgi).change(gameRoom , BeiMiGameEvent.ENOUGH.toString());	//通知状态机 , 此处应由状态机处理异步执行
+			ActionTaskUtils.roomReady(gameRoom, super.getGame(gameRoom.getPlayway(), orgi));
 		}
 	}
 }

@@ -1,13 +1,11 @@
 package com.beimi.web.service.repository.jpa;
 
-import com.beimi.web.model.DataDic;
-import com.beimi.web.model.GamePlaywayGroup;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import java.util.List;
+
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import com.beimi.web.model.GamePlaywayGroup;
 
 public interface GamePlaywayGroupRepository extends JpaRepository<GamePlaywayGroup, String>{
 

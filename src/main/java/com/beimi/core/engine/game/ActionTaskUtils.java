@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.beimi.config.web.model.Game;
 import com.beimi.core.BMDataContext;
 import com.beimi.core.engine.game.task.AbstractTask;
 import com.beimi.core.engine.game.task.dizhu.CreateAutoTask;
@@ -15,6 +16,7 @@ import com.beimi.util.rules.model.Board;
 import com.beimi.util.rules.model.DuZhuBoard;
 import com.beimi.util.rules.model.GamePlayers;
 import com.beimi.util.rules.model.Player;
+import com.beimi.util.rules.model.RoomReady;
 import com.beimi.util.server.handler.BeiMiClient;
 import com.beimi.web.model.GameRoom;
 import com.beimi.web.model.PlayUserClient;
@@ -39,6 +41,15 @@ public class ActionTaskUtils {
 				client.getClient().sendEvent(BMDataContext.BEIMI_MESSAGE_EVENT, message);
 			}
 		}
+	}
+	/**
+	 * 通知就绪
+	 * @param gameRoom
+	 * @param game
+	 */
+	public static void roomReady(GameRoom gameRoom, Game game){
+		ActionTaskUtils.sendEvent("roomready", new RoomReady(gameRoom), gameRoom);
+		game.change(gameRoom , BeiMiGameEvent.ENOUGH.toString());	//通知状态机 , 此处应由状态机处理异步执行
 	}
 	
 	public static void sendEvent(String event, String userid, Message message){

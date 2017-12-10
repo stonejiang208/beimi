@@ -2,19 +2,17 @@ package com.beimi.core.engine.game.action;
 
 import java.util.List;
 
-import com.beimi.core.engine.game.ActionTaskUtils;
-import com.beimi.core.engine.game.impl.Banker;
-import com.beimi.util.rules.model.RoomReady;
 import org.apache.commons.lang3.StringUtils;
 
 import com.beimi.core.BMDataContext;
+import com.beimi.core.engine.game.ActionTaskUtils;
 import com.beimi.core.engine.game.BeiMiGameEnum;
-import com.beimi.core.engine.game.BeiMiGameEvent;
 import com.beimi.core.statemachine.action.Action;
 import com.beimi.core.statemachine.impl.BeiMiExtentionTransitionConfigurer;
 import com.beimi.core.statemachine.message.Message;
 import com.beimi.util.GameUtils;
 import com.beimi.util.cache.CacheHelper;
+import com.beimi.util.rules.model.RoomReady;
 import com.beimi.web.model.GameRoom;
 import com.beimi.web.model.PlayUserClient;
 
@@ -40,21 +38,19 @@ public class JoinAction<T,S> implements Action<T, S>{
 			if(gameRoom!=null){
 				List<PlayUserClient> playerList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
 				if(gameRoom.getPlayers() == playerList.size()){
-					/**
-					 * 房卡模式下执行
-					 */
-					if(gameRoom.isCardroom()) {
-						ActionTaskUtils.sendEvent("roomready", new RoomReady(gameRoom), gameRoom);
-					}
 					//结束撮合，可以开始玩游戏了
 					/**
 					 * 更新状态
 					 */
+					
 					gameRoom.setStatus(BeiMiGameEnum.READY.toString());
+					
+
 					/**
 					 * 发送一个 Enough 事件
 					 */
-					GameUtils.getGame(gameRoom.getPlayway() , gameRoom.getOrgi()).change(gameRoom , BeiMiGameEvent.ENOUGH.toString());	//通知状态机 , 此处应由状态机处理异步执行
+					ActionTaskUtils.roomReady(gameRoom, GameUtils.getGame(gameRoom.getPlayway() , gameRoom.getOrgi()));
+					
 				}else{
 					/**
 					 * 啥也不干，等着
