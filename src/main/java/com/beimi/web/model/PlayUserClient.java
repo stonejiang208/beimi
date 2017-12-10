@@ -25,7 +25,7 @@ import com.beimi.util.event.UserEvent;
 @Entity
 @Table(name = "bm_playuser")
 @org.hibernate.annotations.Proxy(lazy = false)
-public class PlayUserClient implements UserEvent ,Message, java.io.Serializable{
+public class PlayUserClient implements UserEvent ,Message, java.io.Serializable , Comparable<PlayUserClient>{
 	/**
 	 * 
 	 */
@@ -57,6 +57,9 @@ public class PlayUserClient implements UserEvent ,Message, java.io.Serializable{
 	private String status ;		//
 	private boolean datastatus ;//数据状态，是否已删除	
 	private boolean headimg ; 	//是否上传头像
+	
+	private String roomid ;		//加入的房间ID
+	private boolean roomready ;	//在房间中已经准备就绪
 	
 	private String gamestatus ;	//玩家在游戏中的状态 ： READY : NOTREADY : PLAYING ：MANAGED/托管
 	
@@ -413,5 +416,29 @@ public class PlayUserClient implements UserEvent ,Message, java.io.Serializable{
 
 	public void setGamestatus(String gamestatus) {
 		this.gamestatus = gamestatus;
+	}
+	
+	public String getRoomid() {
+		return roomid;
+	}
+
+
+	public void setRoomid(String roomid) {
+		this.roomid = roomid;
+	}
+	
+	public boolean isRoomready() {
+		return roomready;
+	}
+
+
+	public void setRoomready(boolean roomready) {
+		this.roomready = roomready;
+	}
+
+
+	@Override
+	public int compareTo(PlayUserClient o) {
+		return (int) (this.playerindex - o.getPlayerindex());
 	}
 }

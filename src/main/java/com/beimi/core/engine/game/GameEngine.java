@@ -198,9 +198,12 @@ public class GameEngine {
 			playUser.setPlayerindex(System.currentTimeMillis());
 			playUser.setGamestatus(BMDataContext.GameStatusEnum.READY.toString());
 			playUser.setPlayertype(BMDataContext.PlayerTypeEnum.NORMAL.toString());
+			playUser.setRoomid(gameRoom.getId());
+			playUser.setRoomready(false);
+			
 			playerList.add(playUser) ;
 			NettyClients.getInstance().joinRoom(playUser.getId(), gameRoom.getId());
-			CacheHelper.getGamePlayerCacheBean().put(gameRoom.getId(), playUser, playUser.getOrgi()); //将用户加入到 room ， MultiCache
+			CacheHelper.getGamePlayerCacheBean().put(playUser.getId(), playUser, playUser.getOrgi()); //将用户加入到 room ， MultiCache
 		}
 		
 		/**
@@ -565,14 +568,14 @@ public class GameEngine {
 			List<PlayUserClient> players = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), orgi) ;
 			if(gameRoom.isCardroom()){
 				CacheHelper.getGameRoomCacheBean().delete(gameRoom.getId(), gameRoom.getOrgi()) ;
-				CacheHelper.getGamePlayerCacheBean().delete(gameRoom.getId()) ;
+				CacheHelper.getGamePlayerCacheBean().clean(gameRoom.getId() , orgi) ;
 				UKTools.published(gameRoom , null , BMDataContext.getContext().getBean(GameRoomRepository.class) , BMDataContext.UserDataEventType.DELETE.toString());
 			}else{
 				if(players.size() <= 1){
 					//解散房间 , 保留 ROOM资源 ， 避免 从队列中取出ROOM
-					CacheHelper.getGamePlayerCacheBean().delete(gameRoom.getId()) ;
+					CacheHelper.getGamePlayerCacheBean().clean(gameRoom.getId() , orgi) ;
 				}else{
-					CacheHelper.getGamePlayerCacheBean().delete(gameRoom.getId(), playUser) ;
+					CacheHelper.getGamePlayerCacheBean().delete(playUser.getId(), orgi) ;
 				}
 			}
 		}

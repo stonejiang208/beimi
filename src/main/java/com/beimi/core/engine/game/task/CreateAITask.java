@@ -41,7 +41,7 @@ public class CreateAITask extends AbstractTask implements ValueWithExpiryTime  ,
 			PlayUserClient player = playerList.get(i) ;
 			if(!player.getGamestatus().equals(BMDataContext.GameStatusEnum.READY.toString())){
 				playerList.remove(i) ;
-				CacheHelper.getGamePlayerCacheBean().delete(gameRoom.getId(), player) ;
+				CacheHelper.getGamePlayerCacheBean().delete(player.getId(), orgi) ;
 				continue ;
 			}
 			i++;
@@ -51,8 +51,10 @@ public class CreateAITask extends AbstractTask implements ValueWithExpiryTime  ,
 			for(int i=0 ; i<aicount ; i++){
 				PlayUserClient playerUser = GameUtils.create(new PlayUser() , BMDataContext.PlayerTypeEnum.AI.toString()) ;
 				playerUser.setPlayerindex(System.currentTimeMillis());	//按照加入房间的时间排序，有玩家离开后，重新发送玩家信息列表，重新座位
+				playerUser.setRoomid(gameRoom.getId());
+				playerUser.setRoomready(true);
 				
-				CacheHelper.getGamePlayerCacheBean().put(gameRoom.getId(), playerUser, orgi); //将用户加入到 room ， MultiCache
+				CacheHelper.getGamePlayerCacheBean().put(playerUser.getId(), playerUser, orgi); //将用户加入到 room ， MultiCache
 				playerList.add(playerUser) ;
 			}
 			

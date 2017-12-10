@@ -48,6 +48,8 @@ public class CreateAllCardsTask extends AbstractTask implements ValueWithExpiryT
 			PlayUserClient playUserClient = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(player.getPlayuser(), this.orgi) ;
 			if(playUserClient!=null && playUserClient.getPlayertype().equals(BMDataContext.PlayerTypeEnum.NORMAL.toString())){
 				playUserClient.setGamestatus(BMDataContext.GameStatusEnum.NOTREADY.toString());
+				
+				playUserClient.setRoomready(false);
 				CacheHelper.getGamePlayerCacheBean().put(playUserClient.getId(),playUserClient, gameRoom.getOrgi()) ;
 			}else if(playUserClient == null || !playUserClient.getPlayertype().equals(BMDataContext.PlayerTypeEnum.AI.toString())){
 				//清理已经离线的玩家
@@ -56,20 +58,18 @@ public class CreateAllCardsTask extends AbstractTask implements ValueWithExpiryT
 		}
 		
 		if(gameOver){
-			CacheHelper.getGamePlayerCacheBean().delete(gameRoom.getId()) ;
+			CacheHelper.getGamePlayerCacheBean().clean(gameRoom.getId() ,orgi) ;
 			for(Player player : board.getPlayers()){
 				CacheHelper.getGameRoomCacheBean().delete(player.getPlayuser(), gameRoom.getOrgi()) ;
 				CacheHelper.getRoomMappingCacheBean().delete(player.getPlayuser(), this.orgi) ;
 				
 			}
-			if(!gameRoom.isCardroom()){ //房卡模式，清理掉房卡资源
+			if(gameRoom.isCardroom() == false){ //房卡模式，清理掉房卡资源
 				/**
 				 * 重新加入房间资源到 队列
 				 */
 				CacheHelper.getQueneCache().put(gameRoom, gameRoom.getOrgi());
 			}
-		}else{
-			//状态机的 一个状态， 等待所有玩家 点击继续游戏按钮
 		}
 		
 		BMDataContext.getGameEngine().finished(gameRoom.getId(), orgi);

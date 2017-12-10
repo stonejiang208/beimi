@@ -3,10 +3,10 @@ package com.beimi.util.cache.hazelcast;
 import com.beimi.core.BMDataContext;
 import com.beimi.util.cache.CacheBean;
 import com.beimi.util.cache.CacheInstance;
+import com.beimi.util.cache.PlayerCacheBean;
 import com.beimi.util.cache.hazelcast.impl.ApiUserCache;
 import com.beimi.util.cache.hazelcast.impl.GameCache;
 import com.beimi.util.cache.hazelcast.impl.GameRoomCache;
-import com.beimi.util.cache.hazelcast.impl.MultiCache;
 import com.beimi.util.cache.hazelcast.impl.OnlineCache;
 import com.beimi.util.cache.hazelcast.impl.QueneCache;
 import com.beimi.util.cache.hazelcast.impl.SystemCache;
@@ -54,8 +54,8 @@ public class HazlcastCacheHelper implements CacheInstance{
 		return BMDataContext.getContext().getBean(QueneCache.class).getCacheInstance(CacheServiceEnum.QUENE_CACHE.toString()) ;
 	}
 	@Override
-	public MultiCache getGamePlayerCacheBean() {
+	public PlayerCacheBean getGamePlayerCacheBean() {
 		// TODO Auto-generated method stub
-		return BMDataContext.getContext().getBean(MultiCache.class).getCacheInstance(CacheServiceEnum.GAME_PLAYERS_CACHE.toString()) ;
+		return BMDataContext.getContext().getBean(PlayerCacheBean.class).getCacheInstance(CacheServiceEnum.GAME_PLAYERS_CACHE.toString()) ;
 	}
 }

@@ -93,7 +93,7 @@ public class GameRoomController extends Handler{
 				CacheHelper.getRoomMappingCacheBean().delete(tempPlayUser.getId(), super.getOrgi(request)) ;
 			}
 			
-			CacheHelper.getGamePlayerCacheBean().delete(gameRoom.getId()) ;
+			CacheHelper.getGamePlayerCacheBean().clean(gameRoom.getId() , gameRoom.getOrgi()) ;
 		}
 		return request(super.createRequestPageTempletResponse("redirect:/apps/platform/gameroom.html"));
 	}

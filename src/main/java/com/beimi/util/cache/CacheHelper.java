@@ -9,7 +9,6 @@ import org.cache2k.expiry.ValueWithExpiryTime;
 
 import com.beimi.core.engine.game.BeiMiGameTask;
 import com.beimi.util.cache.hazelcast.HazlcastCacheHelper;
-import com.beimi.util.cache.hazelcast.impl.MultiCache;
 import com.beimi.util.cache.hazelcast.impl.QueneCache;
 
 public class CacheHelper {
@@ -58,7 +57,7 @@ public class CacheHelper {
 		return cacheInstance!=null ? cacheInstance.getGameRoomCacheBean() : null ;
 	}
 	
-	public static MultiCache getGamePlayerCacheBean() {
+	public static PlayerCacheBean getGamePlayerCacheBean() {
 		return cacheInstance!=null ? cacheInstance.getGamePlayerCacheBean() : null ;
 	}
 	
