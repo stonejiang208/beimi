@@ -12,7 +12,6 @@ import com.beimi.core.statemachine.impl.BeiMiExtentionTransitionConfigurer;
 import com.beimi.core.statemachine.message.Message;
 import com.beimi.util.GameUtils;
 import com.beimi.util.cache.CacheHelper;
-import com.beimi.util.rules.model.RoomReady;
 import com.beimi.web.model.GameRoom;
 import com.beimi.web.model.PlayUserClient;
 
