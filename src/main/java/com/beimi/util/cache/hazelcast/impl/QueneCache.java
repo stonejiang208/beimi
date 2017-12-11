@@ -7,7 +7,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.beimi.core.BMDataContext;
 import com.beimi.util.cache.CacheHelper;
 import com.beimi.web.model.GameRoom;
 import com.beimi.web.model.PlayUserClient;
@@ -24,6 +23,7 @@ import com.hazelcast.query.SqlPredicate;
 @Service("quene_cache")
 public class QueneCache{
 	
+	private String cacheName ;
 	@Autowired
 	public HazelcastInstance hazelcastInstance;	
 	
@@ -31,11 +31,16 @@ public class QueneCache{
 		return hazelcastInstance ;
 	}
 	public QueneCache getCacheInstance(String cacheName){
-		return this ;
+		this.cacheName = cacheName ;
+		return this;
+	}
+	
+	public String getName() {
+		return cacheName ;
 	}
 	
 	public void put(GameRoom value, String orgi){
-		getInstance().getMap(BMDataContext.BEIMI_GAME_PLAYWAY).put(value.getId() , value) ;
+		getInstance().getMap(this.getName()).put(value.getId() , value) ;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -51,11 +56,11 @@ public class QueneCache{
 		 */
 		if(!StringUtils.isBlank(playway)){
 			pagingPredicate = new PagingPredicate<String, GameRoom>(  new SqlPredicate( " playway = '" + playway + "'") , 5 );
-			gameRoomList.addAll((getInstance().getMap(BMDataContext.BEIMI_GAME_PLAYWAY)).values(pagingPredicate) ) ;
+			gameRoomList.addAll((getInstance().getMap(this.getName())).values(pagingPredicate) ) ;
 			while(gameRoomList!=null && gameRoomList.size() > 0){
 				GameRoom room = (GameRoom) gameRoomList.remove(0) ;
 				
-				getInstance().getMap(BMDataContext.BEIMI_GAME_PLAYWAY).delete(room.getId());
+				getInstance().getMap(this.getName()).delete(room.getId());
 				
 				List<PlayUserClient> players = CacheHelper.getGamePlayerCacheBean().getCacheObject(room.getId(), room.getOrgi()) ;
 				if(players.size() < room.getPlayers()){
@@ -68,6 +73,6 @@ public class QueneCache{
 	
 	
 	public void delete(String roomid){
-		getInstance().getMap(BMDataContext.BEIMI_GAME_PLAYWAY).delete(roomid);
+		getInstance().getMap(this.getName()).delete(roomid);
 	}
 }

@@ -210,6 +210,11 @@ public class UKTools {
 	public static void published(UserEvent event , ElasticsearchCrudRepository esRes , JpaRepository dbRes){
 		published(event, esRes, dbRes , BMDataContext.UserDataEventType.SAVE.toString());
 	}
+	
+	@SuppressWarnings({ "rawtypes"})
+	public static void published(UserEvent event , ElasticsearchCrudRepository esRes){
+		published(event, esRes, null , BMDataContext.UserDataEventType.SAVE.toString());
+	}
 	/**
 	 * 
 	 * @param request

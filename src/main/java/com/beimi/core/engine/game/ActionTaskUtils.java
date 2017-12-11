@@ -48,8 +48,37 @@ public class ActionTaskUtils {
 	 * @param game
 	 */
 	public static void roomReady(GameRoom gameRoom, Game game){
-		ActionTaskUtils.sendEvent("roomready", new RoomReady(gameRoom), gameRoom);
-		game.change(gameRoom , BeiMiGameEvent.ENOUGH.toString());	//通知状态机 , 此处应由状态机处理异步执行
+		/**
+		 * 
+		 */
+		boolean enough = false ;
+		List<PlayUserClient> playerList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
+		if(gameRoom.getPlayers() == playerList.size()){
+			gameRoom.setStatus(BeiMiGameEnum.READY.toString());
+			boolean hasnotready = false ;
+			for(PlayUserClient player : playerList){
+				if(player.isRoomready() == false){
+					hasnotready = true ;  break ;
+				}
+			}
+			if(hasnotready == false){
+				enough = true ;	//所有玩家都已经点击了 开始游戏
+			}
+		}else{
+			gameRoom.setStatus(BeiMiGameEnum.WAITTING.toString());
+		}
+		CacheHelper.getGameRoomCacheBean().put(gameRoom.getId(), gameRoom, gameRoom.getOrgi());
+		/**
+		 * 所有人都已经举手
+		 */
+		if(enough == true){
+			/**
+			 * 检查当前玩家列表中的所有玩家是否已经全部 就绪，如果已经全部就绪，则开始游戏 ， 否则，只发送 roomready事件
+			 */
+			ActionTaskUtils.sendEvent("roomready", new RoomReady(gameRoom), gameRoom);
+			
+			game.change(gameRoom , BeiMiGameEvent.ENOUGH.toString());	//通知状态机 , 此处应由状态机处理异步执行
+		}
 	}
 	
 	public static void sendEvent(String event, String userid, Message message){

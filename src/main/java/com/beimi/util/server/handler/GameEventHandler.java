@@ -260,7 +260,7 @@ public class GameEventHandler
 		}
     }
     
-  //抢地主事件
+    //抢地主事件
     @OnEvent(value = "restart")   
     public void onRestart(SocketIOClient client , String data)  
     {  
@@ -271,7 +271,23 @@ public class GameEventHandler
 			if(userToken!=null){
 				PlayUserClient playUser = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(userToken.getUserid(), userToken.getOrgi()) ;
 				String roomid = (String) CacheHelper.getRoomMappingCacheBean().getCacheObject(playUser.getId(), playUser.getOrgi()) ;
-				BMDataContext.getGameEngine().restartRequest(roomid, playUser.getId(), playUser.getOrgi() , beiMiClient);
+				BMDataContext.getGameEngine().restartRequest(roomid, playUser , beiMiClient , "true".equals(data));
+			}
+		}
+    }
+    
+  //抢地主事件
+    @OnEvent(value = "start")   
+    public void onStart(SocketIOClient client , String data)  
+    {  
+    	BeiMiClient beiMiClient = NettyClients.getInstance().getClient(client.getSessionId().toString()) ;
+    	String token = beiMiClient.getToken();
+		if(!StringUtils.isBlank(token)){
+			Token userToken = (Token) CacheHelper.getApiUserCacheBean().getCacheObject(token, BMDataContext.SYSTEM_ORGI) ;
+			if(userToken!=null){
+				
+				PlayUserClient playUser = (PlayUserClient) CacheHelper.getGamePlayerCacheBean().getPlayer(userToken.getUserid(), userToken.getOrgi()) ;
+				BMDataContext.getGameEngine().startGameRequest(playUser.getRoomid(), playUser , userToken.getOrgi() , "true".equals(data)) ;
 			}
 		}
     }

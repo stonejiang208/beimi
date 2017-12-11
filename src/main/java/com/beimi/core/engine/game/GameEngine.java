@@ -26,6 +26,7 @@ import com.beimi.util.rules.model.DuZhuBoard;
 import com.beimi.util.rules.model.JoinRoom;
 import com.beimi.util.rules.model.NextPlayer;
 import com.beimi.util.rules.model.Player;
+import com.beimi.util.rules.model.Playeready;
 import com.beimi.util.rules.model.RecoveryData;
 import com.beimi.util.rules.model.SelectColor;
 import com.beimi.util.rules.model.TakeCards;
@@ -33,6 +34,7 @@ import com.beimi.util.server.handler.BeiMiClient;
 import com.beimi.web.model.GamePlayway;
 import com.beimi.web.model.GameRoom;
 import com.beimi.web.model.PlayUserClient;
+import com.beimi.web.service.repository.es.PlayUserClientESRepository;
 import com.beimi.web.service.repository.jpa.GameRoomRepository;
 import com.corundumstudio.socketio.SocketIOServer;
 
@@ -242,6 +244,31 @@ public class GameEngine {
 	 * @param orgi
 	 * @return
 	 */
+	public void startGameRequest(String roomid, PlayUserClient playUser, String orgi , boolean opendeal){
+		GameRoom gameRoom = (GameRoom) CacheHelper.getGameRoomCacheBean().getCacheObject(roomid, orgi) ;
+		if(gameRoom!=null){
+			playUser.setRoomready(true);
+			if(opendeal == true){
+				playUser.setOpendeal(opendeal);
+			}
+			
+			CacheHelper.getGamePlayerCacheBean().put(playUser.getId(), playUser, playUser.getOrgi());
+			ActionTaskUtils.roomReady(gameRoom, GameUtils.getGame(gameRoom.getPlayway() , gameRoom.getOrgi()));
+			
+			UKTools.published(playUser,BMDataContext.getContext().getBean(PlayUserClientESRepository.class));
+			
+			ActionTaskUtils.sendEvent(playUser.getId(), new Playeready(playUser.getId() , "playeready"));
+		}
+	}
+	
+	
+	/**
+	 * 抢地主，斗地主
+	 * @param roomid
+
+	 * @param orgi
+	 * @return
+	 */
 	public void cardTips(String roomid, PlayUserClient playUser, String orgi , String cardtips){
 		GameRoom gameRoom = (GameRoom) CacheHelper.getGameRoomCacheBean().getCacheObject(roomid, orgi) ;
 		if(gameRoom!=null){
@@ -304,35 +331,21 @@ public class GameEngine {
 	 * @param orgi
 	 * @return
 	 */
-	public void restartRequest(String roomid , String userid, String orgi , BeiMiClient beiMiClient){
+	public void restartRequest(String roomid , PlayUserClient playerUser, BeiMiClient beiMiClient , boolean opendeal){
 		boolean notReady = false ;
 		List<PlayUserClient> playerList = null ;
 		GameRoom gameRoom = null ;
 		if(!StringUtils.isBlank(roomid)){
-			gameRoom = (GameRoom) CacheHelper.getGameRoomCacheBean().getCacheObject(roomid, orgi) ;
+			gameRoom = (GameRoom) CacheHelper.getGameRoomCacheBean().getCacheObject(roomid, playerUser.getOrgi()) ;
 			playerList = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
 			if(playerList!=null && playerList.size() > 0){
 				/**
 				 * 有一个 等待 
 				 */
-				for(int i=0; i<playerList.size() ; ){
-					PlayUserClient player = playerList.get(i) ;
-					if(player.getPlayertype().equals(BMDataContext.PlayerTypeEnum.NORMAL.toString())){
-						//普通玩家，当前玩家修改为READY状态
-						PlayUserClient apiPlayUser = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(player.getId(), player.getOrgi()) ;
-						if(player.getId().equals(userid)){
-							player.setGamestatus(BMDataContext.GameStatusEnum.READY.toString());
-							/**
-							 * 更新状态
-							 */
-							CacheHelper.getApiUserCacheBean().put(player.getId(), apiPlayUser, orgi);
-						}else{//还有未就绪的玩家
-							if(!player.getGamestatus().equals(BMDataContext.GameStatusEnum.READY.toString())){
-								notReady = true ;
-							}
-						}
+				for(PlayUserClient player : playerList){
+					if(player.isRoomready() == false){
+						notReady = true ; break ;
 					}
-					i++ ;
 				}
 			}
 		}
@@ -340,10 +353,14 @@ public class GameEngine {
 			/**
 			 * 需要增加一个状态机的触发事件：等待其他人就绪，超过5秒以后未就绪的，直接踢掉，然后等待机器人加入
 			 */
-			GameUtils.getGame(gameRoom.getPlayway() , orgi).change(gameRoom , BeiMiGameEvent.ENTER.toString() , 0);
-		}else if(playerList == null || playerList.size() == 0){//房间已解散
-			PlayUserClient userClient = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(userid, orgi) ;
-			BMDataContext.getGameEngine().gameRequest(userid, beiMiClient.getPlayway(), beiMiClient.getRoom(), beiMiClient.getOrgi(), userClient , beiMiClient) ;
+			this.startGameRequest(roomid, playerUser, playerUser.getOrgi(), opendeal);
+		}else if(playerList == null || playerList.size() == 0 || gameRoom == null){//房间已解散
+			BMDataContext.getGameEngine().gameRequest(playerUser.getId(), beiMiClient.getPlayway(), beiMiClient.getRoom(), beiMiClient.getOrgi(), playerUser , beiMiClient) ;
+			/**
+			 * 结算后重新开始游戏
+			 */
+			playerUser.setRoomready(true);
+			CacheHelper.getGamePlayerCacheBean().put(playerUser.getId(), playerUser, playerUser.getOrgi());
 		}
 	}
 	

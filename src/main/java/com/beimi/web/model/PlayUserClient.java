@@ -60,6 +60,7 @@ public class PlayUserClient implements UserEvent ,Message, java.io.Serializable 
 	
 	private String roomid ;		//加入的房间ID
 	private boolean roomready ;	//在房间中已经准备就绪
+	private boolean opendeal ;	//明牌
 	
 	private String gamestatus ;	//玩家在游戏中的状态 ： READY : NOTREADY : PLAYING ：MANAGED/托管
 	
@@ -434,6 +435,15 @@ public class PlayUserClient implements UserEvent ,Message, java.io.Serializable 
 
 	public void setRoomready(boolean roomready) {
 		this.roomready = roomready;
+	}
+	
+	public boolean isOpendeal() {
+		return opendeal;
+	}
+
+
+	public void setOpendeal(boolean opendeal) {
+		this.opendeal = opendeal;
 	}
 
 
