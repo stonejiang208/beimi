@@ -160,6 +160,29 @@ cc.Class({
         /**
          * 适配屏幕尺寸
          */
+        /**
+         * 预制的 对象池
+         * @type {cc.NodePool}
+         */
+        this.playerspool = new cc.NodePool();
+        /**
+         * 当前玩家的 麻将牌的 对象池
+         * @type {cc.NodePool}
+         */
+        this.cardpool = new cc.NodePool();
+        /**
+         *
+         * 初始化玩家 的 对象池
+         */
+        for (var i = 0; i < 4; i++) {
+            this.playerspool.put(cc.instantiate(this.playerprefab));
+        }
+        /**
+         * 初始化当前玩家的麻将牌 对象池
+         */
+        for (var i = 0; i < 14; i++) {
+            this.cardpool.put(cc.instantiate(this.cards_current));
+        }
         this.resize();
 
         if(this.ready()) {
@@ -184,29 +207,7 @@ cc.Class({
             this.centertimer = null;
 
             this.summarypage = null ;
-            /**
-             * 预制的 对象池
-             * @type {cc.NodePool}
-             */
-            this.playerspool = new cc.NodePool();
-            /**
-             * 当前玩家的 麻将牌的 对象池
-             * @type {cc.NodePool}
-             */
-            this.cardpool = new cc.NodePool();
-            /**
-             *
-             * 初始化玩家 的 对象池
-             */
-            for (var i = 0; i < 4; i++) {
-                this.playerspool.put(cc.instantiate(this.playerprefab));
-            }
-            /**
-             * 初始化当前玩家的麻将牌 对象池
-             */
-            for (var i = 0; i < 14; i++) {
-                this.cardpool.put(cc.instantiate(this.cards_current));
-            }
+
 
             this.exchange_state("init", this);
 
@@ -266,19 +267,20 @@ cc.Class({
                 event.stopPropagation();
             });
 
-
-            if (cc.beimi != null && cc.beimi.gamestatus != null && cc.beimi.gamestatus == "playing") {
-                //恢复数据
-                this.recovery();
-            }else if(cc.beimi!=null && cc.beimi.extparams!=null && cc.beimi.extparams.gamemodel == "room"){
-                /**
-                 * 房卡模式，开始启动游戏，当前玩家进入等待游戏的状态，显示邀请好友游戏，并分配 6位数字的房间号码
-                 */
-                /**
-                 * 处理完毕，清理掉全局变量
-                 * @type {null}
-                 */
-                this.invite = cc.instantiate(this.inviteplayer) ;
+            if(cc.beimi!=null){
+                if(cc.beimi.gamestatus!=null && cc.beimi.gamestatus == "playing"){
+                    //恢复数据
+                    this.recovery() ;
+                }else if(cc.beimi.extparams!=null && cc.beimi.extparams.gamemodel == "room"){
+                    /**
+                     * 房卡模式，开始启动游戏，当前玩家进入等待游戏的状态，显示邀请好友游戏，并分配 6位数字的房间号码
+                     */
+                    /**
+                     * 处理完毕，清理掉全局变量
+                     * @type {null}
+                     */
+                    this.invite = cc.instantiate(this.inviteplayer) ;
+                }
                 this.initgame();
             }
         }
@@ -317,6 +319,8 @@ cc.Class({
             this.map("recovery" , this.recovery_event) ;              //恢复牌局数据
 
             this.map("roomready" , this.roomready_event) ;              //提示
+
+            this.map("playeready" , this.playeready_event) ;            //玩家点击了开始游戏 ， 即准备就绪
 
             socket.on("command" , function(result){
                 cc.beimi.gamestatus = "playing" ;
@@ -391,6 +395,16 @@ cc.Class({
     roomready_event:function(data , context){
         if(context.invite!=null){
             context.invite.destroy();
+        }
+    },
+    /**
+     *
+     * @param data
+     * @param context
+     */
+    playeready_event:function(data , context){
+        if(data.userid == cc.beimi.user.id){
+            context.exchange_state("ready" , context);
         }
     },
     /**
@@ -1309,7 +1323,7 @@ cc.Class({
         object.mjtimer.string = "00" ;
     },
     recovery:function(){
-        this.initgame();
+        //this.initgame();
     },
     timer:function(object , times){
         if(times > 9){
