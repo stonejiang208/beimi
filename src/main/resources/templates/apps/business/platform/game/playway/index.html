@@ -32,8 +32,8 @@
 													<th>底分</th>
 													<th>金币要求</th>
 													<th>排序位置</th>
-													<th>是否洗牌</th>
-													<th>最大局数</th>
+													<th>洗牌</th>
+													<th>有风牌</th>
 													<th>发牌数量</th>
 													<th>开启限免</th>
 													<th style="white-space:nowrap;width:1%;" nowrap="nowrap">操作</th>
@@ -55,7 +55,11 @@
 														<i class="layui-icon" style="color:#19a55d;">&#xe618;</i>
 														</#if>
 													</td>
-													<td>${playway.numofgames!''}</td>
+													<td>
+														<#if playway.wind?? && playway.wind> 
+														<i class="layui-icon" style="color:#19a55d;">&#xe618;</i>
+														</#if>
+													</td>
 													<td>${playway.cardsnum!''}</td>
 													<td>
 														<#if playway.free?? && playway.free == true>
