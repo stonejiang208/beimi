@@ -1468,6 +1468,9 @@
     "_enabled": true,
     "qrgraphics": {
       "__id__": 25
+    },
+    "roomid": {
+      "__id__": 20
     }
   },
   {

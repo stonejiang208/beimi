@@ -6,6 +6,10 @@ cc.Class({
         qrgraphics:{
             default : null ,
             type : cc.Node
+        },
+        roomid:{
+            default : null ,
+            type : cc.Label
         }
 	},
 
@@ -14,6 +18,9 @@ cc.Class({
 
 	},
     init:function(data){
+	    if(data!=null && data != ""){
+	        this.roomid.string = "让好友扫描加入房间，房间号："+data ;
+        }
         var qrcode = new QRCode(6, QRErrorCorrectLevel.H);
         qrcode.addData(data);
 
