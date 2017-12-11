@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-12-07 21:46:21
+Date: 2017-12-11 15:46:23
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -193,7 +193,7 @@ CREATE TABLE `bm_gameconfig` (
 -- ----------------------------
 -- Records of bm_gameconfig
 -- ----------------------------
-INSERT INTO `bm_gameconfig` VALUES ('402888815e663eca015e6640058e0001', 'beimi', '297e8c7b455798280145579c73e501c1', null, null, null, null, '未匹配到玩家，房间已解散', null, '0', '2017-12-07 21:45:14', '0', '1', '0', '120', '120', '10', '10', null, null, '0', '402888815fe3f44a015feba097ce0000', 'room', null, null, '0', '0', '0', '0', '', '', '', '');
+INSERT INTO `bm_gameconfig` VALUES ('402888815e663eca015e6640058e0001', 'beimi', '297e8c7b455798280145579c73e501c1', null, null, null, null, '未匹配到玩家，房间已解散', null, '0', '2017-12-10 10:18:17', '0', '1', '0', '120', '120', '10', '10', null, null, '0', '402888815e0521d8015e052341f70001,402888815e0521d8015e052342080002', 'hall', null, null, '0', '0', '0', '0', '', '', '', '');
 
 -- ----------------------------
 -- Table structure for `bm_game_ai`
@@ -233,7 +233,7 @@ CREATE TABLE `bm_game_ai` (
 -- ----------------------------
 -- Records of bm_game_ai
 -- ----------------------------
-INSERT INTO `bm_game_ai` VALUES ('40288881600d551801600d55a1780000', 'beimi', '297e8c7b455798280145579c73e501c1', null, null, null, null, null, null, null, '2017-12-02 19:32:55', null, null, '0', null, null, null, null, null, '0', '9', '8000', '10', '10', 'bank', '1', '1');
+INSERT INTO `bm_game_ai` VALUES ('40288881600d551801600d55a1780000', 'beimi', '297e8c7b455798280145579c73e501c1', null, null, null, null, null, null, null, '2017-12-08 08:42:38', null, null, '0', null, null, null, null, null, '1', '5', '8000', '10', '10', 'bank', '1', '1');
 
 -- ----------------------------
 -- Table structure for `bm_game_group`
@@ -461,7 +461,7 @@ CREATE TABLE `bm_game_room` (
 -- ----------------------------
 -- Records of bm_game_room
 -- ----------------------------
-INSERT INTO `bm_game_room` VALUES ('f82fa305219d445b874aaf2d83d816c3', null, null, '2017-12-02 19:33:10', '4b6d17ce91f647ce8db2399ae9b78240', '2017-12-02 19:33:10', 'beimi', null, null, null, null, 'eb177b507b414a52aaa02018bf80fe74', 'CRERATED', null, '3', '4b6d17ce91f647ce8db2399ae9b78240', null, '402888815e21d735015e21d995680000', '0', '0', '1', '0', '17', '0', null, '0', null, null);
+INSERT INTO `bm_game_room` VALUES ('50b34cc7f611408a8bb060ae0bfb220c', null, null, '2017-12-10 17:45:39', '563199ac383c47dc95da7efc69b1ea84', '2017-12-10 17:45:39', 'beimi', null, null, null, null, 'ce930f7ef8384a209484370197973f8a', 'CRERATED', null, '3', '563199ac383c47dc95da7efc69b1ea84', 'hall', '402888815e21d735015e21d995680000', '0', '0', '1', '0', '17', '0', null, '0', null, null);
 
 -- ----------------------------
 -- Table structure for `bm_generation`
@@ -587,16 +587,22 @@ CREATE TABLE `bm_playuser` (
   `browser` varchar(100) DEFAULT NULL,
   `playertype` varchar(50) DEFAULT NULL,
   `gamestatus` varchar(50) DEFAULT NULL,
+  `roomid` varchar(32) DEFAULT NULL,
+  `roomready` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of bm_playuser
 -- ----------------------------
-INSERT INTO `bm_playuser` VALUES ('18f73fc375e3436399d0ec229ba2f04c', null, 'Guest_01IQNB', '2371b7f712bf1a33bd3811db961fc52b', '5', null, null, null, null, null, null, null, null, null, null, null, null, 'beimi', null, '2017-12-04 18:33:25', null, '2017-12-04 18:33:25', null, '2017-12-04 18:33:25', null, '0', '0', '0', '0', '0', null, '0', null, null, '0', '0', '0', '0', '0', '2017-12-04 18:33:25', null, null, null, '0', null, '10', '5000', '10', null, null, '未分配或者内网IP', '0', '0', 'UnKnown', '0', 'beimi-mobile/0.7 CFNetwork/889.9 Darwin/17.2.0', 'UnKnown', 'normal', null);
-INSERT INTO `bm_playuser` VALUES ('4b6d17ce91f647ce8db2399ae9b78240', null, 'Guest_0d8MZo', null, null, null, null, null, null, null, null, null, null, null, null, null, null, 'beimi', null, '2017-12-01 08:34:59', null, '2017-12-01 08:34:59', null, '2017-12-01 08:34:59', null, '0', '0', '1', '0', '0', null, '0', null, null, '0', '0', '0', '0', '0', '2017-12-01 08:34:59', null, null, null, '0', 'ccad243bba944807b6fca5e05a4d0905', '10', '5000', '10', null, null, null, null, null, null, null, null, null, 'normal', 'ready');
-INSERT INTO `bm_playuser` VALUES ('e939b0691cb048e589d0671f6bc64303', null, 'Guest_0J9VYx', 'e7e7680adbc0b206fc2bf1972bc2e214', '5', null, null, null, null, null, null, null, null, null, null, null, null, 'beimi', null, '2017-12-02 19:34:46', null, '2017-12-02 19:34:46', null, '2017-12-02 19:34:46', null, '0', '0', '1', '0', '0', null, '0', null, null, '0', '0', '0', '0', '0', '2017-12-02 19:34:46', null, null, null, '0', 'e8f727cf04824f7f9cc2b78fb75d40be', '10', '5000', '10', null, null, '未分配或者内网IP', '0', '0', 'windows', '0', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36', 'Chrome', 'normal', 'ready');
-INSERT INTO `bm_playuser` VALUES ('f43ac7a798cc4edba857e547b0cc071b', null, 'Guest_0llplo', null, null, null, null, null, null, null, null, null, null, null, null, null, null, 'beimi', null, '2017-11-27 17:24:17', null, '2017-11-27 17:24:17', null, '2017-11-27 17:24:17', null, '0', '0', '1', '0', '0', null, '0', null, null, '0', '0', '0', '0', '0', '2017-11-27 17:24:17', null, null, null, '0', '9a27fa1f6f9c4b87a5958266775b0699', '10', '5000', '10', null, null, null, null, null, null, null, null, null, 'normal', 'ready');
+INSERT INTO `bm_playuser` VALUES ('18f73fc375e3436399d0ec229ba2f04c', null, 'Guest_01IQNB', '2371b7f712bf1a33bd3811db961fc52b', '5', null, null, null, null, null, null, null, null, null, null, null, null, 'beimi', null, '2017-12-04 18:33:25', null, '2017-12-04 18:33:25', null, '2017-12-04 18:33:25', null, '0', '0', '0', '0', '0', null, '0', null, null, '0', '0', '0', '0', '0', '2017-12-04 18:33:25', null, null, null, '0', null, '10', '5000', '10', null, null, '未分配或者内网IP', '0', '0', 'UnKnown', '0', 'beimi-mobile/0.7 CFNetwork/889.9 Darwin/17.2.0', 'UnKnown', 'normal', null, null, '0');
+INSERT INTO `bm_playuser` VALUES ('4b6d17ce91f647ce8db2399ae9b78240', null, 'Guest_0d8MZo', null, null, null, null, null, null, null, null, null, null, null, null, null, null, 'beimi', null, '2017-12-01 08:34:59', null, '2017-12-01 08:34:59', null, '2017-12-01 08:34:59', null, '0', '0', '1', '0', '0', null, '0', null, null, '0', '0', '0', '0', '0', '2017-12-01 08:34:59', null, null, null, '0', 'ccad243bba944807b6fca5e05a4d0905', '10', '5000', '10', null, null, null, null, null, null, null, null, null, 'normal', 'ready', null, '0');
+INSERT INTO `bm_playuser` VALUES ('563199ac383c47dc95da7efc69b1ea84', null, 'Guest_19l54A', '1a89c20aa36253e7db9f71e6d3bf6b02', '5', null, null, null, null, null, null, null, null, null, null, null, null, 'beimi', null, '2017-12-08 08:42:23', null, '2017-12-08 08:42:23', null, '2017-12-08 08:42:22', null, '0', '0', '1', '0', '0', null, '0', null, null, '0', '0', '0', '0', '0', '2017-12-08 08:42:23', null, null, null, '0', 'a7d6152327b04df7a9727125809a6c49', '10', '5000', '10', null, null, '未分配或者内网IP', '0', '0', 'windows', '0', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36', 'Chrome', 'normal', 'ready', null, '0');
+INSERT INTO `bm_playuser` VALUES ('5ca8ebe373674a9ba000d2fa9759b765', null, 'Guest_1QlVI5', 'a97f7ebdf64018eb2282745d94cbf225', '5', null, null, null, null, null, null, null, null, null, null, null, null, 'beimi', null, '2017-12-09 22:38:31', null, '2017-12-09 22:38:31', null, '2017-12-09 22:38:31', null, '0', '0', '1', '0', '0', null, '0', null, null, '0', '0', '0', '0', '0', '2017-12-09 22:38:31', null, null, null, '0', 'b86bff197f924137830fd5323f0021e2', '10', '5000', '10', null, null, '未分配或者内网IP', '0', '0', 'windows', '0', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:57.0) Gecko/20100101 Firefox/57.0', 'Mozilla/5.0', 'normal', 'ready', null, '0');
+INSERT INTO `bm_playuser` VALUES ('66256849a25b4564b42259eb8dc4e091', null, 'Guest_01gUko', 'eb03dd1a4994e596c6d348cff7122473', '5', null, null, null, null, null, null, null, null, null, null, null, null, 'beimi', null, '2017-12-09 22:23:31', null, '2017-12-09 22:23:31', null, '2017-12-09 22:23:31', null, '0', '0', '1', '0', '0', null, '0', null, null, '0', '0', '0', '0', '0', '2017-12-09 22:23:31', null, null, null, '0', '1d00a48bb6074ffa8630c78b66ef6486', '10', '5000', '10', null, null, '未分配或者内网IP', '0', '0', 'mac', '0', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/604.3.5 (KHTML, like Gecko) Version/11.0.1 Safari/604.3.5', 'Safari', 'normal', 'ready', null, '0');
+INSERT INTO `bm_playuser` VALUES ('84b0cb5cd5ea4cdfa65981cefdbbf141', null, 'Guest_0YpcgQ', '0e1c6edc34d49d7d418f2275772c511e', '5', null, null, null, null, null, null, null, null, null, null, null, null, 'beimi', null, '2017-12-09 20:08:54', null, '2017-12-09 20:08:54', null, '2017-12-09 20:08:54', null, '0', '0', '0', '0', '0', null, '0', null, null, '0', '0', '0', '0', '0', '2017-12-09 20:08:54', null, null, null, '0', null, '10', '5000', '10', null, null, '未分配或者内网IP', '0', '0', null, '0', null, null, 'normal', null, null, '0');
+INSERT INTO `bm_playuser` VALUES ('e939b0691cb048e589d0671f6bc64303', null, 'Guest_0J9VYx', 'e7e7680adbc0b206fc2bf1972bc2e214', '5', null, null, null, null, null, null, null, null, null, null, null, null, 'beimi', null, '2017-12-02 19:34:46', null, '2017-12-02 19:34:46', null, '2017-12-02 19:34:46', null, '0', '0', '1', '0', '0', null, '0', null, null, '0', '0', '0', '0', '0', '2017-12-02 19:34:46', null, null, null, '0', 'e8f727cf04824f7f9cc2b78fb75d40be', '10', '5000', '10', null, null, '未分配或者内网IP', '0', '0', 'windows', '0', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36', 'Chrome', 'normal', 'ready', null, '0');
+INSERT INTO `bm_playuser` VALUES ('f43ac7a798cc4edba857e547b0cc071b', null, 'Guest_0llplo', null, null, null, null, null, null, null, null, null, null, null, null, null, null, 'beimi', null, '2017-11-27 17:24:17', null, '2017-11-27 17:24:17', null, '2017-11-27 17:24:17', null, '0', '0', '1', '0', '0', null, '0', null, null, '0', '0', '0', '0', '0', '2017-11-27 17:24:17', null, null, null, '0', '9a27fa1f6f9c4b87a5958266775b0699', '10', '5000', '10', null, null, null, null, null, null, null, null, null, 'normal', 'ready', null, '0');
 
 -- ----------------------------
 -- Table structure for `bm_project`
@@ -4633,7 +4639,7 @@ CREATE TABLE `bm_user` (
 -- ----------------------------
 -- Records of bm_user
 -- ----------------------------
-INSERT INTO `bm_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@beixi.me', null, null, null, null, null, '0', null, null, '0', null, null, 'beimi', null, '2017-03-16 13:56:34', '北京', '2017-08-06 18:25:12', '40288881601a365301601a3b79560000', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-12-07 21:41:20', null, null, null, '0', '0', '1');
+INSERT INTO `bm_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@beixi.me', null, null, null, null, null, '0', null, null, '0', null, null, 'beimi', null, '2017-03-16 13:56:34', '北京', '2017-08-06 18:25:12', '40288881601a365301601a3b79560000', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-12-10 17:45:21', null, null, null, '0', '0', '1');
 INSERT INTO `bm_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'test', '14e1b600b1fd579f47433b88e8d85291', '5', 'test@beixi.me', null, null, null, null, null, null, null, null, null, null, null, 'beimi', null, '2017-05-19 08:19:01', null, '2017-08-06 18:25:25', '40288881601a365301601a3b79560000', '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '0', null, null, null, '0', '0', '0', '2017-07-26 17:02:18', null, null, null, '0', '0', '0');
 
 -- ----------------------------
