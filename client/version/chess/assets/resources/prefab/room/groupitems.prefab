@@ -114,7 +114,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -46,
+      "x": -50,
       "y": 1
     },
     "_skewX": 0,
@@ -696,6 +696,7 @@
     "grouptitle": null,
     "groupbox": null,
     "groupbox_four": null,
+    "content": null,
     "itemname": {
       "__id__": 4
     },
