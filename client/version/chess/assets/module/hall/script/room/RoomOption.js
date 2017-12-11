@@ -112,11 +112,13 @@ cc.Class({
         if(this.optiongroup!=null && playway.groups!=null){
             for(var inx = 0 ; inx < playway.groups.length ; inx++){
                 let group = cc.instantiate(this.optiongroup) ;
-                group.parent = this.optionsnode ;
+
 
                 let playWayGroup = group.getComponent("PlaywayGroup") ;
                 playWayGroup.init(playway.groups[inx] , this.optiongroupitem , playway.items) ;
                 this.group.push(playWayGroup);
+
+                group.parent = this.optionsnode ;
             }
         }
     }

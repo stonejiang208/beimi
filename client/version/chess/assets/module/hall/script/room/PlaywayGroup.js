@@ -24,6 +24,10 @@ cc.Class({
             default:null ,
             type : cc.Node
         },
+        content:{
+            default:null ,
+            type : cc.Node
+        },
         itemname:{
             default:null ,
             type : cc.Label
@@ -40,9 +44,8 @@ cc.Class({
 
     // use this for initialization
     onLoad: function () {
-        this.groupoptions = new Array();
+
         let self = this ;
-        this.checked = false ;
         this.node.on('checkbox', function (event) {
             if(self.checkbox!=null){
                 if(self.checked == false){
@@ -71,10 +74,17 @@ cc.Class({
     init:function(group , itempre , items , parentoptions){
         this.data = group ;
         this.options = parentoptions ;
+
+        this.groupoptions = new Array();
+        this.checked = false ;
+
+
         this.grouptitle.string = group.name ;
         if(this.groupbox!=null && itempre!=null){
+            let itemsnum = 0 ;
             for(var inx=0 ; inx<items.length ; inx++){
                 if(items[inx].groupid == group.id){
+                    itemsnum = itemsnum + 1;
                     let newitem = cc.instantiate(itempre) ;
                     if(group.style != null && group.style == "three"){
                         newitem.parent = this.groupbox ;
@@ -91,6 +101,17 @@ cc.Class({
 
                 }
             }
+            if(group.style != null && group.style == "three") {
+                if (itemsnum > 4) {
+                    this.content.height = 35 + 50 * (parseInt((itemsnum - 1) / 3) + 1);
+                    this.groupbox.height = 50 * (parseInt((itemsnum - 1) / 3) + 1);
+                }
+            }else{
+                if (itemsnum > 4) {
+                    this.content.height = 35 + 50 * (parseInt((itemsnum - 1)/ 4) + 1);
+                    this.groupbox_four.height = 50 * (parseInt((itemsnum - 1)/ 4) + 1);
+                }
+            }
         }
     },
     inititem:function(item , group , parentoptions){
@@ -105,7 +126,7 @@ cc.Class({
             this.itemname.node.width = 160 ;
             this.itemname.node.x = 107 ;
         }else{
-            this.itemname.node.width = 100 ;
+            this.itemname.node.width = 105 ;
             this.itemname.node.x = 77 ;
         }
         if(item.defaultvalue == true){
@@ -114,7 +135,7 @@ cc.Class({
             this.doUnChecked();
         }
         if(group!=null && group.style!=null && group.style == "three"){
-            this.checkboxnode.x = -83 ;
+            this.checkboxnode.x = -76 ;
         }
     },
     doChecked:function(){
