@@ -61,45 +61,45 @@ cc.Class({
         this.summarypage = null ;
         this.inited = false ;
         this.lasttip = null ;
-
-        if(cc.beimi!=null && cc.beimi.gamestatus!=null && cc.beimi.gamestatus == "playing"){
-            //恢复数据
-            this.recovery() ;
-        }else if(cc.beimi!=null && cc.beimi.extparams!=null && cc.beimi.extparams.gamemodel == "room"){
-            /**
-             * 房卡模式，开始启动游戏，当前玩家进入等待游戏的状态，显示邀请好友游戏，并分配 6位数字的房间号码
-             */
-            /**
-             * 处理完毕，清理掉全局变量
-             * @type {null}
-             */
-            this.invite = cc.instantiate(this.inviteplayer) ;
-            this.initgame(false);
+        if(cc.beimi!=null){
+            if(cc.beimi.gamestatus!=null && cc.beimi.gamestatus == "playing"){
+                //恢复数据
+                this.recovery() ;
+            }else if(cc.beimi.extparams!=null && cc.beimi.extparams.gamemodel == "room"){
+                /**
+                 * 房卡模式，开始启动游戏，当前玩家进入等待游戏的状态，显示邀请好友游戏，并分配 6位数字的房间号码
+                 */
+                /**
+                 * 处理完毕，清理掉全局变量
+                 * @type {null}
+                 */
+                this.invite = cc.instantiate(this.inviteplayer) ;
+            }
+            this.initgame();
         }
     },
     begin:function(){
-        this.initgame(false);
         if(cc.beimi.data!=null && cc.beimi.data.enableai == true){
             this.statictimer("正在匹配玩家" , cc.beimi.data.waittime) ;
         }else{
             this.statictimer("正在匹配玩家，请稍候" , cc.beimi.data.noaiwaitime) ;
         }
+        this.startgame(false) ;
     },
     opendeal:function(){
-        this.initgame(false);
         if(cc.beimi.data!=null && cc.beimi.data.enableai == true){
             this.statictimer("正在匹配玩家" , cc.beimi.data.waittime) ;
         }else{
             this.statictimer("正在匹配玩家，请稍候" , cc.beimi.data.noaiwaitime) ;
         }
+        this.startgame(true) ;
     },
     recovery:function(){
-        this.initgame(false);
         this.statictimer("正在恢复数据，请稍候" , cc.beimi.data.waittime) ;
     },
-    initgame:function(opendeal){
+    initgame:function(){
         let self = this ;
-        this.gamebtn.active = false ;
+        this.gamebtn.active = true ;
         if(this.ready()) {
             let socket = this.socket();
 
@@ -118,6 +118,8 @@ cc.Class({
             this.map("allcards" , this.allcards_event) ;              //我出的牌
             this.map("cardtips" , this.cardtips_event) ;              //提示
             this.map("roomready" , this.roomready_event) ;              //提示
+
+            this.map("playeready" , this.playeready_event) ;            //玩家点击了开始游戏 ， 即准备就绪
 
             this.map("cardtips" , this.cardtips_event) ;              //提示
 
@@ -189,8 +191,19 @@ cc.Class({
      * @param context
      */
     roomready_event:function(data , context){
-        if(context.invite!=null){
+        if(data.cardroom == true && context.invite!=null){
             context.invite.destroy();
+        }
+        context.gamebtn.active = false ;
+    },
+    /**
+     *
+     * @param data
+     * @param context
+     */
+    playeready_event:function(data , context){
+        if(data.userid == cc.beimi.user.id){
+            context.gamebtn.active = false ;
         }
     },
     /**
@@ -271,6 +284,8 @@ cc.Class({
                 timer.stop(context.waittimer) ;
             }
         }
+
+        context.gamebtn.active = false ;
 
         if(context.ratio){
             context.ratio.string = data.ratio+"倍" ;
@@ -718,6 +733,15 @@ cc.Class({
         if(this.ready()){
             let socket = this.socket();
             socket.emit("giveup","giveup");
+        }
+    },
+    /**
+     * 开始游戏
+     */
+    startgame:function(opendeal){
+        if(this.ready()){
+            let socket = this.socket();
+            socket.emit("start",opendeal);
         }
     },
     /**

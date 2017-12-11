@@ -25,8 +25,7 @@ cc.Class({
     },
     onClick:function(event){
         let majiang = this.target.getComponent("MajiangDataBind");
-        majiang.initgame();
-        majiang.waittingForPlayers();
+        majiang.startgame();
     }
 
     // called every frame, uncomment this function to activate update callback

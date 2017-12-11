@@ -1385,6 +1385,15 @@ cc.Class({
             socket.emit("restart","restart");
         }
     },
+    /**
+     * 开始游戏
+     */
+    startgame:function(opendeal){
+        if(this.ready()){
+            let socket = this.socket();
+            socket.emit("start",opendeal);
+        }
+    },
     onDestroy:function(){
         // if(this.ready()) {
         //     let socket = this.socket();
