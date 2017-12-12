@@ -393,7 +393,7 @@ cc.Class({
         render.clean(context) ;
     },
     restart:function(){
-        for(i=0 ; i<2 ; i++){
+        for(var i=0 ; i<2 ; i++){
             this.playerspool.put(cc.instantiate(this.player)); // 创建节点
         }
 

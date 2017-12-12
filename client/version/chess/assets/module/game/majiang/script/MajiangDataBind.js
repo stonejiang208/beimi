@@ -157,32 +157,7 @@ cc.Class({
      * 重构后，只有两个消息类型
      */
     onLoad: function () {
-        /**
-         * 适配屏幕尺寸
-         */
-        /**
-         * 预制的 对象池
-         * @type {cc.NodePool}
-         */
-        this.playerspool = new cc.NodePool();
-        /**
-         * 当前玩家的 麻将牌的 对象池
-         * @type {cc.NodePool}
-         */
-        this.cardpool = new cc.NodePool();
-        /**
-         *
-         * 初始化玩家 的 对象池
-         */
-        for (var i = 0; i < 4; i++) {
-            this.playerspool.put(cc.instantiate(this.playerprefab));
-        }
-        /**
-         * 初始化当前玩家的麻将牌 对象池
-         */
-        for (var i = 0; i < 14; i++) {
-            this.cardpool.put(cc.instantiate(this.cards_current));
-        }
+        this.initdata(true);
         this.resize();
 
         if(this.ready()) {
@@ -339,6 +314,38 @@ cc.Class({
             socket.emit("joinroom" ,JSON.stringify(param)) ;
 
             this.inited = true ;
+        }
+    },
+    initdata:function(initplayer){
+        /**
+         * 适配屏幕尺寸
+         */
+
+        if(initplayer == true){
+            /**
+             * 预制的 对象池
+             * @type {cc.NodePool}
+             */
+            this.playerspool = new cc.NodePool();
+            /**
+             *
+             * 初始化玩家 的 对象池
+             */
+            for (var i = 0; i < 4; i++) {
+                this.playerspool.put(cc.instantiate(this.playerprefab));
+            }
+        }
+
+        /**
+         * 当前玩家的 麻将牌的 对象池
+         * @type {cc.NodePool}
+         */
+        this.cardpool = new cc.NodePool();
+        /**
+         * 初始化当前玩家的麻将牌 对象池
+         */
+        for (var i = 0; i < 14; i++) {
+            this.cardpool.put(cc.instantiate(this.cards_current));
         }
     },
     /**
@@ -501,7 +508,9 @@ cc.Class({
             /**
              * 销毁其中一个对象
              */
-            cardpanel.children[cardpanel.children.length - 1].destroy();
+            if(cardpanel!=null){
+                cardpanel.children[cardpanel.children.length - 1].destroy();
+            }
             let desk_card = cc.instantiate(cardprefab);
             let desk_script = desk_card.getComponent("DeskCards");
             desk_script.init(data.card);
@@ -585,7 +594,7 @@ cc.Class({
     allcards_event:function(data , context){
         cc.beimi.gamestatus = "notready" ;
         //结算界面，
-
+        context.gameover = false ;
         setTimeout(function(){
             context.summarypage = cc.instantiate(context.summary) ;
             context.summarypage.parent = context.root() ;
@@ -593,16 +602,8 @@ cc.Class({
             temp.create(context , data);
 
             if(data.gameRoomOver == true){//房间解散
-                for(var inx = 0 ; inx<context.player.length ; inx++){
-                    context.player[inx].destroy();
-                }
-                context.player.splice(0 , context.player.length) ;//房间解散，释放资源
-                context.player = new Array();
+                context.gameover = true ;
             }
-            /**
-             * 清理桌面
-             */
-            context.clean();
         } , 2000);
         /**
          */
@@ -1355,40 +1356,57 @@ cc.Class({
         for(var i =0 ; i<this.playercards.length ; i++){
             this.playercards[i].destroy();
         }
+        this.playercards.splice( 0 , this.playercards.length) ;
         /**
          * 销毁桌面上已打出的牌
          */
         for(var i =0 ; i<this.deskcards.length ; i++){
             this.deskcards[i].destroy();
         }
+        this.deskcards.splice( 0 , this.deskcards.length) ;
         /**
          * 销毁左侧玩家的手牌
          */
         for(var i =0 ; i<this.leftcards.length ; i++){
             this.leftcards[i].destroy();
         }
+        this.leftcards.splice( 0 , this.leftcards.length) ;
         /**
          * 销毁右侧玩家的手牌
          */
         for(var i =0 ; i<this.rightcards.length ; i++){
             this.rightcards[i].destroy();
         }
+        this.rightcards.splice( 0 , this.rightcards.length) ;
         /**
          * 销毁对家的手牌
          */
         for(var i =0 ; i<this.topcards.length ; i++){
             this.topcards[i].destroy();
         }
+        this.topcards.splice( 0 , this.topcards.length) ;
         /**
          * 玩家数据销毁条件（房间解散，或者有玩家退出房价的时候，所有玩家数据销毁后冲洗排序）
          */
     },
     restart:function(){
         /**
-         * 初始化当前玩家的麻将牌 对象池
+         * 清理桌面
          */
-        for (var i = 0; i < 14 && this.cardpool.size() < 15; i++) {
-            this.cardpool.put(cc.instantiate(this.cards_current));
+        this.clean();
+        /**
+         * 初始化桌面
+         */
+        if(this.gameover == true){
+            for(var inx = 0 ; inx<this.player.length ; inx++){
+                this.player[inx].destroy();
+            }
+            this.player.splice(0 , this.player.length) ;//房间解散，释放资源
+            this.player = new Array();
+
+            this.initdata(true);
+        }else{
+            this.initdata(false);
         }
 
         /**
