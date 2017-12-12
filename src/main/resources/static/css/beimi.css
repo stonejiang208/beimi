@@ -3867,10 +3867,10 @@ select{
     border-radius:5px;
 }
 .playway-options .layui-form-checkbox span{
-    width:105px;
+    width:90px;
 }
 .playway-options .layui-form-radio span{
-    width:105px;
+    width:90px;
 }
 .playway-options-bottom{
     position: absolute;

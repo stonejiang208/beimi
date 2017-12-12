@@ -337,7 +337,8 @@ public class TakeMaJiangCards extends TakeCards implements Message , java.io.Ser
 				}
 			}
 			if(found == false){
-				retCards[cardsindex++] = cards[i] ;
+				retCards[cardsindex] = cards[i] ;
+				cardsindex = cardsindex + 1;
 			}
 		}
 		return retCards ;

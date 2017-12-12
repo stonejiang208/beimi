@@ -45,7 +45,7 @@ public class CreateAllCardsTask extends AbstractTask implements ValueWithExpiryT
 			}
 		}
 		for(Player player : board.getPlayers()){
-			PlayUserClient playUserClient = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(player.getPlayuser(), this.orgi) ;
+			PlayUserClient playUserClient = (PlayUserClient) CacheHelper.getGamePlayerCacheBean().getPlayer(player.getPlayuser(), this.orgi) ;
 			if(playUserClient!=null && playUserClient.getPlayertype().equals(BMDataContext.PlayerTypeEnum.NORMAL.toString())){
 				playUserClient.setGamestatus(BMDataContext.GameStatusEnum.NOTREADY.toString());
 				
