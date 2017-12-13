@@ -188,7 +188,8 @@ public class BMDataContext {
 	public enum PlayerTypeEnum{
 		AI,			//AI
 		NORMAL,		//普通玩家
-		MANAGED;	//托管玩家
+		OFFLINE,	//托管玩家
+		LEAVE;		//离开房间的玩家
 		public String toString(){
 			return super.toString().toLowerCase() ;
 		}

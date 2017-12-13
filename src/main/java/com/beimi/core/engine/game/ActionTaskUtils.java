@@ -37,7 +37,7 @@ public class ActionTaskUtils {
 		List<PlayUserClient> players = CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi()) ;
 		for(PlayUserClient user : players){
 			BeiMiClient client = NettyClients.getInstance().getClient(user.getId()) ;
-			if(client!=null){
+			if(client!=null && online(user.getId(), user.getOrgi())){
 				client.getClient().sendEvent(BMDataContext.BEIMI_MESSAGE_EVENT, message);
 			}
 		}
@@ -85,7 +85,9 @@ public class ActionTaskUtils {
 		message.setCommand(event);
 		BeiMiClient client = NettyClients.getInstance().getClient(userid) ;
 		if(client!=null){
-			client.getClient().sendEvent(BMDataContext.BEIMI_MESSAGE_EVENT, message);
+			if(online(userid , client.getOrgi())){
+				client.getClient().sendEvent(BMDataContext.BEIMI_MESSAGE_EVENT, message);
+			}
 		}
 	}
 	
@@ -96,13 +98,32 @@ public class ActionTaskUtils {
 	 * @param gameRoom
 	 */
 	public static void sendPlayers(BeiMiClient beiMiClient , GameRoom gameRoom){
-		beiMiClient.getClient().sendEvent(BMDataContext.BEIMI_MESSAGE_EVENT, new GamePlayers(gameRoom.getPlayers() , CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), beiMiClient.getOrgi()), BMDataContext.BEIMI_PLAYERS_EVENT));
+		if(online(beiMiClient.getUserid() , beiMiClient.getOrgi())){
+			beiMiClient.getClient().sendEvent(BMDataContext.BEIMI_MESSAGE_EVENT, new GamePlayers(gameRoom.getPlayers() , CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), beiMiClient.getOrgi()), BMDataContext.BEIMI_PLAYERS_EVENT));
+		}
 	}
 	
+	/**
+	 * 检查玩家是否在线
+	 * @param userid
+	 * @param orgi
+	 * @return
+	 */
+	public static boolean online(String userid,  String orgi){
+		PlayUserClient playerUserClient = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(userid, orgi) ;
+		return playerUserClient!=null && !BMDataContext.PlayerTypeEnum.OFFLINE.toString().equals(playerUserClient.getPlayertype()) && !BMDataContext.PlayerTypeEnum.LEAVE.toString().equals(playerUserClient.getPlayertype()) ;
+	}
+	
+	
+	/**
+	 * 
+	 * @param gameRoom
+	 * @param players
+	 */
 	public static void sendPlayers(GameRoom gameRoom , List<PlayUserClient> players){
 		for(PlayUserClient user : players){
 			BeiMiClient client = NettyClients.getInstance().getClient(user.getId()) ;
-			if(client!=null){
+			if(client!=null && online(client.getUserid() , client.getOrgi())){
 				client.getClient().sendEvent(BMDataContext.BEIMI_MESSAGE_EVENT, new GamePlayers(gameRoom.getPlayers() , CacheHelper.getGamePlayerCacheBean().getCacheObject(gameRoom.getId(), client.getOrgi()), BMDataContext.BEIMI_PLAYERS_EVENT));
 			}
 		}
@@ -116,7 +137,9 @@ public class ActionTaskUtils {
 	 * @param gameRoom
 	 */
 	public static void sendEvent(PlayUserClient playerUser  , Message message){
-		NettyClients.getInstance().sendGameEventMessage(playerUser.getId(), BMDataContext.BEIMI_MESSAGE_EVENT , message);
+		if(online(playerUser.getId() , playerUser.getOrgi())){
+			NettyClients.getInstance().sendGameEventMessage(playerUser.getId(), BMDataContext.BEIMI_MESSAGE_EVENT , message);
+		}
 	}
 	
 	/**
@@ -126,7 +149,10 @@ public class ActionTaskUtils {
 	 * @param gameRoom
 	 */
 	public static void sendEvent(String userid  , Message message){
-		NettyClients.getInstance().sendGameEventMessage(userid, BMDataContext.BEIMI_MESSAGE_EVENT , message);
+		BeiMiClient client = NettyClients.getInstance().getClient(userid) ;
+		if(client!=null && online(userid , client.getOrgi())){
+			NettyClients.getInstance().sendGameEventMessage(userid, BMDataContext.BEIMI_MESSAGE_EVENT , message);
+		}
 	}
 	
 	public static PlayUserClient getPlayUserClient(String roomid,String player , String orgi){
@@ -138,6 +164,26 @@ public class ActionTaskUtils {
 			}
 		}
 		return playUserClient;
+	}
+	/**
+	 * 更新玩家状态
+	 * @param userid
+	 * @param orgi
+	 */
+	public static void updatePlayerClientStatus(String userid , String orgi , String status){
+		PlayUserClient playUser = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(userid, orgi) ;
+		playUser.setPlayertype(status);//托管玩家
+		CacheHelper.getApiUserCacheBean().put(userid,playUser , orgi);
+	}
+	
+	/**
+	 * 更新玩家状态
+	 * @param userid
+	 * @param orgi
+	 */
+	public static void updatePlayerClientStatus(PlayUserClient playUser, String status){
+		playUser.setPlayertype(status);//托管玩家
+		CacheHelper.getApiUserCacheBean().put(playUser.getId(),playUser , playUser.getOrgi());
 	}
 	
 	public static Object json(Object data){
