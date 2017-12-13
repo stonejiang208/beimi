@@ -838,5 +838,9 @@ cc.Class({
     },
     onDestroy:function(){
         this.inited = false ;
+        if(this.ready()){
+            let socket = this.socket();
+            socket.emit("leave","leave");
+        }
     }
 });

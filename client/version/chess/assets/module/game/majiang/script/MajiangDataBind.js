@@ -1473,6 +1473,10 @@ cc.Class({
         //     socket.disconnect();
         // }
         this.inited = false ;
+        if(this.ready()){
+            let socket = this.socket();
+            socket.emit("leave","leave");
+        }
     },
     // called every frame, uncomment this function to activate update callback
     // update: function (dt) {
