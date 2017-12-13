@@ -378,16 +378,16 @@ cc.Class({
             tablepos = "current" ;
             context.index = data.index ;
         }else{
-            inx = context.playersarray.length - 1 ;
-            if(inx == 2){
+            inx = data.index - context.index ;
+            if(inx == 1){
                 //var playerscript = player.getComponent("MaJiangPlayer");
                 player.setPosition(570 , 50);
                 tablepos = "right" ;
-            }else if(inx == 1){
+            }else if(inx == 2){
                 //var playerscript = player.getComponent("MaJiangPlayer");
                 player.setPosition(400 , 300);
                 tablepos = "top" ;
-            }else if(inx == 0){
+            }else if(inx == 3){
                 //var playerscript = player.getComponent("MaJiangPlayer");
                 player.setPosition(-570 , 50);
                 tablepos = "left" ;
@@ -637,7 +637,7 @@ cc.Class({
         var inx = 0 ;
         for(var i=0 ; i<data.player.length ; i++){
             let temp = data.player[i] ;
-            if(temp.id != cc.beimi.user.id){
+            if(temp.id == cc.beimi.user.id){
                 context.index = i ;break ;
             }
         }
@@ -649,15 +649,16 @@ cc.Class({
                     var player = context.playerspool.get();
                     var playerscript = player.getComponent("MaJiangPlayer");
                     var tablepos = "" ;
-                    if((context.playersarray.length - 1) == 0){
+                    var temp = pos - context.index ;
+                    if(temp == 1 || temp == -3){
                         //var playerscript = player.getComponent("MaJiangPlayer");
                         player.setPosition(570 , 50);
                         tablepos = "right" ;
-                    }else if((context.playersarray.length - 1) == 1){
+                    }else if(temp == 2 || temp == -2){
                         //var playerscript = player.getComponent("MaJiangPlayer");
                         player.setPosition(400 , 300);
                         tablepos = "top" ;
-                    }else if((context.playersarray.length - 1) == 2){
+                    }else if(temp == 3 || temp == -1){
                         //var playerscript = player.getComponent("MaJiangPlayer");
                         player.setPosition(-570 , 50);
                         tablepos = "left" ;
