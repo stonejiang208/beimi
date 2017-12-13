@@ -314,10 +314,11 @@ public class GameEngine {
 		GameRoom gameRoom = (GameRoom) CacheHelper.getGameRoomCacheBean().getCacheObject(roomid, orgi) ;
 		if(gameRoom!=null){
 			Board board = (Board) CacheHelper.getBoardCacheBean().getCacheObject(gameRoom.getId(), gameRoom.getOrgi());
-			Player player = board.player(playUserClient) ;
-			
-			if(board!=null && board.getNextplayer()!=null && player.getPlayuser().equals(board.getNextplayer().getNextplayer()) && board.getNextplayer().isTakecard() == false){
-				takeCards = board.takeCardsRequest(gameRoom, board, player, orgi, auto, playCards) ;
+			if(board!=null){
+				Player player = board.player(playUserClient) ;
+				if(board.getNextplayer()!=null && player.getPlayuser().equals(board.getNextplayer().getNextplayer()) && board.getNextplayer().isTakecard() == false){
+					takeCards = board.takeCardsRequest(gameRoom, board, player, orgi, auto, playCards) ;
+				}
 			}
 		}
 		return takeCards ;
