@@ -322,7 +322,7 @@ public class GameEventHandler
 				GameRoom gameRoom = null ;
 				String roomid = (String) CacheHelper.getRoomMappingCacheBean().getCacheObject(playUser.getId(), playUser.getOrgi()) ;
 				if(!StringUtils.isBlank(roomid)){
-					gameRoom = (GameRoom) CacheHelper.getGamePlayerCacheBean().getCacheObject(roomid, playUser.getOrgi()) ;
+					gameRoom = (GameRoom) CacheHelper.getGameRoomCacheBean().getCacheObject(roomid, playUser.getOrgi()) ;
 				}else{
 					List<GameRoom> gameRoomList = gameRoomRepository.findByRoomidAndOrgi(searchRoom.getRoomid(), playUser.getOrgi()) ;
 					if(gameRoomList!=null && gameRoomList.size() > 0){
