@@ -138,6 +138,10 @@ cc.Class({
             default:null ,
             type : cc.Prefab
         },
+        roomid:{
+            default : null ,
+            type : cc.Label
+        },
         gang_current:{        //动作节点
             default:null ,
             type : cc.Node
@@ -367,6 +371,10 @@ cc.Class({
             let script = context.invite.getComponent("BeiMiQR")
             script.init(data.roomid);
             context.invite.parent = context.root() ;
+
+            if(context.roomid != null){
+                context.roomid.string = data.roomid ;
+            }
         }
 
         var player = context.playerspool.get();
