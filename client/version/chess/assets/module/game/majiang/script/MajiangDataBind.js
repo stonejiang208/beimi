@@ -1472,6 +1472,7 @@ cc.Class({
         //     let socket = this.socket();
         //     socket.disconnect();
         // }
+        this.inited = false ;
     },
     // called every frame, uncomment this function to activate update callback
     // update: function (dt) {
