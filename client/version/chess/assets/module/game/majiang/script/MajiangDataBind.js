@@ -375,6 +375,10 @@ cc.Class({
             if(context.roomid != null){
                 context.roomid.string = data.roomid ;
             }
+        }else{
+            if(context.roomid != null){
+                context.roomid.string = "大厅房间" ;
+            }
         }
 
         var player = context.playerspool.get();
