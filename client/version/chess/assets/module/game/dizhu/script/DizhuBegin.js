@@ -194,7 +194,6 @@ cc.Class({
         if(data.cardroom == true && context.invite!=null){
             context.invite.destroy();
         }
-        context.gamebtn.active = false ;
     },
     /**
      *
