@@ -72,6 +72,9 @@ public class GameEventHandler
     					CacheHelper.getGamePlayerCacheBean().delete(beiMiClient.getUserid(), beiMiClient.getOrgi()) ;
     				}
     				CacheHelper.getRoomMappingCacheBean().delete(beiMiClient.getUserid(), beiMiClient.getOrgi()) ;
+    				/**
+    				 * 玩家退出游戏，需要发送事件给所有玩家，如果房主退出，则房间解散
+    				 */
     			}
     			/**
     			 * 退出房间，房卡模式下如果房间还有剩余局数 ， 则不做任何操作，如果无剩余或未开始扣卡，则删除房间
