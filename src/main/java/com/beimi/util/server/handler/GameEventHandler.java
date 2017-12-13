@@ -63,8 +63,19 @@ public class GameEventHandler
     		 */
     		PlayUserClient playUserClient = (PlayUserClient) CacheHelper.getApiUserCacheBean().getCacheObject(beiMiClient.getUserid(), beiMiClient.getOrgi()) ;
     		if(playUserClient!=null){
-    			playUserClient.setPlayertype(BMDataContext.PlayerTypeEnum.MANAGED.toString());//托管玩家
-    			CacheHelper.getApiUserCacheBean().put(beiMiClient.getUserid() ,playUserClient , beiMiClient.getOrgi());
+    			if(BMDataContext.GameStatusEnum.PLAYING.toString().equals(playUserClient.getGamestatus())){
+	    			playUserClient.setPlayertype(BMDataContext.PlayerTypeEnum.MANAGED.toString());//托管玩家
+	    			CacheHelper.getApiUserCacheBean().put(beiMiClient.getUserid() ,playUserClient , beiMiClient.getOrgi());
+    			}else{
+    				CacheHelper.getApiUserCacheBean().delete(beiMiClient.getUserid(), beiMiClient.getOrgi()) ;
+    				if(CacheHelper.getGamePlayerCacheBean().getPlayer(beiMiClient.getUserid(), beiMiClient.getOrgi())!=null){
+    					CacheHelper.getGamePlayerCacheBean().delete(beiMiClient.getUserid(), beiMiClient.getOrgi()) ;
+    				}
+    				CacheHelper.getRoomMappingCacheBean().delete(beiMiClient.getUserid(), beiMiClient.getOrgi()) ;
+    			}
+    			/**
+    			 * 退出房间，房卡模式下如果房间还有剩余局数 ， 则不做任何操作，如果无剩余或未开始扣卡，则删除房间
+    			 */
     		}
     	}
     }  
