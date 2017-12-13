@@ -72,6 +72,8 @@ cc.Class({
             self.preload(extparams , self) ;
         }else if(data.result == "notexist"){
             self.alert("房间号不存在。");
+        }else if(data.result == "full"){
+            self.alert("房间已满员。");
         }
     },
     onDeleteClick:function(){
