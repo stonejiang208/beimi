@@ -14,6 +14,7 @@
 
  **
 细安装过程请查阅：[安装说明](INSTALL.md)
+美术资源已经移动到 [贝密美术资源](https://gitee.com/beimi_admin/beimi-psd)
 ** 
 
 
